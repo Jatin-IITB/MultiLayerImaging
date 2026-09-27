@@ -1,3 +1,5 @@
+# QC report - track A (A-sphere7-ring6-hfss), code 89db27a
+
 ## Parsed files (native grids)
 | class | file | N | F_native | f_min_GHz | f_max_GHz | step_MHz | uniform | option_line | values_per_f |
 |---|---|---|---|---|---|---|---|---|---|
