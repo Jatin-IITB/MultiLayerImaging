@@ -8,6 +8,87 @@
   **unverified against mesh noise**.
 - Headline scheme: `binary` (Normal vs AD).
 
+## Prompt 03 follow-ups — noise floor, calibration-free R31, per-measurement rule (code `6eca5d7`; plotting fix `45e16c6`)
+
+`metrics.csv` gained 1440 rows at `6eca5d7`:
+
+- the full classifier grid for the 6 noise profiles;
+- `typical+gain{0.5,1,2}dB` profiles, per-port amplitude error uniform ±X dB, reduced grid;
+- 54 complete-rule rows.
+
+The same-seed rerun at `45e16c6` (plotting fix only) reproduced every table exactly.
+
+Command: `python scripts/run_all.py`. All results are **noise-robustness only**; 3-class
+results remain **unverified against mesh noise**.
+
+**1. Noise floor**
+
+- **Estimate.** Per measurement, from reciprocal-pair differences on the weakest half of
+  the paths. S_ij − S_ji removes the signal and any per-port gain or phase, so what remains
+  is the additive floor.
+
+  | Profile | ideal | good | typical | noisy | very_noisy |
+  |---|---|---|---|---|---|
+  | True floor (dB) | −90 | −80 | −70 | −60 | −50 |
+  | Estimated (dB) | −89.6 | −79.8 | −69.9 | −60.05 | −51.3 |
+
+  At `very_noisy` the estimate is biased 1.3 dB low because the floor swamps most paths.
+- **Subtraction.** Band-averaged transmission powers become <|S|²> − P_f before dB.
+- **Gate.** INVALID "instrument floor too high" if the floor > τ − 8 dB, which is −60.8 dB
+  here. `noisy` (−60.05 dB) and `very_noisy` are therefore 100% INVALID. Clean `ideal`,
+  `good`, `typical` and `typical_jitter` measurements have 0% false rejects.
+- **τ drift of full-band M5.C3, before → after subtraction:**
+  - across ideal / good / typical / typical_jitter: 0.16 → **0.09 dB**;
+  - `noisy` − `typical`: 0.79 → **0.12 dB**;
+  - `very_noisy` − `typical`: 4.59 → 1.89 dB. This residual comes from the biased floor
+    estimate, and the gate rejects those measurements anyway.
+
+**2. Calibration-free M5.R31 = GM_t <|S(t+3,t)|²> / GM_t <|S(t+1,t)|²>**
+
+- Floor-subtracted, in dB, one value per measurement.
+- Per-port gains cancel exactly: unit test `test_r31_cancels_per_port_gains_and_floor_estimate`.
+- **Gate.** R31 only helps with a gate that per-port gains cannot trip. The full gate
+  assumes calibration: with ±1 dB gains it rejects 76% of clean measurements, with ±2 dB 96%
+  (|S_ii| picks up g_i², tripping the open/short, passivity and symmetry checks). A
+  **gain-invariant gate mode** is used with R31 instead:
+  - open/short by relative |S_ii| flatness;
+  - reciprocity;
+  - detune by notch frequency;
+  - floor.
+
+  It still catches **100% of single open or short antennas and ±200 MHz detuning** at every
+  gain level, with 0% false rejects.
+- **τ (R31, `typical`) = −15.17 dB**, 95% CI −15.48 to −15.16. Screening prior: −15.48 dB.
+  Margin m = 0.055 dB. Class means: Normal −14.48, AD −16.18 dB. σ_ref is only 0.03 dB per
+  measurement: this margin will widen once the mesh noise is known.
+- **τ drift of R31:** 0.012 dB across ideal to typical_jitter; 0.077 dB at `noisy`; at most
+  0.018 dB under ±0.5–2 dB gains.
+- Stage values: Mild −16.20, Moderate −16.51, Severe −15.85 dB. Not monotone over the AD
+  stages, so R31 is a binary feature only.
+
+**3. Complete rule per measurement** (gate → τ ± m, refit per fold → 6-view majority vote,
+or a single value for R31). Same folds as before. AD test simulations are fully unseen.
+Normal test measurements are new noise draws of the single Normal simulation. UNCERTAIN
+counts as not correct.
+
+| Rule (gate) | typical: sens / spec / UNCERTAIN | ±0.5 dB gains | ±1 dB gains | ±2 dB gains |
+|---|---|---|---|---|
+| M5.C3 vote of 6 views (gain-invariant) | 1.000 / 1.000 / 0% | 1.000 / 1.000 / 0% | 0.909 / 0.874 / 8.1% | 0.470 / 0.837 / 19.2% |
+| M5.C3 ring-mean (gain-invariant) | 1.000 / 1.000 / 0% | 1.000 / 1.000 / 0% | 0.933 / 0.867 / 9.2% | 0.533 / 0.728 / 27.8% |
+| **M5.R31 (gain-invariant)** | **1.000 / 1.000 / 0%** | **1.000 / 1.000 / 0%** | **1.000 / 1.000 / 0%** | **1.000 / 1.000 / 0%** |
+| M5.C3 vote (full gate) | 1.000 / 1.000 / 0% | 1.000 / 1.000 / 0% (6.9% INVALID) | 68.6% INVALID | 95.6% INVALID |
+
+- The vote removes the per-view errors. Per view, M5.C3 has CV specificity 0.958 at
+  `typical`; per measurement it is 1.000.
+- Per view with gain errors, M5.C3 THR falls 0.978 → 0.943 → 0.881 → 0.667 balanced
+  accuracy at ±0.5 / 1 / 2 dB.
+- M9 (full spectrum, LR) stays at 1.000: the spectral shape survives constant gains.
+
+**Recommendation.** Use **R31 with the gain-invariant gate** as the primary binary rule
+unless per-port calibration is better than ±0.5 dB. Up to ±0.5 dB, full-band M5.C3 with the
+full gate is equivalent and keeps the passivity and symmetry checks. `decision_rule.md`
+gives both.
+
 ## Prompt 03 — quality gate, classifiers, decision boundaries (code `3ad19cb`)
 
 Details are in `results/03/report.md`, `results/03/decision_rule.md`, `results/03/*.csv` and
