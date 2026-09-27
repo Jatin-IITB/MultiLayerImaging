@@ -1,0 +1,5 @@
+class,file,N,F_native,f_min_GHz,f_max_GHz,step_MHz,uniform,option_line,values_per_f
+Normal,brain_sevem_layer_Healthy.s6p,6,281,2.8,4.2,5.0,True,# GHz S MA R 50.000000,72
+Mild,Brain_sevem_layer_MildAD.s6p,6,281,2.8,4.2,5.0,True,# GHz S MA R 50.000000,72
+Moderate,Brain_sevem_layer_ModerateAD.s6p,6,281,2.8,4.2,5.0,True,# GHz S MA R 50.000000,72
+Severe,brain_sevem_layer_SevereAD.s6p,6,501,3.2,4.2,2.0,True,# GHz S MA R 50.000000,72

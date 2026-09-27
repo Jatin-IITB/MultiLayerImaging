@@ -1,0 +1,37 @@
+# Track A - 7-layer concentric sphere + 6-antenna ring (HFSS). See MODEL_CARD.md.
+track: A
+model_id: A-sphere7-ring6-hfss
+seed: 20260927
+
+data:
+  raw_dir: data/raw
+  manifest: data/sims.csv        # authoritative labels; Touchstone headers are NOT trusted
+  processed_dir: data/processed
+
+grid:
+  f_min_hz: null                 # null -> intersection of all files
+  f_max_hz: null
+  step_hz: 5.0e+6
+  interp: cubic_re_im
+
+classes:
+  default: [Normal, Mild, Severe]
+  include_moderate: false        # --include-moderate on the CLI overrides
+  reference: Normal
+
+ring:
+  n_ant: 6
+  # port_to_ant[p-1] = antenna index T# on Port[p]. From MODEL_CARD (user-supplied mapping,
+  # to be confirmed in HFSS GUI); checked against circulant symmetry in scripts/00_qc.py.
+  port_to_ant: [4, 3, 2, 1, 6, 5]
+  ant_spacing_deg: 60
+
+qc:
+  passivity_tol: 1.0e-3
+  expected_band_hz: [1.0e+9, 6.0e+9]
+  shoulder_band_hz: [3.38e+9, 3.52e+9]
+
+results:
+  metrics_csv: results/metrics.csv
+  summary_md: results/summary.md
+  figures_dir: results/figures

@@ -1,0 +1,6 @@
+# Authoritative simulation manifest. 'project' = HFSS project per MODEL_CARD (user-stated, not read from headers).
+file,class,head_scale,standoff_mm,notes,project
+brain_sevem_layer_Healthy.s6p,Normal,1.0,9.55,HFSS design Healthy,new
+Brain_sevem_layer_MildAD.s6p,Mild,1.0,9.55,HFSS design MildAD,Brain_sevem_layer
+Brain_sevem_layer_ModerateAD.s6p,Moderate,1.0,9.55,HFSS design ModerateAD,Brain_sevem_layer
+brain_sevem_layer_SevereAD.s6p,Severe,1.0,9.55,HFSS design SevereAD; native grid 2 MHz from 3.2 GHz,new

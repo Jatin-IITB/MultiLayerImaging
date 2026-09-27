@@ -1,0 +1,1 @@
+timestamp,git_hash,track,model_id,sim_set,classes,method_id,feature_desc,feature_dim,classifier,noise_profile,cv_scheme,n_sims_per_class,n_test,accuracy,balanced_accuracy,macro_f1,min_pairwise_fisher,min_pairwise_bhattacharyya,reject_rate,accuracy_on_accepted,notes
