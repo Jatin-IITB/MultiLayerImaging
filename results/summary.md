@@ -8,6 +8,141 @@
   **unverified against mesh noise**.
 - Headline scheme: `binary` (Normal vs AD).
 
+## Prompt 03 — quality gate, classifiers, decision boundaries (code `3ad19cb`)
+
+Details are in `results/03/report.md`, `results/03/decision_rule.md`, `results/03/*.csv` and
+`results/figures/03_*.png`. `metrics.csv` gained 1332 rows (12 feature sets × 6–7 models × 6
+profiles × 3 schemes). `binary_early` is skipped because there is no MCI simulation yet. To
+regenerate from a new `sims.csv`, run `python scripts/run_all.py`.
+
+**Validity.** Every result is **noise-robustness only**: one simulation per stage, one head
+geometry. The 3-class schemes are also **unverified against mesh noise**.
+
+**Samples and CV**
+
+- A sample is one antenna view (a driven antenna and its received column) of one noisy draw.
+  Views of one simulation are not independent.
+- Each draw applies:
+  - the prompt-02 measurement noise;
+  - ±1.5% cable/connector amplitude variation per antenna;
+  - a 10° reference-plane phase offset per port;
+  - 1 MHz frequency jitter.
+- Train and test draws use different seeds.
+- CV:
+  - A class with one simulation holds out a **diameter**: antennas t and t+3 leave together.
+    Otherwise the held-out opposite path would still be in training via reciprocity.
+  - A class with ≥ 2 simulations holds out whole simulations. So in `binary`, each fold
+    tests an AD stage the model has never seen.
+  - Sub-band windows, COMB features, the M7 reference, the regularisation C and the Platt
+    calibration are all fit inside the training folds.
+
+**Feature sets.** M3 and M4 are dropped: in this geometry absorbed power reduces to
+reflection. Coupled power is only ~4e-4 of the incident power, so N = 1 − R − C ≈ 1 − R and
+M4 ≈ M3 = 1 − M2.
+
+**Quality gate: INVALID rate**
+
+| Case | ideal … noisy | very_noisy |
+|---|---|---|
+| Clean draws | 0% | 3.1% (passivity: noise pushes the column power past 1.2) |
+| ±2–20 MHz resonance shift | 0% | 2.5–3.7% |
+| Notch flattened | 0% | 3.7% |
+| **One antenna open** | **100%** (open/short 100%, symmetry 100%) | 100% |
+| **One antenna short** | **100%** | 100% |
+| All open / all short | 100% | 100% |
+| Detuned ±200 MHz | 100% (detune check) | 100% |
+
+**Binary (headline) at `typical`, balanced accuracy, CV**
+
+| Feature set | Best model | typical | noisy | very_noisy |
+|---|---|---|---|---|
+| M9 full spectrum (upper bound) | LDA | 1.000 | 1.000 | 0.998 |
+| COMB (nested: M5.C3 + A[3.40] + C2) | LDA | 1.000 | 0.999 | 0.960 |
+| M5.C3[nested] (window 3.40–3.50 GHz in 6 of 9 folds) | LDA | 1.000 | 0.990 | 0.893 |
+| **M5.C3 full band (primary)** | **THR (τ)** | **0.977** | 0.969 | 0.825 |
+| M5.C3[k3] (secondary, post-hoc window) | LDA | 0.996 | 0.993 | 0.889 |
+| M0 old score | any | 0.585 | 0.60 | 0.57 |
+| M2 power reflection | any | ≤ 0.54 | | |
+| M1 dB reflection | any | ≤ 0.51 | | |
+
+**Reflection-based metrics fail once setup variability is included.** M0's Normal–AD gap
+is ~2% of its value and M2's ~1%. A ±1.5% per-antenna amplitude variation is enough to hide
+both. The opposite-antenna gap is ~1.9 dB (≈ 55% in power) and survives. So the prompt-02
+advantage of M0 in `binary` disappears under realistic cable/connector variation.
+
+**Threshold τ (Normal | AD) on full-band M5.C3, `typical` noise**
+
+- τ = −52.69 dB, 95% bootstrap CI −52.92 to −52.64. The CI resamples simulations within
+  class, then views and draws.
+- Screening prior P(Normal) = 0.8: τ = −52.76 dB.
+- Class means: Normal −51.77 dB, AD −53.70 dB.
+- CV (τ refit in every fold, fold τ from −52.71 to −52.47 dB): sensitivity 0.996,
+  specificity 0.958.
+- UNCERTAIN margin m = 0.23 dB = max(posterior margin 0.03, Φ⁻¹(0.7) × σ_ref 0.44). σ_ref is
+  the within-simulation SD of one view, mostly the antenna-to-antenna asymmetry (the
+  Normal histogram is bimodal).
+- 2.3% of views fall inside the margin. Sensitivity and specificity on the accepted views
+  are 1.00 / 1.00.
+
+**τ depends on the instrument noise floor.** τ moves from −52.7 dB (`typical`, floor
+−70 dB) to −51.9 (`noisy`, −60 dB) and −48.1 (`very_noisy`, −50 dB). Additive floor power
+adds to a signal near −52 dB. At a −50 dB floor the classes collapse (CV 0.83). So the
+threshold is valid only for the calibrated floor it was derived with, and the floor must
+be ≤ −60 dB, i.e. at least 8 dB below the signal. Prompt 04/05 should add an explicit
+floor-power subtraction and a gate check on the measured floor.
+
+**Coverage vs accuracy** (M5.C3, LR + Platt, p* = 0.7):
+
+| Profile | Reject rate | Balanced accuracy on accepted |
+|---|---|---|
+| typical | 1.4% | 0.980 |
+| typical_jitter | 0.9% | 0.998 |
+| very_noisy | 14.7% | 0.891 |
+
+M0 at the same p* rejects 85% and reaches only 0.67 on what it accepts
+(`03_coverage_accuracy.png`).
+
+**3-class schemes (UNVERIFIED AGAINST MESH NOISE, no thresholds reported)**
+
+- `three`: M9 1.000, M6 0.991 (ordinal), M5 0.965, COMB 0.940. M5.C3 alone gets 0.58: it
+  separates Normal from AD but not Mild from Severe.
+- `three_merged`: M9 0.998, M6 0.982, M5 0.947, COMB (ordinal) 0.888.
+- Confusions concentrate on Mild. For COMB-ORD in `three`, 27/360 Mild views go to Normal and
+  53/360 to Severe.
+- These scores come from one simulation per stage. The classifier may be learning mesh or
+  project differences (the steps crossing HFSS projects are the large ones, prompt 02), so
+  they are not evidence of staging ability yet.
+
+**Decision rule** (`results/03/decision_rule.md`, regenerated on every run):
+
+1. INVALID if the gate fails (with the reason).
+2. Otherwise, per antenna view with x = full-band opposite-antenna power in dB:
+   - AD if x < τ − m;
+   - Normal if x > τ + m;
+   - otherwise UNCERTAIN.
+   - τ = −52.69 dB, m = 0.23 dB at the `typical` floor.
+3. The proposed combination of the six views (majority of non-UNCERTAIN views) is **not yet
+   evaluated**; CV scored single views.
+
+**What the current data can and cannot claim**
+
+*Can claim:*
+
+- In this phantom, the full-band opposite-antenna power separates Normal from AD with a
+  simple, explicit threshold.
+- This holds under realistic measurement noise, cable/connector variation, reference-plane
+  phase and ±20 MHz resonance shifts, provided the noise floor is ≤ −60 dB.
+- A per-antenna gate reliably blocks open, short and detuned measurements.
+
+*Cannot claim:*
+
+- **Generalisation to other heads.** There is one head geometry and one simulation per
+  stage, so every accuracy above is repeatability under noise.
+- **Any 3-class staging ability.** AD-vs-AD gaps are only 2–3× the port asymmetry, and the
+  between-mesh noise is unmeasured.
+- **That τ transfers to a real instrument or another phantom** without re-deriving it.
+- **Reaching or beating Saied's 98.97% benchmark.** That result used 9 different heads.
+
 ## Prompt 02 — power-based metrics, frequency robustness, separability (code `7ca77f1`; report regenerated at `4962836`)
 
 Details are in `results/02/report.md`, the tables in `results/02/*.csv`, and the figures in
