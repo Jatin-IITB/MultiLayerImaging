@@ -77,3 +77,41 @@ def test_ring_distance_and_labels():
     assert d[0, 1] == 1 and d[0, 3] == 3 and d[0, 5] == 1 and d[0, 4] == 2
     assert class_from_filename("Brain_sevem_layer_MildAD.s6p") == "Mild"
     assert class_from_filename("brain_sevem_layer_Healthy.s6p") == "Normal"
+
+
+def test_masking_replaces_nonreciprocal_bump():
+    from adstage.io.masking import mask_glitches
+    f = np.arange(50) * 5e6 + 3e9
+    s = np.zeros((50, 3, 3), complex)
+    base = 0.01 * np.exp(1j * f / 1e8)
+    s[:, 0, 1] = s[:, 1, 0] = base
+    s[:, 0, 0] = 0.5
+    s[20:23, 0, 1] += 0.02                      # 3-point glitch on one direction only
+    out, log = mask_glitches(f, s, -30)
+    assert len(log) == 3 and {r["f_GHz"] for r in log} == set(f[20:23] / 1e9)
+    lin = base[19] + (f[20:23] - f[19]) / (f[23] - f[19]) * (base[23] - base[19])
+    np.testing.assert_allclose(out[20:23, 0, 1], lin)
+    np.testing.assert_allclose(out[20:23, 1, 0], lin)
+    np.testing.assert_allclose(out[:, 0, 0], 0.5)
+
+
+def test_grid_never_upsamples():
+    fa = np.linspace(2.8e9, 4.2e9, 281)
+    fb = np.linspace(3.2e9, 4.2e9, 501)
+    g = common_grid([fa, fb])
+    assert np.isclose(np.median(np.diff(g)), 5e6) and g[0] == 3.2e9
+    with pytest.raises(ValueError):
+        common_grid([fa, fb], step_hz=2e6)
+
+
+def test_modal_parseval_and_affine_metrics():
+    from adstage.features.metrics import modal_reflections, circulant_projection, band_avg
+    rng = np.random.default_rng(0)
+    S = 0.1 * (rng.standard_normal((5, 6, 6)) + 1j * rng.standard_normal((5, 6, 6)))
+    lam = modal_reflections(S)
+    np.testing.assert_allclose((np.abs(lam) ** 2).sum(-2), 6 * (np.abs(S) ** 2).sum(-2))
+    C = circulant_projection(S)
+    np.testing.assert_allclose(C[:, 0, 1], C[:, 2, 3])
+    f = np.linspace(1, 2, 11)
+    P = rng.random(11)
+    assert np.isclose(band_avg(f, 1 - P, (1.0, 2.0)), 1 - band_avg(f, P, (1.0, 2.0)))

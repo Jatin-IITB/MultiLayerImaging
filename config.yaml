@@ -1,4 +1,5 @@
 # Track A - 7-layer concentric sphere + 6-antenna ring (HFSS). See MODEL_CARD.md.
+# PyYAML note: write floats with an explicit exponent sign (5.0e+6), else they load as strings.
 track: A
 model_id: A-sphere7-ring6-hfss
 seed: 20260927
@@ -11,18 +12,25 @@ data:
 grid:
   f_min_hz: null                 # null -> intersection of all files
   f_max_hz: null
-  step_hz: 5.0e+6
-  interp: cubic_re_im
+  step_hz: auto                  # auto -> coarsest file's native nodes; finer files downsampled; never upsample
+  interp: cubic_re_im            # only for downsampling finer files onto the coarse nodes
 
 classes:
-  default: [Normal, Mild, Severe]
-  include_moderate: false        # --include-moderate on the CLI overrides
   reference: Normal
+  # Stage labels stay in sims.csv; schemes group them. Every table/figure reports all listed
+  # schemes. Headline = binary until a 3-class scheme's weakest pair beats the mesh noise.
+  class_scheme: [binary, three_merged, three]
+  headline: binary
+  schemes:
+    binary:       {Normal: [Normal], AD: [Mild, Moderate, Severe]}
+    three_merged: {Normal: [Normal], Mild+Moderate: [Mild, Moderate], Severe: [Severe]}
+    three:        {Normal: [Normal], Mild: [Mild], Severe: [Severe]}
+    four:         {Normal: [Normal], Mild: [Mild], Moderate: [Moderate], Severe: [Severe]}  # --include-moderate
 
 ring:
   n_ant: 6
-  # port_to_ant[p-1] = antenna index T# on Port[p]. From MODEL_CARD (user-supplied mapping,
-  # to be confirmed in HFSS GUI); checked against circulant symmetry in scripts/00_qc.py.
+  # port_to_ant[p-1] = antenna index T# on Port[p]. From MODEL_CARD; confirmed against
+  # circulant symmetry in scripts/00_qc.py (rank 1 of 60 orderings in every file).
   port_to_ant: [4, 3, 2, 1, 6, 5]
   ant_spacing_deg: 60
 
@@ -30,6 +38,21 @@ qc:
   passivity_tol: 1.0e-3
   expected_band_hz: [1.0e+9, 6.0e+9]
   shoulder_band_hz: [3.38e+9, 3.52e+9]
+  mask_glitches: true            # linear-interp reciprocity glitches; log -> results/qc/masked_points.csv
+  glitch_thr_db: -30.0           # |Sij - Sji| threshold relative to the pair's band-rms level
+
+noise_reference:
+  # Between-mesh noise floor = two solves of one stage with different mesh settings. Empty
+  # until the mesh-repeat files arrive; then it replaces the port-to-port spread as the noise
+  # reference. Until then AD-vs-AD comparisons are labelled "unverified against mesh noise".
+  mesh_repeat_files: []
+
+metrics:
+  sim_set: hfss-v1-masked
+  k3_band_hz: [3.35e+9, 3.60e+9]  # opposite-antenna window; chosen post hoc from these same sims
+  subband_hz: 5.0e+7              # M6 contiguous sub-band width
+  n_realisations: 500
+  ranking_profile: typical
 
 results:
   metrics_csv: results/metrics.csv

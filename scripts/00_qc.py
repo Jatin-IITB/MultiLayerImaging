@@ -49,7 +49,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
 
-    ds = load_dataset(cfg, ROOT)              # all files in manifest
+    ds = load_dataset(cfg, ROOT, mask=False)  # QC describes the raw files (no glitch masking)
     p2a = ds.port_to_ant
     n = ds.S.shape[-1]
     proj = dict(zip(ds.files, ds.manifest["project"]))
