@@ -13,6 +13,19 @@ def schemes_to_run(cfg: dict, include_moderate: bool = False) -> list[str]:
     return s + ["four"] if include_moderate and "four" not in s else s
 
 
+def active_schemes(cfg: dict, stages_present: list[str], include_moderate: bool = False
+                   ) -> tuple[list[str], dict[str, str]]:
+    """Schemes whose every class has >= 1 simulation; skipped ones with the reason."""
+    run, skipped = [], {}
+    for s in schemes_to_run(cfg, include_moderate):
+        empty = [g for g, st in scheme_groups(cfg, s).items() if not set(st) & set(stages_present)]
+        if empty:
+            skipped[s] = f"no simulation for class(es) {empty}"
+        else:
+            run.append(s)
+    return run, skipped
+
+
 def scheme_label(cfg: dict, scheme: str) -> str:
     """Value for the metrics.csv `classes` column, e.g. 'binary:Normal|AD(Mild+Moderate+Severe)'."""
     parts = []

@@ -1,6 +1,9 @@
-# Authoritative simulation manifest. 'project' = HFSS project per MODEL_CARD (user-stated, not read from headers).
-file,class,head_scale,standoff_mm,notes,project
-brain_sevem_layer_Healthy.s6p,Normal,1.0,9.55,HFSS design Healthy,new
-Brain_sevem_layer_MildAD.s6p,Mild,1.0,9.55,HFSS design MildAD,Brain_sevem_layer
-Brain_sevem_layer_ModerateAD.s6p,Moderate,1.0,9.55,HFSS design ModerateAD,Brain_sevem_layer
-brain_sevem_layer_SevereAD.s6p,Severe,1.0,9.55,HFSS design SevereAD; native grid 2 MHz from 3.2 GHz,new
+# Authoritative simulation manifest (file headers are NOT trusted).
+# project  = HFSS project per model card. head_id = distinct head geometry (same id = same head).
+# role     = primary | mesh_repeat. repeat_of = file this row re-solves with different mesh settings
+#            (mesh_repeat rows only). A mesh_repeat is also used as an extra simulation of its class.
+file,class,head_scale,standoff_mm,notes,project,head_id,role,repeat_of
+brain_sevem_layer_Healthy.s6p,Normal,1.0,9.55,HFSS design Healthy,new,h0,primary,
+Brain_sevem_layer_MildAD.s6p,Mild,1.0,9.55,HFSS design MildAD,Brain_sevem_layer,h0,primary,
+Brain_sevem_layer_ModerateAD.s6p,Moderate,1.0,9.55,HFSS design ModerateAD,Brain_sevem_layer,h0,primary,
+brain_sevem_layer_SevereAD.s6p,Severe,1.0,9.55,HFSS design SevereAD; native grid 2 MHz from 3.2 GHz,new,h0,primary,

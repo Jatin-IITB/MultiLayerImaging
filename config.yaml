@@ -19,13 +19,14 @@ classes:
   reference: Normal
   # Stage labels stay in sims.csv; schemes group them. Every table/figure reports all listed
   # schemes. Headline = binary until a 3-class scheme's weakest pair beats the mesh noise.
-  class_scheme: [binary, three_merged, three]
+  class_scheme: [binary, three_merged, three, binary_early]   # schemes with an empty class are skipped
   headline: binary
   schemes:
     binary:       {Normal: [Normal], AD: [Mild, Moderate, Severe]}
     three_merged: {Normal: [Normal], Mild+Moderate: [Mild, Moderate], Severe: [Severe]}
     three:        {Normal: [Normal], Mild: [Mild], Severe: [Severe]}
     four:         {Normal: [Normal], Mild: [Mild], Moderate: [Moderate], Severe: [Severe]}  # --include-moderate
+    binary_early: {Normal: [Normal], MCI: [MCI]}      # slot: empty until the MCI simulation arrives
 
 ring:
   n_ant: 6
@@ -53,6 +54,38 @@ metrics:
   subband_hz: 5.0e+7              # M6 contiguous sub-band width
   n_realisations: 500
   ranking_profile: typical
+
+gate:
+  # Thresholds set from clean noisy copies (all profiles) vs. open/short faults; see results/03/report.md.
+  open_short_R: 0.8               # band power-average <|S_ii|^2> of ANY antenna (clean <= 0.54, open/short >= 0.88)
+  flat_sd: 0.1                    # std_f |S_ii| below this = constant magnitude (clean ~0.25, open ~0.03)
+  passivity_tol: 0.2              # 50 MHz sub-band column power > 1 + tol (noise alone reaches 1.09 at typical)
+  recip_rel_max: 1.0              # median rel. |S_ij - S_ji| on neighbour paths (clean <= 0.6, all-open 1.5)
+  sym_db: [1.25, 5.0]             # median std_t of 20log10|S(t+k,t)|, k = 0, 1
+  detune_k_sigma: 5.0
+  detune_min_window_hz: 5.0e+7    # never narrower than ±50 MHz (subject-to-subject resonance spread)
+
+augment:
+  amp_sd: 0.015                   # per-antenna cable/connector amplitude variation
+  phase_sd_deg: 10.0              # residual reference-plane phase per port
+  jitter_mhz: 1.0                 # setup frequency jitter (on top of the profile's jitter)
+
+classify:
+  n_train_draws: 60               # noisy draws per simulation used for training (all views)
+  n_test_draws: 60                # independent draws (different seeds) for testing
+  models: [LDA, LR, LSVM, RBF, kNN, ORD, THR]      # THR = explicit 1-D threshold (binary, 1-D sets only)
+  feature_sets: [M0, M1, M2, M5, M5.C3, "M5.C3[k3]", "M5.C3[nested]", M6, M7, M8, COMB, M9]
+  lr_Cs: [0.01, 0.1, 1.0, 10.0, 100.0]
+  p_star: 0.7                     # UNCERTAIN if calibrated max posterior < p*
+  screening_prior_normal: 0.8
+  n_boot: 1000
+  headline_scheme: binary
+  headline_feature: M5.C3
+  secondary_feature: "M5.C3[k3]"
+  nested_window_widths_mhz: [100, 150, 200, 250, 300, 400]
+  comb_max_features: 3
+  comb_max_corr: 0.9
+  n_jobs: 10
 
 results:
   metrics_csv: results/metrics.csv

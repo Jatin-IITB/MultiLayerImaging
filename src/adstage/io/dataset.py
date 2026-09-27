@@ -33,6 +33,14 @@ def load_manifest(path: str | Path) -> pd.DataFrame:
         raise ValueError(f"{path}: manifest missing columns {missing}")
     if bad := set(df["class"]) - set(STAGES):
         raise ValueError(f"{path}: unknown classes {bad}")
+    defaults = {"project": "", "head_id": "h0", "role": "primary", "repeat_of": ""}
+    for col, v in defaults.items():
+        df[col] = df[col].fillna(v).astype(str) if col in df else v
+    if bad := set(df["role"]) - {"primary", "mesh_repeat"}:
+        raise ValueError(f"{path}: unknown role {bad}")
+    rep = df[df["role"] == "mesh_repeat"]
+    if missing := set(rep["repeat_of"]) - set(df["file"]):
+        raise ValueError(f"{path}: repeat_of refers to unknown files {missing}")
     return df
 
 

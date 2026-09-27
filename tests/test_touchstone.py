@@ -115,3 +115,54 @@ def test_modal_parseval_and_affine_metrics():
     f = np.linspace(1, 2, 11)
     P = rng.random(11)
     assert np.isclose(band_avg(f, 1 - P, (1.0, 2.0)), 1 - band_avg(f, P, (1.0, 2.0)))
+
+
+def test_folds_never_share_test_views_or_heldout_sims():
+    from adstage.pipeline.cv import make_folds
+    name, folds = make_folds({"Normal": [0], "AD": [1, 2, 3]}, 6)
+    assert name == "LODO+LOSO-within-class" and len(folds) == 9
+    seen = set()
+    for fd in folds:
+        tr = {(s, t) for s, v in fd.train for t in v}
+        te = {(s, t) for s, v in fd.test for t in v}
+        assert not tr & te
+        for s, v in fd.test:                      # opposite antennas leave together
+            assert sorted(v) in ([0, 3], [1, 4], [2, 5])
+            if s != 0:                            # held-out AD simulation absent from training
+                assert all(ss != s for ss, _ in fd.train)
+        seen |= te
+    assert seen == {(s, t) for s in range(4) for t in range(6)}
+    name, folds = make_folds({"A": [0, 1], "B": [2, 3]}, 6)
+    assert name == "LOSO" and len(folds) == 4
+
+
+def test_gate_catches_single_open_antenna():
+    from adstage.pipeline.quality import QualityGate
+    rng = np.random.default_rng(0)
+    f = np.linspace(3.2e9, 4.2e9, 201)
+    n = 6
+    S = np.zeros((201, n, n), complex)
+    for t in range(n):
+        S[:, t, t] = 0.85 * np.exp(1j * f / 3e8) * (1 - 0.95 * np.exp(-((f - 3.6e9) / 2e8) ** 2))
+        for k in (1, 2, 3):
+            S[:, (t + k) % n, t] = S[:, t, (t + k) % n] = 0.01 / k * np.exp(1j * f / 2e8)
+    cfg = {"open_short_R": 0.8, "flat_sd": 0.1, "passivity_tol": 0.2, "recip_rel_max": 1.0,
+           "sym_db": [1.25, 5.0], "detune_k_sigma": 5.0, "detune_min_window_hz": 5e7}
+    g = QualityGate(cfg, f).fit_detune(S[None] + 1e-4 * rng.standard_normal((5, 201, n, n)))
+    assert not g.check(S[None])["invalid"][0]
+    bad = S.copy()
+    bad[:, 2, 2] = 1.0
+    bad[:, 2, [0, 1, 3, 4, 5]] = 1e-5
+    bad[:, [0, 1, 3, 4, 5], 2] = 1e-5
+    out = g.check(bad[None])
+    assert out["invalid"][0] and out["open_short"][0] and out["bad_antenna"][0, 2]
+
+
+def test_ordinal_logit_orders_classes():
+    from adstage.pipeline.classify import OrdinalLogit
+    rng = np.random.default_rng(1)
+    x = np.concatenate([rng.normal(m, 0.3, 200) for m in (0, 1, 2)])[:, None]
+    y = np.repeat([0, 1, 2], 200)
+    m = OrdinalLogit().fit(x, y)
+    assert m.coef_[0] > 0 and np.all(np.diff(m.thresholds_) > 0)
+    assert (m.predict(x) == y).mean() > 0.85

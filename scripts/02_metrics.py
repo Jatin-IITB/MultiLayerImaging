@@ -17,7 +17,8 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from adstage.classes import pair_is_ad_only, scheme_groups, scheme_label, schemes_to_run  # noqa: E402
+from adstage.classes import active_schemes, pair_is_ad_only, scheme_groups, scheme_label  # noqa: E402
+from adstage.noise.reference import mesh_pairs, mesh_sd  # noqa: E402
 from adstage.features.metrics import (build_catalogue, circulant_projection, compute,  # noqa: E402
                                       power_spectra, to_ring_order)
 from adstage.io.dataset import load_dataset  # noqa: E402
@@ -126,7 +127,10 @@ def main():
     rob.to_csv(OUT / "robustness.csv", index=False)
 
     # ---- separability per scheme ------------------------------------------------------
-    schemes = schemes_to_run(cfg, args.include_moderate)
+    schemes, skipped = active_schemes(cfg, ds.classes, args.include_moderate)
+    mpairs = mesh_pairs(ds.files, ds.manifest)
+    if skipped:
+        print(f"skipped schemes: {skipped}")
     pair_rows, rank_tables = [], {}
     for scheme in schemes:
         groups_st = scheme_groups(cfg, scheme)
@@ -138,10 +142,11 @@ def main():
             for m in metrics:
                 rows = pairwise(groups, {s: noisy[pname][s][m.name] for s in range(n_sims)},
                                 {s: clean[s][m.name] for s in range(n_sims)})
+                msd = mesh_sd(pert["orig"][m.name], mpairs)
                 for r in rows:
                     a, b = r["pair"].split("|")
                     r.update(scheme=scheme, profile=pname, metric=m.name, method_id=m.method_id,
-                             ad_only=pair_is_ad_only(groups_st, a, b), gap_over_mesh=np.nan)
+                             ad_only=pair_is_ad_only(groups_st, a, b), gap_over_mesh=r["gap"] / msd)
                 pair_rows += rows
                 df = pd.DataFrame(rows)
                 w = df.loc[df["J_meas"].idxmin()]
@@ -170,12 +175,13 @@ def main():
                              "any_ad_pair": bool(df["ad_only"].any()), "note": m.note})
                 if not args.no_csv:
                     notes = [f"weakest={w['pair']}", f"J_eff_min={df['J_eff'].min():.3g}",
-                             f"gap/port_min={df['gap_over_port'].min():.3g}", "gap/mesh=pending",
+                             f"gap/port_min={df['gap_over_port'].min():.3g}",
+                             (f"gap/mesh_min={df['gap_over_mesh'].min():.3g}" if mpairs else "gap/mesh=pending"),
                              f"bayes_err_max={df['bayes_err'].max():.3g}",
                              f"shift_robust={'yes' if shift_move < 0.25 * min_gap else 'no'}",
                              f"band_gap_retention={ret:.2f}",
                              f"freq_robust={'yes' if robust else 'no'}"]
-                    if df["ad_only"].any():
+                    if df["ad_only"].any() and not mpairs:
                         notes.append(MESH_NOTE)
                     if m.note:
                         notes.append(m.note)
