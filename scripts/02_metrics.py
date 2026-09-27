@@ -293,6 +293,17 @@ def report(cfg, ds, gh, sim_set, metrics, rank_tables, pairs, rob, schemes, ordi
     fin.columns = [f"{c}: finite" for c in fin.columns]
     L += ["## Faults (open / short all antennas, one antenna open)",
           md(pd.concat([fin, fl], axis=1).reset_index()), ""]
+    sel_o = ["M0.old_score", "M2.R", "M5.C", "M5.C3", "M5.C3[k3]", "M6.A[3.40]", "M6.A[3.45]",
+             "M7.D3", "M7.D3[k3]", "M8.lam0^2[k3]", "M8.lam3^2[k3]"]
+    L += ["## Ordinality: stage-to-stage steps in port-noise units (noise-free, all 4 stages)",
+          f"{int(ordinality.monotone.sum())} of {len(ordinality)} metrics are monotone over "
+          "Normal < Mild < Moderate < Severe. Normal->Mild and Moderate->Severe cross HFSS "
+          "projects; Mild->Moderate does not (see summary caveat).",
+          md(ordinality.set_index("metric").loc[sel_o].reset_index(), ".2g"), "",
+          "## M0 decomposition (couplings zeroed)",
+          "M0 = mean_B Σ_(j≠i)|S_ii + S_ij| / VSWR_i. With every S_ij set to 0 the score is "
+          "almost unchanged, i.e. M0 is in practice (N-1)·<|Γ|/VSWR>: a reflection-only "
+          "quantity with an arbitrary weighting.", md(m0_dec, ".5g"), ""]
     (OUT / "report.md").write_text("\n".join(L), encoding="utf-8")
 
 

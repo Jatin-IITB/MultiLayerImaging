@@ -14,10 +14,12 @@ SCHEMA = ["timestamp", "git_hash", "track", "model_id", "sim_set", "classes", "m
 
 
 def git_hash(root: str | Path = ".") -> str:
-    """Short HEAD hash; '-dirty' suffix if tracked files are modified."""
+    """Short HEAD hash; '-dirty' suffix if tracked code/config differs from HEAD
+    (outputs under results/ are ignored: they change on every run)."""
     h = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=root,
                        capture_output=True, text=True, check=True).stdout.strip()
-    dirty = subprocess.run(["git", "status", "--porcelain", "-uno"], cwd=root,
+    dirty = subprocess.run(["git", "status", "--porcelain", "-uno", "--", ".",
+                            ":(exclude)results"], cwd=root,
                            capture_output=True, text=True).stdout.strip()
     return h + ("-dirty" if dirty else "")
 
