@@ -1,0 +1,74 @@
+code 7ca77f1; 4 sims; 83 scalar metrics; 500 realisations
+  noise profile ideal done
+  noise profile good done
+  noise profile typical done
+  noise profile noisy done
+  noise profile very_noisy done
+  noise profile typical_jitter done
+# Prompt 02 - metric separability (track A, code 7ca77f1, sim_set hfss-v1-masked)
+
+J_meas = min pairwise Fisher ratio from noisy realisations (ranking key). J_eff adds the port-to-port asymmetry as extra variance. gap/port = class gap / port-to-port std. gap/mesh = pending (mesh-repeat not yet available). shift_move = largest change under ±2/5/10 MHz resonance shifts / smallest class gap. band_gap_retention = worst (gap after ±10 % band change) / (original gap); < 0 means the class order flips. freq_robust (brief's literal criterion) = shift AND band value changes < 0.25 × smallest gap. AD-vs-AD pairs unverified against mesh noise.
+
+Glitch masking ON: 26 in-band (f, pair) points masked in 7 runs (results/qc/masked_points.csv).
+
+## Ranking - scheme `binary` (binary:Normal|AD(Mild+Moderate+Severe)), profile `typical`
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | M5.C3[k3] | 775 | Normal|AD | 17.9 | 6.05 | 2.03e-96 | 0.0337 | 0.944 | True |
+| 2 | M5.C3 | 548 | Normal|AD | 13 | 5.15 | 9.3e-75 | 0.00901 | 1.11 | False |
+| 3 | M5.C3_dBavg[k3] | 472 | Normal|AD | 12.1 | 4.98 | 2.92e-71 | 0.0593 | 0.912 | True |
+| 4 | M6.N[3.55] | 55.3 | Normal|AD | 1.31 | 1.64 | 5.18e-09 | 1.68 | 0.96 | False |
+| 5 | M6.A[3.55] | 53.9 | Normal|AD | 1.33 | 1.65 | 6.99e-09 | 1.67 | 0.96 | False |
+| 6 | M0.old_score | 45.3 | Normal|AD | 16.9 | 7.33 | 7.1e-07 | 0.215 | 0.76 | False |
+| 7 | M6.N[3.50] | 39.8 | Normal|AD | 3.53 | 2.78 | 9.27e-07 | 0.424 | 0.965 | False |
+| 8 | M6.A[3.50] | 39.3 | Normal|AD | 3.54 | 2.79 | 1.04e-06 | 0.426 | 0.965 | False |
+| 9 | M6.N[3.45] | 31.6 | Normal|AD | 7.06 | 4.26 | 6.56e-07 | 0.297 | 0.948 | False |
+| 10 | M6.A[3.45] | 31.3 | Normal|AD | 7.06 | 4.27 | 7.11e-07 | 0.295 | 0.948 | False |
+| 11 | M6.A[3.25] | 31.2 | Normal|AD | 12.5 | 6.45 | 3.93e-05 | 1.05 | 0.975 | False |
+| 12 | M6.N[3.25] | 31.2 | Normal|AD | 12.5 | 6.45 | 3.96e-05 | 1.05 | 0.975 | False |
+| 13 | M8.lam3^2[k3] | 20.3 | Normal|AD | 8.43 | 5.37 | 1.04e-05 | 0.363 | 0.907 | False |
+| 14 | M7.D1 | 19.4 | Normal|AD | 1.87 | 2.03 | 4.54e-06 | 4.95 | 1.09 | False |
+| 15 | M8.lam2^2[k3] | 18.5 | Normal|AD | 7.68 | 5.12 | 2.38e-05 | 0.435 | 0.897 | False |
+| 35 | M2.R | 12.4 | Normal|AD | 4.17 | 3.54 | 0.00614 | 0.441 | 0.357 | False |
+| 77 | M1.Sii_dBavg | 0.273 | Normal|AD | 0.0166 | 0.188 | 0.347 | 3.53 | 1.54 | False |
+
+Top 10 by J_eff (port asymmetry included), scheme `binary`:
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | M5.C3[k3] | 775 | Normal|AD | 17.9 | 6.05 | 2.03e-96 | 0.0337 | 0.944 | True |
+| 6 | M0.old_score | 45.3 | Normal|AD | 16.9 | 7.33 | 7.1e-07 | 0.215 | 0.76 | False |
+| 2 | M5.C3 | 548 | Normal|AD | 13 | 5.15 | 9.3e-75 | 0.00901 | 1.11 | False |
+| 11 | M6.A[3.25] | 31.2 | Normal|AD | 12.5 | 6.45 | 3.93e-05 | 1.05 | 0.975 | False |
+| 12 | M6.N[3.25] | 31.2 | Normal|AD | 12.5 | 6.45 | 3.96e-05 | 1.05 | 0.975 | False |
+| 3 | M5.C3_dBavg[k3] | 472 | Normal|AD | 12.1 | 4.98 | 2.92e-71 | 0.0593 | 0.912 | True |
+| 23 | M6.A[3.20] | 15.5 | Normal|AD | 11.5 | 9.5 | 0.00253 | 0.744 | 0.996 | False |
+| 24 | M6.N[3.20] | 15.5 | Normal|AD | 11.5 | 9.5 | 0.00253 | 0.744 | 0.996 | False |
+| 30 | M6.spread_A | 12.8 | Normal|AD | 10.5 | 10.9 | 0.00561 | 0.0579 | 0.617 | False |
+| 31 | M6.spread_N | 12.8 | Normal|AD | 10.5 | 10.9 | 0.00563 | 0.0579 | 0.617 | False |
+
+## Ranking - scheme `three_merged` (three_merged:Normal|Mild+Moderate(Mild+Moderate)|Severe), profile `typical`
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | M7.D3 | 175 | Mild+Moderate|Severe | 2.89 | 2.42 | 3.04e-23 | 2.36 | 1.1 | False |
+| 2 | M7.D3[k3] | 165 | Mild+Moderate|Severe | 4.22 | 2.94 | 6.69e-22 | 2.33 | 0.882 | False |
+| 3 | M7.D2 | 154 | Mild+Moderate|Severe | 2.13 | 2.08 | 3.09e-20 | 1.36 | 1.05 | False |
+| 4 | M8.lam0^2[k3] | 146 | Mild+Moderate|Severe | 2.31 | 2.16 | 2.71e-18 | 1.06 | 0.854 | False |
+| 5 | M8.lam1^2[k3] | 133 | Mild+Moderate|Severe | 2.22 | 2.12 | 4.54e-17 | 0.979 | 0.859 | False |
+| 6 | M2.R[k3] | 126 | Mild+Moderate|Severe | 2.08 | 2.06 | 2.95e-16 | 0.934 | 0.855 | False |
+| 7 | M4.N[k3] | 125 | Mild+Moderate|Severe | 2.07 | 2.05 | 3.51e-16 | 0.935 | 0.853 | False |
+| 8 | M8.lam3^2[k3] | 120 | Mild+Moderate|Severe | 1.89 | 1.96 | 1.12e-15 | 0.785 | 0.852 | False |
+| 9 | M8.lam2^2[k3] | 109 | Mild+Moderate|Severe | 1.88 | 1.95 | 1.56e-14 | 0.898 | 0.847 | False |
+| 10 | M6.A[3.40] | 95.1 | Mild+Moderate|Severe | 4.04 | 2.91 | 1.37e-12 | 0.36 | 0.961 | False |
+| 11 | M6.N[3.40] | 95.1 | Mild+Moderate|Severe | 4.02 | 2.9 | 1.39e-12 | 0.359 | 0.961 | False |
+| 12 | M6.N[3.65] | 43.2 | Normal|Mild+Moderate | 0.314 | 0.796 | 1.53e-06 | 3.35 | 0.908 | False |
+| 13 | M6.A[3.65] | 41.7 | Normal|Mild+Moderate | 0.312 | 0.793 | 2.18e-06 | 3.37 | 0.907 | False |
+| 14 | M5.C[k3] | 27.1 | Normal|Mild+Moderate | 0.317 | 0.8 | 1.98e-05 | 1.88 | 0.655 | False |
+| 15 | M6.A[3.45] | 26.4 | Mild+Moderate|Severe | 0.807 | 1.29 | 0.00012 | 0.843 | 0.915 | False |
+| 43 | M0.old_score | 1.18 | Mild+Moderate|Severe | 0.42 | 1.14 | 0.22 | 1.42 | 0.645 | False |
+| 44 | M5.C3[k3] | 1.03 | Mild+Moderate|Severe | 0.0187 | 0.195 | 0.171 | 0.989 | 0.427 | False |
+| 54 | M2.R | 0.444 | Mild+Moderate|Severe | 0.0802 | 0.443 | 0.317 | 2.29 | 0.343 | False |
+| 73 | M1.Sii_dBavg | 0.0918 | Normal|Severe | 0.00234 | 0.0694 | 0.415 | 7.39 | 0.138 | False |
+
+Top 10 by J_eff (port asymmetry included), scheme `three_merged`:
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|-
