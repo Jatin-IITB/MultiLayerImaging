@@ -194,13 +194,36 @@ def main():
     pairs = pd.DataFrame(pair_rows)
     pairs.to_csv(OUT / "separability_pairs.csv", index=False)
 
-    report(cfg, ds, gh, sim_set, metrics, rank_tables, pairs, rob, schemes)
+    # ---- ordinality: stage steps in port-noise units (all four stages) ----------------
+    order = [c for c in ["Normal", "Mild", "Moderate", "Severe"] if c in ds.classes]
+    ordl = []
+    for m in metrics:
+        mu = np.array([np.mean([clean[i][m.name].mean() for i in range(n_sims)
+                                if ds.classes[i] == c]) for c in order])
+        pa = [clean[i][m.name] for i in range(n_sims)]
+        sd = np.sqrt(np.mean([np.var(p, ddof=1) for p in pa])) if pa[0].size > 1 else np.nan
+        d = np.diff(mu)
+        ordl.append({"metric": m.name, "monotone": bool(np.all(d > 0) or np.all(d < 0)),
+                     **{f"{a}->{b} / port": d[k] / sd for k, (a, b) in enumerate(zip(order, order[1:]))}})
+    ordinality = pd.DataFrame(ordl)
+    ordinality.to_csv(OUT / "ordinality.csv", index=False)
+
+    # ---- M0 decomposition: the same score with all couplings zeroed -------------------
+    m0 = [mby["M0.old_score"]]
+    diag_only = np.zeros_like(S)
+    idn = np.arange(S.shape[-1])
+    diag_only[..., idn, idn] = S[..., idn, idn]
+    m0_full = [compute(m0, bands, f, S[s], ref)["M0.old_score"].mean() for s in range(n_sims)]
+    m0_refl = [compute(m0, bands, f, diag_only[s], ref)["M0.old_score"].mean() for s in range(n_sims)]
+    m0_dec = pd.DataFrame({"stage": ds.classes, "M0": m0_full, "M0_couplings_zeroed": m0_refl})
+
+    report(cfg, ds, gh, sim_set, metrics, rank_tables, pairs, rob, schemes, ordinality, m0_dec)
     figures(cfg, ds, f, S, clean, noisy, spec_q, metrics, bands, rank_tables, rob, schemes)
     print((OUT / "report.md").read_text(encoding="utf-8")[:6000])
 
 
 # ======================================================================== report
-def report(cfg, ds, gh, sim_set, metrics, rank_tables, pairs, rob, schemes):
+def report(cfg, ds, gh, sim_set, metrics, rank_tables, pairs, rob, schemes, ordinality, m0_dec):
     prof = cfg["metrics"]["ranking_profile"]
     L = [f"# Prompt 02 - metric separability (track A, code {gh}, sim_set {sim_set})", "",
          "J_meas = min pairwise Fisher ratio from noisy realisations (ranking key). "
