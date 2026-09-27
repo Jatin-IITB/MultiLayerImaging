@@ -28,7 +28,7 @@ def append_row(path: str | Path, row: dict) -> None:
         raise KeyError(f"Not in metrics schema: {unknown}")
     row = {"timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"), **row}
     new = not path.exists()
-    with path.open("a", newline="") as fh:
+    with path.open("a", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=SCHEMA)
         if new:
             w.writeheader()
