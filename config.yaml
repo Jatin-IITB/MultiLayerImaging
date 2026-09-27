@@ -64,11 +64,14 @@ gate:
   sym_db: [1.25, 5.0]             # median std_t of 20log10|S(t+k,t)|, k = 0, 1
   detune_k_sigma: 5.0
   detune_min_window_hz: 5.0e+7    # never narrower than ±50 MHz (subject-to-subject resonance spread)
+  flat_rel: 0.1                   # gain-invariant mode: std_f|S_ii| / mean_f|S_ii| (clean ~0.4, open ~0.03)
+  floor_margin_db: 8.0            # INVALID "instrument floor too high" if estimated floor > tau - 8 dB
 
 augment:
   amp_sd: 0.015                   # per-antenna cable/connector amplitude variation
   phase_sd_deg: 10.0              # residual reference-plane phase per port
   jitter_mhz: 1.0                 # setup frequency jitter (on top of the profile's jitter)
+  gain_err_db: 0.0                # per-port amplitude calibration error, uniform ±X dB (gain profiles override)
 
 classify:
   n_train_draws: 60               # noisy draws per simulation used for training (all views)
@@ -86,6 +89,14 @@ classify:
   comb_max_features: 3
   comb_max_corr: 0.9
   n_jobs: 10
+  floor_subtract: true            # debias band-averaged transmission powers by the estimated floor
+  # Extra profiles "<base>+gain<X>dB": per-port amplitude error ±X dB on top of <base> noise.
+  gain_profiles:
+    base: typical
+    levels_db: [0.5, 1.0, 2.0]
+    feature_sets: [M0, M5.C3, "M5.C3[nested]", COMB, M9]
+    models: [LR, THR]
+  rule_features: [M5.C3, M5.R31]  # scored as complete decision rules per measurement
 
 results:
   metrics_csv: results/metrics.csv

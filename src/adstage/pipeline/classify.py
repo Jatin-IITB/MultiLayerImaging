@@ -35,6 +35,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC, LinearSVC
 
+from ..features.floor import CLIP, floor_power, r31
 from ..features.metrics import band_avg, compute
 
 FAMILIES = {
@@ -46,32 +47,41 @@ FS_METHOD = {"M5.C3": "M5", "M5.C3[k3]": "M5", "M5.C3[nested]": "M5", "COMB": "C
 
 
 # ============================================================ feature extraction
-def extract(f, D, metrics, bands, subbands):
-    """D: (n, F, N, N) ring-order draws -> dict of per-view arrays (views on axis 1)."""
+def extract(f, D, metrics, bands, subbands, floor_subtract=True):
+    """D: (n, F, N, N) ring-order draws -> dict of per-view arrays (views on axis 1) plus
+    per-measurement values (floor estimate, R31).
+
+    With floor_subtract, every band-averaged transmission power (M5.C*, sub-band C3) is
+    debiased by the measurement's own floor estimate before any dB conversion. The raw
+    full-band C3 is kept as 'M5.C3_raw' for comparison."""
     per_ant = [m for m in metrics if m.level == "per_ant" and m.method_id != "M7"]
     scal = compute(per_ant, bands, f, D, None)                       # name -> (n, N)
     N = D.shape[-1]
     idx = np.arange(N)
+    pf = floor_power(D)                                              # (n,)
+    scal["M5.C3_raw"] = scal["M5.C3"].copy()
+    if floor_subtract:
+        n_paths = {"M5.C": N - 1, "M5.C1": 1, "M5.C2": 1, "M5.C3": 1}
+        for base, k in n_paths.items():
+            for name in (base, base + "[k3]"):
+                if name in scal:
+                    scal[name] = np.maximum(scal[name] - k * pf[:, None], CLIP)
     cols = np.stack([D[..., (idx + k) % N, idx] for k in range(N)], -1)   # (n, F, N_view, K)
     cols = np.moveaxis(cols, 1, -1)                                  # (n, N_view, K, F)
     k3 = N // 2
     p3 = np.abs(cols[:, :, k3, :]) ** 2                              # (n, N, F)
     c3sb = np.stack([band_avg(f, p3, b) for b in subbands], -1)      # (n, N, n_sb)
+    if floor_subtract:
+        c3sb = np.maximum(c3sb - pf[:, None, None], CLIP)
     A = 1 - np.abs(cols[:, :, 0, :]) ** 2
     m6 = np.stack([band_avg(f, A, b) for b in subbands], -1)
-    return {"scal": scal, "c3sb": c3sb, "m6sb": m6, "cols": cols.astype(np.complex64)}
+    band = (float(f[0]), float(f[-1]))
+    meas = {"floor": pf, "M5.R31": r31(f, D, pf if floor_subtract else 0 * pf, band)}
+    return {"scal": scal, "c3sb": c3sb, "m6sb": m6, "cols": cols.astype(np.complex64),
+            "meas": meas}
 
 
 # ============================================================ fold-local features
-def _rows(feats, blocks, split):
-    """Concatenate per-view rows for [(sim, views)] -> (list of (sim, view) per row)."""
-    out = []
-    for s, views in blocks:
-        n = feats[s][split]["c3sb"].shape[0]
-        out += [(s, t, r) for t in views for r in range(n)]
-    return out
-
-
 def _take(feats, blocks, split, getter):
     parts = []
     for s, views in blocks:

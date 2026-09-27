@@ -17,14 +17,30 @@ symmetry     (ring only) median over f of std_t 20log10|S(t+k,t)| > sym_db[k] fo
              one antenna behaving unlike the others (placement / contact error).
 detune       ring-mean accepted-power centroid outside μ_Normal ± max(k·σ_Normal, w_min),
              μ and σ learned from Normal training data (fit_detune).
+Modes
+-----
+full            all checks above (assumes a calibrated instrument).
+gain_invariant  only checks that per-port gain errors (S_ij -> g_i g_j S_ij) cannot trip, for
+                calibration-free features (M5.R31): open/short by RELATIVE flatness
+                std_f|S_ii| / mean_f|S_ii| < flat_rel (gain-free), reciprocity (g_i g_j is
+                symmetric), floor, and detune by the ring-median NOTCH frequency
+                (argmin_f |S_ii|, unchanged by a frequency-independent gain) instead of
+                the accepted-power centroid. Absolute reflection level, passivity and
+                symmetry assume calibrated magnitudes and are skipped.
+
+floor        instrument floor too high: the measurement's own floor estimate
+             (features.floor.floor_power, from reciprocal-pair differences) must be at least
+             floor_margin_db below the decision threshold τ of the transmission feature
+             (set_floor_limit(τ); τ comes from training data).
 """
 from __future__ import annotations
 
 import numpy as np
 
+from ..features.floor import floor_power
 from ..features.metrics import band_avg
 
-REASONS = ["open_short", "passivity", "reciprocity", "symmetry", "detune"]
+REASONS = ["open_short", "passivity", "reciprocity", "symmetry", "detune", "floor"]
 
 
 def _db(x):
@@ -32,16 +48,27 @@ def _db(x):
 
 
 class QualityGate:
-    def __init__(self, gcfg: dict, f: np.ndarray, subband_hz: float = 50e6):
+    def __init__(self, gcfg: dict, f: np.ndarray, subband_hz: float = 50e6, mode: str = "full"):
+        if mode not in ("full", "gain_invariant"):
+            raise ValueError(mode)
+        self.mode = mode
         self.c = {k: (float(v) if not isinstance(v, (list, dict)) else v) for k, v in gcfg.items()}
         self.f = f
         self.band = (float(f[0]), float(f[-1]))
         edges = np.arange(f[0], f[-1] - 1, subband_hz)
         self.subbands = [(lo, min(lo + subband_hz, f[-1])) for lo in edges]
         self.fc_mu = self.fc_sd = None
+        self.floor_limit_db = None
+
+    def set_floor_limit(self, tau_db: float) -> "QualityGate":
+        self.floor_limit_db = float(tau_db) - float(self.c.get("floor_margin_db", 8.0))
+        return self
 
     # ------------------------------------------------------------------ helpers
     def fc_ring(self, S: np.ndarray) -> np.ndarray:
+        if self.mode == "gain_invariant":                                 # notch frequency, gain-free
+            sii = np.abs(np.diagonal(S, axis1=-2, axis2=-1))              # (n, F, N)
+            return np.median(self.f[np.argmin(sii, axis=-2)], axis=-1)
         A = 1 - np.abs(np.diagonal(S, axis1=-2, axis2=-1)) ** 2          # (n, F, N)
         A = np.moveaxis(A, -2, -1)                                        # (n, N, F)
         fc = band_avg(self.f, A * self.f, self.band) / band_avg(self.f, A, self.band)
@@ -59,7 +86,10 @@ class QualityGate:
         n_ant = S.shape[-1]
         sii = np.abs(np.diagonal(S, axis1=-2, axis2=-1))                  # (n, F, N)
         R = band_avg(self.f, np.moveaxis(sii ** 2, -2, -1), self.band)    # (n, N)
-        bad_ant = (R > c["open_short_R"]) | (sii.std(-2) < c["flat_sd"])
+        if self.mode == "full":
+            bad_ant = (R > c["open_short_R"]) | (sii.std(-2) < c["flat_sd"])
+        else:
+            bad_ant = sii.std(-2) / np.maximum(sii.mean(-2), 1e-12) < c.get("flat_rel", 0.1)
         out = {"open_short": bad_ant.any(-1)}
 
         col = np.moveaxis((np.abs(S) ** 2).sum(-2), -2, -1)               # (n, N, F)
@@ -78,11 +108,18 @@ class QualityGate:
             sym |= np.median(x.std(-1), -1) > float(thr)
         out["symmetry"] = sym
 
+        if self.mode == "gain_invariant":
+            for r in ("passivity", "symmetry"):
+                out[r] = np.zeros(S.shape[0], bool)
         if self.fc_mu is None:
             out["detune"] = np.zeros(S.shape[0], bool)
         else:
             w = max(c["detune_k_sigma"] * self.fc_sd, c["detune_min_window_hz"])
             out["detune"] = np.abs(self.fc_ring(S) - self.fc_mu) > w
+        floor_db = 10 * np.log10(np.maximum(floor_power(S), 1e-30))
+        out["floor"] = (floor_db > self.floor_limit_db if self.floor_limit_db is not None
+                        else np.zeros(S.shape[0], bool))
         out["invalid"] = np.any([out[r] for r in REASONS], axis=0)
+        out["floor_db"] = floor_db
         out["bad_antenna"] = bad_ant
         return out

@@ -35,6 +35,7 @@ from adstage.pipeline import classify as C  # noqa: E402
 from adstage.pipeline.augment import draws  # noqa: E402
 from adstage.pipeline.cv import make_folds, validity_label  # noqa: E402
 from adstage.pipeline.quality import REASONS, QualityGate  # noqa: E402
+from adstage.pipeline import rule as RL  # noqa: E402
 from adstage.results import append_row, git_hash  # noqa: E402
 from adstage.robustness import _fault  # noqa: E402
 
@@ -46,12 +47,30 @@ HEADLINE_SETS = ("M0", "M5.C3", "M5.C3[k3]", "M5.C3[nested]")
 
 
 # ============================================================ per-profile worker
+def parse_profile(pname):
+    """'typical' -> ('typical', 0.0); 'typical+gain1.0dB' -> ('typical', 1.0)."""
+    if "+gain" in pname:
+        base, g = pname.split("+gain")
+        return base, float(g.replace("dB", ""))
+    return pname, 0.0
+
+
+def gain_profile_names(cfg):
+    gp = cfg["classify"].get("gain_profiles") or {}
+    return [f"{gp['base']}+gain{float(x):.1f}dB" for x in gp.get("levels_db", [])]
+
+
 def run_profile(pname, cfg, include_moderate, feature_sets, models):
     warnings.filterwarnings("ignore")
     np.seterr(all="ignore")
-    ccfg, acfg = cfg["classify"], cfg.get("augment", {})
-    pi = list(PROFILES).index(pname)
-    prof = PROFILES[pname]
+    ccfg, acfg = cfg["classify"], dict(cfg.get("augment", {}))
+    base, gain = parse_profile(pname)
+    pi = list(PROFILES).index(base) + (0 if gain == 0 else 100 + int(round(10 * gain)))
+    prof = PROFILES[base]
+    if gain:
+        acfg["gain_err_db"] = gain
+    floor_sub = bool(ccfg.get("floor_subtract", True))
+    hf = ccfg["headline_feature"]
     ds = load_dataset(cfg, ROOT)
     f = ds.f_hz
     S = to_ring_order(ds.S, ds.port_to_ant)
@@ -61,6 +80,7 @@ def run_profile(pname, cfg, include_moderate, feature_sets, models):
     subbands = [bands[b] for b in bands if b.startswith("sb")]
     ref_sims = [s for s in range(n_sims) if ds.classes[s] == cfg["classes"]["reference"]]
     gate = QualityGate(cfg["gate"], f)
+    gate_gi = QualityGate(cfg["gate"], f, mode="gain_invariant")
 
     # ---- draws and features (train and test draws use different seeds) ----
     feats, gate_inv, gate_train = {}, {}, []
@@ -70,14 +90,28 @@ def run_profile(pname, cfg, include_moderate, feature_sets, models):
             rng = np.random.default_rng([cfg["seed"], 3, pi, s, off])
             n = int(ccfg[f"n_{split}_draws"])
             D = draws(f, S[s], prof, n, rng, acfg)
-            feats[s][split] = C.extract(f, D, metrics, bands, subbands)
+            feats[s][split] = C.extract(f, D, metrics, bands, subbands, floor_sub)
             if split == "train" and s in ref_sims:
                 gate_train.append(D)
             if split == "test":
                 feats[s]["test_D"] = D
     gate.fit_detune(np.concatenate(gate_train))
+    gate_gi.fit_detune(np.concatenate(gate_train))
+    # floor limit = τ(training, headline feature, Normal vs rest) - floor_margin_db
+    xg = np.concatenate([10 * np.log10(feats[s]["train"]["scal"][hf].ravel()) for s in range(n_sims)])
+    yg = np.concatenate([np.full(feats[s]["train"]["scal"][hf].size, int(s not in ref_sims))
+                         for s in range(n_sims)])
+    tau_gate = float(C.Threshold1D().fit(xg[:, None], yg).tau_) if len(np.unique(yg)) == 2 else None
+    if tau_gate is not None:
+        gate.set_floor_limit(tau_gate)
+        gate_gi.set_floor_limit(tau_gate)
+    floor_db, gate_inv_gi = {}, {}
     for s in range(n_sims):
-        gate_inv[s] = gate.check(feats[s].pop("test_D"))["invalid"]
+        D = feats[s].pop("test_D")
+        g = gate.check(D)
+        gate_inv[s] = g["invalid"]
+        gate_inv_gi[s] = gate_gi.check(D)["invalid"]
+        floor_db[s] = g["floor_db"]
 
     # ---- gate evaluation on prompt-02 perturbations ----
     gate_rows = []
@@ -92,15 +126,18 @@ def run_profile(pname, cfg, include_moderate, feature_sets, models):
     cases["open_all"] = lambda X, r: _fault(X, "open", r)
     cases["short_all"] = lambda X, r: _fault(X, "short", r)
     for cname, fn in cases.items():
-        res = []
+        res = {"full": [], "gain_invariant": []}
         for s in range(n_sims):
             rng = np.random.default_rng([cfg["seed"], 4, pi, s])
-            res.append(gate.check(draws(f, fn(S[s], rng), prof, 40, rng, acfg)))
-        row = {"profile": pname, "case": cname,
-               "invalid_rate": float(np.mean(np.concatenate([r["invalid"] for r in res])))}
-        for reason in REASONS:
-            row[reason] = float(np.mean(np.concatenate([r[reason] for r in res])))
-        gate_rows.append(row)
+            X = draws(f, fn(S[s], rng), prof, 40, rng, acfg)
+            res["full"].append(gate.check(X))
+            res["gain_invariant"].append(gate_gi.check(X))
+        for mode, rr in res.items():
+            row = {"profile": pname, "case": cname, "gate_mode": mode,
+                   "invalid_rate": float(np.mean(np.concatenate([r["invalid"] for r in rr])))}
+            for reason in REASONS:
+                row[reason] = float(np.mean(np.concatenate([r[reason] for r in rr])))
+            gate_rows.append(row)
 
     # ---- classification ----
     stages = ds.classes
@@ -166,14 +203,88 @@ def run_profile(pname, cfg, include_moderate, feature_sets, models):
                                        "taus": [r.get("tau") for r in recs], **cat,
                                        "stage": np.array(stages)[cat["sim"]]})
 
-    # ---- headline feature values (all draws, all views) for thresholds ----
+    # ---- complete decision rule, scored per measurement in the same folds (binary) ----
+    rule_rows = (score_rules(cfg, ds, feats, gate_inv, schemes, N, pname, "full")
+                 + score_rules(cfg, ds, feats, gate_inv_gi, schemes, N, pname, "gain_invariant"))
+
+    # ---- values for thresholds: views (dB of linear) and measurement-level R31 ----
+    def vals(s, sp, fs):
+        return feats[s][sp]["meas"][fs] if fs in feats[s][sp]["meas"] else feats[s][sp]["scal"][fs].ravel()
+
     hv = {}
-    for fs in (cfg["classify"]["headline_feature"], cfg["classify"]["secondary_feature"]):
-        hv[fs] = {s: np.concatenate([feats[s][sp]["scal"][fs].ravel() for sp in ("train", "test")])
-                  for s in range(n_sims)}
-    sim_gap = {fs: [float(np.mean(feats[s]["train"]["scal"][fs])) for s in range(n_sims)] for fs in hv}
+    for fs in (hf, ccfg["secondary_feature"], "M5.C3_raw", "M5.R31"):
+        hv[fs] = {s: np.concatenate([vals(s, sp, fs) for sp in ("train", "test")]) for s in range(n_sims)}
+    sim_gap = {fs: [float(np.mean(vals(s, "train", fs))) for s in range(n_sims)] for fs in hv}
+    fl = {"profile": pname, "floor_db_median": float(np.median(np.concatenate(list(floor_db.values())))),
+          "floor_limit_db": gate.floor_limit_db, "tau_gate_db": tau_gate}
     return {"profile": pname, "rows": result_rows, "gate": gate_rows, "head_preds": head_preds,
-            "hv": hv, "stages": stages, "sim_means": sim_gap}
+            "hv": hv, "stages": stages, "sim_means": sim_gap, "rules": rule_rows, "floor": fl}
+
+
+def score_rules(cfg, ds, feats, gate_inv, schemes, N, pname, gate_mode="full"):
+    """Gate -> τ ± m -> (vote) -> Normal / AD / UNCERTAIN, per complete test measurement.
+    τ, m are refit in every fold on training data. Vote rule: training = the fold's training
+    views; tested on all 6 views of each held-out measurement (test draws). Measurement-level
+    rules (ring-mean C3, R31): training = training draws of the fold's training simulations."""
+    ccfg = cfg["classify"]
+    hs, hf = ccfg["headline_scheme"], ccfg["headline_feature"]
+    if hs not in schemes:
+        return []
+    gst = scheme_groups(cfg, hs)
+    n_sims = len(ds.classes)
+    groups = {g: [s for s in range(n_sims) if ds.classes[s] in st] for g, st in gst.items()}
+    lab = {s: int(i > 0) for i, (g, v) in enumerate(groups.items()) for s in v}
+    cv_name, folds = make_folds(groups, N)
+    p_star = float(ccfg["p_star"])
+    pairs = mesh_pairs(ds.files, ds.manifest)
+    db = lambda x: 10 * np.log10(x)                                    # noqa: E731
+    view_db = {s: {sp: db(feats[s][sp]["scal"][hf]) for sp in ("train", "test")} for s in range(n_sims)}
+    meas = {"M5.C3 ring-mean": {s: {sp: view_db[s][sp].mean(1) for sp in ("train", "test")} for s in range(n_sims)},
+            "M5.R31": {s: {sp: db(feats[s][sp]["meas"]["M5.R31"]) for sp in ("train", "test")} for s in range(n_sims)}}
+    msd = {"M5.C3 vote(6 views)": mesh_sd(np.array([view_db[s]["train"].mean() for s in range(n_sims)]), pairs)}
+    for k, v in meas.items():
+        msd[k] = mesh_sd(np.array([v[s]["train"].mean() for s in range(n_sims)]), pairs)
+    acc = {k: {"final": [], "y": [], "inv": [], "tau": [], "m": []} for k in msd}
+    done = set()
+    for fold in folds:
+        tr_sims = sorted({s for s, _ in fold.train})
+        te_sims = sorted({s for s, _ in fold.test})
+        # vote rule on views
+        x = np.concatenate([view_db[s]["train"][:, v].ravel() for s, v in fold.train])
+        y = np.concatenate([np.full(view_db[s]["train"][:, v].size, lab[s]) for s, v in fold.train])
+        sm = np.concatenate([np.full(view_db[s]["train"][:, v].size, s) for s, v in fold.train])
+        r = RL.fit_rule(x, y, sm, p_star, msd["M5.C3 vote(6 views)"])
+        a = acc["M5.C3 vote(6 views)"]
+        for s in te_sims:
+            a["final"].append(RL.vote(RL.classify_values(view_db[s]["test"], r)))
+            a["y"].append(np.full(view_db[s]["test"].shape[0], lab[s]))
+            a["inv"].append(gate_inv[s])
+        a["tau"].append(r["tau"])
+        a["m"].append(r["margin"])
+        key = (tuple(tr_sims), tuple(te_sims))
+        if key in done:
+            continue
+        done.add(key)
+        for name, mv in meas.items():
+            x = np.concatenate([mv[s]["train"] for s in tr_sims])
+            y = np.concatenate([np.full(mv[s]["train"].size, lab[s]) for s in tr_sims])
+            sm = np.concatenate([np.full(mv[s]["train"].size, s) for s in tr_sims])
+            r = RL.fit_rule(x, y, sm, p_star, msd[name])
+            a = acc[name]
+            for s in te_sims:
+                a["final"].append(RL.classify_values(mv[s]["test"], r))
+                a["y"].append(np.full(mv[s]["test"].size, lab[s]))
+                a["inv"].append(gate_inv[s])
+            a["tau"].append(r["tau"])
+            a["m"].append(r["margin"])
+    out = []
+    for name, a in acc.items():
+        sc = RL.score(np.concatenate(a["final"]), np.concatenate(a["y"]), np.concatenate(a["inv"]))
+        out.append({"profile": pname, "rule": name, "gate_mode": gate_mode,
+                    "cv_scheme": cv_name + " (per measurement)",
+                    "tau_dB_mean": float(np.mean(a["tau"])), "tau_dB_min": float(np.min(a["tau"])),
+                    "tau_dB_max": float(np.max(a["tau"])), "margin_dB_mean": float(np.mean(a["m"])), **sc})
+    return out
 
 
 def _dim(fs, infos):
@@ -208,6 +319,10 @@ def _flatten_ring(f, S):
 def evaluate(cat, K, p_star):
     from sklearn.metrics import balanced_accuracy_score, confusion_matrix, f1_score
     v = ~cat["invalid"]
+    if not v.any():                                  # everything INVALID (e.g. floor too high)
+        return {"n_test": 0, "gate_invalid_rate": 1.0, "accuracy": np.nan, "balanced_accuracy": np.nan,
+                "macro_f1": np.nan, "reject_rate": np.nan, "bal_acc_on_accepted": np.nan,
+                "cm": np.zeros((K, K), int).tolist()}
     y, p, pr = cat["y"][v], cat["pred"][v], cat["proba"][v]
     cm = confusion_matrix(y, p, labels=range(K))
     acc = float((y == p).mean())
@@ -291,7 +406,7 @@ def thresholds(hv, groups, p_star, prior_normal, n_boot, seed, mesh_sd_db=np.nan
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     ap = argparse.ArgumentParser()
-    ap.add_argument("--profiles", default=",".join(PROFILES))
+    ap.add_argument("--profiles", default=None, help="default: all noise profiles + gain profiles")
     ap.add_argument("--feature-sets", default=None)
     ap.add_argument("--models", default=None)
     ap.add_argument("--include-moderate", action="store_true")
@@ -303,7 +418,13 @@ def main():
     ccfg = cfg["classify"]
     fsets = args.feature_sets.split(",") if args.feature_sets else list(ccfg["feature_sets"])
     models = args.models.split(",") if args.models else list(ccfg["models"])
-    profiles = args.profiles.split(",")
+    profiles = args.profiles.split(",") if args.profiles else list(PROFILES) + gain_profile_names(cfg)
+    gp = ccfg.get("gain_profiles") or {}
+
+    def plan(p):
+        if "+gain" in p and not args.feature_sets:
+            return list(gp.get("feature_sets", fsets)), list(gp.get("models", models))
+        return fsets, models
     OUT.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
     gh = git_hash(ROOT)
@@ -314,7 +435,7 @@ def main():
     print(f"code {gh}; sims {ds.classes}; schemes {schemes}; skipped {skipped}; noise ref {noise_ref}")
 
     res = Parallel(n_jobs=min(args.n_jobs or int(ccfg["n_jobs"]), len(profiles)), verbose=5)(
-        delayed(run_profile)(p, cfg, args.include_moderate, fsets, models) for p in profiles)
+        delayed(run_profile)(p, cfg, args.include_moderate, *plan(p)) for p in profiles)
 
     rows = pd.DataFrame([r for x in res for r in x["rows"]])
     gate = pd.DataFrame([r for x in res for r in x["gate"]])
@@ -329,7 +450,7 @@ def main():
         gst = scheme_groups(cfg, hs)
         groups = {g: [s for s in range(len(ds.classes)) if ds.classes[s] in st] for g, st in gst.items()}
         for x in res:
-            for fs in (ccfg["headline_feature"], ccfg["secondary_feature"]):
+            for fs in (ccfg["headline_feature"], ccfg["secondary_feature"], "M5.C3_raw", "M5.R31"):
                 vals_db = 10 * np.log10(np.array(x["sim_means"][fs]))
                 t = thresholds(x["hv"][fs], groups, float(ccfg["p_star"]),
                                float(ccfg["screening_prior_normal"]), int(ccfg["n_boot"]),
@@ -338,6 +459,10 @@ def main():
                 thr_rows.append(t)
     thr = pd.DataFrame(thr_rows)
     thr.to_csv(OUT / "thresholds.csv", index=False)
+    rules = pd.DataFrame([r for x in res for r in x["rules"]])
+    rules.to_csv(OUT / "rules_per_measurement.csv", index=False)
+    floor = pd.DataFrame([x["floor"] for x in res])
+    floor.to_csv(OUT / "floor.csv", index=False)
 
     # ---- CV sensitivity / specificity of THR on the headline feature ----
     hp = [h for x in res for h in x["head_preds"]]
@@ -377,9 +502,28 @@ def main():
                 "accuracy": r.accuracy, "balanced_accuracy": r.balanced_accuracy, "macro_f1": r.macro_f1,
                 "reject_rate": r.reject_rate, "accuracy_on_accepted": r.bal_acc_on_accepted,
                 "notes": "; ".join(notes)})
-    report(cfg, gh, ds, rows, gate, thr, sens, hp, schemes, skipped, noise_ref)
-    decision_rule(cfg, gh, thr, noise_ref)
-    figures(cfg, ds, rows, thr, hp, res, schemes)
+    if not args.no_csv and len(rules):
+        hs = ccfg["headline_scheme"]
+        for r in rules.itertuples(index=False):
+            append_row(ROOT / cfg["results"]["metrics_csv"], {
+                "git_hash": gh, "track": cfg["track"], "model_id": cfg["model_id"],
+                "sim_set": cfg["metrics"]["sim_set"], "classes": scheme_label(cfg, hs),
+                "method_id": "M5", "feature_desc": f"{r.rule} (floor-subtracted, complete measurement, gate={r.gate_mode})",
+                "feature_dim": 1, "classifier": "RULE:gate+tau+margin" + ("+vote6" if "vote" in r.rule else ""),
+                "noise_profile": r.profile, "cv_scheme": r.cv_scheme,
+                "n_sims_per_class": "", "n_test": r.n,
+                "accuracy": np.nan, "balanced_accuracy": r.balanced_accuracy, "macro_f1": np.nan,
+                "reject_rate": r.uncertain_rate, "accuracy_on_accepted": r.balanced_accuracy_decided,
+                "notes": (f"noise-robustness-only; per measurement; sens={r.sensitivity:.3f} "
+                          f"spec={r.specificity:.3f} (UNCERTAIN counted as not correct); "
+                          f"sens_decided={r.sensitivity_decided:.3f} spec_decided={r.specificity_decided:.3f}; "
+                          f"INVALID={r.invalid_rate:.3f}; tau={r.tau_dB_mean:.2f}dB "
+                          f"[{r.tau_dB_min:.2f},{r.tau_dB_max:.2f}] m={r.margin_dB_mean:.2f}dB; "
+                          "Normal: single simulation, test = new noise draws")})
+    report(cfg, gh, ds, rows, gate, thr, sens, hp, schemes, skipped, noise_ref, rules, floor)
+    decision_rule(cfg, gh, thr, noise_ref, rules, floor)
+    figures(cfg, ds, rows, thr, hp, [x for x in res if "+gain" not in x["profile"]], schemes)
+    fig_gain(cfg, rules, thr)
     print((OUT / "report.md").read_text(encoding="utf-8"))
 
 
@@ -394,82 +538,174 @@ def md(df, floatfmt=".3g"):
     return "\n".join([head, sep] + ["| " + " | ".join(cell(v) for v in r) + " |" for r in df.itertuples(index=False)])
 
 
-def report(cfg, gh, ds, rows, gate, thr, sens, hp, schemes, skipped, noise_ref):
+def report(cfg, gh, ds, rows, gate, thr, sens, hp, schemes, skipped, noise_ref, rules, floor):
     ccfg = cfg["classify"]
+    std = [p for p in PROFILES]
     L = [f"# Prompt 03 - gate, classifiers, decision boundaries (track A, code {gh})", "",
          f"Simulations: {dict(zip(ds.files, ds.classes))}. Schemes run: {schemes}. Skipped: {skipped}. "
          f"Noise reference: {noise_ref}{' (between-mesh not measured: AD-vs-AD results unverified against mesh noise)' if noise_ref == 'port' else ''}.",
          "Validity: " + ", ".join(sorted(rows.validity.unique())) + ". Samples are antenna views of "
-         "one simulation per stage; views are not independent.", ""]
-    g = gate.pivot(index="case", columns="profile", values="invalid_rate")
+         "one simulation per stage; views are not independent. Band-averaged transmission powers are "
+         f"floor-subtracted: {ccfg.get('floor_subtract', True)}.", ""]
+    L += ["## Instrument floor", "Estimated from reciprocal-pair differences on the weakest paths "
+          "(median over clean test measurements); the gate limit is τ(training) − "
+          f"{cfg['gate'].get('floor_margin_db', 8)} dB.", md(floor, ".2f"), ""]
+    gfull = gate[gate.gate_mode == "full"]
+    g = gfull.pivot(index="case", columns="profile", values="invalid_rate")
     order = ["clean", "shift-2MHz", "shift+2MHz", "shift-5MHz", "shift+5MHz", "shift-10MHz", "shift+10MHz",
              "shift-20MHz", "shift+20MHz", "flatten_notch", "detune-200MHz", "detune+200MHz",
              "one_open", "one_short", "open_all", "short_all"]
-    g = g.reindex([o for o in order if o in g.index])[[p for p in PROFILES if p in g.columns]]
-    L += ["## Quality gate: INVALID rate (expected ~0 for clean/shift/flatten, ~1 for detune/open/short)",
+    g = g.reindex([o for o in order if o in g.index])[[p for p in list(PROFILES) + sorted(set(g.columns) - set(PROFILES)) if p in g.columns]]
+    L += ["## Quality gate: INVALID rate (expected ~0 for clean/shift/flatten, ~1 for detune/open/short; "
+          "'floor' rejects whole profiles whose floor is within 8 dB of τ)",
           md(g.reset_index(), ".3f"), "",
-          "Reasons for the single-antenna faults (typical):",
-          md(gate[(gate.profile == "typical") & gate.case.isin(["one_open", "one_short", "detune+200MHz"])]
-             [["case", "invalid_rate"] + REASONS], ".3f"), ""]
+          "Reasons (typical, and clean draws of every profile):",
+          md(gfull[((gfull.profile == "typical") & gfull.case.isin(["one_open", "one_short", "detune+200MHz"]))
+                   | (gfull.case == "clean")][["profile", "case", "invalid_rate"] + REASONS], ".3f"), ""]
+    gi = gate[gate.gate_mode == "gain_invariant"].pivot(index="case", columns="profile", values="invalid_rate")
+    gi = gi.reindex([o for o in order if o in gi.index])[[c for c in g.columns if c in gi.columns]]
+    L += ["## Gain-invariant gate (for calibration-free R31): INVALID rate", md(gi.reset_index(), ".3f"), ""]
+    if len(rules):
+        rt = rules[["rule", "gate_mode", "profile", "sensitivity", "specificity", "uncertain_rate", "invalid_rate",
+                    "sensitivity_decided", "specificity_decided", "tau_dB_mean", "tau_dB_min",
+                    "tau_dB_max", "margin_dB_mean"]]
+        L += ["## Complete decision rule scored per measurement (binary, same folds)",
+              "gate -> τ ± m (refit per fold) -> majority vote of 6 views (C3) or single value "
+              "(ring-mean C3, R31). sensitivity/specificity count UNCERTAIN as not correct; *_decided "
+              "are on non-UNCERTAIN measurements; rates are over valid (gate-passed) measurements. "
+              "Normal has one simulation, so its test measurements are new noise draws of it.",
+              md(rt.sort_values(["rule", "gate_mode", "profile"]), ".3f"), ""]
     for scheme in schemes:
         t = rows[(rows.scheme == scheme) & (rows.profile == "typical")].sort_values("balanced_accuracy", ascending=False)
+        if not len(t):
+            continue
         lab = " - UNVERIFIED AGAINST MESH NOISE" if t.ad_only_pairs.any() and noise_ref == "port" else ""
         L += [f"## `{scheme}` at `typical` (top 12 by balanced accuracy + M0){lab}",
               f"CV: {t.cv_scheme.iloc[0]} ({t.n_folds.iloc[0]} folds), {t.validity.iloc[0]}.",
               md(pd.concat([t.head(12), t[(t.feature_set == 'M0') & ~t.index.isin(t.head(12).index)]])
                  [["feature_set", "model", "balanced_accuracy", "accuracy", "macro_f1", "reject_rate",
                    "bal_acc_on_accepted", "gate_invalid_rate", "info"]]), ""]
+    gp = rows[rows.profile.str.contains(r"\+gain")]
+    if len(gp):
+        pv = gp[gp.scheme == ccfg["headline_scheme"]].pivot_table(
+            index=["feature_set", "model"], columns="profile", values="balanced_accuracy")
+        base = rows[(rows.profile == (ccfg.get("gain_profiles") or {}).get("base", "typical"))
+                    & (rows.scheme == ccfg["headline_scheme"])].set_index(["feature_set", "model"]).balanced_accuracy
+        pv.insert(0, "no gain error", base.reindex(pv.index))
+        L += ["## Per-port amplitude (gain) errors, binary, per view (balanced accuracy)", md(pv.reset_index(), ".3f"), ""]
     if len(thr):
-        L += ["## Binary thresholds (Normal | AD) on opposite-antenna power, dB",
+        L += ["## Binary thresholds (Normal | AD), dB, per profile",
               "τ = class-balanced (equal priors) error minimiser; τ_screen uses P(Normal) = "
               f"{ccfg['screening_prior_normal']}; CI = bootstrap over simulations (within class), views "
               f"and draws ({ccfg['n_boot']}×). Margin m = max(posterior margin at p* = {ccfg['p_star']}, "
-              "Φ⁻¹(p*)·σ_ref); σ_ref = within-simulation SD of one antenna view"
+              "Φ⁻¹(p*)·σ_ref); σ_ref = within-simulation SD of one view (one measurement for R31)"
               + (" + between-mesh SD" if noise_ref == "mesh" else " (between-mesh SD not yet measured)")
-              + ". Sensitivity/specificity here are on all draws (resubstitution); CV values below.",
+              + ". M5.C3_raw = without floor subtraction. Sensitivity/specificity here are resubstitution.",
               md(thr[["feature", "profile", "tau_dB", "tau_CI_lo", "tau_CI_hi", "tau_screen_dB",
-                      "margin_dB", "margin_post_dB", "sd_ref_dB", "mu_Normal_dB", "mu_AD_dB",
-                      "sensitivity", "specificity", "uncertain_fraction", "sens_on_accepted",
-                      "spec_on_accepted"]], ".4g"), "",
-              "### CV sensitivity / specificity of the fold-fitted threshold (THR)", md(sens, ".4g"), ""]
+                      "margin_dB", "sd_ref_dB", "mu_Normal_dB", "mu_AD_dB",
+                      "sensitivity", "specificity", "uncertain_fraction"]].sort_values(["feature", "profile"]), ".4g"), ""]
+        drift = []
+        for fs, t in thr.groupby("feature"):
+            t = t.set_index("profile").tau_dB
+            ok = [p for p in ("ideal", "good", "typical", "typical_jitter") if p in t.index]
+            drift.append({"feature": fs, "tau_typical": t.get("typical", np.nan),
+                          "drift_ideal..typical_jitter": t[ok].max() - t[ok].min() if ok else np.nan,
+                          "tau_noisy - tau_typical": t.get("noisy", np.nan) - t.get("typical", np.nan),
+                          "tau_very_noisy - tau_typical": t.get("very_noisy", np.nan) - t.get("typical", np.nan),
+                          "max |tau(gain) - tau_typical|": max([abs(v - t.get("typical", np.nan)) for p, v in t.items() if "+gain" in p] or [np.nan])})
+        L += ["### τ drift between profiles (dB)", md(pd.DataFrame(drift), ".3f"), "",
+              "### CV sensitivity / specificity of the fold-fitted threshold (THR, per view)", md(sens, ".4g"), ""]
     (OUT / "report.md").write_text("\n".join(L), encoding="utf-8")
 
 
-def decision_rule(cfg, gh, thr, noise_ref):
+def decision_rule(cfg, gh, thr, noise_ref, rules, floor):
     """Plain-words rule from the current thresholds (regenerated on every run)."""
     ccfg = cfg["classify"]
     hf = ccfg["headline_feature"]
-    L = [f"# Decision rule (binary headline, code {gh}) - noise-robustness only", ""]
+    L = [f"# Decision rule (binary Normal | AD, code {gh}) - noise-robustness only", ""]
     t = thr[(thr.feature == hf)] if len(thr) else thr
     if not len(t):
         L.append("Headline scheme not available with the current sims.csv.")
-    else:
-        ty = t[t.profile == "typical"].iloc[0] if (t.profile == "typical").any() else t.iloc[0]
-        g = cfg["gate"]
-        mesh_txt = ", between-mesh not yet measured" if noise_ref == "port" else ""
-        L += [
-            "Input: one full 6-port measurement. For each driven antenna t, x_t = band power-average "
-            "over the whole common band of |S(t+3, t)|^2 (opposite antenna), in dB.",
-            "",
-            f"1. **INVALID** if the quality gate fails: any antenna with <|S_ii|^2> > {g['open_short_R']} "
-            f"or std_f|S_ii| < {g['flat_sd']} (open / short / no contact); 50 MHz column power > "
-            f"1 + {g['passivity_tol']}; neighbour reciprocity error > {g['recip_rel_max']}; symmetry "
-            f"spread > {g['sym_db']} dB (k = 0, 1); accepted-power centroid outside the Normal window "
-            f"(at least ±{float(g['detune_min_window_hz']) / 1e6:.0f} MHz). Report the reason.",
-            f"2. Otherwise, per antenna view: **AD** if x_t < τ − m, **Normal** if x_t > τ + m, else "
-            f"**UNCERTAIN**; τ = {ty.tau_dB:.2f} dB (95 % CI {ty.tau_CI_lo:.2f} to {ty.tau_CI_hi:.2f}), "
-            f"m = {ty.margin_dB:.2f} dB at the `{ty.profile}` noise profile "
-            f"(σ_ref = {ty.sd_ref_dB:.2f} dB, noise reference = {noise_ref}{mesh_txt}).",
-            f"3. Screening variant (P(Normal) = {ccfg['screening_prior_normal']}): "
-            f"τ_screen = {ty.tau_screen_dB:.2f} dB.",
-            "4. Combine the six views by majority vote of the non-UNCERTAIN views; a tie or no "
-            "non-UNCERTAIN view gives UNCERTAIN.",
-            "",
-            "τ and m per noise profile:", "",
-            md(t[["profile", "tau_dB", "tau_CI_lo", "tau_CI_hi", "tau_screen_dB", "margin_dB",
-                  "sd_ref_dB", "uncertain_fraction"]], ".3f"), "",
-            "No thresholds are given for 3-class schemes: they are unverified against mesh noise."]
+        (OUT / "decision_rule.md").write_text("\n".join(L), encoding="utf-8")
+        return
+    ty = t[t.profile == "typical"].iloc[0] if (t.profile == "typical").any() else t.iloc[0]
+    r31 = thr[(thr.feature == "M5.R31") & (thr.profile == ty.profile)]
+    g = cfg["gate"]
+    mesh_txt = ", between-mesh not yet measured" if noise_ref == "port" else ""
+    fl = floor[floor.profile == ty.profile]
+    L += [
+        "Input: one complete 6-port measurement.",
+        "",
+        "0. **Floor.** Estimate the instrument floor P_f from reciprocal-pair differences on the "
+        "weakest paths (or from a dedicated terminated-port measurement). For each driven antenna t, "
+        "x_t = 10·log10(<|S(t+3,t)|²>_band − P_f), the floor-subtracted band power of the opposite path.",
+        f"1. **INVALID** (with the reason) if the gate fails:",
+        f"   - any antenna with <|S_ii|²> > {g['open_short_R']} or std_f|S_ii| < {g['flat_sd']} (open / short / no contact);",
+        f"   - 50 MHz column power > 1 + {g['passivity_tol']}; neighbour reciprocity error > {g['recip_rel_max']};",
+        f"   - symmetry spread > {g['sym_db']} dB (k = 0, 1); accepted-power centroid outside the Normal window (at least ±{float(g['detune_min_window_hz']) / 1e6:.0f} MHz);",
+        f"   - **instrument floor too high**: 10·log10 P_f > τ − {g.get('floor_margin_db', 8)} dB "
+        f"(= {fl.floor_limit_db.iloc[0]:.1f} dB here).",
+        f"2. Per view: **AD** if x_t < τ − m, **Normal** if x_t > τ + m, else **UNCERTAIN**; "
+        f"τ = {ty.tau_dB:.2f} dB (95 % CI {ty.tau_CI_lo:.2f} to {ty.tau_CI_hi:.2f}), m = {ty.margin_dB:.2f} dB "
+        f"(`{ty.profile}` profile; σ_ref = {ty.sd_ref_dB:.2f} dB, noise reference = {noise_ref}{mesh_txt}). "
+        f"Screening prior P(Normal) = {ccfg['screening_prior_normal']}: τ_screen = {ty.tau_screen_dB:.2f} dB.",
+        "3. Majority vote of the non-UNCERTAIN views; a tie or no decided view gives **UNCERTAIN**.",
+    ]
+    if len(r31):
+        r = r31.iloc[0]
+        L += ["",
+              "**Calibration-free alternative (M5.R31)**, recommended when per-port gains are not calibrated "
+              "to better than ±0.5 dB: R31 = 10·log10( GM_t(<|S(t+3,t)|²> − P_f) / GM_t(<|S(t+1,t)|²> − P_f) ), "
+              "one value per measurement (GM = geometric mean over the six antennas; per-port gains cancel). "
+              "Use it with the gain-invariant gate (relative |S_ii| flatness for open/short, reciprocity, floor). "
+              f"**AD** if R31 < τ − m, **Normal** if R31 > τ + m, else UNCERTAIN; τ = {r.tau_dB:.2f} dB "
+              f"(95 % CI {r.tau_CI_lo:.2f} to {r.tau_CI_hi:.2f}), m = {r.margin_dB:.2f} dB. Same gate."]
+    if len(rules):
+        rr = rules[rules.profile.isin(["typical", "noisy", "typical+gain0.5dB", "typical+gain1.0dB", "typical+gain2.0dB"])]
+        L += ["", "Performance of the complete rule per measurement (CV; gate = full or gain-invariant):", "",
+              md(rr[["rule", "gate_mode", "profile", "sensitivity", "specificity", "uncertain_rate", "invalid_rate"]]
+                 .sort_values(["rule", "gate_mode", "profile"]), ".3f")]
+    L += ["", "τ and m per profile:", "",
+          md(thr[thr.feature.isin([hf, "M5.R31"])][["feature", "profile", "tau_dB", "tau_CI_lo", "tau_CI_hi",
+                                                    "tau_screen_dB", "margin_dB", "sd_ref_dB"]]
+             .sort_values(["feature", "profile"]), ".3f"), "",
+          "No thresholds are given for 3-class schemes: they are unverified against mesh noise."]
     (OUT / "decision_rule.md").write_text("\n".join(L), encoding="utf-8")
+
+
+def fig_gain(cfg, rules, thr):
+    """Per-measurement rule performance vs per-port gain error: C3 (vote, ring-mean) vs R31."""
+    if not len(rules):
+        return
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    gp = cfg["classify"].get("gain_profiles") or {}
+    base = gp.get("base", "typical")
+    levels = [0.0] + [float(x) for x in gp.get("levels_db", [])]
+    names = [base] + gain_profile_names(cfg)
+    cols = {"M5.C3 vote(6 views)": "#2a78d6", "M5.C3 ring-mean": "#86b6ef", "M5.R31": "#eb6834"}
+    fig, ax = plt.subplots(1, 2, figsize=(9.5, 3.4))
+    for rule, col in cols.items():
+        mode = "gain_invariant" if rule == "M5.R31" else "full"
+        t = rules[(rules.rule == rule) & (rules.gate_mode == mode)].set_index("profile").reindex(names)
+        ax[0].plot(levels, t.balanced_accuracy, "-o", color=col, lw=1.8, ms=4, label=f"{rule} ({mode} gate)")
+        ax[1].plot(levels, 1 - (1 - t.invalid_rate) * (1 - t.uncertain_rate), "-o", color=col, lw=1.8, ms=4,
+                   label=f"{rule} ({mode} gate)")
+    ax[0].set_title("Balanced accuracy per measurement (UNCERTAIN = not correct)", loc="left", fontsize=9)
+    ax[1].set_title("No decision (INVALID or UNCERTAIN) per measurement", loc="left", fontsize=9)
+    for a in ax:
+        a.set_xlabel("per-port amplitude error, uniform ± (dB)")
+        a.grid(True, color="#e4e3de", lw=0.5)
+        a.spines[["top", "right"]].set_visible(False)
+    ax[0].set_ylim(0, 1.02)
+    ax[1].set_ylim(0, 1.02)
+    ax[0].legend(frameon=False, fontsize=7, loc="lower left")
+    fig.suptitle(f"Complete decision rule under per-port gain errors ({base} noise, binary, noise-robustness only)",
+                 x=0.01, ha="left", fontsize=9)
+    fig.tight_layout()
+    fig.savefig(FIG / "03_gain_errors.png", dpi=150)
+    plt.close(fig)
 
 
 # ============================================================ figures
@@ -492,6 +728,8 @@ def figures(cfg, ds, rows, thr, hp, res, schemes):
             t = rows[(rows.scheme == sc) & (rows.feature_set == fs) & (rows.model == m)].set_index("profile")
             if len(t):
                 a.plot(range(len(profs)), t.reindex(profs).balanced_accuracy, "-o", color=col, lw=1.8, ms=4, label=lab)
+        if not (rows.scheme == sc).any():
+            continue
         K = len(rows[rows.scheme == sc].classes.iloc[0])
         a.axhline(1 / K, color="#c3c2b7", lw=0.8, ls="--")
         unv = rows[rows.scheme == sc].ad_only_pairs.any()

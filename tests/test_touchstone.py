@@ -166,3 +166,25 @@ def test_ordinal_logit_orders_classes():
     m = OrdinalLogit().fit(x, y)
     assert m.coef_[0] > 0 and np.all(np.diff(m.thresholds_) > 0)
     assert (m.predict(x) == y).mean() > 0.85
+
+
+def test_r31_cancels_per_port_gains_and_floor_estimate():
+    from adstage.features.floor import floor_power, r31
+    rng = np.random.default_rng(3)
+    f = np.linspace(3.2e9, 4.2e9, 101)
+    n = 6
+    S = np.zeros((101, n, n), complex)
+    for t in range(n):
+        S[:, t, t] = 0.5
+        for k, a in ((1, 3e-3), (2, 1e-3), (3, 2e-3)):
+            S[:, (t + k) % n, t] = S[:, t, (t + k) % n] = a * (1 + 0.1 * t) * np.exp(1j * f / 1e8)
+    g = 10 ** (rng.uniform(-2, 2, n) / 20) * np.exp(1j * rng.uniform(0, 6, n))
+    Sg = S * g[None, :, None] * g[None, None, :]
+    band = (f[0], f[-1])
+    zero = np.zeros(1)
+    np.testing.assert_allclose(r31(f, Sg[None], zero, band), r31(f, S[None], zero, band), rtol=1e-10)
+    floor = 1e-7                                          # -70 dB per entry
+    noisy = S[None] + np.sqrt(floor / 2) * (rng.standard_normal((20, 101, n, n))
+                                            + 1j * rng.standard_normal((20, 101, n, n)))
+    est = 10 * np.log10(floor_power(noisy))
+    assert np.all(np.abs(est + 70) < 0.5)
