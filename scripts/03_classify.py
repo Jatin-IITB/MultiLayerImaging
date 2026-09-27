@@ -522,7 +522,9 @@ def main():
                           "Normal: single simulation, test = new noise draws")})
     report(cfg, gh, ds, rows, gate, thr, sens, hp, schemes, skipped, noise_ref, rules, floor)
     decision_rule(cfg, gh, thr, noise_ref, rules, floor)
-    figures(cfg, ds, rows, thr, hp, [x for x in res if "+gain" not in x["profile"]], schemes)
+    std_only = [p for p in PROFILES]
+    figures(cfg, ds, rows[rows.profile.isin(std_only)], thr, [h for h in hp if h["profile"] in std_only],
+            [x for x in res if x["profile"] in std_only], schemes)
     fig_gain(cfg, rules, thr)
     print((OUT / "report.md").read_text(encoding="utf-8"))
 
