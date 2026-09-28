@@ -1,0 +1,9 @@
+import sys
+import warnings
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+for p in (ROOT, ROOT / "src"):
+    if str(p) not in sys.path:
+        sys.path.insert(0, str(p))
+warnings.filterwarnings("ignore", category=RuntimeWarning)
