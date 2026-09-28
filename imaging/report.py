@@ -612,10 +612,29 @@ def write(R, sd, cfg, write_csv=True):
         L += [_t(rows, ["dataset", "stage", "chi2_dof", "t_csf", "t_csf_true"] + NAMES[1:],
                  {"chi2_dof": ".3g", "t_csf_true": ".2f"}), "",
               "(parameter: estimate (truth))", ""]
+        syn = [f_ for f_ in R3["fits"] if f_["dataset"] == "synthetic (same model)"]
+        dev = [f"{f_['stage']} {abs(f_['theta'][7] - f_['truth'][7]) / max(f_['sd'][7], 1e-9):.1f}σ"
+               for f_ in syn]
+        hf = [f_["chi2_per_dof"] for f_ in R3["fits"] if f_["dataset"].startswith("HFSS")
+              and f_["stage"] != "noise-only"]
+        L += ["Reading the fits:",
+              f"- **Synthetic, same model (inverse crime, noise only):** every fit reaches chi2/dof ≈ 1, "
+              "yet CSF thickness and the deeper parameters land far from the truth. Many different "
+              "layered heads explain the same data: the degeneracy seen in §5.1. Even eps_csf, "
+              "'determined' by the local CRLB, is off by " + ", ".join(dev) + " (|est − truth| / "
+              "CRLB). The misfit surface is multimodal, so the CRLB (a local curvature) "
+              "overstates what a global fit recovers.",
+              f"- **HFSS:** chi2/dof {min(hf):.0f}–{max(hf):.0f}. The model cannot reproduce the "
+              "HFSS dS (antenna-model mismatch, §3). Parameters sit on bounds and change with the "
+              "calibration choice (calA vs calB), so they carry no physical meaning.",
+              "- **Antenna-mismatch test:** data made with the patch-aperture antenna and inverted "
+              "with the point-dipole model give chi2/dof 3–8 and wrong CSF thickness. A modest "
+              "antenna-model error alone is enough to break I3.", ""]
         L += ["### 5.3 CSF thickness as a feature vs the k = 3 scalar metric", "",
               "One LM fit per noisy draw, started at the Normal truth. Threshold tuned on Mild vs "
               "Normal draws; tested on Moderate + Severe vs fresh Normal draws. k3 metric = full-band "
-              "mean opposite-antenna power in dB (M5.C3; lower → AD).", ""]
+              "mean opposite-antenna power in dB (M5.C3; lower → AD). For k3, tau is printed "
+              "sign-flipped: the threshold is −tau dB.", ""]
         rows = []
         for ds, c in R3["classify"].items():
             for feat in ("t_csf", "k3"):
