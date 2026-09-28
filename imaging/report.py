@@ -620,10 +620,12 @@ def write(R, sd, cfg, write_csv=True):
         L += ["Reading the fits:",
               f"- **Synthetic, same model (inverse crime, noise only):** every fit reaches chi2/dof ≈ 1, "
               "yet CSF thickness and the deeper parameters land far from the truth. Many different "
-              "layered heads explain the same data: the degeneracy seen in §5.1. Even eps_csf, "
-              "'determined' by the local CRLB, is off by " + ", ".join(dev) + " (|est − truth| / "
-              "CRLB). The misfit surface is multimodal, so the CRLB (a local curvature) "
-              "overstates what a global fit recovers.",
+              "layered heads explain the same data: the degeneracy seen in §5.1. eps_csf, the "
+              "parameter §5.1 calls determined, deviates from its truth by " + ", ".join(dev)
+              + " (|est − truth| / CRLB at the fit). It is recovered within its uncertainty for "
+              "the AD stages. On noise-only data, however, the fit settles in a different minimum, "
+              "because the misfit surface is multimodal. Only the effective material of the "
+              "outermost layer is measured; its geometry is not.",
               f"- **HFSS:** chi2/dof {min(hf):.0f}–{max(hf):.0f}. The model cannot reproduce the "
               "HFSS dS (antenna-model mismatch, §3). Parameters sit on bounds and change with the "
               "calibration choice (calA vs calB), so they carry no physical meaning.",
