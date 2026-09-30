@@ -1,0 +1,13 @@
+# Overlay on config.yaml: v2 solves + v1 solves of the same designs as repeats.
+# Run with:  python scripts/run_all.py --config config_repeats.yaml
+# Only the keys below differ from config.yaml (deep-merged).
+extends: config.yaml
+
+data:
+  manifest: data/sims_with_repeats.csv
+
+metrics:
+  sim_set: hfss-v2+v1repeats-masked
+
+results:
+  out_root: results/v2_with_v1_repeats   # 02/, 03/, qc/, figures/ go here; metrics.csv stays shared

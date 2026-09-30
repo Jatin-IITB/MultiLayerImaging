@@ -60,6 +60,11 @@ def make_folds(groups: dict[str, list[int]], n_ant: int) -> tuple[str, list[Fold
 
 
 def validity_label(groups: dict[str, list[int]], head_ids: list[str]) -> str:
-    """'generalisation' only if every class has >= 2 distinct heads; else noise-robustness."""
-    ok = all(len({head_ids[s] for s in sims}) >= 2 for sims in groups.values())
-    return "generalisation-across-heads" if ok else "noise-robustness-only"
+    """generalisation-across-heads: every class has >= 2 distinct heads.
+    cross-solve-same-head: every class has >= 2 solves (e.g. repeats), but of one head.
+    noise-robustness-only: some class has a single simulation."""
+    if all(len({head_ids[s] for s in sims}) >= 2 for sims in groups.values()):
+        return "generalisation-across-heads"
+    if all(len(sims) >= 2 for sims in groups.values()):
+        return "cross-solve-same-head"
+    return "noise-robustness-only"

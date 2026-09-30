@@ -20,6 +20,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from adstage.config import load_config, out_dir  # noqa: E402
 from adstage.features.metrics import build_catalogue, circulant_projection, to_ring_order  # noqa: E402
 from adstage.io.dataset import load_dataset  # noqa: E402
 from adstage.robustness import perturbed_values  # noqa: E402
@@ -29,7 +30,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-mask", action="store_true")
     args = ap.parse_args()
-    cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
+    cfg = load_config(ROOT)
     ds = load_dataset(cfg, ROOT, mask=not args.no_mask)
     S = to_ring_order(ds.S, ds.port_to_ant)
     ref = circulant_projection(S[ds.classes.index("Normal")])
@@ -44,8 +45,7 @@ def main():
         rows.append({"metric": m.name, **{p: np.nanmax(np.abs(v[m.name] - o)) / gap
                                           for p, v in pert.items() if p != "orig"}})
     df = pd.DataFrame(rows)
-    out = ROOT / "results" / "02"
-    out.mkdir(parents=True, exist_ok=True)
+    out = out_dir(ROOT, cfg, "02")
     df.to_csv(out / "robustness_standalone.csv", index=False)
     with pd.option_context("display.max_rows", 200, "display.width", 250,
                            "display.float_format", "{:.2g}".format):

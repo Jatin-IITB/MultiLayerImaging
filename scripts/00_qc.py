@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from adstage import qc                                   # noqa: E402
+from adstage.config import load_config, out_dir  # noqa: E402
 from adstage.io.dataset import load_dataset             # noqa: E402
 from adstage.ring import pairs_at_distance, ring_average  # noqa: E402
 
@@ -45,7 +46,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--include-moderate", action="store_true")
     args = ap.parse_args()
-    cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
+    cfg = load_config(ROOT)
+    global OUT, FIG
+    OUT, FIG = out_dir(ROOT, cfg, "qc"), out_dir(ROOT, cfg, "figures")
     OUT.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
 

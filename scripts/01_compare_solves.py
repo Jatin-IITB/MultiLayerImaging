@@ -23,6 +23,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from adstage.config import load_config, out_dir  # noqa: E402
 from adstage.features.floor import r31  # noqa: E402
 from adstage.features.metrics import band_avg, to_ring_order  # noqa: E402
 from adstage.io.dataset import common_grid, load_manifest, resample  # noqa: E402
@@ -46,7 +47,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--old", default="data/archive/v1_mixed_projects")
     args = ap.parse_args()
-    cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
+    cfg = load_config(ROOT)
     old_dir = ROOT / args.old
     old = load_set(old_dir / "raw", old_dir / "sims.csv")
     new = load_set(ROOT / cfg["data"]["raw_dir"], ROOT / cfg["data"]["manifest"])
@@ -96,7 +97,7 @@ def main():
          f"New-set {ref} vs AD gap: C3 {min(gap_c3):.2f}-{max(gap_c3):.2f} dB, "
          f"R31 {min(gap_r):.2f}-{max(gap_r):.2f} dB. Largest old-to-new shift of the same stage: "
          f"C3 {np.nanmax(np.abs(scal['C3 shift dB'])):.2f} dB, R31 {np.nanmax(np.abs(scal['R31 shift dB'])):.2f} dB."]
-    out = ROOT / "results" / "qc" / "solve_comparison.md"
+    out = out_dir(ROOT, cfg, "qc") / "solve_comparison.md"
     out.write_text("\n".join(L), encoding="utf-8")
     print(out.read_text(encoding="utf-8"))
 

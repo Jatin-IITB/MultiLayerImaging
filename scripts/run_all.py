@@ -1,12 +1,13 @@
 """One command to regenerate everything from data/sims.csv:
 
-    python scripts/run_all.py [--skip-qc] [--skip-02] [--no-csv] [--include-moderate]
+    python scripts/run_all.py [--config config_repeats.yaml] [--skip-qc] [--skip-02] [--no-csv] [--include-moderate]
 
 Runs 00_qc (raw integrity), 02_metrics (separability/robustness) and 03_classify (gate,
 classifiers, thresholds) in order, with the same config.yaml. Commit code before running:
 metrics.csv rows record the git hash (suffix -dirty if code/config differ from HEAD).
 """
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -25,7 +26,10 @@ def main():
     ap.add_argument("--skip-02", action="store_true")
     ap.add_argument("--no-csv", action="store_true")
     ap.add_argument("--include-moderate", action="store_true")
+    ap.add_argument("--config", default=None, help="config file (default config.yaml); sets MLI_CONFIG")
     a = ap.parse_args()
+    if a.config:
+        os.environ["MLI_CONFIG"] = a.config
     common = (["--no-csv"] if a.no_csv else []) + (["--include-moderate"] if a.include_moderate else [])
     if not a.skip_qc:
         run("00_qc.py", ["--include-moderate"])

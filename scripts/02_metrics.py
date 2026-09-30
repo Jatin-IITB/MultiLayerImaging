@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from adstage.classes import active_schemes, pair_is_ad_only, scheme_groups, scheme_label  # noqa: E402
 from adstage.noise.reference import mesh_pairs, mesh_sd  # noqa: E402
+from adstage.config import load_config, out_dir  # noqa: E402
 from adstage.features.metrics import (build_catalogue, circulant_projection, compute,  # noqa: E402
                                       power_spectra, to_ring_order)
 from adstage.io.dataset import load_dataset  # noqa: E402
@@ -58,7 +59,9 @@ def main():
     ap.add_argument("--n", type=int, default=None)
     ap.add_argument("--no-csv", action="store_true", help="do not append to metrics.csv")
     args = ap.parse_args()
-    cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
+    cfg = load_config(ROOT)
+    global OUT, FIG
+    OUT, FIG = out_dir(ROOT, cfg, "02"), out_dir(ROOT, cfg, "figures")
     mcfg = cfg["metrics"]
     n_real = args.n or int(mcfg["n_realisations"])
     OUT.mkdir(parents=True, exist_ok=True)
@@ -68,7 +71,7 @@ def main():
     ds = load_dataset(cfg, ROOT, mask=not args.no_mask)
     sim_set = mcfg["sim_set"] if ds.masking else mcfg["sim_set"].replace("-masked", "-unmasked")
     if ds.masking:
-        ds.masked_log.to_csv(ROOT / "results" / "qc" / "masked_points.csv", index=False)
+        ds.masked_log.to_csv(out_dir(ROOT, cfg, "qc") / "masked_points.csv", index=False)
     f = ds.f_hz
     S = to_ring_order(ds.S, ds.port_to_ant)
     n_sims = len(ds.files)

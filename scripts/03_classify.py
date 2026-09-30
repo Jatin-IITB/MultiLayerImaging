@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from adstage.classes import active_schemes, pair_is_ad_only, scheme_groups, scheme_label  # noqa: E402
+from adstage.config import load_config, out_dir  # noqa: E402
 from adstage.features.metrics import build_catalogue, to_ring_order  # noqa: E402
 from adstage.io.dataset import load_dataset  # noqa: E402
 from adstage.noise.model import PROFILES  # noqa: E402
@@ -414,7 +415,9 @@ def main():
     ap.add_argument("--n-jobs", type=int, default=None)
     args = ap.parse_args()
     warnings.filterwarnings("ignore")
-    cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
+    cfg = load_config(ROOT)
+    global OUT, FIG
+    OUT, FIG = out_dir(ROOT, cfg, "03"), out_dir(ROOT, cfg, "figures")
     ccfg = cfg["classify"]
     fsets = args.feature_sets.split(",") if args.feature_sets else list(ccfg["feature_sets"])
     models = args.models.split(",") if args.models else list(ccfg["models"])
