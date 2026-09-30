@@ -1,0 +1,9 @@
+# Versions the committed results were produced with (laptop, Python 3.12.6). Python >= 3.11 required.
+numpy==2.3.5
+scipy==1.18.0
+scikit-learn==1.9.0
+pandas==3.0.5
+matplotlib==3.11.0
+PyYAML==6.0.2
+joblib==1.5.3
+pytest==9.1.1
