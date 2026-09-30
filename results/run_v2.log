@@ -1,3 +1,88 @@
+
+=== 02_metrics.py 
+code f142bf6; 5 sims; 99 scalar metrics; 500 realisations
+  noise profile ideal done
+  noise profile good done
+  noise profile typical done
+  noise profile noisy done
+  noise profile very_noisy done
+  noise profile typical_jitter done
+# Prompt 02 - metric separability (track A, code f142bf6, sim_set hfss-v2-sameproject-masked)
+
+J_meas = min pairwise Fisher ratio from noisy realisations (ranking key). J_eff adds the port-to-port asymmetry as extra variance. gap/port = class gap / port-to-port std. gap/mesh = pending (mesh-repeat not yet available). shift_move = largest change under ±2/5/10 MHz resonance shifts / smallest class gap. band_gap_retention = worst (gap after ±10 % band change) / (original gap); < 0 means the class order flips. freq_robust (brief's literal criterion) = shift AND band value changes < 0.25 × smallest gap. AD-vs-AD pairs unverified against mesh noise.
+
+Glitch masking ON: 7 in-band (f, pair) points masked in 2 runs (results/qc/masked_points.csv).
+
+## Ranking - scheme `binary` (binary:Normal|AD(Mild+Moderate+Severe)), profile `typical`
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | M5.C3[k3] | 419 | Normal|AD | 32.5 | 8.39 | 3.22e-54 | 0.03 | 0.9 | True |
+| 2 | M5.C3_dBavg[k3] | 264 | Normal|AD | 40.7 | 9.81 | 2.82e-40 | 0.0498 | 0.876 | True |
+| 3 | M5.C3 | 158 | Normal|AD | 18 | 6.38 | 1.53e-26 | 0.000548 | 1.11 | False |
+| 4 | M6.N[3.65] | 75.1 | Normal|AD | 11.4 | 5.19 | 1.38e-13 | 1.32 | 0.856 | False |
+| 5 | M6.A[3.65] | 73.2 | Normal|AD | 11.3 | 5.18 | 2.42e-13 | 1.33 | 0.855 | False |
+| 6 | M6.N[3.85] | 45.3 | Normal|AD | 13.9 | 6.32 | 6.14e-07 | 1.17 | 0.93 | False |
+| 7 | M6.A[3.85] | 45.3 | Normal|AD | 13.9 | 6.32 | 6.14e-07 | 1.17 | 0.93 | False |
+| 8 | M0.old_score | 41.5 | Normal|AD | 38.4 | 31.9 | 5.54e-07 | 0.0317 | 1.07 | False |
+| 9 | M7.D2 | 29.2 | Normal|AD | 19.8 | 11.1 | 5.89e-08 | 1.27 | 1.11 | False |
+| 10 | M6.A[3.25] | 21.6 | Normal|AD | 13.4 | 8.36 | 0.000491 | 1.04 | 0.983 | False |
+| 11 | M6.N[3.25] | 21.6 | Normal|AD | 13.3 | 8.36 | 0.000493 | 1.04 | 0.983 | False |
+| 12 | M6.N[3.30] | 14.6 | Normal|AD | 5.4 | 4.14 | 0.00312 | 2.1 | 0.895 | False |
+| 13 | M6.A[3.30] | 14.6 | Normal|AD | 5.4 | 4.14 | 0.00312 | 2.1 | 0.895 | False |
+| 14 | M6.A[3.80] | 14.5 | Normal|AD | 4.46 | 3.59 | 0.000555 | 1.78 | 0.672 | False |
+| 15 | M6.N[3.80] | 14.4 | Normal|AD | 4.44 | 3.59 | 0.000576 | 1.78 | 0.672 | False |
+| 42 | M2.R | 5.61 | Normal|AD | 5.32 | 14.4 | 0.0209 | 0.0491 | 1.05 | False |
+| 77 | M1.Sii_dBavg | 1.02 | Normal|AD | 0.975 | 6.66 | 0.0438 | 0.0432 | 1.13 | False |
+
+Top 10 by J_eff (port asymmetry included), scheme `binary`:
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 2 | M5.C3_dBavg[k3] | 264 | Normal|AD | 40.7 | 9.81 | 2.82e-40 | 0.0498 | 0.876 | True |
+| 8 | M0.old_score | 41.5 | Normal|AD | 38.4 | 31.9 | 5.54e-07 | 0.0317 | 1.07 | False |
+| 1 | M5.C3[k3] | 419 | Normal|AD | 32.5 | 8.39 | 3.22e-54 | 0.03 | 0.9 | True |
+| 9 | M7.D2 | 29.2 | Normal|AD | 19.8 | 11.1 | 5.89e-08 | 1.27 | 1.11 | False |
+| 3 | M5.C3 | 158 | Normal|AD | 18 | 6.38 | 1.53e-26 | 0.000548 | 1.11 | False |
+| 7 | M6.A[3.85] | 45.3 | Normal|AD | 13.9 | 6.32 | 6.14e-07 | 1.17 | 0.93 | False |
+| 6 | M6.N[3.85] | 45.3 | Normal|AD | 13.9 | 6.32 | 6.14e-07 | 1.17 | 0.93 | False |
+| 16 | M7.D3 | 13.6 | Normal|AD | 13.4 | 45.2 | 3.13e-05 | 1.34 | 1.11 | False |
+| 10 | M6.A[3.25] | 21.6 | Normal|AD | 13.4 | 8.36 | 0.000491 | 1.04 | 0.983 | False |
+| 11 | M6.N[3.25] | 21.6 | Normal|AD | 13.3 | 8.36 | 0.000493 | 1.04 | 0.983 | False |
+
+## Ranking - scheme `three_merged` (three_merged:Normal|Mild+Moderate(Mild+Moderate)|Severe), profile `typical`
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | M5.C2 | 283 | Mild+Moderate|Severe | 14.4 | 5.52 | 9.59e-35 | 0.000943 | 1.11 | False |
+| 2 | M7.D3[k3] | 64.5 | Mild+Moderate|Severe | 46.7 | 18.4 | 1.27e-11 | 1.74 | 0.806 | False |
+| 3 | M5.C2[k3] | 61.7 | Normal|Mild+Moderate | 15.8 | 6.52 | 6.28e-11 | 0.106 | 0.867 | False |
+| 4 | M6.A[3.40] | 47.6 | Normal|Mild+Moderate | 5.36 | 3.48 | 3.08e-08 | 1.66 | 0.959 | False |
+| 5 | M6.N[3.40] | 47.3 | Normal|Mild+Moderate | 5.34 | 3.47 | 3.31e-08 | 1.66 | 0.959 | False |
+| 6 | M6.A[3.45] | 42.2 | Normal|Mild+Moderate | 3.1 | 2.58 | 1.25e-06 | 1.35 | 0.772 | False |
+| 7 | M6.N[3.45] | 42.1 | Normal|Mild+Moderate | 3.06 | 2.56 | 1.28e-06 | 1.36 | 0.77 | False |
+| 8 | M5.C | 20.5 | Normal|Mild+Moderate | 0.834 | 1.32 | 0.000185 | 0.000587 | 1.11 | False |
+| 9 | M5.C1 | 18.6 | Normal|Mild+Moderate | 0.718 | 1.22 | 0.000376 | 0.000441 | 1.11 | False |
+| 10 | M7.D3 | 13.6 | Mild+Moderate|Severe | 12.5 | 17.4 | 0.000299 | 2.57 | 1.11 | False |
+| 11 | M5.C1[k3] | 12.7 | Mild+Moderate|Severe | 3.84 | 3.24 | 0.00028 | 0.962 | 0.617 | False |
+| 12 | M5.C[k3] | 12.4 | Mild+Moderate|Severe | 4.42 | 3.45 | 0.000339 | 1 | 0.636 | False |
+| 13 | M5.C3 | 10.7 | Mild+Moderate|Severe | 5.13 | 4.45 | 0.00403 | 0.00372 | 1.11 | False |
+| 14 | M6.A[3.70] | 7.93 | Normal|Mild+Moderate | 0.744 | 1.28 | 0.0211 | 4.54 | 0.165 | False |
+| 15 | M6.N[3.70] | 7.64 | Normal|Mild+Moderate | 0.731 | 1.27 | 0.023 | 4.56 | 0.159 | False |
+| 22 | M2.R | 4.89 | Mild+Moderate|Severe | 4.21 | 7.76 | 0.0345 | 0.0708 | 1.03 | False |
+| 36 | M0.old_score | 3.73 | Mild+Moderate|Severe | 3.35 | 8.13 | 0.0761 | 0.135 | 0.957 | False |
+| 40 | M5.C3[k3] | 2.96 | Mild+Moderate|Severe | 1.04 | 1.79 | 0.0868 | 0.442 | 0.786 | False |
+| 62 | M1.Sii_dBavg | 1.17 | Mild+Moderate|Severe | 1.1 | 2.75 | 0.0376 | 0.167 | 1.09 | False |
+
+Top 10 by J_eff (port asymmetry included), scheme `three_merged`:
+| rank | metric | min_J_meas | weakest_pair | min_J_eff | min_gap_over_port | max_bayes_err | shift_move_over_min_gap | band_gap_retention | freq_robust |
+|---|---|---|---|---|---|---|---|---|---|
+| 2 | M7.D3[k3] | 64.
+
+=== 03_classify.py 
+[Parallel(n_jobs=9)]: Using backend LokyBackend with 9 concurrent workers.
+[Parallel(n_jobs=9)]: Done   2 out of   9 | elapsed:  2.6min remaining:  9.0min
+[Parallel(n_jobs=9)]: Done   4 out of   9 | elapsed: 12.5min remaining: 15.6min
+[Parallel(n_jobs=9)]: Done   6 out of   9 | elapsed: 12.5min remaining:  6.3min
+[Parallel(n_jobs=9)]: Done   9 out of   9 | elapsed: 12.8min finished
+code f142bf6; sims ['Normal', 'MCI', 'Mild', 'Moderate', 'Severe']; schemes ['binary', 'three_merged', 'three', 'binary_early']; skipped {}; noise ref port
 # Prompt 03 - gate, classifiers, decision boundaries (track A, code f142bf6)
 
 Simulations: {'new_Healthy.s6p': 'Normal', 'new_MCI.s6p': 'MCI', 'new_MildAD.s6p': 'Mild', 'new_ModerateAD.s6p': 'Moderate', 'new_SevereAD.s6p': 'Severe'}. Schemes run: ['binary', 'three_merged', 'three', 'binary_early']. Skipped: {}. Noise reference: port (between-mesh not measured: AD-vs-AD results unverified against mesh noise).
@@ -323,3 +408,4 @@ CV: LODO (3 folds), noise-robustness-only.
 | typical+gain2.0dB | M0 | 0.6667 | 0.3056 | -5.651 | -1.36 |
 | typical+gain2.0dB | M5.C3 | 0.8889 | 0.3611 | -54.68 | -53.45 |
 | typical+gain2.0dB | M5.C3[nested] | 0.9444 | 0.5833 | -52.53 | -49.51 |
+
