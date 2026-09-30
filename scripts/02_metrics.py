@@ -29,7 +29,7 @@ from adstage.separability import pairwise  # noqa: E402
 
 OUT = ROOT / "results" / "02"
 FIG = ROOT / "results" / "figures"
-STAGE_COLOR = {"Normal": "#86b6ef", "Mild": "#2a78d6", "Moderate": "#1c5cab", "Severe": "#0d366b"}
+STAGE_COLOR = {"Normal": "#86b6ef", "MCI": "#5598e7", "Mild": "#2a78d6", "Moderate": "#1c5cab", "Severe": "#0d366b"}
 MESH_NOTE = "AD-vs-AD pairs unverified against mesh noise"
 
 
@@ -201,7 +201,7 @@ def main():
     pairs.to_csv(OUT / "separability_pairs.csv", index=False)
 
     # ---- ordinality: stage steps in port-noise units (all four stages) ----------------
-    order = [c for c in ["Normal", "Mild", "Moderate", "Severe"] if c in ds.classes]
+    order = [c for c in ["Normal", "MCI", "Mild", "Moderate", "Severe"] if c in ds.classes]
     ordl = []
     for m in metrics:
         mu = np.array([np.mean([clean[i][m.name].mean() for i in range(n_sims)
@@ -326,7 +326,7 @@ def figures(cfg, ds, f, S, clean, noisy, spec_q, metrics, bands, rank_tables, ro
                          "axes.titlesize": 8.5, "axes.titlelocation": "left"})
     seq = LinearSegmentedColormap.from_list("blue", ["#f7fafe", "#cde2fb", "#86b6ef", "#3987e5",
                                                      "#1c5cab", "#0d366b"])
-    order = [c for c in ["Normal", "Mild", "Moderate", "Severe"] if c in ds.classes]
+    order = [c for c in ["Normal", "MCI", "Mild", "Moderate", "Severe"] if c in ds.classes]
     idx = {c: ds.classes.index(c) for c in order}
     fg = f / 1e9
     k3 = [v / 1e9 for v in bands["k3"]]

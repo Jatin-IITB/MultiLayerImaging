@@ -49,7 +49,7 @@ noise_reference:
   mesh_repeat_files: []
 
 metrics:
-  sim_set: hfss-v1-masked
+  sim_set: hfss-v2-sameproject-masked
   k3_band_hz: [3.35e+9, 3.60e+9]  # opposite-antenna window; chosen post hoc from these same sims
   subband_hz: 5.0e+7              # M6 contiguous sub-band width
   n_realisations: 500

@@ -196,7 +196,7 @@ def main():
                          "axes.grid": True, "grid.color": "#e4e3de", "grid.linewidth": 0.6,
                          "axes.edgecolor": "#8a8981", "axes.labelcolor": "#3d3d3a",
                          "xtick.color": "#5f5e59", "ytick.color": "#5f5e59"})
-    show = [c for c in ["Normal", "Mild", "Moderate", "Severe"]
+    show = [c for c in ["Normal", "MCI", "Mild", "Moderate", "Severe"]
             if c in ds.classes and (args.include_moderate or c != "Moderate")]
     titles = ["k=0  reflection |S(t,t)|", "k=1  neighbour |S(t,t+1)|",
               "k=2  |S(t,t+2)|", "k=3  opposite |S(t,t+3)|"]

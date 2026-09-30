@@ -97,3 +97,4 @@ Within-file port-to-port noise (rms over f of std_t in dB):
 | Mild | 0.154 | 0.116 | 0.61 | 0.209 |
 | Moderate | 0.085 | 0.105 | 0.56 | 0.157 |
 | Severe | 0.123 | 0.132 | 0.664 | 0.148 |
+

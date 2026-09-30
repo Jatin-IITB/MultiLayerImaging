@@ -73,7 +73,22 @@ Anything F1 assumes about frequency dependence must match the simulation (consta
 
 `Port[1..6] = T4, T3, T2, T1, T6, T5` → `config.yaml: ring.port_to_ant = [4, 3, 2, 1, 6, 5]`.
 
-### Data files
+### Data files — current set v2 (added 2026-10-01)
+
+All five stages re-solved in **one** HFSS project (user-stated: "corrected, same project"),
+including a new MCI case. Parsed and checked in Part 3.
+
+| File | Class | HFSS project | Native band | Points |
+|---|---|---|---|---|
+| `new_Healthy.s6p` | Normal | `new` | 2.8–4.2 GHz | 281 (5 MHz) |
+| `new_MCI.s6p` | MCI | `new` | 2.8–4.2 GHz | 281 (5 MHz) |
+| `new_MildAD.s6p` | Mild | `new` | 2.8–4.2 GHz | 281 (5 MHz) |
+| `new_ModerateAD.s6p` | Moderate | `new` | 2.8–4.2 GHz | 281 (5 MHz) |
+| `new_SevereAD.s6p` | Severe | `new` | 2.8–4.2 GHz | 281 (5 MHz) |
+
+**Archived set v1** (`data/archive/v1_mixed_projects/`, used for all results up to commit
+e9bced0): the four files below. Normal and Severe came from project `new`, Mild and Moderate
+from `Brain_sevem_layer`, and Severe covered only 3.2–4.2 GHz.
 
 | File | Class | HFSS project (card) | Native band | Points |
 |---|---|---|---|---|
@@ -87,15 +102,18 @@ Anything F1 assumes about frequency dependence must match the simulation (consta
 1. **Symmetry.** S should be circulant. Port-to-port differences within a file are numerical
    noise: use them as a noise estimate, never as a signal. Spatial localisation is
    impossible in this track.
-2. **Project confound.** Normal and Severe come from one HFSS project; Mild and Moderate
-   come from another.
+2. **Project confound.** Resolved in v2 (all stages in one project). It applied to v1.
 3. **One simulation per class.** All classification results are *noise robustness only, not
    generalisation to new heads*.
-4. **Notch depth is mesh-sensitive** and is never used as a feature.
+4. **Notch depth and resonance frequency are solve-sensitive** and are never used as features.
+   The resonance moved 16 MHz between the v1 and v2 solves of Normal.
+5. **The k = 3 (opposite-antenna) signal travels around the head surface, not through its
+   centre.** Imaging study §1: measured group delay 3.61 ns, surface path 3.69 ns, straight
+   path 6.03 ns. Its disease sensitivity comes from the CSF/cortex just under the skull.
 
 ---
 
-## Part 2 — Verification results (code: see hash in `results/qc/qc_report.md`)
+## Part 2 — Verification results for the ARCHIVED v1 set (reproduce from `data/archive/v1_mixed_projects/`)
 
 ### Parsing
 
@@ -177,7 +195,7 @@ Numbers are across the t equivalent pairs at each ring distance k:
 | Resonance ≈ 3.62 GHz; 3624 → 3626 → 3628 → 3630 MHz | **Reproduced; the spread across ports is larger than the card says** | Mean of per-port min \|Sii\| (native grid, parabolic refinement): 3623.9 / 3626.7 / 3627.7 / 3628.8 MHz (Normal / Mild / Moderate / Severe). Port ranges: Normal 3622–3625, Mild 3618–3634, Moderate 3624–3630, Severe 3626–3634 MHz. The trend is monotonic but inside the port scatter; it is not usable as a single-shot feature. |
 | Shoulder 3.38–3.52 GHz: Normal −10 dB vs AD −8.3 to −8.9 dB | **Reproduced (definitions differ)** | The ring-mean point minimum for Normal is ≈ −10 dB. The power average over the band is Normal −8.96, Mild −8.19, Moderate −8.25, Severe −7.86 dB, with a port spread (max − min) of 0.38–0.54 dB. Normal vs AD differs by 0.6–1.1 dB, which is about 2× the port spread. Mild ≈ Moderate. |
 | Notch depth mesh-sensitive | **Consistent** | Notch minima range from −27…−31 dB (Normal) to −40…−49 dB (Severe). The depth varies across ports of one file by 4–9 dB, so it is excluded as a feature. |
-| Healthy file actually uses Normal geometry (not Mild) | **OPEN — GUI** | Headers are untrusted, so this cannot be settled from the files. Weak data hint: Normal differs from all AD stages by 2–5× the port noise in the through-head k=3 path, and the AD stages cluster together. That fits a genuinely different Normal geometry and material set, but does not prove it. |
+| Healthy file actually uses Normal geometry (not Mild) | **OPEN — GUI** | Headers are untrusted, so this cannot be settled from the files. Weak data hint: Normal differs from all AD stages by 2–5× the port noise in the opposite-antenna (k=3) coupling, and the AD stages cluster together. That fits a genuinely different Normal geometry and material set, but does not prove it. |
 | Skin / fat / skull εr, σ | **OPEN — GUI** | Not in the data. |
 | Normal-stage εr, σ as assigned in HFSS | **OPEN — GUI** | Not in the data. |
 | Meaning of `ant_dist`, `z_ebg`; sign of ring z | **OPEN — GUI** | Not in the data. A symmetric head makes the S-parameters insensitive to the sign of z (mirror symmetry), but F1 needs it. |
@@ -216,7 +234,48 @@ Reading:
    - **Recommended fix:** re-solve one design, e.g. Normal, in the other project, or
      re-solve it with a different mesh seed or convergence setting.
    - The difference between the two runs is the true between-mesh noise floor.
-4. **The most informative path is k=3** (opposite antennas, the path through the centre).
-   Normal sits about 2 dB above every AD stage over 3.35–3.6 GHz, clear of the port-noise
-   band (`results/figures/qc_ring_modes.png`). Reflection (k=0) separates Normal only in
-   the shoulder.
+4. **The most informative path is k=3** (opposite antennas; the wave travels around the head
+   surface, see caveat 5). Normal sits about 2 dB above every AD stage over 3.35–3.6 GHz,
+   clear of the port-noise band. Reflection (k=0) separates Normal only in the shoulder.
+
+---
+
+## Part 3 — Verification results for the CURRENT v2 set (2026-10-01)
+
+Reproduce with `python scripts/00_qc.py --include-moderate` → `results/qc/qc_report.md`, and
+`python scripts/01_compare_solves.py` → `results/qc/solve_comparison.md`.
+
+**Parsing and integrity.**
+
+- All 5 files are 6-port `GHz S MA R 50`, 2.8–4.2 GHz, 281 points. The common grid is now the full
+  2.8–4.2 GHz band, with no resampling.
+- Passive (σ_max ≤ 0.982). Reciprocal to −88…−98 dB (median, relative to band level).
+- **No glitches in any file.** Glitch masking remains switched on but has nothing to mask.
+- **Port map `[4,3,2,1,6,5]`** ranks 1st of the 60 ring orderings in every file.
+
+**Symmetry noise floor** (rms of the across-antenna SD, dB) is 2–3× lower than v1:
+
+| Class | k0 | k1 | k2 | k3 |
+|---|---|---|---|---|
+| Normal | 0.36 | 0.26 | 0.70 | 0.32 |
+| MCI | 0.07 | 0.11 | 0.39 | 0.15 |
+| Mild | 0.15 | 0.12 | 0.61 | 0.21 |
+| Moderate | 0.09 | 0.11 | 0.56 | 0.16 |
+| Severe | 0.12 | 0.13 | 0.66 | 0.15 |
+
+**Resonance (mean of per-port minimum |S_ii|):** Normal 3640.3, MCI 3655.5, Mild 3654.2,
+Moderate 3647.3, Severe 3648.2 MHz. Not monotone in stage. The v1 Normal solve resonated at
+3623.9 MHz, so the re-solve alone moved it by 16 MHz.
+
+**v1 vs v2 solve of the same stage.** What the "correction" changed is not recorded here. If
+only mesh/sweep settings changed, this is an estimate of solve-to-solve noise.
+
+- Whole-spectrum differences (rms over 3.2–4.2 GHz of the ring-mode dB) between two solves of
+  the *same* stage are 0.9–1.5 dB on k3 and 2.6–3.2 dB on k0. That is **as large as the
+  Normal-vs-AD differences** (k3 1.5–2.1 dB).
+- The band-averaged scalars move much less. C3 moves 0.14–0.61 dB and R31 0.00–0.34 dB,
+  against Normal-vs-AD gaps of 1.5–1.9 dB (C3) and 1.2–1.5 dB (R31).
+- **MCI ≈ Normal** on the scalars: C3 +0.23 dB, R31 +0.06 dB. That is expected, since MCI
+  changes only the central hippocampus, where the array has no sensitivity (imaging study). Its
+  whole-spectrum difference from Normal (≈1 dB on k3) is the same size as solve-to-solve
+  variation.
