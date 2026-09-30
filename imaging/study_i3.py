@@ -206,7 +206,18 @@ def validate(sd, f, log=print):
     return model, out
 
 
-def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log=print):
+def _fit_task(prob, d, starts, max_nfev, with_jac):
+    """One independent fit (module level so it can run in a worker process)."""
+    th, chi2, _ = prob.fit(d, starts, max_nfev=max_nfev)
+    if with_jac:
+        return th, chi2, prob.jac_theta(th, d)
+    return th
+
+
+def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log=print,
+        n_jobs=1):
+    """n_jobs > 1 runs the independent fits in parallel worker processes (joblib); results
+    are identical to the serial run (each fit is deterministic given its data and starts)."""
     f_all = sd.f_hz
     f = f_all[::4]
     fi = np.searchsorted(f_all, f)
@@ -233,20 +244,36 @@ def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log
     if ck:
         log(f"I3 resuming from checkpoint: {len(ck)} fits already done")
 
+    def save():
+        tmp = ck_path.with_suffix(".tmp")
+        tmp.write_bytes(pickle.dumps(ck))
+        tmp.replace(ck_path)
+
     def memo(key, fn):
         if key not in ck:
             ck[key] = fn()
-            tmp = ck_path.with_suffix(".tmp")
-            tmp.write_bytes(pickle.dumps(ck))
-            tmp.replace(ck_path)
+            save()
         return ck[key]
 
+    def prefetch(tasks):
+        """tasks: [(key, prob, d, starts, max_nfev, with_jac)]; runs the missing ones, in
+        parallel when n_jobs > 1, saving the checkpoint after every chunk."""
+        todo = [t for t in tasks if t[0] not in ck]
+        if not todo or n_jobs <= 1:
+            return
+        from joblib import Parallel, delayed
+        chunk = 2 * n_jobs
+        for i in range(0, len(todo), chunk):
+            part = todo[i:i + chunk]
+            out = Parallel(n_jobs=n_jobs)(delayed(_fit_task)(*t[1:]) for t in part)
+            for t, o in zip(part, out):
+                ck[t[0]] = o
+            save()
+            log(f"  I3 parallel: {min(i + chunk, len(todo))}/{len(todo)} fits of this batch done")
+
     def record(dataset, stage, prob, d, starts_):
-        def fit():
-            th, chi2, _ = prob.fit(d, starts_)
-            J = prob.jac_theta(th, d)
-            return th, chi2, J
-        th, chi2, J = memo(("rec", dataset, stage), fit)
+        th, chi2, J = memo(("rec", dataset, stage),
+                           lambda: _fit_task(prob, d, starts_, 400, True))
         idf = identifiability(J)
         row = dict(dataset=dataset, stage=stage, chi2_per_dof=float(chi2 / max(J.shape[0] - 9, 1)),
                    theta=th, sd=idf["sd"], truth=th_true.get(stage, th_true["Normal"]),
@@ -256,14 +283,15 @@ def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log
             f"{row['csf_thickness']:6.2f}±{row['csf_thickness_sd']:.2f} (true {R_CSF - row['truth'][0]:.2f})")
         return row
 
+    recs = []                                  # (dataset, stage, prob, d), in report order
     # --- HFSS data: calibration A (brief: per ring distance from Normal) and B (Mild-tuned)
     for s in stages:
         d = Sr[s] - Sr["Normal"]
-        record("HFSS calA (Normal cal.)", s, probA, d, starts)
-        record("HFSS calB (Mild-tuned a2)", s, probB, d, starts)
+        recs.append(("HFSS calA (Normal cal.)", s, probA, d))
+        recs.append(("HFSS calB (Mild-tuned a2)", s, probB, d))
     # noise-only (Normal draw - Normal draw), HFSS
     nz = noisy(f_all, sd.S["Normal"], profile, 1, seed)[0] - noisy(f_all, sd.S["Normal"], profile, 1, seed + 1)[0]
-    record("HFSS calA (Normal cal.)", "noise-only", probA, ring_modes(nz, p2a)[fi], starts)
+    recs.append(("HFSS calA (Normal cal.)", "noise-only", probA, ring_modes(nz, p2a)[fi]))
 
     # --- synthetic: model data (calibration B magnitudes) + measurement noise --------------
     kmat = sd.kmat
@@ -282,10 +310,13 @@ def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log
     for s in stages:
         a = noisy(f_all, Ssyn[s], profile, 1, seed + 20)[0]
         b = noisy(f_all, sd.S["Normal"], profile, 1, seed + 21)[0]
-        record("synthetic (same model)", s, probB, ring_modes(a - b, p2a)[fi], starts)
+        recs.append(("synthetic (same model)", s, probB, ring_modes(a - b, p2a)[fi]))
         a = noisy(f_all, Spat[s], profile, 1, seed + 30)[0]
-        record("synthetic (patch antenna)", s, probB, ring_modes(a - b, p2a)[fi], starts)
-    record("synthetic (same model)", "noise-only", probB, ring_modes(nz, p2a)[fi], starts)
+        recs.append(("synthetic (patch antenna)", s, probB, ring_modes(a - b, p2a)[fi]))
+    recs.append(("synthetic (same model)", "noise-only", probB, ring_modes(nz, p2a)[fi]))
+    prefetch([(("rec", ds, st), pr, d, starts, 400, True) for ds, st, pr, d in recs])
+    for ds, st, pr, d in recs:
+        record(ds, st, pr, d, starts)
 
     # --- identifiability at the truth (CRLB, synthetic, noise-free Jacobian) ---------------
     for s in stages:
@@ -304,16 +335,25 @@ def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log
         return float(10 * np.log10(np.mean([np.mean(np.abs(S[:, i, j]) ** 2) for i, j in k3])))
 
     start_draw = [theta_to_u(th_true["Normal"])]
-    for dataset, Sset, prob in (("HFSS", sd.S, probA), ("synthetic", {**Ssyn, "Normal": sd.S["Normal"]}, probB)):
+    sets = (("HFSS", sd.S, probA), ("synthetic", {**Ssyn, "Normal": sd.S["Normal"]}, probB))
+    groups = (("Normal_train", "Normal", 100), ("Normal_test", "Normal", 200),
+              *[(st, st, 300 + 10 * i) for i, st in enumerate(stages)])
+    draws = {}
+    for dataset, Sset, prob in sets:
+        for name, stage, s0 in groups:
+            draws[(dataset, name)] = (noisy(f_all, Sset[stage], profile, n_draw, seed + s0),
+                                      noisy(f_all, sd.S["Normal"], profile, n_draw, seed + s0 + 1))
+    prefetch([(("cls", dataset, name, i_d), prob, ring_modes(a - b, p2a)[fi], start_draw, 150, False)
+              for dataset, _, prob in sets for name, _, _ in groups
+              for i_d, (a, b) in enumerate(zip(*draws[(dataset, name)]))])
+    for dataset, Sset, prob in sets:
         feats = {}
-        for name, stage, s0 in (("Normal_train", "Normal", 100), ("Normal_test", "Normal", 200),
-                                *[(st, st, 300 + 10 * i) for i, st in enumerate(stages)]):
-            A = noisy(f_all, Sset[stage], profile, n_draw, seed + s0)
-            B = noisy(f_all, sd.S["Normal"], profile, n_draw, seed + s0 + 1)
+        for name, stage, s0 in groups:
+            A, B = draws[(dataset, name)]
             tc, m3 = [], []
             for i_d, (a, b) in enumerate(zip(A, B)):
                 th = memo(("cls", dataset, name, i_d),
-                          lambda: prob.fit(ring_modes(a - b, p2a)[fi], start_draw, max_nfev=150)[0])
+                          lambda: _fit_task(prob, ring_modes(a - b, p2a)[fi], start_draw, 150, False))
                 tc.append(float(R_CSF - th[0]))
                 m3.append(k3_metric(a))
             feats[name] = dict(t_csf=tc, k3_db=m3)

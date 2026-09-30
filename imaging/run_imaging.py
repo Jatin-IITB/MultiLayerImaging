@@ -1,6 +1,6 @@
 """Track A imaging study - one command:
 
-    python imaging/run_imaging.py [--reuse] [--only paths,i1,val,i2,i3] [--no-csv] [--quick]
+    python imaging/run_imaging.py [--reuse] [--only paths,i1,val,i2,i3] [--no-csv] [--quick] [--jobs N]
 
 Reads data/sims.csv + data/raw (shared loader, glitch masking ON), runs
   paths : data-driven propagation-path test (k = 3 question) on HFSS ring couplings
@@ -51,6 +51,8 @@ def main():
     ap.add_argument("--only", default="paths,i1,val,i2,i3")
     ap.add_argument("--no-csv", action="store_true")
     ap.add_argument("--quick", action="store_true", help="few draws (smoke test)")
+    ap.add_argument("--jobs", type=int, default=1,
+                    help="parallel worker processes for the I3 fits (e.g. $SLURM_CPUS_PER_TASK)")
     a = ap.parse_args()
     only = set(a.only.split(","))
     cfg = load_config()
@@ -70,7 +72,8 @@ def main():
         R["i2"] = cached("i2", lambda: study_i2.run(sd, model, n_draw=nd or 30), a.reuse)
     if "i3" in only:
         R["i3"] = cached("i3", lambda: study_i3.run(sd, model, val, n_draw=nd or 20,
-                                                     n_starts=3 if a.quick else 6), a.reuse)
+                                                     n_starts=3 if a.quick else 6,
+                                                     n_jobs=a.jobs), a.reuse)
     from imaging import report
     report.write(R, sd, cfg, write_csv=not a.no_csv)
     print("wrote", OUT / "report.md")

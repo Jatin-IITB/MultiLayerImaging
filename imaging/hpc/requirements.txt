@@ -1,0 +1,10 @@
+# Imaging study on the cluster. Versions = the laptop environment the committed results were
+# produced with (scipy >= 1.15 is required for scipy.special.sph_harm_y).
+numpy==2.3.5
+scipy==1.18.0
+pandas==3.0.5
+matplotlib==3.11.0
+PyYAML==6.0.2
+scikit-learn==1.9.0
+joblib==1.5.3
+pytest==9.1.1
