@@ -13,6 +13,9 @@ Runs
   i2    : sensitivity maps + linearised radial / voxel inversions. With the HFSS field exports in
           data/fields/ (study_i2_hfss): HFSS Green's function + k = 3 path; otherwise forward-model
           fields, labelled SURROGATE (study_i2)
+  ratios: physical test of the Track A ratio lead (R21, R31, R32) with the HFSS-field Born
+          Jacobian: predictions per stage, material/geometry decomposition, sensitivity regions,
+          fragility to stand-off and head scale, MCI vs solve-to-solve
   i3    : 9-parameter model-based nonlinear inversion, identifiability, CSF-thickness classifier
 and writes results/imaging/{report.md, metrics_imaging.csv, figures/*.png}.
 
@@ -34,7 +37,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-from imaging import paths, stage_snr, study_i1, study_i2, study_i2_hfss, study_i3  # noqa: E402
+from imaging import paths, stage_snr, study_i1, study_i2, study_i2_hfss, study_i3, study_ratios  # noqa: E402
 from imaging.common import OUT, data_tag, load_config, load_stages  # noqa: E402
 from imaging.fields import fields_available  # noqa: E402
 
@@ -77,7 +80,7 @@ def cached(name, fn, reuse, sim_set, tag):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--reuse", action="store_true")
-    ap.add_argument("--only", default="paths,snr,i1,val,i2,i3")
+    ap.add_argument("--only", default="paths,snr,i1,val,i2,ratios,i3")
     ap.add_argument("--no-csv", action="store_true")
     ap.add_argument("--quick", action="store_true", help="few draws (smoke test)")
     ap.add_argument("--jobs", type=int, default=1,
@@ -114,12 +117,14 @@ def main():
             go("i2", lambda: study_i2_hfss.run(sd, n_draw=nd or 30))
         else:
             go("i2", lambda: study_i2.run(sd, model, n_draw=nd or 30))
+    if "ratios" in only and fields_available():
+        go("ratios", lambda: study_ratios.run(sd))
     if "i3" in only:
         go("i3", lambda: study_i3.run(sd, model, val, n_draw=nd or 20,
                                       n_starts=3 if a.quick else 6, n_jobs=a.jobs,
                                       ck_dir=cache_dir(ss)))
     if a.fallback:
-        for name in ("paths", "snr", "i1", "val", "i2", "i3"):
+        for name in ("paths", "snr", "i1", "val", "i2", "ratios", "i3"):
             if name not in R and (r := load_cached(a.fallback, name)) is not None:
                 R[name] = r
     if "val" in R and isinstance(R["val"], dict) and "val" in R["val"]:
