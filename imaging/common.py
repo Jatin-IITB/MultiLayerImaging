@@ -45,11 +45,12 @@ FIXED = {"skull": (10.8, 0.61), "fat": (10.5, 0.42), "skin": (37.0, 2.0)}
 ASSUMPTIONS = [
     "Skin/fat/skull materials are not in MODEL_CARD.md (OPEN-GUI): assumed skin 37/2.0, "
     "fat 10.5/0.42, skull 10.8/0.61 (eps_r / S/m).",
-    "Ring z-sign and antenna orientation are OPEN in MODEL_CARD.md: ring assumed at +z "
-    "(polar angle 60.5 deg), broadside facing the origin; S is mirror-symmetric in z so the sign "
-    "does not affect S, only image coordinates.",
-    "Antenna = point electric dipole at the feed point, tangential to the sphere; the "
-    "polarisation (theta^ vs phi^) is chosen by the fit to the HFSS Normal ring couplings.",
+    "Ring geometry from the HFSS field exports (2026-10-02): ring at +z (feed polar angle "
+    "60.5 deg), T1 at azimuth -90 deg, T1..T6 consecutive at +60 deg, broadside facing the origin.",
+    "Forward model (I3, section 3): antenna = point electric dipole at the feed, tangential to the "
+    "sphere, with the polarisation (theta^ or phi^) chosen by the fit to the HFSS Normal ring "
+    "couplings. The field exports show the real near field is mixed (about 65 % theta^ / 35 % "
+    "phi^ in amplitude), so either choice is an approximation.",
     "Normal-stage materials are back-calculated values (MODEL_CARD caveat).",
     "The HFSS materials are static (no dispersion); the model uses the same constant eps_r, sigma.",
 ]
@@ -107,10 +108,14 @@ THETA0_DEG = 60.5
 N_ANT = 6
 
 
+AZ_T1_DEG = -90.0      # T1 azimuth, from the HFSS field exports (2026-10-02); T1..T6 at +60 deg
+
+
 def antenna_positions_mm(z_sign: int = +1) -> np.ndarray:
-    """(6, 3) feed positions of antennas T1..T6 (azimuth (t-1)*60 deg)."""
+    """(6, 3) feed positions of antennas T1..T6: polar 60.5 deg (ring at +z), azimuth
+    -90 + (t-1)*60 deg (both established from the HFSS field exports)."""
     th = np.deg2rad(THETA0_DEG)
-    ph = np.deg2rad(60.0 * np.arange(N_ANT))
+    ph = np.deg2rad(AZ_T1_DEG + 60.0 * np.arange(N_ANT))
     return R_FEED_MM * np.stack([np.sin(th) * np.cos(ph), np.sin(th) * np.sin(ph),
                                  z_sign * np.cos(th) * np.ones(N_ANT)], -1)
 

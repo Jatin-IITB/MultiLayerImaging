@@ -120,7 +120,8 @@ def radial_points(r_mm: np.ndarray, n_dir: int = 200) -> np.ndarray:
 
 
 def plane_points(plane: str, z_ring_mm: float, step=3.0, lim=90.0, r_max=88.0):
-    """Grid points of the ring plane (z = z_ring) or the vertical plane y = 0, inside r_max.
+    """Grid points of the ring plane (z = z_ring) or the vertical plane x = 0 (through T1 at
+    azimuth -90 deg and T4 at +90 deg), inside r_max.
 
     Returns (pts (P, 3), mask (n, n) of kept points, axes u)."""
     u = np.arange(-lim, lim + 1e-9, step)
@@ -128,7 +129,7 @@ def plane_points(plane: str, z_ring_mm: float, step=3.0, lim=90.0, r_max=88.0):
     if plane == "ring":
         P = np.stack([A, B, np.full_like(A, z_ring_mm)], -1)
     elif plane == "vertical":
-        P = np.stack([A, np.zeros_like(A), B], -1)
+        P = np.stack([np.zeros_like(A), A, B], -1)          # (x=0, y=A, z=B)
     else:
         raise ValueError(plane)
     m = np.linalg.norm(P, axis=-1) < r_max

@@ -66,7 +66,7 @@ def run(sd, profile="typical", n_draw=30, seed=4400, log=print):
     res = {"field_source": "HFSS"}
     f_all, p2a, kmat = sd.f_hz, sd.port_to_ant, sd.kmat
     prof = PROFILES[profile]
-    stages = [s for s in ("Mild", "Moderate", "Severe") if s in sd.S]
+    stages = [s for s in ("MCI", "Mild", "Moderate", "Severe") if s in sd.S]
     a_of_port = np.asarray(p2a) - 1
 
     # ---------------- checks ------------------------------------------------------------------
@@ -164,6 +164,12 @@ def run(sd, profile="typical", n_draw=30, seed=4400, log=print):
                                    for k in range(4)}
     log("I2-HFSS: maps done")
 
+    # whitened size (matched-filter SNR, 3 frequencies, ring modes) of the Born-predicted dS of
+    # each stage's TRUE change vs the actual HFSS dS: does the simulated change explain the data?
+    res["born_snr"] = {s: dict(pred_abs=float(np.linalg.norm(born[s] / sig_h)),
+                               pred_kappa=float(np.linalg.norm(kappa[:, None] * born[s] / sig_h)),
+                               hfss=float(np.linalg.norm(dS[s] / sig_h)))
+                       for s in stages}
     sig_m = (sig_h / np.abs(kappa)[:, None]).ravel()
     Jr = to_real(Jc, sig_m)
     tik = TikhonovSVD(Jr)
