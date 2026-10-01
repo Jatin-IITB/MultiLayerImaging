@@ -756,7 +756,9 @@ def _ranges(r):
 
 
 def _verdict_section(R):
-    L = ["## 6. Verdict — what 6 antennas on one ring at 3.2–4.2 GHz can and cannot localise", ""]
+    L = ["## 6. Verdict — what 6 antennas on one ring in this band can and cannot localise", "",
+         "Each item cites the section it rests on. §4 uses the v2 data with the HFSS fields; the "
+         "other sections use v1 (see the data line under each heading).", ""]
     can, cannot = [], []
     if "i1" in R:
         st = R["i1"]["stages"]
@@ -780,7 +782,13 @@ def _verdict_section(R):
         best = np.max(sn[key][4], -1)
         med = np.median(sn[key][4], -1)
         r1 = _rmin(sn["r"], best, 1.0)
-        reach = (f"down to r ≈ {r1:.0f} mm (the outer ~{83.5 - r1:.0f} mm of brain)" if np.isfinite(r1)
+        if hf2:
+            r_abs = _rmin(sn["r"], np.max(sn["snr"][4], -1), 1.0)
+            reach = (f"down to r ≈ {r_abs:.0f} mm on the absolute 1 V scale and at most r ≈ {r1:.0f} mm "
+                     f"κ-calibrated (the outermost ~1–{83.5 - r1:.0f} mm of brain)")
+        else:
+            reach = None
+        reach = reach or (f"down to r ≈ {r1:.0f} mm (the outer ~{83.5 - r1:.0f} mm of brain)" if np.isfinite(r1)
                  else "nowhere inside the brain, at best ≈ "
                       f"{float(np.interp(83.0, sn['r'], best)):.1f} just under the brain surface")
         can.append(f"**Sense only the outermost brain, and only right under an antenna.** A 1 cm³ "
@@ -805,7 +813,7 @@ def _verdict_section(R):
                          "Voxel point-spread functions peak tens of mm from the true voxel. ")
                       + "Neither the radial nor the voxel inversion recovers the true change, even from "
                       "noise-only Born-consistent synthetic data. On HFSS data they return noise or zero"
-                      + (", and the absolute Born prediction is only 0.2–0.4 of the HFSS dS (§4.1)." if hf2 else "."))
+                      + (", and the linear (Born) model explains the HFSS dS poorly (§4.1)." if hf2 else "."))
     if hf2 and "k3_path" in R["i2"]:
         rf = R["i2"]["k3_path"]["region_fraction"]
         can.append(f"**Explain the k = 3 signal.** With the real antennas' fields, "

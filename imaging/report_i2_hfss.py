@@ -29,6 +29,14 @@ def _rmin(r, v, thr):
     return float(r[i])
 
 
+def _first_below(r, v, thr):
+    """Largest radius (scanning inward from the surface) where v drops below thr."""
+    for i in range(len(r) - 1, -1, -1):
+        if v[i] < thr:
+            return float(r[i])
+    return float("nan")
+
+
 def _ranges(r):
     if len(r) == 0:
         return "none"
@@ -246,20 +254,29 @@ def section(R2, t, label, R2_surrogate=None):
         for k in range(4):
             rows.append(dict(stage=s, k=k, born_over_hfss=v["ratio_born_over_hfss"][k],
                              err_abs_scale=v["abs_scale"][k], err_kappa_mild=v["kappa_mild"][k]))
+    kr, kv = np.abs(kap["kappa"]), np.abs(R2["kappa_voxel"]["kappa"])
+    ph = np.degrees(np.unwrap(np.angle(kap["kappa"])))
+    dph = float(np.mean(np.diff(ph)) / (np.mean(np.diff(kap["f"])) / 1e9))           # deg per GHz
+    bo = [x["born_over_hfss"] for x in rows]
+    ek = [x["err_kappa_mild"] for x in rows if x["stage"] in REPORTED]
     L += [t(rows, ["stage", "k", "born_over_hfss", "err_abs_scale", "err_kappa_mild"],
             {c: ".2f" for c in ["born_over_hfss", "err_abs_scale", "err_kappa_mild"]}), "",
           "Reading:",
-          "- |κ| ≈ 1.9 at 3.4 and 3.6 GHz. That is consistent with a factor-2 power-wave normalisation "
-          "convention (peak vs rms) plus the Born error. It is not a free fudge factor. At 3.8 GHz "
-          "|κ| ≈ 11: there the Born prediction misses the HFSS dS badly (the k = 2 couplings have "
-          "deep nulls near 3.8 GHz).",
-          "- The phase of κ turns by about −48° per 200 MHz, i.e. a residual delay of ~0.7 ns between "
-          "the field-export phase reference and the S-parameter reference plane. A feed line in front "
-          "of each patch would do this, but it was not measured, so treat it as unexplained.",
-          "- The Born prediction of the true change is only 0.2–0.4 of the HFSS dS (column "
-          "born_over_hfss), and even with κ fitted on Mild the errors for Moderate/Severe are "
-          "0.4–1.5. The AD change (12–21 mm of gray/white replaced by CSF) is far from a small "
-          "perturbation, so linear inversion can at best give a qualitative picture.", ""]
+          f"- At 3.4 and 3.6 GHz |κ| = {kv[0]:.2f} and {kv[1]:.2f} (voxel Jacobian, fields taken at the "
+          f"grid nodes) and {kr[0]:.2f} and {kr[1]:.2f} (radial Jacobian, fields interpolated onto thin shells). "
+          "So the absolute 1 V Born scale holds to within a factor of ~2. The spread between the two "
+          "shows how much the result depends on how the 3 mm grid samples the fields at the thin "
+          f"CSF/skull interfaces. At 3.8 GHz |κ| = {kv[2]:.0f}–{kr[2]:.0f}: there the Born prediction "
+          "misses the HFSS dS badly (the k = 2 couplings have deep nulls near 3.8 GHz).",
+          f"- The phase of κ turns by about {dph * 0.2:.0f}° per 200 MHz, i.e. a residual delay of "
+          f"~{abs(dph) / 360:.1f} ns between the field-export phase reference and the S-parameter "
+          "reference plane. A feed line in front of each patch would do this, but it was not "
+          "measured, so treat it as unexplained.",
+          f"- The Born prediction of the true change is only {min(bo):.2f}–{max(bo):.2f} of the HFSS dS "
+          "(column born_over_hfss, radial Jacobian, absolute scale). Even with κ fitted on Mild, the "
+          f"errors for Moderate/Severe are {min(ek):.1f}–{max(ek):.1f}. The AD change (12–21 mm of "
+          "gray/white replaced by CSF) is far from a small perturbation, so a linear inversion can at "
+          "best be qualitative.", ""]
     # ---- where can it see
     sn = R2["snr_radial"]
     rows = []
@@ -283,10 +300,16 @@ def section(R2, t, label, R2_surrogate=None):
                                                       "median_max"]}), "",
           "Volume-weighted fraction of the (relative) sensitivity inside r < 60 mm: "
           + ", ".join(f"{k} {v:.1%}" for k, v in R2["sens_fraction_core60"].items()) + ".", "",
-          "- With only 3 frequencies and the measured antennas, a localised 1 cm³ change reaches "
-          "SNR ≈ 1 only in the outermost few mm of the brain right under an antenna. In every other "
-          "direction, and at every depth below ~1 cm, it is far below the noise. Below ~60 mm the "
-          "SNR is 10–100× under 1 on both scales.",
+          f"- Best direction, all pairs: SNR ≥ 1 down to r ≈ {rows[4]['r_min_snr1']:.0f} mm on the "
+          f"absolute scale and r ≈ {rows[9]['r_min_snr1']:.0f} mm κ-calibrated: between the "
+          f"outermost ~{max(83.5 - rows[4]['r_min_snr1'], 1):.0f} mm and the outer "
+          f"~{83.5 - rows[9]['r_min_snr1']:.0f} mm of brain, and only right under an antenna. The κ-calibrated values are an upper bound: they include "
+          "3.8 GHz, where |κ| ≈ 8–11 because Born fails (§4.1).",
+          f"- In the median direction the SNR never exceeds {rows[4]['median_max']:.2f} (absolute) / "
+          f"{rows[9]['median_max']:.2f} (κ). At r = 60 mm even the best direction gives "
+          f"{rows[4]['best_at_60']:.2f} / {rows[9]['best_at_60']:.2f}, and at r = 20 mm "
+          f"{rows[4]['best_at_20']:.3f} / {rows[9]['best_at_20']:.3f}. A localised change deeper "
+          "than ~1.5 cm is below the noise everywhere.",
           "- Figures: `figures/i2h_sensitivity_maps.png`, `figures/i2h_detectability_radial.png`.", ""]
     # ---- k3 path
     kp = R2["k3_path"]
@@ -329,12 +352,18 @@ def section(R2, t, label, R2_surrogate=None):
           f"(λ = {rad['lam_tv']:.2g}, tuned on Mild synthetic data). Errors vs the true shell profile:", "",
           t(rows, ["data", "stage", "method", "rel_err_eps_r", "rel_err_eps_pp", "corr_eps_r", "corr_eps_pp"],
             {c: ".2f" for c in ["rel_err_eps_r", "rel_err_eps_pp", "corr_eps_r", "corr_eps_pp"]}), "",
-          f"Resolution-matrix diagonal ≥ 0.5 at r ∈ {_ranges(good)} mm (max {max(rd['eps_r'].max(), rd['eps_pp'].max()):.2f}); "
-          "below ~74 mm it falls under 0.3 and below ~60 mm under 0.1.",
-          "- Even noise-perturbed **Born-consistent** synthetic data are not recovered (errors ≥ 0.9, "
-          "correlations ≤ 0.45). On HFSS data the GCV solutions blow up (the data are not Born-"
-          "consistent, §4.1), the L-curve returns ≈ 0, and TV has the wrong sign. Figure: "
-          "`figures/i2h_inversions.png`.", ""]
+          f"Resolution-matrix diagonal (GCV λ on Mild synthetic) ≥ 0.5 at r ∈ {_ranges(good)} mm "
+          f"(max {max(rd['eps_r'].max(), rd['eps_pp'].max()):.2f}). Scanning inward, it falls below "
+          f"0.3 at r ≈ {_first_below(rad['r'], np.maximum(rd['eps_r'], rd['eps_pp']), 0.3):.0f} mm and "
+          f"below 0.1 at r ≈ {_first_below(rad['r'], np.maximum(rd['eps_r'], rd['eps_pp']), 0.1):.0f} mm. "
+          "Only the outer ~1 cm has any depth resolution.",
+          f"- Even noise-perturbed **Born-consistent** synthetic data are not recovered: rel. errors "
+          f"{min(min(x['rel_err_eps_r'], x['rel_err_eps_pp']) for x in rows if x['data'] == 'synthetic-linear'):.2f}–"
+          f"{max(max(x['rel_err_eps_r'], x['rel_err_eps_pp']) for x in rows if x['data'] == 'synthetic-linear'):.2f}, "
+          f"correlations ≤ {max(max(x['corr_eps_r'], x['corr_eps_pp']) for x in rows if x['data'] == 'synthetic-linear'):.2f}. "
+          "On HFSS data, GCV is near zero for Mild and blows up for Moderate/Severe (the data are not "
+          "Born-consistent, §4.1). The L-curve returns ≈ 0, and TV is mostly anti-correlated with "
+          "the truth. Figure: `figures/i2h_inversions.png`.", ""]
     vx = R2["voxel"]
     rows = []
     for key, v in vx["err"].items():
@@ -349,11 +378,15 @@ def section(R2, t, label, R2_surrogate=None):
           "Point-spread functions (resolution-matrix columns) for voxels along T1's feed direction:", "",
           t(vx["psf"], ["r_mm", "voxel_mm", "diag", "peak_at_mm", "peak_offset_mm", "n_vox_above_half"],
             {"diag": ".1e", "peak_offset_mm": ".0f"}), "",
-          "- A voxel 3 mm under the brain surface right below T1 is imaged in place (offset ≈ one "
-          "voxel, though its diagonal is only ~2 %). At 60–70 mm the image of a point is pulled "
-          "13–17 mm outward. At 20–40 mm it appears 40–65 mm away, near the surface: depth is not "
-          "resolved. The L1 solution is the all-zero image (no sparse pattern beats zero on Mild), "
-          "and Tikhonov images of HFSS data are uncorrelated with the truth (corr ≤ 0.12). "
+          "- Point images, inward along T1's feed direction: "
+          + "; ".join(f"r = {p['r_mm']:.0f} mm → peak {p['peak_offset_mm']:.0f} mm away (diag {p['diag']:.0e})"
+                      for p in vx["psf"])
+          + ". Only the voxel just under the brain surface is imaged near its place, and even that "
+          "recovers well under 1 % of a unit change. Deeper voxels are imaged outward toward the "
+          "surface: depth is not resolved.",
+          "- The L1 solution is the all-zero image (no sparse pattern beats zero on Mild). Tikhonov "
+          "images of HFSS data are uncorrelated with the truth (corr ≤ "
+          f"{max(x['corr_eps_r'] for x in rows if x['data'] == 'HFSS' and x['method'] == 'tikhonov-gcv'):.2f}). "
           "Figure: `figures/i2h_voxel.png`.", ""]
     if R2_surrogate is not None:
         s2 = R2_surrogate
