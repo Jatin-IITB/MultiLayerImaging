@@ -44,6 +44,7 @@ from adstage.classes import scheme_groups, scheme_label  # noqa: E402
 from adstage.config import load_config  # noqa: E402
 from adstage.features.floor import CLIP, floor_power  # noqa: E402
 from adstage.features.metrics import band_avg, ring_distance_matrix, to_ring_order  # noqa: E402
+from adstage.features.ring_features import features  # noqa: E402
 from adstage.io.dataset import load_dataset  # noqa: E402
 from adstage.noise.model import PROFILES  # noqa: E402
 from adstage.noise.reference import mesh_pairs  # noqa: E402
@@ -56,48 +57,7 @@ PRELIM = "preliminary: one head, two solves, 4 repeat pairs"
 P_STAR = 0.7
 
 
-# ============================================================ features
-def features(f, D, subband_hz=50e6):
-    """D (n, F, N, N) ring order -> X (n, p), names, groups."""
-    n, F, N, _ = D.shape
-    band = (float(f[0]), float(f[-1]))
-    sbs = [(lo, min(lo + subband_hz, f[-1])) for lo in np.arange(f[0], f[-1] - 1, subband_hz)]
-    P = np.abs(D) ** 2
-    pf = floor_power(D)
-    dist = ring_distance_matrix(N)
-    cols, names = [], []
-    groups = {"G_refl": [], "G_coup": [], "G_ratio": [], "G_all": []}
-
-    def add(v, name, grp):
-        groups[grp].append(len(names))
-        groups["G_all"].append(len(names))
-        cols.append(v)
-        names.append(name)
-
-    for k in range(N // 2 + 1):
-        Pk = P[:, :, dist == k].mean(-1)                           # (n, F) ring-symmetrised
-        if k:
-            Pk = np.maximum(Pk - pf[:, None], CLIP)
-        grp = "G_refl" if k == 0 else "G_coup"
-        for lo, hi in sbs:
-            add(10 * np.log10(band_avg(f, Pk, (lo, hi))), f"k{k}_sb{lo / 1e9:.2f}", grp)
-        add(10 * np.log10(band_avg(f, Pk, band)), f"k{k}_band", grp)
-    idx = np.arange(N)
-
-    def path(k):                                                  # one direction, per antenna
-        p = P[:, :, (idx + k) % N, idx]                            # (n, F, N)
-        return np.maximum(band_avg(f, np.moveaxis(p, 1, 2), band) - pf[:, None], CLIP)
-
-    lg = {k: np.log(path(k)).mean(1) for k in (1, 2, 3)}          # log geometric means
-    for a, b in ((3, 1), (2, 1), (3, 2)):
-        add(10 / np.log(10) * (lg[a] - lg[b]), f"R{a}{b}", "G_ratio")
-    Nabs = band_avg(f, (1 - P.sum(-2)).mean(-1), band)
-    add(Nabs, "N", "G_refl")
-    add(10 * np.log10(np.maximum(Nabs, 1e-12)), "logN", "G_refl")
-    X = np.stack(cols, 1)
-    singles = {"R31": [names.index("R31")], "C3": [names.index("k3_band")],
-               "C2": [names.index("k2_band")]}
-    return X, names, groups, singles
+# ============================================================ features: adstage.features.ring_features
 
 
 # ============================================================ covariance estimators
