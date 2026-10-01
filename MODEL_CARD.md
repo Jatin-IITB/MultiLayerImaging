@@ -250,7 +250,9 @@ Reproduce with `python scripts/00_qc.py --include-moderate` → `results/qc/qc_r
 - All 5 files are 6-port `GHz S MA R 50`, 2.8–4.2 GHz, 281 points. The common grid is now the full
   2.8–4.2 GHz band, with no resampling.
 - Passive (σ_max ≤ 0.982). Reciprocal to −88…−98 dB (median, relative to band level).
-- **No glitches in any file.** Glitch masking remains switched on but has nothing to mask.
+- **Nearly glitch-free.** The QC count (local reciprocity error > −20 dB) finds none. The more
+  sensitive masking rule (> −30 dB of the band level) masks 1 point in Normal (pair 4–5,
+  3.43 GHz) and 6 in Severe (pair 2–5, 3.505 GHz). v1 had 26.
 - **Port map `[4,3,2,1,6,5]`** ranks 1st of the 60 ring orderings in every file.
 
 **Symmetry noise floor** (rms of the across-antenna SD, dB) is 2–3× lower than v1:

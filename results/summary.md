@@ -2,11 +2,64 @@
 
 **Standing caveats**
 
-- One simulation per stage, so results show noise robustness only, not generalisation to
-  new heads.
-- The between-mesh noise floor has not been measured yet. All AD-vs-AD comparisons are
-  **unverified against mesh noise**.
+- **One head geometry.** Nothing here is generalisation to new heads.
+- **Dataset v2 (current):** all stages re-solved in one project, 2.8–4.2 GHz, plus MCI. Run 1
+  (`results/02`, `results/03`) uses these 5 solves.
+- **Run 2** (`results/v2_with_v1_repeats/`) adds the archived v1 solves as repeats of the same
+  designs; only the sweep settings differ. This gives two solves per stage (MCI excepted),
+  a measured solve-to-solve noise and leave-one-solve-out CV, on 3.2–4.2 GHz. The noise SD
+  comes from only 4 repeat pairs, so it is a rough estimate.
 - Headline scheme: `binary` (Normal vs AD).
+
+## Dataset v2 and cross-solve test (run 1 code `f142bf6`, run 2 code `c95604c`)
+
+**Normal vs AD survives a change of solve.** Training on one solve and testing on the other
+(run 2):
+
+| Feature / rule | Result |
+|---|---|
+| Full-band M5.C3, any reasonable model | balanced accuracy 0.98–0.99 |
+| M9 full spectrum (LDA) | 1.00 |
+| R31 complete rule | sensitivity 1.00 / specificity 1.00 per measurement, also with ±2 dB per-port gain errors |
+| M7 (difference from a Normal reference) | collapses to 0.52 (the reference is solve-specific) |
+| M0, M1, M2 (reflection-based) | near chance, as before |
+
+**Gaps relative to the solve-to-solve SD** (Normal vs AD):
+
+| Feature | Gap / solve SD | Solve SD | τ | Margin |
+|---|---|---|---|---|
+| M5.C3 | 7.0× | 0.31 dB | −52.72 dB (3.2–4.2 GHz) | 0.24 dB |
+| R31 | ≈ 10× | 0.15 dB | −15.27 dB | 0.08 dB |
+
+R31's threshold is the same within 0.13 dB across the v1, v2 and combined data (−15.17,
+−15.14, −15.27 dB).
+
+**AD stages (3-class): mixed, still not a claim.**
+
+- Under leave-one-solve-out, the M5 family (total, neighbour, second-neighbour and opposite
+  coupled power) still gives 0.96 (`three`) and 0.98 (`three_merged`) with LDA.
+- The full-spectrum, sub-band and combination sets depend strongly on the model: in `three`,
+  M9 gives 0.93 with ORD but 0.37 with LR, and M6 gives 0.71 with LDA but 0.28 with LR.
+  That points to solve-specific detail.
+- The opposite-path feature does not separate Mild from Severe: gap 0.55× solve SD. The
+  second-neighbour power M5.C2 does, at 3.9×. It is the one candidate 3-class feature, but
+  the evidence is one head, two solves and 4 repeat pairs.
+- Headline stays `binary`.
+
+**MCI (`binary_early`): not supported.**
+
+- Run 1 shows 1.00 with spectral-shape features but only 0.70 with full-band M5.C3. R31
+  differs from Normal by 0.06 dB, less than the 0.15 dB solve SD. Physically, MCI changes
+  only the central hippocampus, which this array cannot see.
+- The perfect scores follow the resonance and sub-band shape (M6 around 3.40–3.60 GHz).
+  These move ±16 MHz between solves of the same design.
+- Run 2 cannot settle it, because MCI has a single solve. **An MCI repeat solve is needed**
+  before any MCI claim.
+
+**Spectral-shape features in general.** Two solves of the *same* stage differ by 0.9–1.5 dB
+rms in opposite-path spectral shape (`results/qc/solve_comparison.md`), as much as Normal vs
+AD. Treat any perfect score from M6/M9/COMB as possibly solve-specific unless it survives
+leave-one-solve-out with several models.
 
 ## Prompt 03 follow-ups — noise floor, calibration-free R31, per-measurement rule (code `6eca5d7`; plotting fix `45e16c6`)
 
