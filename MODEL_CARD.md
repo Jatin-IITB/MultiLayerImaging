@@ -67,6 +67,13 @@ Anything F1 assumes about frequency dependence must match the simulation (consta
   slot_distance = 15 mm, ant_dist = 115 mm, z_ebg = −94.575 mm.
 - **Ring:** uniform, 60° azimuthal spacing. The feed points sit 97.55 mm from the origin at
   a polar angle of 60.5°.
+- **Settled by the HFSS field exports** (Part 4; imaging report §4):
+  - The ring is at **+z** (upper hemisphere), at a polar angle of 60.5°.
+  - **T1 is at azimuth −90°.** T1…T6 are consecutive in steps of **+60°**, so T4 is at +90°
+    and the T1–T4 plane is x = 0.
+  - The antenna near field is mixed, about **65% θ / 35% φ** polarised.
+  - The antennas' fields match each other's rotated copies to **11–16% rms**. **T1 and T4
+    are about 4% stronger** than the other four.
 - **Excitation:** HFSS Driven Terminal, lumped 50 Ω ports, radiation boundary box.
 
 ### Port mapping (card)
@@ -190,7 +197,7 @@ Numbers are across the t equivalent pairs at each ring distance k:
 
 | Item | Status | Evidence |
 |---|---|---|
-| Port→antenna order (T1…T6 consecutive, `[4,3,2,1,6,5]`) | **Supported by data** | Tested against all 60 distinct ring orderings. The card's mapping gives the lowest circulant error in every file, and by a wide margin: 0.36–0.64 dB vs 1.71–2.18 dB for the next best. It is equivalent to "file ports 1–6 are consecutive around the ring". The data cannot tell a ring direction or rotation from its mirror, so this is irrelevant for a symmetric head. |
+| Port→antenna order (T1…T6 consecutive, `[4,3,2,1,6,5]`) | **Supported by data** | Tested against all 60 distinct ring orderings. The card's mapping gives the lowest circulant error in every file, and by a wide margin: 0.36–0.64 dB vs 1.71–2.18 dB for the next best. It is equivalent to "file ports 1–6 are consecutive around the ring". The S-parameters cannot tell a ring direction or rotation from its mirror. **Now confirmed directly by the HFSS fields** (Part 4): T1…T6 consecutive at +60°, starting from T1 at −90°. |
 | Ring geometry arithmetic | **Consistent** | 97.55·cos 60.5° = 48.04 mm (\|z\|); 97.55·sin 60.5° = 84.90 mm (ring radius); stand-off 97.55 − 88 = 9.55 mm. |
 | Resonance ≈ 3.62 GHz; 3624 → 3626 → 3628 → 3630 MHz | **Reproduced; the spread across ports is larger than the card says** | Mean of per-port min \|Sii\| (native grid, parabolic refinement): 3623.9 / 3626.7 / 3627.7 / 3628.8 MHz (Normal / Mild / Moderate / Severe). Port ranges: Normal 3622–3625, Mild 3618–3634, Moderate 3624–3630, Severe 3626–3634 MHz. The trend is monotonic but inside the port scatter; it is not usable as a single-shot feature. |
 | Shoulder 3.38–3.52 GHz: Normal −10 dB vs AD −8.3 to −8.9 dB | **Reproduced (definitions differ)** | The ring-mean point minimum for Normal is ≈ −10 dB. The power average over the band is Normal −8.96, Mild −8.19, Moderate −8.25, Severe −7.86 dB, with a port spread (max − min) of 0.38–0.54 dB. Normal vs AD differs by 0.6–1.1 dB, which is about 2× the port spread. Mild ≈ Moderate. |
@@ -198,8 +205,12 @@ Numbers are across the t equivalent pairs at each ring distance k:
 | Healthy file actually uses Normal geometry (not Mild) | **OPEN — GUI** | Headers are untrusted, so this cannot be settled from the files. Weak data hint: Normal differs from all AD stages by 2–5× the port noise in the opposite-antenna (k=3) coupling, and the AD stages cluster together. That fits a genuinely different Normal geometry and material set, but does not prove it. |
 | Skin / fat / skull εr, σ | **OPEN — GUI** | Not in the data. |
 | Normal-stage εr, σ as assigned in HFSS | **OPEN — GUI** | Not in the data. |
-| Meaning of `ant_dist`, `z_ebg`; sign of ring z | **OPEN — GUI** | Not in the data. A symmetric head makes the S-parameters insensitive to the sign of z (mirror symmetry), but F1 needs it. |
-| Sweep type (interpolating vs discrete), convergence ΔS, mesh settings per project | **OPEN — GUI** | Needed to explain the glitches and to size the mesh noise. |
+| Sign of ring z | **SETTLED: +z** (HFSS fields, Part 4) | Every antenna's field centroid lies in the upper hemisphere, at polar ≈ 55° (the feed is at 60.5°). |
+| Antenna azimuths | **SETTLED: T1 at −90°, +60° steps** (HFSS fields, Part 4) | Field centroids at −90.5, −31.0, 29.6, 89.4, 148.9, −150.4°. The imaging I1/I3 geometry had assumed T1 at 0°. That has no effect on S for a symmetric head, and none on the classifier, which uses only the ring order. |
+| Antenna polarisation | **SETTLED: ≈ 65% θ / 35% φ** (HFSS fields, Part 4) | θ-fraction 0.65 for all six antennas. The point-dipole forward model (pure φ) is therefore wrong in kind; this is part of its validation failure. |
+| Field-level ring symmetry | **SETTLED: 11–16% rms; T1, T4 ≈ 4% stronger** (HFSS fields, Part 4) | The field-level counterpart of the S-parameter port asymmetry. |
+| Meaning of `ant_dist`, `z_ebg` | **OPEN — GUI** | Not in the data. |
+| Sweep type (interpolating vs discrete), convergence ΔS, mesh settings per project | **PARTLY OPEN** | v1 and v2 differ only in sweep settings (user, 2026-10-01). Mesh settings have not been varied yet; a Normal mesh repeat is planned (`data/sim_plan.csv`). |
 
 ### Project-confound assessment (common grid)
 
@@ -281,3 +292,43 @@ only mesh/sweep settings changed, this is an estimate of solve-to-solve noise.
   changes only the central hippocampus, where the array has no sensitivity (imaging study). Its
   whole-spectrum difference from Normal (≈1 dB on k3) is the same size as solve-to-solve
   variation.
+
+---
+
+## Part 4 — Facts settled by the HFSS field exports (2026-10-02)
+
+**Source:** imaging report §4.0 and §4.3 (`results/imaging/report.md`, imaging-agent commits
+18b1573–8fcae28).
+
+**Data:** HFSS calculator exports of the complex E field for the **Normal** v2 design. There is
+one file per driven antenna (1 V incident, other ports matched), at 3.4 / 3.6 / 3.8 GHz, on a
+3 mm grid from −90 to 90 mm, plus a ±120 mm / 4 mm export of T1 at 3.6 GHz. They are stored in
+`data/fields/` (19 files, about 880 MB, kept out of git).
+
+**Antennas located from their own fields.** Each centroid is the |E|-weighted centre of the
+strongest air nodes at r = 89–93 mm.
+
+| Antenna | Azimuth (°) | Field-centroid polar angle (°) | θ fraction |
+|---|---|---|---|
+| T1 | −90.5 | 55.1 | 0.65 |
+| T2 | −31.0 | 54.9 | 0.65 |
+| T3 | 29.6 | 55.0 | 0.65 |
+| T4 | 89.4 | 55.1 | 0.65 |
+| T5 | 148.9 | 55.1 | 0.65 |
+| T6 | −150.4 | 55.0 | 0.65 |
+
+- **Ring at +z, T1 at −90°, T1…T6 consecutive at +60°.** The feed polar angle of 60.5° stays the
+  geometric value; the field centroid sits slightly above it.
+- **Mixed polarisation,** ≈ 65% θ / 35% φ in amplitude.
+- **Ring symmetry at field level.** Inside r < 88 mm, each antenna's field differs from its
+  opposite antenna's field (rotated 180°) by 11.4–15.8% rms across 3.4–3.8 GHz. At 3.6 GHz the
+  rms amplitudes relative to the six-antenna mean are T1 1.044, T2 0.974, T3 0.981, T4 1.046,
+  T5 0.973 and T6 0.979.
+- **The k = 3 path (§4.3)** confirms the earlier delay test with the real antennas.
+  - 99% of the T1–T4 Born sensitivity lies in air; only 0.3% is in the brain.
+  - Half-way between T1 and T4, the field is −33 dB on the arc around the head against −57 dB
+    on the straight chord through it.
+  - Of the small in-brain part, 73% lies within 13.5 mm of the brain surface.
+- **Effect on results: none.** The classification pipeline uses only the ring order, which is
+  unchanged; no rerun is needed. The imaging forward model (point dipole, φ-polarised, T1 at 0°)
+  disagrees with these facts. That is consistent with its documented validation failure.

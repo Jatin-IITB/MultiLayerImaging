@@ -1,0 +1,6 @@
+# Planned HFSS solves. Not read by the pipeline. When a solve is done, copy its row (first 9 columns)
+# into data/sims.csv (and data/sims_with_repeats.csv), put the file in data/raw/, then: python scripts/run_all.py
+# Columns 1-9 match sims.csv; status = planned | running | done; hfss_change = what differs from the reference solve.
+file,class,head_scale,standoff_mm,notes,project,head_id,role,repeat_of,status,hfss_change,purpose
+new_Healthy_meshrep.s6p,Normal,1.0,9.55,Normal re-solve with tighter mesh convergence,new,h0,mesh_repeat,new_Healthy.s6p,planned,"adaptive mesh Max Delta S 0.02 -> 0.01; same sweep settings as v2","first true MESH repeat (v1/v2 differ only in sweep settings): solve-to-solve noise reference for thresholds, margins and gap/noise ratios"
+new_MCI_rep.s6p,MCI,1.0,9.55,second MCI solve,new,h0,mesh_repeat,new_MCI.s6p,planned,"same design; re-solve (e.g. Max Delta S 0.01 or v1 sweep settings)","enables leave-one-solve-out for Normal vs MCI: decides whether the perfect spectral-shape MCI scores are file fingerprints"
