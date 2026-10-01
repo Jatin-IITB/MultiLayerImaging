@@ -1,4 +1,4 @@
-# Track A — imaging / localisation study (`imaging/`, code b051f2b, 2026-09-29)
+# Track A — imaging / localisation study (`imaging/`, code 22d5b81, 2026-10-02)
 
 Regenerate: `python imaging/run_imaging.py` (tests: `python -m pytest imaging/tests -q`).
 Everything here comes from **one HFSS simulation per stage**: it shows what is recoverable from these simulations under the stated noise, **not** generalisation to new heads. Between-mesh noise is unmeasured, so every AD-vs-AD statement is **unverified against mesh noise**.
@@ -6,16 +6,20 @@ Everything here comes from **one HFSS simulation per stage**: it shows what is r
 
 ## 0. Data, assumptions, blocked items
 
-- Files: Normal: `brain_sevem_layer_Healthy.s6p`, Mild: `Brain_sevem_layer_MildAD.s6p`, Moderate: `Brain_sevem_layer_ModerateAD.s6p`, Severe: `brain_sevem_layer_SevereAD.s6p`. Common grid 3.2-4.2 GHz, 201 points, glitch masking ON (shared loader).
+- Sections from **i2** use `hfss-v2-sameproject-masked` (2.8-4.2 GHz): Normal `new_Healthy.s6p`, MCI `new_MCI.s6p`, Mild `new_MildAD.s6p`, Moderate `new_ModerateAD.s6p`, Severe `new_SevereAD.s6p`. Glitch masking ON.
+- Sections from **paths, i1, val, i3** use `hfss-v1-masked` (3.2-4.2 GHz): Normal `brain_sevem_layer_Healthy.s6p`, Mild `Brain_sevem_layer_MildAD.s6p`, Moderate `Brain_sevem_layer_ModerateAD.s6p`, Severe `brain_sevem_layer_SevereAD.s6p`. Glitch masking ON.
+- **Two simulation sets are mixed in this report**, and each section states its data. The v2 set (all stages re-solved in one HFSS project, 2.8–4.2 GHz) replaced v1 on 2026-10-01. §4 (I2 with the HFSS field exports) uses v2, because the fields come from the v2 Normal design. §1–3 and §5 are still the v1 analysis and have not yet been re-run on v2.
 - Assumption: Skin/fat/skull materials are not in MODEL_CARD.md (OPEN-GUI): assumed skin 37/2.0, fat 10.5/0.42, skull 10.8/0.61 (eps_r / S/m).
 - Assumption: Ring z-sign and antenna orientation are OPEN in MODEL_CARD.md: ring assumed at +z (polar angle 60.5 deg), broadside facing the origin; S is mirror-symmetric in z so the sign does not affect S, only image coordinates.
 - Assumption: Antenna = point electric dipole at the feed point, tangential to the sphere; the polarisation (theta^ vs phi^) is chosen by the fit to the HFSS Normal ring couplings.
 - Assumption: Normal-stage materials are back-calculated values (MODEL_CARD caveat).
 - Assumption: The HFSS materials are static (no dispersion); the model uses the same constant eps_r, sigma.
 - The brief names `reference/dbim_reference.m`; the repository holds `references/imaging_code.m` (a 2-D incident/total-field script). Not used beyond inspiration.
-- **`data/fields/` HFSS field exports: ABSENT.** Blocked: I2 with the numerical (HFSS) Green's function, i.e. HFSS sensitivity maps, HFSS-field Jacobians and their inversions. The field reader (`imaging/fields.py`, header-driven column order) is implemented and unit-tested on a synthetic file. Everything in I2 below uses the **forward-model fields as a SURROGATE** Green's function, labelled as such.
+- **`data/fields/` HFSS field exports: present (used in §4).** 
 
 ## 1. The k = 3 path question — direct evidence from the HFSS couplings
+
+*Data: `hfss-v1-masked` (3.2-4.2 GHz) — Normal `brain_sevem_layer_Healthy.s6p`, Mild `Brain_sevem_layer_MildAD.s6p`, Moderate `Brain_sevem_layer_ModerateAD.s6p`, Severe `brain_sevem_layer_SevereAD.s6p`.*
 
 Group delay = slope of the unwrapped phase over 3.2–4.2 GHz. The unknown antenna/feed delay is removed with the neighbour path (k = 1). Its straight line only grazes the skin (closest approach 87.8 mm), so it travels in air: 2 t_ant = gd(k1) − chord/c = **3.05 ns**.
 
@@ -36,6 +40,8 @@ Group delay = slope of the unwrapped phase over 3.2–4.2 GHz. The unknown anten
 - Caveats: (i) with a resonant patch/AMC antenna the group delay is frequency-dependent. The single slope is a band average, uncertain by a few tenths of a ns. The 2.4 ns margin is well outside that. (ii) k = 2 does not fit either prediction cleanly (4.87 ns): its coupling has deep nulls near 3.8 GHz (two unequal paths around the ring interfere), so its slope is unreliable.
 
 ## 2. I1 — radar beamforming of dS (DAS, DMAS, MVDR)
+
+*Data: `hfss-v1-masked` (3.2-4.2 GHz) — Normal `brain_sevem_layer_Healthy.s6p`, Mild `Brain_sevem_layer_MildAD.s6p`, Moderate `Brain_sevem_layer_ModerateAD.s6p`, Severe `brain_sevem_layer_SevereAD.s6p`.*
 
 - Signals: the 21 reciprocal pairs, each whitened by its noise std (else S_ii, 40–60 dB above the transmissions, is the whole image). Hann window, zero-padded IFFT (8192), -6 dB pulse width 1.98 ns; DAS/DMAS energy over a 0.49 ns window at the focal delay.
 - Delays: (a) one effective eps inside the skin; (b) straight rays through the Normal layers. Pair delay tau_i + tau_j + 2 t_ant.
@@ -115,6 +121,8 @@ Figures: `figures/i1_ring_plane.png`, `figures/i1_vertical_plane.png`, `figures/
 
 ## 3. Forward model (a): layered-sphere Mie solution + point dipoles — validation
 
+*Data: `hfss-v1-masked` (3.2-4.2 GHz) — Normal `brain_sevem_layer_Healthy.s6p`, Mild `Brain_sevem_layer_MildAD.s6p`, Moderate `Brain_sevem_layer_ModerateAD.s6p`, Severe `brain_sevem_layer_SevereAD.s6p`.*
+
 Exact vector-spherical-wave solution for the 7-layer sphere. Each antenna is a tangential electric point dipole at its feed (97.55 mm, polar 60.5°). The dyadic Green's function expansion, the Mie coefficients, field continuity, reciprocity and Born-vs-exact are unit-tested: free-space limit 1e-10, Mie vs direct 1e-12, reciprocity 1e-15, Born = exact thin-shell derivative to 3e-5.
 
 - Polarisation chosen on **Normal only**: misfit of one common complex antenna factor a²(f) to the HFSS k = 1..3 couplings — theta 0.71, phi 0.63 → **phi**.
@@ -154,139 +162,191 @@ Exact vector-spherical-wave solution for the 7-layer sphere. Each antenna is a t
 - A patch-sized aperture (5×5 dipoles, cos taper) and phase-centre radii 92–105 mm were also tried. None fixes this (rel. err ≈ 0.8–1.2). The mismatch is in the antenna/array structure, not the head model.
 - Consequence: every inversion that needs a forward model (I2 with surrogate fields, I3) is reported twice: on HFSS data (model-mismatch limited) and on model-generated synthetic data with the same noise (the array's intrinsic capability if the antenna were modelled correctly).
 
-## 4. I2 — sensitivity maps and linearised inversion
+## 4. I2 — HFSS numerical Green's function: sensitivity maps and linearised inversion
 
-**Field source: SURROGATE (forward-model fields; data/fields absent).** J_ij(r) = −j k0³ E_i·E_j (no conjugate, e^{+jωt}). With HFSS exports this becomes −(jωε0/4a_ia_j)E_i·E_j; a complex scale kappa(f) per frequency is calibrated on Mild in both cases.
+*Data: `hfss-v2-sameproject-masked` (2.8-4.2 GHz) — Normal `new_Healthy.s6p`, MCI `new_MCI.s6p`, Mild `new_MildAD.s6p`, Moderate `new_ModerateAD.s6p`, Severe `new_SevereAD.s6p`.*
 
-### 4.1 Where can this array see?
+**Source.** HFSS 2024.2 calculator exports of complex E for the Normal design (project `new`, design `Healthy`), one file per driven terminal (1 V incident, 0°, others matched 50 Ω, port post-processing off), at 3.4 / 3.6 / 3.8 GHz on a 3 mm grid (−90…90 mm), plus a ±120 mm / 4 mm export of T1 at 3.6 GHz. Background S-parameters: the matching v2 Normal `new_Healthy.s6p`. All Jacobians therefore have 3 frequency rows (the S data have 281).
 
-Shell-averaged sensitivity (sum over pairs at distance k and 3.4/3.6/3.8 GHz). r_peak = radius of maximum sensitivity; r_XdB = the largest radius below r_peak where it is X dB under that maximum.
+### 4.0 Field-file checks
 
-| k | r_peak | r_10dB | r_20dB | r_40dB |
+- All 19 files present: True. Every file: 61x61x61 nodes (= 61³ rows: True), full regular grid: True, z varies fastest: True.
+- NaN nodes per file: 20, 22; radii 108-113, 97-115 mm (antenna metal). Finite everywhere inside r < 88 mm: True.
+- Re/Im pairing (median |div E|·h / |E| over air nodes; a wrong pairing is not divergence-free): E_Normal_T1_3p6GHz.fld: interleaved 0.077 vs blocked 0.147; E_Normal_T4_3p4GHz.fld: interleaved 0.062 vs blocked 0.130; E_Normal_T1_3p6GHz_wide.fld: interleaved 0.088 vs blocked 0.169. The stated pairing (x y z, Ex_re Ex_im, Ey_re Ey_im, Ez_re Ez_im) is the one used. The residual is the 3 mm finite-difference error near the antennas.
+
+**Antennas located from their own fields** (|E|-weighted centroid of the strongest air nodes at r = 89–93 mm; θ-fraction = |E·θ̂| / (|E·θ̂| + |E·φ̂|) there):
+
+| T | azimuth_deg | field_centroid_polar_deg | theta_fraction |
+|---|---|---|---|
+| 1 | -90.5 | 55.1 | 0.65 |
+| 2 | -31.0 | 54.9 | 0.65 |
+| 3 | 29.6 | 55.0 | 0.65 |
+| 4 | 89.4 | 55.1 | 0.65 |
+| 5 | 148.9 | 55.1 | 0.65 |
+| 6 | -150.4 | 55.0 | 0.65 |
+
+- This settles two OPEN items of the model card. The ring is at **+z**: every centroid is in the upper hemisphere (≈55°; the field centroid sits slightly above the 60.5° feed, which is used for geometry). T1…T6 are consecutive at 60° steps, with **T1 at azimuth ≈ −90°** (not 0° as assumed in the I1/I3 geometry; immaterial for S of a symmetric head, but it means the plane through T1 and T4 is x = 0).
+- Near-field polarisation is mixed, ≈ 65 % θ̂ / 35 % φ̂ in amplitude. The point-dipole model in §3/§5 had chosen φ̂ from the Normal couplings. Neither pure orientation is right; this is part of the antenna-model mismatch found in §3.
+
+**Ring symmetry at field level** (inside r < 88 mm). Relative rms difference between an antenna's field and its opposite antenna's field rotated by 180° about z; rms amplitude of each antenna relative to the mean of all six:
+
+| f_GHz | pair | rel_rms_diff |
+|---|---|---|
+| 3.4 | T4 vs R180(T1) | 0.114 |
+| 3.4 | T5 vs R180(T2) | 0.120 |
+| 3.4 | T6 vs R180(T3) | 0.120 |
+| 3.6 | T4 vs R180(T1) | 0.153 |
+| 3.6 | T5 vs R180(T2) | 0.158 |
+| 3.6 | T6 vs R180(T3) | 0.158 |
+| 3.8 | T4 vs R180(T1) | 0.119 |
+| 3.8 | T5 vs R180(T2) | 0.138 |
+| 3.8 | T6 vs R180(T3) | 0.138 |
+
+Amplitude ratios at 3.6 GHz: T1 1.044, T2 0.974, T3 0.981, T4 1.046, T5 0.973, T6 0.979. The fields are symmetric to 11–16 % (rms), the field-level counterpart of the S-parameter port asymmetry. Any image feature below that level is not trustworthy.
+
+### 4.1 Absolute scale and linearisation
+
+With 1 V incident on every 50 Ω port the Born sensitivity is absolute: dS_ij = −(jωε0 Z0 / 4V²) ∫ dε E_i·E_j dV. κ(f) is the complex factor that best maps this prediction (true dε of Mild, radial shells or voxels) onto the HFSS dS of Mild. κ = 1 would mean exact Born agreement in absolute units.
+
+| f_GHz | abs_kappa | phase_deg | abs_kappa_voxel |
+|---|---|---|---|
+| 3.4 | 1.94 | -25 | 1.18 |
+| 3.6 | 1.93 | -72 | 1.19 |
+| 3.8 | 11.41 | -121 | 7.81 |
+
+| stage | k | born_over_hfss | err_abs_scale | err_kappa_mild |
 |---|---|---|---|---|
-| k0 | 87 | 67 | 33 | n/a |
-| k1 | 87 | 67 | n/a | n/a |
-| k2 | 87 | 65 | n/a | n/a |
-| k3 | 87 | 65 | n/a | n/a |
+| Mild | 0 | 0.11 | 0.99 | 1.19 |
+| Mild | 1 | 0.12 | 1.04 | 0.74 |
+| Mild | 2 | 0.25 | 0.82 | 1.06 |
+| Mild | 3 | 0.15 | 0.91 | 0.97 |
+| Moderate | 0 | 0.23 | 0.95 | 1.52 |
+| Moderate | 1 | 0.26 | 1.05 | 0.41 |
+| Moderate | 2 | 0.32 | 0.73 | 1.18 |
+| Moderate | 3 | 0.22 | 0.88 | 1.16 |
+| Severe | 0 | 0.35 | 0.87 | 1.57 |
+| Severe | 1 | 0.37 | 0.92 | 0.52 |
+| Severe | 2 | 0.44 | 0.66 | 1.34 |
+| Severe | 3 | 0.30 | 0.73 | 1.50 |
 
-**Detectability (absolute).** A relative profile only shows shape. What matters is the SNR a localised change would produce. Here: a 1 cm³ blob with |d eps| = 10 (about the gray→CSF contrast) at radius r, on the Normal background, typical noise on both measurements, scale kappa(f) from Mild, 3 frequencies. r_min_snrX = the smallest radius down to which SNR ≥ X holds continuously from the surface. Figure: `figures/i2_detectability_radial.png`.
+Reading:
+- At 3.4 and 3.6 GHz |κ| = 1.18 and 1.19 (voxel Jacobian, fields taken at the grid nodes) and 1.94 and 1.93 (radial Jacobian, fields interpolated onto thin shells). So the absolute 1 V Born scale holds to within a factor of ~2. The spread between the two shows how much the result depends on how the 3 mm grid samples the fields at the thin CSF/skull interfaces. At 3.8 GHz |κ| = 8–11: there the Born prediction misses the HFSS dS badly (the k = 2 couplings have deep nulls near 3.8 GHz).
+- The phase of κ turns by about -48° per 200 MHz, i.e. a residual delay of ~0.7 ns between the field-export phase reference and the S-parameter reference plane. A feed line in front of each patch would do this, but it was not measured, so treat it as unexplained.
+- The Born prediction of the true change is only 0.11–0.44 of the HFSS dS (column born_over_hfss, radial Jacobian, absolute scale). Even with κ fitted on Mild, the errors for Moderate/Severe are 0.4–1.6. The AD change (12–21 mm of gray/white replaced by CSF) is far from a small perturbation, so a linear inversion can at best be qualitative.
 
-| path | over | snr_at_83 | snr_at_70 | snr_at_50 | snr_at_20 | r_min_snr1 | r_min_snr3 |
+### 4.2 Where can this array see? (HFSS fields)
+
+SNR of a 1 cm³ blob with |dε| = 10 (≈ the gray→CSF contrast) at radius r, on the Normal background, under the typical noise on both measurements, summed over the 3 frequencies. best = the direction closest to the antennas, median = over all directions. r_min_snr1 = the smallest radius down to which SNR ≥ 1 holds continuously from the surface (n/a = never reached).
+
+| scale | path | best_at_83 | best_at_75 | best_at_60 | best_at_20 | median_max | r_min_snr1 |
 |---|---|---|---|---|---|---|---|
-| k=0 | median dir. | 0.0029 | 0.0012 | 0.00048 | 0.00095 | n/a | n/a |
-| k=0 | best dir. | 3.3 | 0.68 | 0.061 | 0.0015 | 75 | 83 |
-| k=1 | median dir. | 0.025 | 0.01 | 0.0032 | 0.01 | n/a | n/a |
-| k=1 | best dir. | 1 | 0.27 | 0.064 | 0.015 | 83 | 87 |
-| k=2 | median dir. | 0.016 | 0.0063 | 0.0025 | 0.0079 | n/a | n/a |
-| k=2 | best dir. | 0.4 | 0.11 | 0.022 | 0.026 | 87 | n/a |
-| k=3 | median dir. | 0.0027 | 0.0011 | 0.00061 | 0.0072 | n/a | n/a |
-| k=3 | best dir. | 0.093 | 0.031 | 0.01 | 0.033 | n/a | n/a |
-| all 21 pairs | median dir. | 0.04 | 0.016 | 0.0062 | 0.015 | n/a | n/a |
-| all 21 pairs | best dir. | 3.5 | 0.74 | 0.075 | 0.043 | 73 | 83 |
+| absolute | k=0 | 1 | 0.34 | 0.058 | 0.00096 | 0.019 | 83 |
+| absolute | k=1 | 0.5 | 0.22 | 0.11 | 0.018 | 0.15 | 87 |
+| absolute | k=2 | 0.35 | 0.15 | 0.045 | 0.012 | 0.1 | 87 |
+| absolute | k=3 | 0.4 | 0.15 | 0.044 | 0.0048 | 0.094 | 87 |
+| absolute | all 21 pairs | 1.2 | 0.43 | 0.11 | 0.022 | 0.21 | 83 |
+| κ-calibrated | k=0 | 4.3 | 1.5 | 0.25 | 0.0036 | 0.053 | 71 |
+| κ-calibrated | k=1 | 3.2 | 1.3 | 0.31 | 0.047 | 0.64 | 73 |
+| κ-calibrated | k=2 | 1.1 | 0.46 | 0.15 | 0.034 | 0.47 | 83 |
+| κ-calibrated | k=3 | 2.4 | 1 | 0.26 | 0.017 | 0.25 | 75 |
+| κ-calibrated | all 21 pairs | 5.9 | 2.3 | 0.44 | 0.058 | 0.89 | 69 |
 
-Relative (shape) profile: k = 3 is the flattest in depth, because both opposite fields are weak everywhere. In absolute terms every path has the same tiny sensitivity at the centre (all six fields are equal there). k = 3 simply has far less surface sensitivity and far lower noise than k = 0.
+Volume-weighted fraction of the (relative) sensitivity inside r < 60 mm: k0 3.1%, k1 4.5%, k2 3.7%, k3 3.7%.
 
-Volume-weighted fraction of the sensitivity inside r < 60 mm: k0 4.0e-02, k1 6.2e-02, k2 8.3e-02, k3 1.2e-01.
+- Best direction, all pairs: SNR ≥ 1 down to r ≈ 83 mm on the absolute scale and r ≈ 69 mm κ-calibrated: between the outermost ~1 mm and the outer ~14 mm of brain, and only right under an antenna. The κ-calibrated values are an upper bound: they include 3.8 GHz, where |κ| ≈ 8–11 because Born fails (§4.1).
+- In the median direction the SNR never exceeds 0.21 (absolute) / 0.89 (κ). At r = 60 mm even the best direction gives 0.11 / 0.44, and at r = 20 mm 0.022 / 0.058. A localised change deeper than ~1.5 cm is below the noise everywhere.
+- Figures: `figures/i2h_sensitivity_maps.png`, `figures/i2h_detectability_radial.png`.
 
-Block-the-core test (model): everything inside r_b is replaced by a strong absorber (eps 40, 40 S/m). Entries are the relative change of the TOTAL coupling of each path:
+### 4.3 The k = 3 (opposite-antenna) path, from the wide export
 
-| r_block_mm | k0 | k1 | k2 | k3 |
-|---|---|---|---|---|
-| 20 | 7.6e-05 | 2.1e-03 | 4.3e-03 | 1.1e-02 |
-| 40 | 1.7e-03 | 1.2e-02 | 2.0e-02 | 1.7e-02 |
-| 55 | 1.2e-02 | 3.5e-02 | 6.1e-02 | 5.1e-02 |
-| 65 | 4.4e-02 | 1.0e-01 | 1.4e-01 | 1.2e-01 |
-| 75 | 1.6e-01 | 3.1e-01 | 3.7e-01 | 2.6e-01 |
-| 80 | 2.6e-01 | 3.9e-01 | 4.0e-01 | 3.2e-01 |
-| 82 | 4.3e-01 | 9.3e-01 | 1.1e+00 | 6.5e-01 |
+The wide file holds only T1. The opposite antenna's field is obtained by the ring symmetry, E_T4 = R180 E_T1, which agrees with the actual T4 export to 13% rms inside the head. |E_T1·E_T4| is the Born sensitivity of the T1–T4 coupling to a permittivity change at each point, including points in air.
 
-- In the model, every path is dominated by the outer ~1 cm. Replacing everything inside r < 55 mm by an absorber changes the total couplings by only 1%–6%. The same test inside r < 75 mm changes them by 16%–37%. k = 3 is not special in depth once measured in absolute terms. Together with §1 (measured delay = air path), **k = 3 is a surface/air path, not a through-centre path**. Its stage sensitivity comes from the near-surface layers (CSF/cortex below the skull).
-- Relative-profile table: n/a = the profile never falls that far below its own maximum (the product of two weak fields is weak everywhere); use the absolute detectability table instead.
-- Figures: `figures/i2_sensitivity_maps.png` (ring + vertical planes, per k), `figures/i2_sensitivity_radial.png`.
+| region | share_of_k3_sensitivity |
+|---|---|
+| brain r<83.5 | 0.31% |
+| CSF/skull/fat/skin 83.5-88 | 0.75% |
+| air gap 88-97 | 12.92% |
+| air r>=97 (incl. antennas) | 86.01% |
 
-### 4.2 Linearisation error
+Inside the brain, the k = 3 sensitivity by depth: 0-40 mm 2%, 40-60 mm 9%, 60-70 mm 17%, 70-78 mm 31%, 78-83.5 mm 41%.
 
-Model-internal: |Born(true d eps) − exact dV| / |exact dV|. HFSS: |kappa·Born(true d eps) − dS_HFSS| / |dS_HFSS|, with kappa(f) fitted on Mild.
+Field of T1 on the way to T4 (antennas 121° apart): at the half-way point it is -33 dB (arc over the top, in air at r = 91 mm) vs -57 dB (straight chord, deepest point r = 48 mm), relative to the field near T1.
 
-| stage | model_k0 | model_k1 | model_k2 | model_k3 | hfss_k0 | hfss_k1 | hfss_k2 | hfss_k3 |
-|---|---|---|---|---|---|---|---|---|
-| Mild | 0.32 | 0.42 | 0.33 | 0.35 | 0.91 | 0.83 | 1.10 | 1.12 |
-| Moderate | 0.31 | 0.34 | 0.30 | 0.33 | 0.93 | 0.79 | 1.15 | 1.09 |
-| Severe | 0.47 | 0.49 | 0.38 | 0.32 | 0.89 | 0.83 | 1.20 | 1.13 |
+**Verdict (HFSS fields).** 99% of the k = 3 sensitivity is in air and 0.3% is in the brain. Half-way, the through-head route is 23 dB weaker than the around-the-head route. This confirms the delay-based verdict of §1 with the real antennas: **the opposite-antenna signal travels around the head in air**. The small part that touches the brain sits in its outer layer (73% within 13.5 mm of the brain surface). That is why k = 3 reacts to CSF/cortex changes and to nothing deeper. Figure: `figures/i2h_k3_path.png`.
 
-- The Normal→AD change replaces 12–21 mm of gray/white matter by CSF (|d eps| up to 20). That is far outside the Born regime, so the linear model is not a quantitative description of any stage.
+### 4.4 Radial inversion (2 mm shells; d eps_r and d eps'')
 
-### 4.3 Radial (spherically symmetric) inversion — 2 mm shells, d eps_r and d eps''
-
-Tikhonov with GCV and L-curve lambda, and 1-D TV (lambda tuned on Mild synthetic = 0.1). Errors are relative L2 against the true shell-averaged profile. corr = Pearson correlation with the truth.
+24 real data (4 ring modes × 3 frequencies × Re/Im) for 84 unknowns. Fields trilinearly interpolated onto a shell quadrature (the 3 mm grid under-resolves the 0.5 mm Normal CSF layer). Tikhonov (GCV, L-curve) and 1-D TV (λ = 1, tuned on Mild synthetic data). Errors vs the true shell profile:
 
 | data | stage | method | rel_err_eps_r | rel_err_eps_pp | corr_eps_r | corr_eps_pp |
 |---|---|---|---|---|---|---|
-| synthetic-linear | Mild | tikhonov-gcv | 0.99 | 0.99 | 0.15 | 0.06 |
-| synthetic-linear | Mild | tikhonov-lcurve | 0.99 | 0.99 | 0.15 | 0.06 |
-| synthetic-linear | Mild | tv | 0.81 | 0.54 | 0.82 | 0.46 |
-| synthetic-nonlinear | Mild | tikhonov-gcv | 1.07 | 1.00 | 0.01 | 0.00 |
-| synthetic-nonlinear | Mild | tikhonov-lcurve | 0.99 | 0.99 | 0.15 | 0.04 |
-| synthetic-nonlinear | Mild | tv | 0.93 | 0.61 | 0.54 | 0.24 |
-| HFSS | Mild | tikhonov-gcv | 1986.97 | 1939.19 | -0.14 | -0.10 |
-| HFSS | Mild | tikhonov-lcurve | 0.99 | 0.99 | 0.15 | 0.06 |
-| HFSS | Mild | tv | 13.29 | 27.13 | 0.64 | 0.15 |
-| synthetic-linear | Moderate | tikhonov-gcv | 0.99 | 0.99 | 0.10 | 0.08 |
-| synthetic-linear | Moderate | tikhonov-lcurve | 0.99 | 0.99 | 0.11 | 0.08 |
-| synthetic-linear | Moderate | tv | 0.90 | 0.52 | 0.25 | 0.47 |
-| synthetic-nonlinear | Moderate | tikhonov-gcv | 1.13 | 0.99 | 0.02 | 0.08 |
-| synthetic-nonlinear | Moderate | tikhonov-lcurve | 0.99 | 0.99 | 0.12 | 0.06 |
-| synthetic-nonlinear | Moderate | tv | 0.92 | 0.53 | 0.30 | 0.28 |
-| HFSS | Moderate | tikhonov-gcv | 1908.39 | 1602.60 | -0.10 | 0.08 |
-| HFSS | Moderate | tikhonov-lcurve | 0.99 | 0.99 | 0.13 | 0.07 |
-| HFSS | Moderate | tv | 13.73 | 19.88 | 0.63 | -0.34 |
-| synthetic-linear | Severe | tikhonov-gcv | 0.94 | 0.94 | 0.02 | 0.05 |
-| synthetic-linear | Severe | tikhonov-lcurve | 0.98 | 0.98 | 0.24 | 0.13 |
-| synthetic-linear | Severe | tv | 0.67 | 0.60 | 0.44 | 0.44 |
-| synthetic-nonlinear | Severe | tikhonov-gcv | 2.61 | 1.77 | -0.12 | 0.21 |
-| synthetic-nonlinear | Severe | tikhonov-lcurve | 0.99 | 0.98 | 0.18 | 0.13 |
-| synthetic-nonlinear | Severe | tv | 1.39 | 0.78 | 0.01 | 0.79 |
-| HFSS | Severe | tikhonov-gcv | 2270.65 | 2096.02 | -0.03 | 0.06 |
-| HFSS | Severe | tikhonov-lcurve | 0.99 | 0.99 | 0.22 | 0.11 |
-| HFSS | Severe | tv | 57.37 | 21.02 | 0.52 | -0.46 |
+| synthetic-linear | Mild | tikhonov-gcv | 1.69 | 1.42 | 0.38 | 0.24 |
+| synthetic-linear | Mild | tikhonov-lcurve | 0.98 | 0.99 | 0.24 | 0.09 |
+| synthetic-linear | Mild | tv | 1.12 | 0.71 | -0.20 | 0.13 |
+| HFSS | Mild | tikhonov-gcv | 1.00 | 0.99 | 0.07 | 0.03 |
+| HFSS | Mild | tikhonov-lcurve | 1.00 | 0.99 | 0.05 | 0.02 |
+| HFSS | Mild | tv | 5.30 | 4.93 | -0.67 | -0.13 |
+| synthetic-linear | Moderate | tikhonov-gcv | 1.59 | 1.33 | 0.44 | 0.27 |
+| synthetic-linear | Moderate | tikhonov-lcurve | 0.99 | 0.97 | 0.17 | 0.17 |
+| synthetic-linear | Moderate | tv | 0.91 | 0.55 | 0.03 | 0.22 |
+| HFSS | Moderate | tikhonov-gcv | 31.86 | 26.41 | -0.11 | 0.26 |
+| HFSS | Moderate | tikhonov-lcurve | 1.00 | 1.00 | 0.08 | 0.01 |
+| HFSS | Moderate | tv | 0.94 | 1.21 | 0.09 | -0.44 |
+| synthetic-linear | Severe | tikhonov-gcv | 1.46 | 1.13 | 0.39 | 0.37 |
+| synthetic-linear | Severe | tikhonov-lcurve | 0.95 | 0.96 | 0.33 | 0.23 |
+| synthetic-linear | Severe | tv | 1.07 | 0.67 | 0.35 | 0.23 |
+| HFSS | Severe | tikhonov-gcv | 31.82 | 22.77 | 0.10 | 0.11 |
+| HFSS | Severe | tikhonov-lcurve | 1.00 | 0.99 | 0.14 | 0.08 |
+| HFSS | Severe | tv | 0.73 | 1.84 | -0.28 | -0.58 |
 
-Model-resolution matrix (whitened, GCV lambda on Mild): diag ≥ 0.5 for d eps_r at r ∈ 83–83 mm and for d eps'' at r ∈ 83–83 mm. Largest diag: 0.69 / 0.72. Number of singular values within 1e-3 of the largest: 20 of 84. Only the outermost shell (82–83.5 mm) is resolved; below it the radial inversion returns a smeared, strongly damped copy. 1-D TV (a piecewise-constant prior that matches the true layered profile) is the only method that recovers a correlated shape on synthetic data. Figure: `figures/i2_resolution.png`, `figures/i2_radial_inversion.png`.
+Resolution-matrix diagonal (GCV λ on Mild synthetic) ≥ 0.5 at r ∈ 75–83 mm (max 0.96). Scanning inward, it falls below 0.3 at r ≈ 67 mm and below 0.1 at r ≈ 49 mm. Only the outer ~1 cm has any depth resolution.
+- Even noise-perturbed **Born-consistent** synthetic data are not recovered: rel. errors 0.55–1.69, correlations ≤ 0.44. On HFSS data, GCV is near zero for Mild and blows up for Moderate/Severe (the data are not Born-consistent, §4.1). The L-curve returns ≈ 0, and TV is mostly anti-correlated with the truth. Figure: `figures/i2h_inversions.png`.
 
-### 4.4 Voxel inversion — 3 mm voxels in r < 83.5 mm
+### 4.5 Voxel inversion (3 mm grid nodes, r < 83.5 mm)
 
-90447 voxels × (d eps_r, d eps''), 21 pairs × 6 frequencies (3.2–4.2 GHz). Tikhonov-GCV and L1 sparsity (FISTA, lambda tuned on Mild synthetic).
+90447 voxels × (dε_r, dε''), 126 real data (21 pairs × 3 frequencies × Re/Im). Tikhonov-GCV and L1 (λ tuned on Mild synthetic).
 
 | data | stage | method | rel_err_eps_r | rel_err_eps_pp | corr_eps_r | corr_eps_pp |
 |---|---|---|---|---|---|---|
-| synthetic-linear | Mild | tikhonov-gcv | 1.00 | 1.00 | 0.08 | 0.02 |
+| synthetic-linear | Mild | tikhonov-gcv | 1.00 | 1.00 | 0.08 | 0.03 |
 | synthetic-linear | Mild | l1 | 1.00 | 1.00 | n/a | n/a |
-| HFSS | Mild | tikhonov-gcv | 23.70 | 21.03 | 0.01 | 0.00 |
+| HFSS | Mild | tikhonov-gcv | 1.00 | 1.00 | 0.05 | 0.03 |
 | HFSS | Mild | l1 | 1.00 | 1.00 | 0.00 | n/a |
-| synthetic-linear | Moderate | tikhonov-gcv | 1.00 | 1.00 | 0.07 | 0.02 |
+| synthetic-linear | Moderate | tikhonov-gcv | 1.00 | 1.00 | 0.08 | 0.01 |
 | synthetic-linear | Moderate | l1 | 1.00 | 1.00 | 0.01 | n/a |
-| HFSS | Moderate | tikhonov-gcv | 1.00 | 1.00 | 0.04 | 0.01 |
-| HFSS | Moderate | l1 | 1.00 | 1.00 | 0.01 | n/a |
-| synthetic-linear | Severe | tikhonov-gcv | 0.99 | 1.00 | 0.12 | 0.04 |
-| synthetic-linear | Severe | l1 | 1.00 | 1.00 | 0.01 | 0.00 |
-| HFSS | Severe | tikhonov-gcv | 22.10 | 12.06 | 0.03 | -0.01 |
-| HFSS | Severe | l1 | 1.00 | 1.00 | 0.02 | n/a |
+| HFSS | Moderate | tikhonov-gcv | 1.00 | 1.00 | 0.06 | 0.01 |
+| HFSS | Moderate | l1 | 1.00 | 1.00 | n/a | n/a |
+| synthetic-linear | Severe | tikhonov-gcv | 0.99 | 1.00 | 0.17 | 0.03 |
+| synthetic-linear | Severe | l1 | 1.01 | 1.00 | 0.01 | n/a |
+| HFSS | Severe | tikhonov-gcv | 0.99 | 1.00 | 0.12 | 0.02 |
+| HFSS | Severe | l1 | 1.00 | 1.00 | n/a | n/a |
 
-- Tikhonov-GCV on the HFSS data (radial and voxel): the HFSS data are inconsistent with the surrogate Jacobian (§3, §4.2). GCV then picks a tiny lambda and the solution blows up (errors of 10–2000×). The L-curve lambda returns an almost-zero image instead. Neither is an image of the change.
-- L1 (sparsity) with lambda tuned on Mild: the lambda with the lowest error on Mild gave the all-zero image. No sparse voxel pattern recovered the true change better than zero, so L1 reports nothing (rel. err 1.00, corr undefined).
+Point-spread functions (resolution-matrix columns) for voxels along T1's feed direction:
 
-Point-spread functions (columns of the resolution matrix, lambda = GCV on Mild synthetic) for voxels on the x-axis (z = 0, azimuth of T1) at radius r_mm. diag = the fraction of a unit change recovered in place. peak_at = where its image actually peaks:
+| r_mm | voxel_mm | diag | peak_at_mm | peak_offset_mm | n_vox_above_half |
+|---|---|---|---|---|---|
+| 20 | [0.0, -18.0, 9.0] | 7.2e-06 | [0.0, -66.0, 51.0] | 64 | 40 |
+| 40 | [0.0, -36.0, 21.0] | 9.5e-05 | [0.0, -75.0, 36.0] | 42 | 85 |
+| 60 | [0.0, -51.0, 30.0] | 5.5e-04 | [-3.0, -66.0, 51.0] | 26 | 38 |
+| 70 | [0.0, -60.0, 33.0] | 1.1e-03 | [0.0, -69.0, 42.0] | 13 | 24 |
+| 80 | [0.0, -69.0, 39.0] | 7.1e-03 | [0.0, -69.0, 45.0] | 6 | 12 |
 
-| r_mm | diag | peak_at_mm | n_vox_above_half | extent_mm |
-|---|---|---|---|---|
-| 20 | 4.81e-06 | [66.0, 0.0, 51.0] | 39 | 8.28 |
-| 40 | 1.92e-06 | [72.0, 0.0, 42.0] | 32 | 21.7 |
-| 60 | 2.08e-06 | [57.0, 0.0, 36.0] | 172 | 26.8 |
-| 70 | 5.16e-06 | [72.0, 0.0, 42.0] | 67 | 20.3 |
-| 80 | 1.62e-05 | [66.0, 0.0, 48.0] | 117 | 11 |
+- Point images, inward along T1's feed direction: r = 20 mm → peak 64 mm away (diag 7e-06); r = 40 mm → peak 42 mm away (diag 9e-05); r = 60 mm → peak 26 mm away (diag 6e-04); r = 70 mm → peak 13 mm away (diag 1e-03); r = 80 mm → peak 6 mm away (diag 7e-03). Only the voxel just under the brain surface is imaged near its place, and even that recovers well under 1 % of a unit change. Deeper voxels are imaged outward toward the surface: depth is not resolved.
+- The L1 solution is the all-zero image (no sparse pattern beats zero on Mild). Tikhonov images of HFSS data are uncorrelated with the truth (corr ≤ 0.12). Figure: `figures/i2h_voxel.png`.
 
-Figure: `figures/i2_voxel.png`.
+### 4.6 HFSS vs the earlier surrogate (point-dipole fields, v1 data)
+
+| quantity | surrogate_v1 | hfss_abs | hfss_kappa |
+|---|---|---|---|
+| SNR≥1 (best dir.) down to r, mm | 73 | 83 | 69 |
+| radial resolution diag max | 0.718 | n/a | 0.962 |
+| k3 sensitivity share r < 60 mm | 0.124 | n/a | 0.0372 |
+
+The surrogate used 51 frequencies (3.2–4.2 GHz). HFSS fields exist at 3 frequencies, which costs √17 ≈ 4× in SNR for broadband sums, but the HFSS fields describe the real antennas. Both say the same thing: only the outer ~1 cm under the antennas is visible, and nothing is localised in depth.
 
 ## 5. I3 — targeted model-based nonlinear inversion (9 parameters)
+
+*Data: `hfss-v1-masked` (3.2-4.2 GHz) — Normal `brain_sevem_layer_Healthy.s6p`, Mild `Brain_sevem_layer_MildAD.s6p`, Moderate `Brain_sevem_layer_ModerateAD.s6p`, Severe `brain_sevem_layer_SevereAD.s6p`.*
 
 Unknowns: r_gray, r_white, r_hip, eps/sigma of gray, white and CSF (hippocampus material tied to gray). Bounded by a sigmoid map; MINPACK Levenberg–Marquardt; 6 starts (the Normal truth + 5 random). Data: ring-mode dS_k, k = 0..3, 51 frequencies, whitened by the typical-noise std. Uncertainty = CRLB from the whitened Jacobian at the solution.
 
@@ -365,19 +425,22 @@ One LM fit per noisy draw, started at the Normal truth. Threshold tuned on Mild 
 
 Figure: `figures/i3_csf_thickness.png`.
 
-## 6. Verdict — what 6 antennas on one ring at 3.2–4.2 GHz can and cannot localise
+## 6. Verdict — what 6 antennas on one ring in this band can and cannot localise
+
+Each item cites the section it rests on. §4 uses the v2 data with the HFSS fields; the other sections use v1 (see the data line under each heading).
 
 **Can (in these simulations, under typical noise):**
 
 1. **Detect that something changed** relative to a Normal baseline of the same head. DAS/DMAS image energy sits 19–29 dB above the noise-only image for Moderate/Severe, in every noisy draw (§2, §8). This is detection, not localisation.
-2. **See the outer ~10 mm of brain, and only near the antennas.** A 1 cm³ change of |d eps| = 10 reaches SNR ≥ 1 down to r ≈ 73 mm in the best direction. In the median direction the SNR is ≤ 0.13 at every depth (§4.1, surrogate fields, Mild-calibrated scale).
-3. **Estimate the effective material of the layer right under the skull.** Of the 9 phantom parameters, only eps_csf, sig_csf are identifiable (CRLB at the truth, synthetic data, typical noise). The array measures one surface impedance, not a layered structure.
+2. **Sense only the outermost brain, and only right under an antenna.** A 1 cm³ change of |d eps| = 10 reaches SNR ≥ 1 down to r ≈ 83 mm on the absolute 1 V scale and at most r ≈ 69 mm κ-calibrated (the outermost ~1–14 mm of brain) in the best direction. In the median direction the SNR is ≤ 0.89 at every depth (§4.2, HFSS fields of the real antennas, κ-calibrated).
+3. **Explain the k = 3 signal.** With the real antennas' fields, 99% of the opposite-antenna sensitivity lies in air around the head and 0.3% in the brain, almost all of it in the outer layer (§4.3). This agrees with the delay test of §1. The k = 3 metric works because the wave skims the head and samples the CSF/cortex just under the skull.
+4. **Estimate the effective material of the layer right under the skull.** Of the 9 phantom parameters, only eps_csf, sig_csf are identifiable (CRLB at the truth, synthetic data, typical noise). The array measures one surface impedance, not a layered structure.
 
 **Cannot:**
 
 1. **Place the change with radar imaging (I1).** Every method and delay model puts the radial peak at r = 1, 11, 15 mm. That is the centre, where all 21 pair delays coincide for a ring of equidistant antennas: a symmetric-array artefact. The true change lies at 57–83.5 mm. The depth scale also hinges on an antenna delay the data cannot fix (§1: ~3 ns in transmission, ~0 in reflection). The ideal point target has an elevation width of several cm (§2 table).
-2. **See deep structures.** The hippocampus (r < 25 mm) and white matter beyond ~10 mm under the cortex are invisible: SNR ≈ 0.04 at r = 20 mm even in the best direction. The hippocampal shrinkage cannot be recovered by any method here.
-3. **Resolve depth structure (I2).** In the radial inversion only the outermost shell (82–83.5 mm) has resolution-matrix diagonal ≥ 0.5 (max 0.72). Voxel point-spread functions have diagonals ~1e-5 and peak tens of mm from the true voxel. Voxel images on HFSS data are noise or zero.
+2. **See deep structures.** The hippocampus (r < 25 mm) and white matter beyond the outer centimetre are invisible: SNR ≈ 0.06 at r = 20 mm even in the best direction. The hippocampal shrinkage cannot be recovered by any method here.
+3. **Resolve depth structure (I2).** Radial-inversion resolution diagonal ≥ 0.5 only at r ≥ 75 mm (max 0.96). Voxel point images are displaced by (depth → offset) 20 mm → 64, 40 mm → 42, 60 mm → 26, 70 mm → 13, 80 mm → 6 mm. Neither the radial nor the voxel inversion recovers the true change, even from noise-only Born-consistent synthetic data. On HFSS data they return noise or zero, and the linear (Born) model explains the HFSS dS poorly (§4.1).
 4. **Recover CSF thickness (atrophy), gray/white radii or deeper materials (I3).** They are not identifiable even with a perfect forward model (CRLB > prior range). On HFSS data the model cannot fit the data (chi2/dof 12–27; §3). The recovered CSF thickness does not separate the classes; the k = 3 scalar metric does (§5.3).
 5. **Lateral / lobe localisation.** Impossible in this phantom by construction: the head and every change are spherically symmetric, so any azimuthal structure in an image is an array artefact. With six antennas on one ring it would also be impossible in an anatomical head (§7).
 6. **Separate AD stages.** The model predicts Severe dS ≈ 2× Mild; HFSS shows ≈ 1.3–1.4×. AD-vs-AD differences are 0.5–3× the port asymmetry, and the mesh noise is unmeasured: **unverified against mesh noise**.
