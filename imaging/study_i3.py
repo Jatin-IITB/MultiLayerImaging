@@ -215,7 +215,7 @@ def _fit_task(prob, d, starts, max_nfev, with_jac):
 
 
 def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log=print,
-        n_jobs=1):
+        n_jobs=1, ck_dir=None):
     """n_jobs > 1 runs the independent fits in parallel worker processes (joblib); results
     are identical to the serial run (each fit is deterministic given its data and starts)."""
     f_all = sd.f_hz
@@ -238,7 +238,7 @@ def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log
     # deterministic from the seeds; only fit results are stored)
     import pickle
     from .common import OUT
-    ck_path = OUT / "cache" / f"i3_checkpoint_n{n_draw}_s{n_starts}_seed{seed}.pkl"
+    ck_path = (ck_dir or OUT / "cache") / f"i3_checkpoint_n{n_draw}_s{n_starts}_seed{seed}.pkl"
     ck_path.parent.mkdir(parents=True, exist_ok=True)
     ck = pickle.loads(ck_path.read_bytes()) if ck_path.exists() else {}
     if ck:

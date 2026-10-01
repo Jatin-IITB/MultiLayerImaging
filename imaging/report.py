@@ -303,7 +303,16 @@ def fig_i3(R3):
 
 
 # ----------------------------------------------------------------------------------------------
-def write(R, sd, cfg, write_csv=True):
+def _label(r):
+    d = r.get("_data") if isinstance(r, dict) else None
+    if not d:
+        return "*Data: not recorded.*"
+    files = ", ".join(f"{k} `{v}`" for k, v in d["files"].items())
+    return f"*Data: `{d['sim_set']}` ({d['band_GHz']} GHz) — {files}.*"
+
+
+def write(R, sd, cfg, write_csv=True, fresh=None):
+    fresh = set(R) if fresh is None else set(fresh)
     FIG.mkdir(parents=True, exist_ok=True)
     gh = git_hash(ROOT)
     L = [f"# Track A — imaging / localisation study (`imaging/`, code {gh}, {date.today()})", ""]
@@ -316,13 +325,24 @@ def write(R, sd, cfg, write_csv=True):
           "**Moderate and Severe**. Noise floor = 'typical' profile (0.25 dB, 2 deg, -70 dB floor) on "
           "both the stage and the Normal measurement.", ""]
     L += ["## 0. Data, assumptions, blocked items", ""]
-    L += [f"- Files: " + ", ".join(f"{s}: `{sd.files[s]}`" for s in sd.S)
-          + f". Common grid {sd.f_hz[0]/1e9:.1f}-{sd.f_hz[-1]/1e9:.1f} GHz, {len(sd.f_hz)} points, "
-          "glitch masking ON (shared loader)."]
+    sets = {}
+    for name, r in R.items():
+        d = r.get("_data") if isinstance(r, dict) else None
+        if d:
+            sets.setdefault(d["sim_set"], (d, []))[1].append(name)
+    for ss_, (d, names) in sets.items():
+        L += [f"- Sections from **{', '.join(names)}** use `{ss_}` ({d['band_GHz']} GHz): "
+              + ", ".join(f"{k} `{v}`" for k, v in d["files"].items()) + ". Glitch masking ON."]
+    if len(sets) > 1:
+        L += ["- **Two simulation sets are mixed in this report**, and each section states its data. "
+              "The v2 set (all stages re-solved in one HFSS project, 2.8–4.2 GHz) replaced v1 on "
+              "2026-10-01. §4 (I2 with the HFSS field exports) uses v2, because the fields come from "
+              "the v2 Normal design. §1–3 and §5 are still the v1 analysis and have not yet been "
+              "re-run on v2."]
     L += [f"- Assumption: {a}" for a in ASSUMPTIONS]
     L += ["- The brief names `reference/dbim_reference.m`; the repository holds "
           "`references/imaging_code.m` (a 2-D incident/total-field script). Not used beyond inspiration.",
-          f"- **`data/fields/` HFSS field exports: {'present' if fields_available() else 'ABSENT'}.** "
+          f"- **`data/fields/` HFSS field exports: {'present (used in §4)' if fields_available() else 'ABSENT'}.** "
           + ("" if fields_available() else
              "Blocked: I2 with the numerical (HFSS) Green's function, i.e. HFSS sensitivity maps, "
              "HFSS-field Jacobians and their inversions. The field reader (`imaging/fields.py`, header-"
@@ -334,7 +354,7 @@ def write(R, sd, cfg, write_csv=True):
     if "paths" in R:
         P = R["paths"]
         fig_paths(P, sd)
-        L += ["## 1. The k = 3 path question — direct evidence from the HFSS couplings", ""]
+        L += ["## 1. The k = 3 path question — direct evidence from the HFSS couplings", "", _label(R["paths"]), ""]
         L += ["Group delay = slope of the unwrapped phase over 3.2–4.2 GHz. The unknown antenna/feed "
               "delay is removed with the neighbour path (k = 1). Its straight line only grazes the "
               f"skin (closest approach {P['paths'][0]['chord_closest_to_centre_mm']:.1f} mm), so it "
@@ -369,7 +389,7 @@ def write(R, sd, cfg, write_csv=True):
     if "i1" in R:
         R1 = R["i1"]
         fig_i1(R1)
-        L += ["## 2. I1 — radar beamforming of dS (DAS, DMAS, MVDR)", ""]
+        L += ["## 2. I1 — radar beamforming of dS (DAS, DMAS, MVDR)", "", _label(R["i1"]), ""]
         L += ["- Signals: the 21 reciprocal pairs, each whitened by its noise std (else S_ii, 40–60 dB "
               "above the transmissions, is the whole image). Hann window, zero-padded IFFT (8192), "
               f"-6 dB pulse width {R1['pulse_width_ns']:.2f} ns; DAS/DMAS energy over a "
@@ -419,7 +439,7 @@ def write(R, sd, cfg, write_csv=True):
     # ------------------------------------------------------------------ validation
     if "val" in R:
         V = R["val"]
-        L += ["## 3. Forward model (a): layered-sphere Mie solution + point dipoles — validation", ""]
+        L += ["## 3. Forward model (a): layered-sphere Mie solution + point dipoles — validation", "", _label(R["val"]), ""]
         L += ["Exact vector-spherical-wave solution for the 7-layer sphere. Each antenna is a "
               "tangential electric point dipole at its feed (97.55 mm, polar 60.5°). The dyadic "
               "Green's function expansion, the Mie coefficients, field continuity, reciprocity and "
@@ -456,7 +476,18 @@ def write(R, sd, cfg, write_csv=True):
               "were modelled correctly).", ""]
 
     # ------------------------------------------------------------------ I2
-    if "i2" in R:
+    if "i2" in R and R["i2"].get("field_source") == "HFSS":
+        from . import report_i2_hfss
+        report_i2_hfss.figures(R["i2"])
+        sur = None
+        try:
+            import pickle
+            pth = OUT / "cache" / "hfss-v1-masked" / "i2.pkl"
+            sur = pickle.loads(pth.read_bytes()) if pth.exists() else None
+        except Exception:                                  # pragma: no cover
+            sur = None
+        L += report_i2_hfss.section(R["i2"], _t, _label(R["i2"]), sur)
+    elif "i2" in R:
         R2 = R["i2"]
         fig_i2(R2)
         L += ["## 4. I2 — sensitivity maps and linearised inversion", "",
@@ -578,6 +609,7 @@ def write(R, sd, cfg, write_csv=True):
         R3 = R["i3"]
         fig_i3(R3)
         L += ["## 5. I3 — targeted model-based nonlinear inversion (9 parameters)", "",
+              _label(R["i3"]), "",
               "Unknowns: r_gray, r_white, r_hip, eps/sigma of gray, white and CSF (hippocampus "
               "material tied to gray). Bounded by a sigmoid map; MINPACK Levenberg–Marquardt; 6 "
               "starts (the Normal truth + 5 random). Data: ring-mode dS_k, k = 0..3, 51 frequencies, "
@@ -651,7 +683,7 @@ def write(R, sd, cfg, write_csv=True):
     # ------------------------------------------------------------------ metrics CSV
     rows = []
     if write_csv:
-        if "i1" in R:
+        if "i1" in R and "i1" in fresh:
             for m in ("DAS", "DMAS", "MVDR"):
                 det = R["i1"]["detect"]
                 d = {"Mild": det[f"layered|{m}|Mild"]["stage"], "noise": det[f"layered|{m}|Mild"]["noise"],
@@ -663,15 +695,16 @@ def write(R, sd, cfg, write_csv=True):
                                   "detection of any change vs Normal baseline; no localisation claim; "
                                   "needs a Normal baseline of the same head", cfg=cfg)
                 rows.append(dict(method=f"I1-{m}", **acc))
-        if "i2" in R:
-            src = "SURROGATE model fields" if "SURROGATE" in R["i2"]["field_source"] else "HFSS fields"
+        if "i2" in R and "i2" in fresh:
+            src = ("SURROGATE model fields" if "SURROGATE" in R["i2"]["field_source"]
+                   else "HFSS fields (3.4/3.6/3.8 GHz, Normal design)")
             acc = _metric_row("I2-radial", "|recovered d eps| in 70-83.5 mm, radial Tikhonov (2 mm shells)",
                               R["i2"]["radial"]["detect"], f"{src}; kappa(f) and lambda from Mild", cfg=cfg)
             rows.append(dict(method="I2-radial", **acc))
             acc = _metric_row("I2-voxel", "rms recovered d eps in 70-83.5 mm, voxel Tikhonov (3 mm)",
                               R["i2"]["voxel"]["detect"], f"{src}; kappa(f) and lambda from Mild", cfg=cfg)
             rows.append(dict(method="I2-voxel", **acc))
-        if "i3" in R:
+        if "i3" in R and "i3" in fresh:
             for ds, c in R["i3"]["classify"].items():
                 feats = c["feats"]
                 d = {"Mild": feats["Mild"]["t_csf"], "noise": feats["Normal_train"]["t_csf"],
@@ -682,7 +715,8 @@ def write(R, sd, cfg, write_csv=True):
                                   + ("calA (Normal) calibration" if ds == "HFSS" else "model-generated dS + noise (inverse crime)"),
                                   sim_set=None if ds == "HFSS" else "model-synthetic-pointdipole", cfg=cfg)
                 rows.append(dict(method=f"I3 ({ds})", **acc))
-        L += ["## 8. Rows written to `results/imaging/metrics_imaging.csv`", "",
+        L += ["## 8. Rows written to `results/imaging/metrics_imaging.csv` in this run", "",
+              "(Rows of earlier runs stay in the CSV with their own git hash and sim_set.)", "",
               "Binary detection Normal | AD with the method's scalar output (threshold tuned on Mild, "
               "tested on Moderate + Severe and fresh Normal draws, typical noise). These rows measure "
               "**detection of a change**, not localisation.", ""]
@@ -739,26 +773,47 @@ def _verdict_section(R):
                       "on an antenna delay the data cannot fix (§1: ~3 ns in transmission, ~0 in "
                       "reflection). The ideal point target has an elevation width of several cm (§2 "
                       "table).")
+    hf2 = "i2" in R and R["i2"].get("field_source") == "HFSS"
     if "i2" in R and "snr_radial" in R["i2"]:
         sn = R["i2"]["snr_radial"]
-        best = np.max(sn["snr"][4], -1)
-        med = np.median(sn["snr"][4], -1)
+        key = "snr_kappa" if hf2 else "snr"
+        best = np.max(sn[key][4], -1)
+        med = np.median(sn[key][4], -1)
         r1 = _rmin(sn["r"], best, 1.0)
-        can.append(f"**See the outer ~{83.5 - r1:.0f} mm of brain, and only near the antennas.** A 1 cm³ "
-                   f"change of |d eps| = 10 reaches SNR ≥ 1 down to r ≈ {r1:.0f} mm in the best direction. "
-                   f"In the median direction the SNR is ≤ {med.max():.2f} at every depth (§4.1, surrogate "
-                   "fields, Mild-calibrated scale).")
+        reach = (f"down to r ≈ {r1:.0f} mm (the outer ~{83.5 - r1:.0f} mm of brain)" if np.isfinite(r1)
+                 else "nowhere inside the brain, at best ≈ "
+                      f"{float(np.interp(83.0, sn['r'], best)):.1f} just under the brain surface")
+        can.append(f"**Sense only the outermost brain, and only right under an antenna.** A 1 cm³ "
+                   f"change of |d eps| = 10 reaches SNR ≥ 1 {reach} in the best direction. In the "
+                   f"median direction the SNR is ≤ {med.max():.2f} at every depth "
+                   + ("(§4.2, HFSS fields of the real antennas, κ-calibrated)." if hf2
+                      else "(§4.1, surrogate fields, Mild-calibrated scale)."))
         cannot.append(f"**See deep structures.** The hippocampus (r < 25 mm) and white matter beyond "
-                      f"~{83.5 - r1:.0f} mm under the cortex are invisible: SNR ≈ "
+                      f"the outer centimetre are invisible: SNR ≈ "
                       f"{float(np.interp(20.0, sn['r'], best)):.2f} at r = 20 mm even in the best "
                       "direction. The hippocampal shrinkage cannot be recovered by any method here.")
     if "i2" in R:
         rd = R["i2"]["radial"]["resolution_diag"]
-        cannot.append(f"**Resolve depth structure (I2).** In the radial inversion only the outermost "
-                      f"shell (82–83.5 mm) has resolution-matrix diagonal ≥ 0.5 (max "
-                      f"{max(rd['eps_r'].max(), rd['eps_pp'].max()):.2f}). Voxel point-spread functions "
-                      "have diagonals ~1e-5 and peak tens of mm from the true voxel. Voxel images on HFSS "
-                      "data are noise or zero.")
+        rr = R["i2"]["radial"]["r"]
+        good = rr[(rd["eps_r"] >= 0.5) | (rd["eps_pp"] >= 0.5)]
+        psf = R["i2"]["voxel"]["psf"]
+        po = ", ".join(f"{p['r_mm']:.0f} mm → {p.get('peak_offset_mm', float('nan')):.0f}" for p in psf
+                       if "peak_offset_mm" in p)
+        cannot.append(f"**Resolve depth structure (I2).** Radial-inversion resolution diagonal ≥ 0.5 only "
+                      f"at r ≥ {good.min():.0f} mm (max {max(rd['eps_r'].max(), rd['eps_pp'].max()):.2f}). "
+                      + (f"Voxel point images are displaced by (depth → offset) {po} mm. " if po else
+                         "Voxel point-spread functions peak tens of mm from the true voxel. ")
+                      + "Neither the radial nor the voxel inversion recovers the true change, even from "
+                      "noise-only Born-consistent synthetic data. On HFSS data they return noise or zero"
+                      + (", and the absolute Born prediction is only 0.2–0.4 of the HFSS dS (§4.1)." if hf2 else "."))
+    if hf2 and "k3_path" in R["i2"]:
+        rf = R["i2"]["k3_path"]["region_fraction"]
+        can.append(f"**Explain the k = 3 signal.** With the real antennas' fields, "
+                   f"{rf['air gap 88-97'] + rf['air r>=97 (incl. antennas)']:.0%} of the opposite-antenna "
+                   f"sensitivity lies in air around the head and {rf['brain r<83.5']:.1%} in the brain, "
+                   "almost all of it in the outer layer (§4.3). This agrees with the delay test of §1. "
+                   "The k = 3 metric works because the wave skims the head and samples the CSF/cortex "
+                   "just under the skull.")
     if "i3" in R:
         idf = {s: R["i3"]["ident"][s]["verdict"] for s in REPORTED}
         det = sorted({n for s in REPORTED for n, v in zip(NAMES, idf[s]) if v == "determined"})
@@ -864,11 +919,19 @@ def _summary_json(R):
     if "val" in R:
         out["val_table"] = R["val"]["table"]
         out["pol"] = R["val"]["pol"]
+    out["data"] = {k: r.get("_data") for k, r in R.items() if isinstance(r, dict)}
     if "i2" in R:
-        out["i2_depth"] = R["i2"]["sens_depth"]
-        out["i2_block"] = R["i2"]["block"]
-        out["i2_radial_err"] = R["i2"]["radial"]["err"]
-        out["i2_voxel_err"] = R["i2"]["voxel"]["err"]
+        r2 = R["i2"]
+        out["i2_field_source"] = r2.get("field_source")
+        for k in ("sens_depth", "block", "kappa", "antennas", "symmetry", "lin_err_hfss"):
+            if k in r2:
+                out[f"i2_{k}"] = r2[k]
+        if "k3_path" in r2:
+            out["i2_k3_path"] = {k: r2["k3_path"][k] for k in ("region_fraction", "brain_depth_fraction",
+                                                             "sym_check_rel_rms", "sep_deg")}
+        out["i2_radial_err"] = r2["radial"]["err"]
+        out["i2_voxel_err"] = r2["voxel"]["err"]
+        out["i2_voxel_psf"] = r2["voxel"]["psf"]
     if "i3" in R:
         out["i3_fits"] = [{k: (v.tolist() if isinstance(v, np.ndarray) else v) for k, v in f.items()}
                           for f in R["i3"]["fits"]]

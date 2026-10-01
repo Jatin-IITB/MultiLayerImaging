@@ -179,7 +179,7 @@ def run(sd, model: KernelRingModel, profile="typical", n_draw=30, seed=2200, log
     prof = PROFILES[profile]
     p2a, kmat = sd.port_to_ant, sd.kmat
     stages = [s for s in ("Mild", "Moderate", "Severe") if s in sd.S]
-    hfss = fields_available()
+    hfss = False          # HFSS exports are handled by study_i2_hfss (this study = surrogate)
     res["field_source"] = "HFSS" if hfss else "SURROGATE (forward-model fields; data/fields absent)"
     log(f"I2 field source: {res['field_source']}")
 

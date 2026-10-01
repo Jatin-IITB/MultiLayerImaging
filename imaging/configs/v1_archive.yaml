@@ -1,0 +1,11 @@
+# Overlay for the imaging study only: the ARCHIVED v1 solves (mixed HFSS projects, 3.2-4.2 GHz
+# common band), on which report sections 1-3 and 5 were computed.
+# Use:  MLI_CONFIG=imaging/configs/v1_archive.yaml python imaging/run_imaging.py --reuse ...
+extends: config.yaml
+
+data:
+  raw_dir: data/archive/v1_mixed_projects/raw
+  manifest: data/archive/v1_mixed_projects/sims.csv
+
+metrics:
+  sim_set: hfss-v1-masked

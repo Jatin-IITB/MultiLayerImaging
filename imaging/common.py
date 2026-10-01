@@ -136,8 +136,16 @@ def port_positions_mm(port_to_ant) -> np.ndarray:
 # Data
 # ----------------------------------------------------------------------------------------------
 def load_config():
-    with open(ROOT / "config.yaml", encoding="utf-8") as fh:
-        return yaml.safe_load(fh)
+    """Shared loader: honours MLI_CONFIG overlays (default config.yaml)."""
+    from adstage.config import load_config as _load
+    return _load(ROOT)
+
+
+def data_tag(sd, cfg) -> dict:
+    """Which simulation set a result was computed on (stored with every cached result)."""
+    return dict(sim_set=cfg["metrics"]["sim_set"], config=cfg.get("_config_file", "config.yaml"),
+                files={s: sd.files[s] for s in sd.S},
+                band_GHz=f"{sd.f_hz[0] / 1e9:.1f}-{sd.f_hz[-1] / 1e9:.1f}")
 
 
 @dataclass

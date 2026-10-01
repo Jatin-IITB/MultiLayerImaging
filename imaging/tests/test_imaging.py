@@ -205,6 +205,28 @@ def test_fld_reader_parses_header_order(tmp_path):
     np.testing.assert_allclose(E[0], [3 + 4j, 1 + 2j, 5 + 6j])
 
 
+def test_fld_reader_hfss_complex_vector_layout(tmp_path):
+    from imaging.fields import Grid
+    hdr = ('Grid Output Min: [-3mm -3mm -3mm] Max: [3mm 3mm 3mm] Grid Size: [3mm 3mm 3mm] \n'
+           'X, Y, Z, Complex Vector data "<Ex,Ey,Ez>"\n')
+    lines = []
+    for x in (-3, 0, 3):
+        for y in (-3, 0, 3):
+            for z in (-3, 0, 3):                                   # z fastest
+                if (x, y, z) == (3, 3, 3):
+                    lines.append(f"{x/1e3:.6e} {y/1e3:.6e} {z/1e3:.6e}  Nan Nan Nan Nan Nan Nan ")
+                else:
+                    lines.append(f"{x/1e3:.6e} {y/1e3:.6e} {z/1e3:.6e}  {x} {y} {z} 1 2 -2 ")
+    p = tmp_path / "E.fld"
+    p.write_text(hdr + "\n".join(lines) + "\n")
+    pts, E = read_fld(p)
+    np.testing.assert_allclose(pts[1], [-3.0, -3.0, 0.0])          # metres -> mm
+    np.testing.assert_allclose(E[1], [-3 - 3j, 0 + 1j, 2 - 2j])     # (re, im) per component
+    assert np.isnan(E[-1]).all()
+    g = Grid(pts, E)
+    assert g.full and g.z_fastest and g.E.shape == (3, 3, 3, 3)
+
+
 def test_parameter_map_roundtrip():
     for s in ("Normal", "Mild", "Severe"):
         th = theta_of(HeadParams.stage(s))
