@@ -18,7 +18,7 @@ from .study_i3 import NAMES, UNITS  # noqa: E402
 
 REPORTED = ("Moderate", "Severe")
 STAGES = ("Mild", "Moderate", "Severe")
-C_ST = {"Mild": "#4C78A8", "Moderate": "#F58518", "Severe": "#E45756", "noise": "#888888"}
+C_ST = {"MCI": "#54A24B", "Mild": "#4C78A8", "Moderate": "#F58518", "Severe": "#E45756", "noise": "#888888"}
 
 
 def _t(rows, cols, fmt=None):
@@ -109,15 +109,16 @@ def fig_paths(P, sd):
 
 def fig_i1(R1):
     key_best = "layered"
+    stg = tuple(R1.get("stage_list", STAGES))
     for pl in ("ring", "vertical"):
-        fig, ax = plt.subplots(3, 4, figsize=(12, 9))
+        fig, ax = plt.subplots(3, 1 + len(stg), figsize=(3 * (1 + len(stg)), 9))
         for i, m in enumerate(("DAS", "DMAS", "MVDR")):
             P = R1["planes"].get(f"{pl}|{m}")
             if P is None:
                 continue
             u, mask = P["u"], P["mask"]
-            vmax = max(np.max(P[s]) for s in STAGES)
-            for j, s in enumerate(("noise",) + tuple(STAGES)):
+            vmax = max(np.max(P[s]) for s in stg)
+            for j, s in enumerate(("noise",) + stg):
                 img = np.full(mask.shape, np.nan)
                 img[mask] = P[s]
                 im = ax[i, j].imshow(10 * np.log10(np.maximum(img / vmax, 1e-6)), origin="lower",
@@ -133,7 +134,7 @@ def fig_i1(R1):
                 ax[i, j].set_xticks([])
                 ax[i, j].set_yticks([])
         fig.colorbar(im, ax=ax, shrink=0.6, label="dB rel. max over stages")
-        fig.suptitle(f"I1 {pl} plane ({'z = +48 mm' if pl == 'ring' else 'y = 0'}), "
+        fig.suptitle(f"I1 {pl} plane ({'z = +48 mm' if pl == 'ring' else 'x = 0, through T1 and T4'}), "
                      f"{key_best} delays, settings tuned on Mild; cyan = brain surface")
         fig.savefig(FIG / f"i1_{pl}_plane.png", dpi=110)
         plt.close(fig)
@@ -142,7 +143,7 @@ def fig_i1(R1):
         for j, m in enumerate(("DAS", "DMAS", "MVDR")):
             pr = R1["profiles"][f"{mode}|{m}"]
             ref = max(np.max(pr[s]) for s in STAGES)
-            for s in STAGES:
+            for s in R1.get("stage_list", STAGES):
                 ax[i, j].plot(R_PROF, np.asarray(pr[s]) / ref, color=C_ST[s], label=s)
             ax[i, j].plot(R_PROF, np.asarray(pr["noise"]) / ref, color=C_ST["noise"], ls="--",
                           label="noise-only (mean)")
@@ -355,7 +356,7 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
         P = R["paths"]
         fig_paths(P, sd)
         L += ["## 1. The k = 3 path question — direct evidence from the HFSS couplings", "", _label(R["paths"]), ""]
-        L += ["Group delay = slope of the unwrapped phase over 3.2–4.2 GHz. The unknown antenna/feed "
+        L += [f"Group delay = slope of the unwrapped phase over {_band(R, 'paths')} GHz. The unknown antenna/feed "
               "delay is removed with the neighbour path (k = 1). Its straight line only grazes the "
               f"skin (closest approach {P['paths'][0]['chord_closest_to_centre_mm']:.1f} mm), so it "
               f"travels in air: 2 t_ant = gd(k1) − chord/c = **{P['two_t_ant_ns']:.2f} ns**.", ""]
@@ -368,22 +369,32 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
                  ["stage"] + [k for k in m["Mild"] if k.startswith("gd")],
                  {k: ".2f" for k in m["Mild"]}), ""]
         k3 = P["paths"][2]
+        k2 = P["paths"][1]
+        st_ok = all(abs(m[s_]["gd_k3_ns"] - k3["pred_creep_ns"]) < abs(m[s_]["gd_k3_ns"] - k3["pred_straight_ns"])
+                    for s_ in m)
+        margin = k3["pred_straight_ns"] - k3["measured_gd_Normal_ns"]
+        k2_meas = k2["measured_gd_Normal_ns"]
+        k2_fit = min(abs(k2_meas - k2["pred_creep_ns"]), abs(k2_meas - k2["pred_straight_ns"]))
         L += [f"**Verdict (k = 3).** Measured group delay {k3['measured_gd_Normal_ns']:.2f} ns. The "
               f"air/creeping path predicts {k3['pred_creep_ns']:.2f} ns "
               f"(Δ = {abs(k3['pred_creep_ns'] - k3['measured_gd_Normal_ns']):.2f} ns). The straight "
               f"path through the head predicts {k3['pred_straight_ns']:.2f} ns "
-              f"(Δ = {k3['pred_straight_ns'] - k3['measured_gd_Normal_ns']:.1f} ns). The same holds "
-              "for Mild/Moderate/Severe (table). So the opposite-antenna signal **travels around the "
+              f"(Δ = {k3['pred_straight_ns'] - k3['measured_gd_Normal_ns']:.1f} ns). "
+              + ("Every stage's k = 3 delay is closer to the air path (table). " if st_ok else
+                 "Not every stage's k = 3 delay is closer to the air path (table). ")
+              + "So the opposite-antenna signal **travels around the "
               "head** (air side of the skin: creeping, or guided along the nearly closed ring of AMC "
               "reflectors), not through the brain. dS_k3 has about the same delay as the k3 wave "
               "itself. So the stage information on k = 3 is a modification of that surface-guided "
               "wave by the near-surface layers (CSF/cortex below the skull), not an echo from depth. "
               "Figure: `figures/k3_path_time.png`.",
               "- Caveats: (i) with a resonant patch/AMC antenna the group delay is frequency-dependent. "
-              "The single slope is a band average, uncertain by a few tenths of a ns. The 2.4 ns "
-              "margin is well outside that. (ii) k = 2 does not fit either prediction cleanly "
-              "(4.87 ns): its coupling has deep nulls near 3.8 GHz (two unequal paths around the "
-              "ring interfere), so its slope is unreliable.", ""]
+              f"The single slope is a band average, uncertain by a few tenths of a ns. The {margin:.1f} ns "
+              "margin is well outside that. (ii) "
+              + (f"k = 2 ({k2_meas:.2f} ns) is {k2_fit:.2f} ns from the nearer prediction: its coupling has "
+                 "deep nulls (two unequal paths around the ring interfere), so its slope is unreliable."
+                 if k2_fit > 0.3 else
+                 f"k = 2 ({k2_meas:.2f} ns) is within {k2_fit:.2f} ns of one prediction."), ""]
 
     # ------------------------------------------------------------------ I1
     if "i1" in R:
@@ -397,7 +408,7 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
               "- Delays: (a) one effective eps inside the skin; (b) straight rays through the Normal "
               "layers. Pair delay tau_i + tau_j + 2 t_ant.",
               "- MVDR: see `imaging/beamform.py`. With **one** measurement per pair, the 21×21 "
-              "covariance of a single snapshot is rank 1 and not invertible. The F = 201 focused "
+              f"covariance of a single snapshot is rank 1 and not invertible. The F = {len(sd.f_hz)} focused "
               "frequency bins are used as snapshots (rank ≤ 21, assumes a frequency-flat focused "
               "response), with diagonal loading 0.1·tr(R)/21. With loading → ∞ it reduces to DAS.",
               "- Tuned on Mild: t_ant ∈ {0, 0.5, 1, 1.5, 2} ns and eps_eff ∈ {20, 30, 40, 50}, chosen "
@@ -408,11 +419,14 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
         L += ["**Point-target test (ideal flat-spectrum scatterer, homogeneous eps = 40, ring plane).** "
               "This is the array's intrinsic resolution: −3 dB widths along x (radial), y (azimuthal) "
               "and z (elevation), and the peak offset.", ""]
+        zw = [p_["z_width_3dB_mm"] for p_ in R1["psf"] if p_["method"] in ("DAS", "DMAS")]
+        inplane_ok = all(p_["x_peak_offset_mm"] == 0 and p_["y_peak_offset_mm"] == 0 for p_ in R1["psf"])
         L += [_t(R1["psf"], ["r_mm", "method", "x_peak_offset_mm", "x_width_3dB_mm", "y_peak_offset_mm",
                              "y_width_3dB_mm", "z_peak_offset_mm", "z_width_3dB_mm"], {}), "",
-              "An ideal point scatterer is focused at the right place in-plane by all three methods; "
-              "widths of 2 mm are the grid-sampling limit. This test is noise-free, so the MVDR "
-              "widths are optimistic. Elevation is the weak axis (DAS/DMAS 16–82 mm), as expected "
+              ("An ideal point scatterer is focused at the right place in-plane by all three methods; "
+               if inplane_ok else "An ideal point scatterer is not always focused at the right place in-plane; ")
+              + "widths of 2 mm are the grid-sampling limit. This test is noise-free, so the MVDR "
+              f"widths are optimistic. Elevation is the weak axis (DAS/DMAS {min(zw):.0f}–{max(zw):.0f} mm), as expected "
               "for one ring. So the failure on the real dS below is not a beamformer bug. A "
               "spherically symmetric change gives the same signal on every pair at a given k, and "
               "those add coherently at the equidistant centre. The echo delays also contain the "
@@ -421,18 +435,21 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
         for k, v in R1["stages"].items():
             mode, m, s = k.split("|")
             rows.append(dict(delays=mode, method=m, stage=s, **v))
+        span = _changed_span("Severe")
         L += ["**Results.** The true change of every AD stage is a set of shells: the outermost starts "
               "at the brain surface (83 mm, gray → CSF; 83–83.5 mm CSF material). The changed band "
-              "spans 57–83.5 mm (Severe), plus the hippocampus. peak_r = radius of the maximum of "
+              f"spans {span[0]:.0f}–{span[1]:.1f} mm (Severe), plus the hippocampus. MCI changes only "
+              "the hippocampus (r < 25 mm). peak_r = radius of the maximum of "
               "the azimuthally averaged profile. SCR = clean stage image peak / mean noise-only peak. "
               "scr_noisy = the same with noise on both measurements.", ""]
         L += [_t(rows, ["delays", "method", "stage", "peak_r_mm", "scr_db", "scr_noisy_db",
                         "frac_draws_above_noise_p95"], {"scr_db": ".1f", "scr_noisy_db": ".1f",
                                                         "frac_draws_above_noise_p95": ".2f"}), ""]
+        two_t = R["paths"]["two_t_ant_ns"] if "paths" in R else float("nan")
         L += ["Peak radius vs assumed antenna delay (DAS, layered rays). The depth the image assigns "
-              "is set by t_ant, which the data cannot fix (§1: transmission carries ~3 ns of antenna "
-              "delay that reflection does not show):", ""]
-        L += [_t(R1["t_ant_ambiguity"], ["t_ant_ns"] + [s for s in STAGES], {"t_ant_ns": ".2f"}), ""]
+              f"is set by t_ant, which the data cannot fix (§1: transmission carries ~{two_t:.1f} ns of "
+              "antenna delay (2 t_ant) that reflection does not show):", ""]
+        L += [_t(R1["t_ant_ambiguity"], ["t_ant_ns"] + list(R1.get("stage_list", STAGES)), {"t_ant_ns": ".2f"}), ""]
         L += ["Figures: `figures/i1_ring_plane.png`, `figures/i1_vertical_plane.png`, "
               "`figures/i1_radial_profiles.png`.", ""]
 
@@ -457,19 +474,40 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
               "shape_corr = |<pred, HFSS>| over frequency. growth = |dS_stage| / |dS_Mild|.", ""]
         L += [_t(V["table"], ["stage", "k", "calA_rel_err", "calB_rel_err", "shape_corr", "trivial_rel_err",
                               "model_growth_vs_mild", "hfss_growth_vs_mild"], {c: ".2f" for c in V["table"][0]}), ""]
+        T = V["table"]
+        sc = {(r_["stage"], r_["k"]): r_ for r_ in T}
+        sc_m = [sc[("Mild", k)]["shape_corr"] for k in range(4)]
+        g_mod = [sc[("Severe", k)]["model_growth_vs_mild"] for k in range(4)]
+        g_hf = [sc[("Severe", k)]["hfss_growth_vs_mild"] for k in range(4)]
+        beats = sum(r_["calB_rel_err"] < r_["trivial_rel_err"] for r_ in T if r_["stage"] in REPORTED)
+        n_rep = sum(1 for r_ in T if r_["stage"] in REPORTED)
+        lvl = ""
+        try:
+            from .common import ring_modes as _rm
+            Sr = _rm(sd.S["Normal"], sd.port_to_ant)[::4]
+            if Sr.shape[0] == V["calA"].shape[0]:
+                hf_db = [float(np.median(20 * np.log10(np.abs(Sr[:, k])))) for k in (1, 2, 3)]
+                mo_db = [float(np.median(20 * np.log10(np.abs(Sr[:, k]) / np.abs(V["calA"][:, k])))) for k in (1, 2, 3)]
+                lvl = (f"- Total couplings (median over the band), model vs HFSS: k1 {mo_db[0]:.0f} vs "
+                       f"{hf_db[0]:.0f} dB, k2 {mo_db[1]:.0f} vs {hf_db[1]:.0f} dB, k3 {mo_db[2]:.0f} vs "
+                       f"{hf_db[2]:.0f} dB (the calibration c_k absorbs the difference). The model's "
+                       "k = 3 is a deep shadow; HFSS carries an opposite-antenna path the point-dipole "
+                       "model lacks, consistent with §1 and §4.3 (around the head in air; the six AMC "
+                       "reflectors nearly close a ring).")
+        except Exception:                                   # pragma: no cover
+            lvl = ""
         L += ["**Verdict: the validation FAILS beyond the neighbour path.** Findings:", "",
-              "- With the brief's Normal calibration, the model predicts Mild dS only on k = 1 "
-              "(shape correlation ≈ 0.9). k = 0 and k = 2 are wrong in shape (corr 0.1–0.5), and k = 3 "
-              "is off in amplitude.",
-              "- The model's k = 3 total coupling is a deep shadow (−83…−99 dB). HFSS has −55 dB. HFSS "
-              "carries an opposite-antenna path the point-dipole model lacks, consistent with §1 "
-              "(around-the-head air path; the six AMC reflectors nearly close a ring).",
-              "- The model predicts Severe dS ≈ 2× Mild on every path. HFSS shows ≈ 1.3–1.4×. Even the "
-              "most flexible calibration fitted on Mild does not beat the trivial predictor on "
-              "Moderate/Severe.",
-              "- A patch-sized aperture (5×5 dipoles, cos taper) and phase-centre radii 92–105 mm were "
-              "also tried. None fixes this (rel. err ≈ 0.8–1.2). The mismatch is in the antenna/"
-              "array structure, not the head model.",
+              f"- With the brief's Normal calibration, the shape correlation of the predicted Mild dS "
+              f"is k0 {sc_m[0]:.2f}, k1 {sc_m[1]:.2f}, k2 {sc_m[2]:.2f}, k3 {sc_m[3]:.2f}; the k = 3 "
+              f"amplitude error is {sc[('Mild', 3)]['calA_rel_err']:.1f}× the signal.",
+              lvl,
+              f"- The model predicts Severe dS = {min(g_mod):.1f}–{max(g_mod):.1f}× Mild across the "
+              f"paths; HFSS shows {min(g_hf):.2f}–{max(g_hf):.2f}×. The most flexible calibration "
+              f"fitted on Mild (calB) beats the trivial predictor in {beats} of {n_rep} "
+              "Moderate/Severe cases.",
+              "- In an exploratory check on the v1 data, a patch-sized aperture (5×5 dipoles, cos "
+              "taper) and phase-centre radii 92–105 mm did not fix this (rel. err ≈ 0.8–1.2). It was "
+              "not repeated on v2. The mismatch is in the antenna/array structure, not the head model.",
               "- Consequence: every inversion that needs a forward model (I2 with surrogate fields, "
               "I3) is reported twice: on HFSS data (model-mismatch limited) and on model-generated "
               "synthetic data with the same noise (the array's intrinsic capability if the antenna "
@@ -726,6 +764,19 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
     _summary_json(R)
 
 
+def _changed_span(stage):
+    """Radial span (mm) of the true change outside the hippocampus core."""
+    r = np.arange(25.05, 88.0, 0.1)
+    de, ds = true_delta(stage, r)
+    ch = r[(np.abs(de) > 0) | (np.abs(ds) > 0)]
+    return (float(ch.min()), float(ch.max())) if ch.size else (float("nan"), float("nan"))
+
+
+def _band(R, key):
+    d = R.get(key, {}).get("_data") if isinstance(R.get(key), dict) else None
+    return d["band_GHz"].replace("-", "–") if d else "?"
+
+
 def _rmin(r, v, thr):
     """Smallest radius r0 such that v >= thr for all r >= r0 (r ascending); nan if none."""
     ok = v >= thr
@@ -756,25 +807,36 @@ def _ranges(r):
 
 
 def _verdict_section(R):
+    sets = sorted({r["_data"]["sim_set"] for r in R.values() if isinstance(r, dict) and r.get("_data")})
     L = ["## 6. Verdict — what 6 antennas on one ring in this band can and cannot localise", "",
-         "Each item cites the section it rests on. §4 uses the v2 data with the HFSS fields; the "
-         "other sections use v1 (see the data line under each heading).", ""]
+         (f"Each item cites the section it rests on. All sections use `{sets[0]}`."
+          if len(sets) == 1 else
+          "Each item cites the section it rests on. Sections use different data: " + ", ".join(sets)
+          + " (see the data line under each heading)."), ""]
     can, cannot = [], []
     if "i1" in R:
         st = R["i1"]["stages"]
         scr = [v["scr_db"] for k, v in st.items() if k.split("|")[1] in ("DAS", "DMAS") and k.split("|")[2] in REPORTED]
         pk = sorted({v["peak_r_mm"] for k, v in st.items() if k.split("|")[2] in REPORTED})
-        can.append(f"**Detect that something changed** relative to a Normal baseline of the same head. "
-                   f"DAS/DMAS image energy sits {min(scr):.0f}–{max(scr):.0f} dB above the noise-only "
-                   "image for Moderate/Severe, in every noisy draw (§2, §8). This is detection, not "
-                   "localisation.")
-        cannot.append(f"**Place the change with radar imaging (I1).** Every method and delay model puts "
-                      f"the radial peak at r = {', '.join(f'{p:.0f}' for p in pk)} mm. That is the centre, "
-                      "where all 21 pair delays coincide for a ring of equidistant antennas: a symmetric-"
-                      "array artefact. The true change lies at 57–83.5 mm. The depth scale also hinges "
-                      "on an antenna delay the data cannot fix (§1: ~3 ns in transmission, ~0 in "
-                      "reflection). The ideal point target has an elevation width of several cm (§2 "
-                      "table).")
+        scr_mci = [v["scr_db"] for k, v in st.items() if k.split("|")[1] in ("DAS", "DMAS") and k.split("|")[2] == "MCI"]
+        can.append(f"**Detect that the simulation changed** relative to a Normal baseline of the same "
+                   f"head. DAS/DMAS image energy sits {min(scr):.0f}–{max(scr):.0f} dB above the "
+                   "noise-only image for Moderate/Severe, in every noisy draw (§2, §8). This is "
+                   "detection, not localisation"
+                   + (f", and it is **not disease-specific**: MCI, whose only change is invisible to the "
+                      f"array, gives {min(scr_mci):.0f}–{max(scr_mci):.0f} dB as well (§6.1)." if scr_mci else "."))
+        span = _changed_span("Severe")
+        two_t = R["paths"]["two_t_ant_ns"] if "paths" in R else float("nan")
+        near_c = all(p_ <= 20 for p_ in pk)
+        cannot.append(f"**Place the change with radar imaging (I1).** The methods and delay models put "
+                      f"the radial peak at r = {', '.join(f'{p:.0f}' for p in pk)} mm"
+                      + (". That is the centre, where all 21 pair delays coincide for a ring of "
+                         "equidistant antennas: a symmetric-array artefact. " if near_c else
+                         ", not at a consistent depth. ")
+                      + f"The true change lies at {span[0]:.0f}–{span[1]:.1f} mm. The depth scale also "
+                      f"hinges on an antenna delay the data cannot fix (§1: ~{two_t:.1f} ns in "
+                      "transmission, ~0 in reflection). The ideal point target has an elevation width "
+                      "of several cm (§2 table).")
     hf2 = "i2" in R and R["i2"].get("field_source") == "HFSS"
     if "i2" in R and "snr_radial" in R["i2"]:
         sn = R["i2"]["snr_radial"]
@@ -840,19 +902,106 @@ def _verdict_section(R):
                   "head and every change are spherically symmetric, so any azimuthal structure in an "
                   "image is an array artefact. With six antennas on one ring it would also be "
                   "impossible in an anatomical head (§7).")
-    cannot.append("**Separate AD stages.** The model predicts Severe dS ≈ 2× Mild; HFSS shows "
-                  "≈ 1.3–1.4×. AD-vs-AD differences are 0.5–3× the port asymmetry, and the mesh noise "
-                  "is unmeasured: **unverified against mesh noise**.")
+    ss = R.get("snr", {}).get("solve_to_solve", {})
+    if "mf_snr_stage_pairs_same_band" in ss:
+        sol = ss["mf_snr_normal_v2_minus_v1"]["all"]
+        pr_ = {k: v["all"] for k, v in ss["mf_snr_stage_pairs_same_band"].items() if "MCI" not in k}
+        cannot.append("**Separate AD stages.** On the common band, the whitened difference between "
+                      "AD stages is " + ", ".join(f"{k} {v:.0f}" for k, v in pr_.items())
+                      + f", against {sol:.0f} between two HFSS solves of the *same* Normal design (v2 "
+                      "re-solve minus v1). The AD-vs-AD differences are no larger than solve-to-solve "
+                      "variation, so stage separation is **not supported by these simulations**."
+                      if max(pr_.values()) <= sol else
+                      "**Separate AD stages.** AD-vs-AD differences exceed the v1→v2 solve difference "
+                      "only partly (see §6.1); stage separation remains unverified.")
+    else:
+        cannot.append("**Separate AD stages.** AD-vs-AD differences are small compared with the "
+                      "port asymmetry, and the mesh noise is unmeasured: **unverified against mesh noise**.")
+    mci = _mci_section(R)
+    if mci:
+        cannot.append(mci["verdict"])
     L += ["**Can (in these simulations, under typical noise):**", ""]
     L += [f"{i}. {c}" for i, c in enumerate(can, 1)]
     L += ["", "**Cannot:**", ""]
     L += [f"{i}. {c}" for i, c in enumerate(cannot, 1)]
+    st_ = R.get("snr", {}).get("stages", {})
+    c3_txt = ""
+    if st_:
+        c3_txt = (" On the k = 3 band power, the AD stages shift by "
+                  + ", ".join(f"{s_} {st_[s_]['c3_gap_db']:+.2f} dB" for s_ in ("Mild", "Moderate", "Severe") if s_ in st_)
+                  + (f", MCI by {st_['MCI']['c3_gap_db']:+.2f} dB" if "MCI" in st_ else "")
+                  + f" (noise SD {st_[next(iter(st_))]['c3_noise_sd_db']:.3f} dB). The AD shift has the "
+                  "opposite sign and is several times larger than the MCI/solve-to-solve shift.")
     L += ["", "**Imaging vs the scalar metric.** No imaging or inversion method recovered the known "
           "changes better than the k = 3 band-averaged power. That scalar remains the best "
           "Normal-vs-AD discriminator. Section 1 explains why it works: the opposite-antenna wave "
-          "skims the head surface, and the near-surface CSF/cortex change is exactly what it samples.",
-          ""]
+          "skims the head surface, and the near-surface CSF/cortex change is exactly what it samples."
+          + c3_txt, ""]
+    if mci:
+        L += mci["lines"]
     return L
+
+
+def _mci_section(R):
+    """Section 6.1: MCI against the noise-only floor, per method. None if MCI was not run."""
+    st = R.get("snr", {}).get("stages", {})
+    if "MCI" not in st:
+        return None
+    m = st["MCI"]
+    rows = [dict(method="raw dS, matched filter (all 21 pairs, full band)", MCI=f"SNR {m['mf_snr']['all']:.0f}",
+                 floor="SNR 0 (noise-only)", AD="SNR " + ", ".join(f"{st[s]['mf_snr']['all']:.0f}" for s in REPORTED if s in st)),
+            dict(method="raw dS, energy detector", MCI=f"AUC {m['energy_auc']:.2f}, {m['energy_frac_above_noise_p95']:.0%} of draws > noise p95",
+                 floor="AUC 0.5, 5 %", AD=", ".join(f"AUC {st[s]['energy_auc']:.2f}" for s in REPORTED if s in st)),
+            dict(method="k = 3 band power (C3) shift", MCI=f"{m['c3_gap_db']:+.2f} dB",
+                 floor=f"noise SD {m['c3_noise_sd_db']:.3f} dB",
+                 AD=", ".join(f"{st[s]['c3_gap_db']:+.2f} dB" for s in REPORTED if s in st))]
+    ss = R["snr"].get("solve_to_solve", {})
+    if "mf_snr_normal_v2_minus_v1" in ss:
+        rows.append(dict(method=f"two solves of the same Normal design (v2 − v1, {ss['band_GHz']} GHz)",
+                         MCI=f"SNR {ss['mf_snr_stages_same_band']['MCI']['all']:.0f} (same band)",
+                         floor=f"SNR {ss['mf_snr_normal_v2_minus_v1']['all']:.0f} (solve-to-solve)",
+                         AD="SNR " + ", ".join(f"{ss['mf_snr_stages_same_band'][s]['all']:.0f}" for s in REPORTED)))
+    born = R.get("i2", {}).get("born_snr", {})
+    if "MCI" in born:
+        rows.append(dict(method="Born prediction of the TRUE change (HFSS fields, 3 freqs, ring modes)",
+                         MCI=f"SNR {born['MCI']['pred_abs']:.2g} predicted vs {born['MCI']['hfss']:.0f} in HFSS",
+                         floor="—", AD=", ".join(f"{born[s]['pred_abs']:.0f} vs {born[s]['hfss']:.0f}" for s in REPORTED if s in born)))
+    det1 = R.get("i1", {}).get("stages", {})
+    for meth in ("DAS", "DMAS", "MVDR"):
+        k = f"layered|{meth}|MCI"
+        if k in det1:
+            rows.append(dict(method=f"I1 {meth} image peak", MCI=f"SCR {det1[k]['scr_db']:.1f} dB, {det1[k]['frac_draws_above_noise_p95']:.0%} > p95",
+                             floor="SCR 0 dB, 5 %",
+                             AD=", ".join(f"{det1[f'layered|{meth}|{s}']['scr_db']:.1f} dB" for s in REPORTED)))
+    from imaging.stage_snr import _auc
+    for nm, dd in (("I2 radial", R.get("i2", {}).get("radial", {}).get("detect")),
+                   ("I2 voxel", R.get("i2", {}).get("voxel", {}).get("detect"))):
+        if dd and "MCI" in dd:
+            rows.append(dict(method=f"{nm} outer-shell statistic", MCI=f"AUC {_auc(dd['MCI'], dd['noise_test']):.2f}",
+                             floor="AUC 0.5",
+                             AD=", ".join(f"AUC {_auc(dd[s], dd['noise_test']):.2f}" for s in REPORTED if s in dd)))
+    det_noise = m["energy_auc"] > 0.95 and m["mf_snr"]["all"] > 5
+    expl = ""
+    if "mf_snr_normal_v2_minus_v1" in ss and "MCI" in born:
+        expl = (f" The Born prediction of MCI's true change (hippocampus 25 → 21.25 mm) is SNR "
+                f"{born['MCI']['pred_abs']:.2g}, while the HFSS MCI-minus-Normal difference is "
+                f"{born['MCI']['hfss']:.0f} at the same 3 frequencies. Over the full band, the same "
+                f"difference ({ss['mf_snr_stages_same_band']['MCI']['all']:.0f}) is the size of two solves "
+                f"of one design ({ss['mf_snr_normal_v2_minus_v1']['all']:.0f}). So what is detected is "
+                "solve-to-solve (mesh/sweep) variation, not the hippocampus.")
+    verdict = ("**Detect MCI.** Against the measurement-noise floor alone the expectation is "
+               + ("**refuted**: MCI differs from Normal far above the noise (§6.1). " if det_noise else
+                  "**confirmed**: MCI is not above the noise floor (§6.1). ")
+               + (expl if det_noise else "")
+               + (" Against the relevant floor (solve-to-solve variation) MCI is **undetectable**, as "
+                  "expected: its true change is invisible to the array." if det_noise and expl else ""))
+    lines = ["### 6.1 MCI against the noise-only floor", "",
+             "MCI changes only the hippocampus (radius 25 → 21.25 mm; materials as Normal). The noise-"
+             "only floor is the 'typical' measurement noise on both measurements. AD = Moderate, "
+             "Severe for reference.", "",
+             _t(rows, ["method", "MCI", "floor", "AD"]), "",
+             "Reading: " + verdict, ""]
+    return dict(verdict=verdict, lines=lines)
 
 
 def _array_section():
@@ -913,7 +1062,8 @@ def _array_section():
          "realistic.",
          "7. **Calibration against mesh noise.** Lobe-level differences are small. Between-mesh and "
          "repeat-measurement noise must be measured first (Normal mesh-repeat), because the "
-         "port-asymmetry floor here is already 0.5–3× the AD-vs-AD differences.", ""]
+         "difference between two HFSS solves of the same design is already as large as the "
+         "AD-vs-AD differences (§6).", ""]
     return L
 
 

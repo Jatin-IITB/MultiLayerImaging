@@ -80,7 +80,12 @@ def run(sd, profile="typical", n_draw=200, seed=5500, v1_config="imaging/configs
         res["solve_to_solve"] = dict(band_GHz=f"{common[0] / 1e9:.1f}-{common[-1] / 1e9:.1f}",
                                      mf_snr_normal_v2_minus_v1=_norms(x_solve, kp),
                                      mf_snr_stages_same_band={s: _norms(pair_signals(sd.dS(s)[i2]) / sig[:, i2], kp)
-                                                              for s in stages})
+                                                              for s in stages},
+                                     mf_snr_stage_pairs_same_band={
+                                         f"{a}-{b}": _norms(pair_signals(sd.S[b][i2] - sd.S[a][i2]) / sig[:, i2], kp)
+                                         for a, b in (("Mild", "Moderate"), ("Mild", "Severe"),
+                                                      ("Moderate", "Severe"), ("Normal", "MCI"))
+                                         if a in sd.S and b in sd.S})
     except Exception as e:                                                  # pragma: no cover
         res["solve_to_solve"] = {"error": repr(e)}
     return res
