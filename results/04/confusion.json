@@ -1,0 +1,1346 @@
+{
+ "binary|G_refl|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    290,
+    10
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_refl|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    0,
+    300
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_refl|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    273,
+    27
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_coup|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_coup|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_coup|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_ratio|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_ratio|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_ratio|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_all|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_all|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    41,
+    259
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|G_all|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|R31|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|R31|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    244,
+    56
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|R31|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    300,
+    0
+   ],
+   [
+    0,
+    900
+   ]
+  ]
+ },
+ "binary|C3|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    299,
+    1
+   ],
+   [
+    10,
+    890
+   ]
+  ]
+ },
+ "binary|C3|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    299,
+    1
+   ],
+   [
+    8,
+    892
+   ]
+  ]
+ },
+ "binary|C3|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    299,
+    1
+   ],
+   [
+    9,
+    891
+   ]
+  ]
+ },
+ "binary|C2|QDA+between": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    299,
+    1
+   ],
+   [
+    106,
+    794
+   ]
+  ]
+ },
+ "binary|C2|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    294,
+    6
+   ],
+   [
+    96,
+    804
+   ]
+  ]
+ },
+ "binary|C2|LDA": {
+  "classes": [
+   "Normal",
+   "AD"
+  ],
+  "cm": [
+   [
+    299,
+    1
+   ],
+   [
+    156,
+    744
+   ]
+  ]
+ },
+ "three_merged|G_refl|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    297,
+    3,
+    0
+   ],
+   [
+    0,
+    597,
+    3
+   ],
+   [
+    0,
+    42,
+    258
+   ]
+  ]
+ },
+ "three_merged|G_refl|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    0,
+    150,
+    150
+   ],
+   [
+    0,
+    554,
+    46
+   ],
+   [
+    0,
+    300,
+    0
+   ]
+  ]
+ },
+ "three_merged|G_refl|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    599,
+    1
+   ],
+   [
+    0,
+    131,
+    169
+   ]
+  ]
+ },
+ "three_merged|G_coup|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|G_coup|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    300,
+    0
+   ]
+  ]
+ },
+ "three_merged|G_coup|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|G_ratio|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|G_ratio|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|G_ratio|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|G_all|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|G_all|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    127,
+    173,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    300,
+    0
+   ]
+  ]
+ },
+ "three_merged|G_all|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    600,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|R31|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    537,
+    63
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|R31|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    599,
+    1
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|R31|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    500,
+    100
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three_merged|C3|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    7,
+    37,
+    556
+   ],
+   [
+    0,
+    189,
+    111
+   ]
+  ]
+ },
+ "three_merged|C3|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    8,
+    74,
+    518
+   ],
+   [
+    0,
+    191,
+    109
+   ]
+  ]
+ },
+ "three_merged|C3|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    8,
+    56,
+    536
+   ],
+   [
+    0,
+    207,
+    93
+   ]
+  ]
+ },
+ "three_merged|C2|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    292,
+    8,
+    0
+   ],
+   [
+    84,
+    458,
+    58
+   ],
+   [
+    0,
+    29,
+    271
+   ]
+  ]
+ },
+ "three_merged|C2|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    291,
+    9,
+    0
+   ],
+   [
+    83,
+    461,
+    56
+   ],
+   [
+    0,
+    31,
+    269
+   ]
+  ]
+ },
+ "three_merged|C2|LDA": {
+  "classes": [
+   "Normal",
+   "Mild+Moderate",
+   "Severe"
+  ],
+  "cm": [
+   [
+    292,
+    8,
+    0
+   ],
+   [
+    83,
+    455,
+    62
+   ],
+   [
+    0,
+    29,
+    271
+   ]
+  ]
+ },
+ "three|G_refl|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    0,
+    149,
+    151
+   ],
+   [
+    0,
+    300,
+    0
+   ]
+  ]
+ },
+ "three|G_refl|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    0,
+    150,
+    150
+   ],
+   [
+    150,
+    0,
+    150
+   ],
+   [
+    0,
+    300,
+    0
+   ]
+  ]
+ },
+ "three|G_refl|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    150,
+    150
+   ],
+   [
+    0,
+    154,
+    146
+   ]
+  ]
+ },
+ "three|G_coup|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    149,
+    151
+   ],
+   [
+    0,
+    1,
+    299
+   ]
+  ]
+ },
+ "three|G_coup|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ],
+   [
+    0,
+    293,
+    7
+   ]
+  ]
+ },
+ "three|G_coup|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    300,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|G_ratio|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    300,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|G_ratio|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    300,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|G_ratio|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    300,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|G_all|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    289,
+    11
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|G_all|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    213,
+    87,
+    0
+   ],
+   [
+    0,
+    0,
+    300
+   ],
+   [
+    0,
+    300,
+    0
+   ]
+  ]
+ },
+ "three|G_all|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    298,
+    2
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|R31|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    282,
+    18
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|R31|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    288,
+    12
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|R31|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    300,
+    0,
+    0
+   ],
+   [
+    0,
+    282,
+    18
+   ],
+   [
+    0,
+    0,
+    300
+   ]
+  ]
+ },
+ "three|C3|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    8,
+    12,
+    280
+   ],
+   [
+    0,
+    103,
+    197
+   ]
+  ]
+ },
+ "three|C3|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    8,
+    12,
+    280
+   ],
+   [
+    0,
+    103,
+    197
+   ]
+  ]
+ },
+ "three|C3|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    299,
+    1,
+    0
+   ],
+   [
+    7,
+    14,
+    279
+   ],
+   [
+    0,
+    110,
+    190
+   ]
+  ]
+ },
+ "three|C2|QDA+between": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    294,
+    6,
+    0
+   ],
+   [
+    25,
+    238,
+    37
+   ],
+   [
+    0,
+    37,
+    263
+   ]
+  ]
+ },
+ "three|C2|QDA meas-only": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    294,
+    6,
+    0
+   ],
+   [
+    25,
+    241,
+    34
+   ],
+   [
+    0,
+    38,
+    262
+   ]
+  ]
+ },
+ "three|C2|LDA": {
+  "classes": [
+   "Normal",
+   "Mild",
+   "Severe"
+  ],
+  "cm": [
+   [
+    294,
+    6,
+    0
+   ],
+   [
+    25,
+    237,
+    38
+   ],
+   [
+    0,
+    37,
+    263
+   ]
+  ]
+ }
+}

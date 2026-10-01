@@ -11,6 +11,40 @@
   comes from only 4 repeat pairs, so it is a rough estimate.
 - Headline scheme: `binary` (Normal vs AD).
 
+## Prompt 04 — likelihood / divergence analysis (code `5c060e3`, `results/04/`)
+
+**Setup.** 9 solves (v2 + v1 repeats), 3.2–4.2 GHz. Noise: typical + ±0.5 dB per-port gain.
+89 ring-symmetrised features in groups G_refl (23), G_coup (63), G_ratio (3; R31, R21, R32,
+rank 2 because R32 = R31 − R21) and G_all (89).
+
+**Class model.** Gaussian, with covariance = measurement noise (Ledoit–Wolf, δ ≈ 0.01–0.02)
++ between-solve covariance from 4 repeat pairs (variance shrinkage λ 0.06–0.09, correlation
+shrinkage 0.13–0.40 for the large groups) + stage scatter inside merged classes. Evaluated
+leave-one-solve-out. Every 3-class result is **preliminary: one head, two solves, 4 repeat
+pairs**.
+
+- **Most apparent information is solve-specific in the high-dimensional groups.**
+  - Adding the between-solve term keeps only ~9% of G_all's Normal-vs-AD Bhattacharyya
+    distance (1280 → 119) and ~5% of G_refl's.
+  - Two solves of the *same* stage remain as far apart as some class pairs (G_all repeats
+    10–31; Mild vs Moderate 4.3; MCI vs Normal 15.6).
+  - A likelihood model without the between-solve term collapses on an unseen solve: G_all
+    QDA scores 0.57 (binary) and 0.24 (three).
+- **Detection (binary).** No gain from using all the information. R31 alone scores 1.00 on the
+  unseen solve, as do G_ratio, G_coup and G_all; C3 alone scores 0.99.
+- **Staging (three, three_merged).** The gain comes from the **calibration-free ratios**:
+  - G_ratio scores 1.00 with every classifier, 0% reject and ECE 0. Single features score
+    much lower: C3 0.47–0.56, C2 0.88.
+  - G_all and G_coup reach 0.83–1.00, but in `three` their posteriors are unusable: 67% reject
+    at p < 0.7 and ECE 0.26–0.36.
+  - Mild|Severe separates beyond the repeat spread (ratio B 10.7 against repeats 0.07–1.8;
+    R21 gap 7.7× and R32 gap 7.5× the solve SD).
+  - **Mild vs Moderate does not** (ratio B 0.65, within the repeat spread; gaps 0.3–1.5× SD).
+- **MCI.** Within the repeat spread in every group (ratio B 0.09; R31 gap 0.22× SD). No claim.
+- **MI ranking** (Gaussian, with the between-solve variance): R21 1.66, R32 1.51 and R31
+  1.35 bits (of 2), then the k = 2 band (1.00) and k = 2/k = 3 sub-bands around
+  3.5–3.6 GHz. Reflection (k = 0) carries ≈ 0.06 bits on average.
+
 ## Dataset v2 and cross-solve test (run 1 code `f142bf6`, run 2 code `c95604c`)
 
 **Normal vs AD survives a change of solve.** Training on one solve and testing on the other
