@@ -115,9 +115,13 @@ def section(RR, t, label):
           f"{np.mean([errs[q] for q in ratio_q]):.2f}, powers {np.mean([errs[q] for q in power_q]):.2f}; "
           f"best-predicted quantity {min(errs, key=errs.get)} ({min(errs.values()):.2f}), worst "
           f"{max(errs, key=errs.get)} ({max(errs.values()):.2f}). The ratios are "
-          + ("**better** predicted than the raw powers" if better else "**not** better predicted than the raw powers")
-          + ". Common errors in the antenna factor cancel in a ratio of path powers, which a single "
-          "complex κ(f) cannot fully calibrate.",
+          + ("**better** predicted than the raw powers: common antenna-factor errors cancel in a "
+             "ratio of path powers." if better else
+             "**not** better predicted than the raw powers as a group. "
+             f"R21 (C2/C1) is the best-predicted quantity, but R31 and R32 contain C3, which the linear "
+             f"model gets wrong (rel. error {errs['C3']:.2f}, sign right in {signs['C3']} of 3 stages): the "
+             "k = 3 power travels around the head in air (§4.3), a path whose change the in-head Born "
+             "integral does not capture."),
           "- Context: with κ on Mild the Born model reproduces "
           + ", ".join(f"{s} {expl[s]['norm_ratio']:.0%}" for s in AD if s in expl)
           + " of the size of the HFSS dS, but its shape errors are ≥ "
@@ -150,9 +154,12 @@ def section(RR, t, label):
           f"gap ({sev - mild:+.2f} dB). With Normal CSF material Severe's ΔR21 falls from {sev:+.2f} to "
           f"{sw_n:+.2f} dB. "
           + ("**Confirmed (at the linear level):** the CSF permittivity drop at Severe (εr 55.25/48.75 → "
-             "32.5) drives Severe's separation on R21. It acts through the thick CSF layer of the "
-             "atrophied head: in the Normal geometry (0.5 mm CSF) the same material change does almost "
-             "nothing (last column above), so this is a material × geometry interaction."
+             "32.5) drives Severe's separation on R21. It is strongest in the thick CSF layer of the "
+             "atrophied head; in the Normal geometry (0.5 mm CSF, but at the most sensitive radius just "
+             f"under the skull) the same material change gives "
+             f"{pr['Severe | CSF material only (Normal geometry)']['R21']:+.2f} dB, "
+             f"{pr['Severe | CSF material only (Normal geometry)']['R21'] / sev:.0%} of Severe's total, "
+             "so part of the effect is the material alone and part is material × geometry."
              if share > 0.5 else
              "**Not confirmed:** the CSF permittivity drop explains less than half of the predicted gap."),
           "- Across the AD stages the material-only and geometry-only parts are "

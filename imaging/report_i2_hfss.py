@@ -257,8 +257,9 @@ def section(R2, t, label, R2_surrogate=None):
     kr, kv = np.abs(kap["kappa"]), np.abs(R2["kappa_voxel"]["kappa"])
     ph = np.degrees(np.unwrap(np.angle(kap["kappa"])))
     dph = float(np.mean(np.diff(ph)) / (np.mean(np.diff(kap["f"])) / 1e9))           # deg per GHz
-    bo = [x["born_over_hfss"] for x in rows]
+    bo = [x["born_over_hfss"] for x in rows if x["stage"] in ("Mild", "Moderate", "Severe")]
     ek = [x["err_kappa_mild"] for x in rows if x["stage"] in REPORTED]
+    bo_mci = [x["born_over_hfss"] for x in rows if x["stage"] == "MCI"]
     L += [t(rows, ["stage", "k", "born_over_hfss", "err_abs_scale", "err_kappa_mild"],
             {c: ".2f" for c in ["born_over_hfss", "err_abs_scale", "err_kappa_mild"]}), "",
           "Reading:",
@@ -272,10 +273,12 @@ def section(R2, t, label, R2_surrogate=None):
           f"~{abs(dph) / 360:.1f} ns between the field-export phase reference and the S-parameter "
           "reference plane. A feed line in front of each patch would do this, but it was not "
           "measured, so treat it as unexplained.",
-          f"- The Born prediction of the true change is only {min(bo):.2f}–{max(bo):.2f} of the HFSS dS "
-          "(column born_over_hfss, radial Jacobian, absolute scale). Even with κ fitted on Mild, the "
-          f"errors for Moderate/Severe are {min(ek):.1f}–{max(ek):.1f}. The AD change (12–21 mm of "
-          "gray/white replaced by CSF) is far from a small perturbation, so a linear inversion can at "
+          f"- For the AD stages the Born prediction of the true change is only {min(bo):.2f}–{max(bo):.2f} "
+          "of the HFSS dS (column born_over_hfss, radial Jacobian, absolute scale)"
+          + (f"; for MCI it is {max(bo_mci):.1e} (§6.1)" if bo_mci else "") + ". Even with κ fitted on Mild, the "
+          f"errors for Moderate/Severe are {min(ek):.1f}–{max(ek):.1f}. The AD change (gray/white "
+          f"replaced by {83.5 - 70.55:.0f}–{83.5 - 62.25:.0f} mm of CSF from Mild to Severe, and every "
+          "tissue's permittivity changing) is far from a small perturbation, so a linear inversion can at "
           "best be qualitative.", ""]
     # ---- where can it see
     sn = R2["snr_radial"]
@@ -357,10 +360,11 @@ def section(R2, t, label, R2_surrogate=None):
           f"0.3 at r ≈ {_first_below(rad['r'], np.maximum(rd['eps_r'], rd['eps_pp']), 0.3):.0f} mm and "
           f"below 0.1 at r ≈ {_first_below(rad['r'], np.maximum(rd['eps_r'], rd['eps_pp']), 0.1):.0f} mm. "
           "Only the outer ~1 cm has any depth resolution.",
-          f"- Even noise-perturbed **Born-consistent** synthetic data are not recovered: rel. errors "
-          f"{min(min(x['rel_err_eps_r'], x['rel_err_eps_pp']) for x in rows if x['data'] == 'synthetic-linear'):.2f}–"
-          f"{max(max(x['rel_err_eps_r'], x['rel_err_eps_pp']) for x in rows if x['data'] == 'synthetic-linear'):.2f}, "
-          f"correlations ≤ {max(max(x['corr_eps_r'], x['corr_eps_pp']) for x in rows if x['data'] == 'synthetic-linear'):.2f}. "
+          f"- Even noise-perturbed **Born-consistent** synthetic data of the AD stages are not recovered: rel. errors "
+          f"{min(min(x['rel_err_eps_r'], x['rel_err_eps_pp']) for x in rows if x['data'] == 'synthetic-linear' and x['stage'] != 'MCI'):.2f}–"
+          f"{max(max(x['rel_err_eps_r'], x['rel_err_eps_pp']) for x in rows if x['data'] == 'synthetic-linear' and x['stage'] != 'MCI'):.2f}, "
+          f"correlations ≤ {max(max(x['corr_eps_r'], x['corr_eps_pp']) for x in rows if x['data'] == 'synthetic-linear' and x['stage'] != 'MCI'):.2f}. "
+          "(MCI's true change is ~0 outside the hippocampus, so its relative errors are not meaningful.) "
           "On HFSS data, GCV is near zero for Mild and blows up for Moderate/Severe (the data are not "
           "Born-consistent, §4.1). The L-curve returns ≈ 0, and TV is mostly anti-correlated with "
           "the truth. Figure: `figures/i2h_inversions.png`.", ""]
@@ -384,7 +388,7 @@ def section(R2, t, label, R2_surrogate=None):
           + ". Only the voxel just under the brain surface is imaged near its place, and even that "
           "recovers well under 1 % of a unit change. Deeper voxels are imaged outward toward the "
           "surface: depth is not resolved.",
-          "- The L1 solution is the all-zero image (no sparse pattern beats zero on Mild). Tikhonov "
+          "- For the AD stages the L1 solution is the all-zero image (no sparse pattern beats zero on Mild). Tikhonov "
           "images of HFSS data are uncorrelated with the truth (corr ≤ "
           f"{max(x['corr_eps_r'] for x in rows if x['data'] == 'HFSS' and x['method'] == 'tikhonov-gcv'):.2f}). "
           "Figure: `figures/i2h_voxel.png`.", ""]

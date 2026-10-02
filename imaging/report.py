@@ -435,11 +435,9 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
         for k, v in R1["stages"].items():
             mode, m, s = k.split("|")
             rows.append(dict(delays=mode, method=m, stage=s, **v))
-        span = _changed_span("Severe")
-        L += ["**Results.** The true change of every AD stage is a set of shells: the outermost starts "
-              "at the brain surface (83 mm, gray → CSF; 83–83.5 mm CSF material). The changed band "
-              f"spans {span[0]:.0f}–{span[1]:.1f} mm (Severe), plus the hippocampus. MCI changes only "
-              "the hippocampus (r < 25 mm). peak_r = radius of the maximum of "
+        L += ["**Results.** The true change of an AD stage is not a thin shell: for Severe, "
+              f"{_change_text('Severe')} (under the skull: gray → CSF; in the core: hippocampus → white "
+              "matter). MCI changes only the hippocampus (r < 25 mm). peak_r = radius of the maximum of "
               "the azimuthally averaged profile. SCR = clean stage image peak / mean noise-only peak. "
               "scr_noisy = the same with noise on both measurements.", ""]
         L += [_t(rows, ["delays", "method", "stage", "peak_r_mm", "scr_db", "scr_noisy_db",
@@ -653,7 +651,7 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
               _label(R["i3"]), "",
               "Unknowns: r_gray, r_white, r_hip, eps/sigma of gray, white and CSF (hippocampus "
               "material tied to gray). Bounded by a sigmoid map; MINPACK Levenberg–Marquardt; 6 "
-              "starts (the Normal truth + 5 random). Data: ring-mode dS_k, k = 0..3, 51 frequencies, "
+              f"starts (the Normal truth + 5 random). Data: ring-mode dS_k, k = 0..3, {len(R3['f'])} frequencies, "
               "whitened by the typical-noise std. Uncertainty = CRLB from the whitened Jacobian at "
               "the solution.", ""]
         L += ["### 5.1 Identifiability at the truth (synthetic, calB scale, typical noise)", ""]
@@ -686,8 +684,10 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
                  {"chi2_dof": ".3g", "t_csf_true": ".2f"}), "",
               "(parameter: estimate (truth))", ""]
         syn = [f_ for f_ in R3["fits"] if f_["dataset"] == "synthetic (same model)"]
-        dev = [f"{f_['stage']} {abs(f_['theta'][7] - f_['truth'][7]) / max(f_['sd'][7], 1e-9):.1f}σ"
-               for f_ in syn]
+        devv = {f_["stage"]: abs(f_["theta"][7] - f_["truth"][7]) / max(f_["sd"][7], 1e-9) for f_ in syn}
+        dev = [f"{k_} {v_:.1f}σ" for k_, v_ in devv.items()]
+        inside = [k_ for k_, v_ in devv.items() if v_ <= 1.0]
+        outside = [k_ for k_, v_ in devv.items() if v_ > 1.0]
         hf = [f_["chi2_per_dof"] for f_ in R3["fits"] if f_["dataset"].startswith("HFSS")
               and f_["stage"] != "noise-only"]
         L += ["Reading the fits:",
@@ -695,10 +695,11 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
               "yet CSF thickness and the deeper parameters land far from the truth. Many different "
               "layered heads explain the same data: the degeneracy seen in §5.1. eps_csf, the "
               "parameter §5.1 calls determined, deviates from its truth by " + ", ".join(dev)
-              + " (|est − truth| / CRLB at the fit). It is recovered within its uncertainty for "
-              "the AD stages. On noise-only data, however, the fit settles in a different minimum, "
-              "because the misfit surface is multimodal. Only the effective material of the "
-              "outermost layer is measured; its geometry is not.",
+              + " (|est − truth| / CRLB at the fit). Within 1σ: " + (", ".join(inside) or "none")
+              + "; outside: " + (", ".join(outside) or "none") + ". "
+              + ("Where it misses, the fit has settled in a different minimum of a multimodal misfit "
+                 "surface. " if outside else "")
+              + "Only the effective material of the outermost layer is measured; its geometry is not.",
               f"- **HFSS:** chi2/dof {min(hf):.0f}–{max(hf):.0f}. The model cannot reproduce the "
               "HFSS dS (antenna-model mismatch, §3). Parameters sit on bounds and change with the "
               "calibration choice (calA vs calB), so they carry no physical meaning.",
@@ -719,7 +720,7 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
               "Figure: `figures/i3_csf_thickness.png`.", ""]
 
     L += _verdict_section(R)
-    L += _array_section()
+    L += _array_section(R)
 
     # ------------------------------------------------------------------ metrics CSV
     rows = []
@@ -767,12 +768,25 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
     _summary_json(R)
 
 
-def _changed_span(stage):
-    """Radial span (mm) of the true change outside the hippocampus core."""
-    r = np.arange(25.05, 88.0, 0.1)
+def _change_text(stage, thr=10.0):
+    """Where the true change of a stage is: everywhere it is non-zero, and where |d eps_r| >= thr."""
+    r = np.arange(0.05, 88.0, 0.1)
     de, ds = true_delta(stage, r)
-    ch = r[(np.abs(de) > 0) | (np.abs(ds) > 0)]
-    return (float(ch.min()), float(ch.max())) if ch.size else (float("nan"), float("nan"))
+    nz = r[(np.abs(de) > 0) | (np.abs(ds) > 0)]
+    big = r[np.abs(de) >= thr]
+    segs, start, prev = [], None, None
+    for x in big:
+        if start is None:
+            start = prev = x
+        elif x - prev > 0.15:
+            segs.append((start, prev))
+            start = x
+        prev = x
+    if start is not None:
+        segs.append((start, prev))
+    big_txt = ", ".join(f"{a - 0.05:.1f}–{b + 0.05:.1f}" for a, b in segs) or "nowhere"
+    return (f"Δε ≠ 0 at every radius from {nz.min() - 0.05:.0f} to {nz.max() + 0.05:.1f} mm (every brain "
+            f"tissue's permittivity changes); |Δε_r| ≥ {thr:.0f} at r = {big_txt} mm")
 
 
 def _band(R, key):
@@ -828,7 +842,6 @@ def _verdict_section(R):
                    "detection, not localisation"
                    + (f", and it is **not disease-specific**: MCI, whose only change is invisible to the "
                       f"array, gives {min(scr_mci):.0f}–{max(scr_mci):.0f} dB as well (§6.1)." if scr_mci else "."))
-        span = _changed_span("Severe")
         two_t = R["paths"]["two_t_ant_ns"] if "paths" in R else float("nan")
         near_c = all(p_ <= 20 for p_ in pk)
         cannot.append(f"**Place the change with radar imaging (I1).** The methods and delay models put "
@@ -836,7 +849,7 @@ def _verdict_section(R):
                       + (". That is the centre, where all 21 pair delays coincide for a ring of "
                          "equidistant antennas: a symmetric-array artefact. " if near_c else
                          ", not at a consistent depth. ")
-                      + f"The true change lies at {span[0]:.0f}–{span[1]:.1f} mm. The depth scale also "
+                      + f"The true change of Severe: {_change_text('Severe')}. The depth scale also "
                       f"hinges on an antenna delay the data cannot fix (§1: ~{two_t:.1f} ns in "
                       "transmission, ~0 in reflection). The ideal point target has an elevation width "
                       "of several cm (§2 table).")
@@ -912,14 +925,36 @@ def _verdict_section(R):
         cannot.append("**Separate AD stages.** On the common band, the whitened difference between "
                       "AD stages is " + ", ".join(f"{k} {v:.0f}" for k, v in pr_.items())
                       + f", against {sol:.0f} between two HFSS solves of the *same* Normal design (v2 "
-                      "re-solve minus v1). The AD-vs-AD differences are no larger than solve-to-solve "
-                      "variation, so stage separation is **not supported by these simulations**."
+                      "re-solve minus v1). In the full complex spectrum the AD-vs-AD differences are no "
+                      "larger than solve-to-solve variation, so full-spectrum (imaging) stage separation "
+                      "is **not supported by these simulations**. Band-averaged ratios are more robust "
+                      "to the solve (Track A finds Severe apart on R21); §4.7 explains that physically "
+                      "but also shows R21 is dominated by air/skin, i.e. fragile to the setup."
                       if max(pr_.values()) <= sol else
                       "**Separate AD stages.** AD-vs-AD differences exceed the v1→v2 solve difference "
                       "only partly (see §6.1); stage separation remains unverified.")
     else:
         cannot.append("**Separate AD stages.** AD-vs-AD differences are small compared with the "
                       "port asymmetry, and the mesh noise is unmeasured: **unverified against mesh noise**.")
+    rr_ = R.get("ratios")
+    if rr_:
+        p_ = rr_["pred"]
+        gap_p = p_["Severe"]["R21"] - p_["Mild"]["R21"]
+        share = (p_["Severe"]["R21"] - p_.get("Severe with Mild CSF material", {}).get("R21", np.nan)) / gap_p
+        g_h = rr_["hfss3f"]["Severe"]["R21"] - rr_["hfss3f"]["Mild"]["R21"]
+        can.append(f"**Explain Track A's Severe separation on R21 (qualitatively).** Linear theory with the "
+                   f"HFSS fields predicts Severe − Mild R21 = {gap_p:+.2f} dB vs Moderate − Mild "
+                   f"{p_['Moderate']['R21'] - p_['Mild']['R21']:+.2f} dB ({g_h:+.2f} dB in HFSS at the same "
+                   f"frequencies); {share:.0%} of the predicted gap disappears if Severe keeps Mild's CSF "
+                   "permittivity (§4.7).")
+        fr = {n: rr_["pred_lin"][n]["R21"] for n in rr_["pred_lin"] if n.startswith(("stand-off", "head scale"))}
+        worst = max(abs(v) for v in fr.values())
+        reg = rr_["kernel_regions"]["R21"]
+        cannot.append(f"**Rely on R21 across heads or sessions without a setup check.** "
+                      f"{reg['fat + skin (86.5-88)'] + reg['air gap (88-89.75)']:.0%} of R21's in-head "
+                      "sensitivity is skin/fat and air, and ±1 mm stand-off or ±2 % head scale move it by up "
+                      f"to {worst:.1f} dB to first order, {worst / abs(g_h):.0f}× the Severe − Mild gap (§4.7; "
+                      "Born slopes at skin↔air contrast, order of magnitude only).")
     mci = _mci_section(R)
     if mci:
         cannot.append(mci["verdict"])
@@ -933,8 +968,10 @@ def _verdict_section(R):
         c3_txt = (" On the k = 3 band power, the AD stages shift by "
                   + ", ".join(f"{s_} {st_[s_]['c3_gap_db']:+.2f} dB" for s_ in ("Mild", "Moderate", "Severe") if s_ in st_)
                   + (f", MCI by {st_['MCI']['c3_gap_db']:+.2f} dB" if "MCI" in st_ else "")
-                  + f" (noise SD {st_[next(iter(st_))]['c3_noise_sd_db']:.3f} dB). The AD shift has the "
-                  "opposite sign and is several times larger than the MCI/solve-to-solve shift.")
+                  + f" (noise SD {st_[next(iter(st_))]['c3_noise_sd_db']:.3f} dB)"
+                  + (f"; two solves of the same Normal design differ by {R['snr']['solve_to_solve_c3_db']:+.2f} dB"
+                     if "solve_to_solve_c3_db" in R.get("snr", {}) else "")
+                  + ". The AD shift has the opposite sign to MCI's and is several times larger than both.")
     L += ["", "**Imaging vs the scalar metric.** No imaging or inversion method recovered the known "
           "changes better than the k = 3 band-averaged power. That scalar remains the best "
           "Normal-vs-AD discriminator. Section 1 explains why it works: the opposite-antenna wave "
@@ -993,7 +1030,7 @@ def _mci_section(R):
                 f"of one design ({ss['mf_snr_normal_v2_minus_v1']['all']:.0f}). So what is detected is "
                 "solve-to-solve (mesh/sweep) variation, not the hippocampus.")
     verdict = ("**Detect MCI.** Against the measurement-noise floor alone the expectation is "
-               + ("**refuted**: MCI differs from Normal far above the noise (§6.1). " if det_noise else
+               + ("**refuted**: MCI differs from Normal far above the noise (§6.1)." if det_noise else
                   "**confirmed**: MCI is not above the noise floor (§6.1). ")
                + (expl if det_noise else "")
                + (" Against the relevant floor (solve-to-solve variation) MCI is **undetectable**, as "
@@ -1007,7 +1044,7 @@ def _mci_section(R):
     return dict(verdict=verdict, lines=lines)
 
 
-def _array_section():
+def _array_section(R=None):
     from .mie import C0, EPS0
     # gray matter: this project's static value at 3.5 GHz; lower frequencies: approximate
     # IT'IS / Gabriel values (flagged)
@@ -1038,13 +1075,14 @@ def _array_section():
          _t(bw, ["band", "B_GHz", "range_res_mm"], {"range_res_mm": ".0f"}), "",
          "Reasoning and minimum requirements:",
          "1. **Frequency.** At 3.5 GHz, two-way loss to 3 cm of cortex is ~35 dB on top of the skin/skull "
-         "mismatch. That is why every path here sees only the outer ~1–2 cm (§4.1). A band of about "
+         "mismatch. That is why every path here sees only the outer ~1–2 cm (§4.2). A band of about "
          "0.7–2.2 GHz (2–3 dB/cm, λ ≈ 3–4 cm in tissue) roughly halves the loss per cm and keeps a "
          "half-wavelength lateral resolution of ~1.5–2 cm. Imaging systems for stroke use this band "
          "for the same reason.",
          "2. **Bandwidth.** ≥ 1.5 GHz (fractional bandwidth ≳ 100 %) for ~1.5 cm range resolution. "
-         "This needs genuinely wideband antennas (not a resonant patch whose ~3 ns transmission group "
-         "delay (§1) blurs range), plus per-antenna de-embedding measured on a phantom.",
+         "This needs genuinely wideband antennas (not a resonant patch whose "
+         + (f"~{R['paths']['two_t_ant_ns']:.1f} ns " if R and 'paths' in R else "")
+         + "transmission group delay (§1) blurs range), plus per-antenna de-embedding measured on a phantom.",
          "3. **Angular sampling.** Around a ~55 cm head circumference, lobe-scale lateral resolution "
          "(~2 cm) needs element spacing ≲ λ_medium/2. With a coupling medium (eps ≈ 20–40) at "
          "≤ 2 GHz that is 16–24 antennas per ring. Six antennas give only 4 independent ring modes "

@@ -77,6 +77,10 @@ def run(sd, profile="typical", n_draw=200, seed=5500, v1_config="imaging/configs
         i2 = np.searchsorted(np.round(f), common)
         i1 = np.searchsorted(np.round(sd1.f_hz), common)
         x_solve = pair_signals(sd.S["Normal"][i2] - sd1.S["Normal"][i1]) / sig[:, i2]
+        k3_1 = pairs_at_distance(sd1.port_to_ant, 3)
+        c3_v1 = float(10 * np.log10(np.mean([np.mean(np.abs(sd1.S["Normal"][i1][:, i, j]) ** 2) for i, j in k3_1])))
+        c3_v2 = float(10 * np.log10(np.mean([np.mean(np.abs(sd.S["Normal"][i2][:, i, j]) ** 2) for i, j in k3])))
+        res["solve_to_solve_c3_db"] = c3_v2 - c3_v1
         res["solve_to_solve"] = dict(band_GHz=f"{common[0] / 1e9:.1f}-{common[-1] / 1e9:.1f}",
                                      mf_snr_normal_v2_minus_v1=_norms(x_solve, kp),
                                      mf_snr_stages_same_band={s: _norms(pair_signals(sd.dS(s)[i2]) / sig[:, i2], kp)
