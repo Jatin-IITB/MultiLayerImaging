@@ -525,6 +525,9 @@ def write(R, sd, cfg, write_csv=True, fresh=None):
         except Exception:                                  # pragma: no cover
             sur = None
         L += report_i2_hfss.section(R["i2"], _t, _label(R["i2"]), sur)
+        if "ratios" in R:
+            from . import report_ratios
+            L += report_ratios.section(R["ratios"], _t, _label(R["ratios"]))
     elif "i2" in R:
         R2 = R["i2"]
         fig_i2(R2)
