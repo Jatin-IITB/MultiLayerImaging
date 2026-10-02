@@ -1,0 +1,122 @@
+{
+ "frozen_on": "2026-10-02",
+ "git_hash": "2baddee",
+ "note": "Do not edit. Apply unchanged to new solves with adstage.frozen.apply_rule.",
+ "trained_on": [
+  "brain_sevem_layer_Healthy.s6p",
+  "new_Healthy.s6p",
+  "new_MCI.s6p",
+  "Brain_sevem_layer_MildAD.s6p",
+  "new_MildAD.s6p",
+  "Brain_sevem_layer_ModerateAD.s6p",
+  "new_ModerateAD.s6p",
+  "brain_sevem_layer_SevereAD.s6p",
+  "new_SevereAD.s6p"
+ ],
+ "trained_classes": [
+  "Normal",
+  "Normal",
+  "MCI",
+  "Mild",
+  "Mild",
+  "Moderate",
+  "Moderate",
+  "Severe",
+  "Severe"
+ ],
+ "feature_spec": {
+  "band_hz": [
+   3200000000.0,
+   4200000000.0
+  ],
+  "module": "adstage.features.ring_features.features",
+  "ring_order_port_to_ant": [
+   4,
+   3,
+   2,
+   1,
+   6,
+   5
+  ],
+  "floor": "subtracted (adstage.features.floor.floor_power)",
+  "glitch_masking": "on, -30 dB"
+ },
+ "noise_used_for_training": "typical + setup perturbation + per-port gain \u00b10.5 dB",
+ "p_star_reject": 0.7,
+ "staging": {
+  "three": {
+   "classes": [
+    "Normal",
+    "Mild",
+    "Severe"
+   ],
+   "selected_candidate": "top1",
+   "features": [
+    "R21"
+   ],
+   "inner_loso_bal_acc": 1.0,
+   "scale": [
+    0.042987768463612505
+   ],
+   "classifier": "LDA (lsqr, Ledoit-Wolf shrinkage, equal priors)",
+   "coef": [
+    [
+     -3.8159225878129246
+    ],
+    [
+     -0.11318408514534332
+    ],
+    [
+     3.929106672958229
+    ]
+   ],
+   "intercept": [
+    -1772.8972016216603,
+    -52.110711325153666,
+    1711.3421117048772
+   ],
+   "decision": "softmax(coef @ (x/scale) + intercept); UNCERTAIN if max < p_star"
+  },
+  "three_merged": {
+   "classes": [
+    "Normal",
+    "Mild+Moderate",
+    "Severe"
+   ],
+   "selected_candidate": "top1",
+   "features": [
+    "R32"
+   ],
+   "inner_loso_bal_acc": 1.0,
+   "scale": [
+    0.048787972157845944
+   ],
+   "classifier": "LDA (lsqr, Ledoit-Wolf shrinkage, equal priors)",
+   "coef": [
+    [
+     9.835810746564055
+    ],
+    [
+     -2.567770229842141
+    ],
+    [
+     -7.268040516721915
+    ]
+   ],
+   "intercept": [
+    -992.0277584473172,
+    186.5717323416623,
+    453.9186243105058
+   ],
+   "decision": "softmax(coef @ (x/scale) + intercept); UNCERTAIN if max < p_star"
+  }
+ },
+ "detection_binary_R31": {
+  "feature": "R31",
+  "tau_dB": -15.2727958516415,
+  "margin_dB": 0.0783244599407904,
+  "decision": "AD if R31 < tau - margin; Normal if R31 > tau + margin; else UNCERTAIN",
+  "source": "results/v2_with_v1_repeats/03/thresholds.csv (typical)"
+ },
+ "git_hash_note": "git_hash() reported 2baddee-dirty at run time solely because imaging/report.py (imaging agent, uncommitted 3-line edit) differed from HEAD; that file is not imported by scripts/05_audit.py, adstage.features.ring_features or adstage.frozen. All code used is exactly commit 2baddee."
+}

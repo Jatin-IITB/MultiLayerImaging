@@ -1,0 +1,16 @@
+partition,nested_acc,fixed_ratio_acc
+"[['Brain_sevem_layer_MildAD.s6p', 'new_Healthy.s6p'], ['brain_sevem_layer_Healthy.s6p', 'brain_sevem_layer_SevereAD.s6p'], ['new_MildAD.s6p', 'new_SevereAD.s6p']]",0.0,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'brain_sevem_layer_Healthy.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_MildAD.s6p'], ['new_Healthy.s6p', 'new_SevereAD.s6p']]",0.0,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'new_SevereAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'brain_sevem_layer_SevereAD.s6p'], ['new_Healthy.s6p', 'new_MildAD.s6p']]",0.0,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'brain_sevem_layer_Healthy.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_SevereAD.s6p'], ['new_Healthy.s6p', 'new_MildAD.s6p']]",0.2222222222222222,0.5
+"[['Brain_sevem_layer_MildAD.s6p', 'new_Healthy.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_MildAD.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_SevereAD.s6p']]",0.3333333333333333,0.3333333333333333
+"[['Brain_sevem_layer_MildAD.s6p', 'new_MildAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'brain_sevem_layer_SevereAD.s6p'], ['new_Healthy.s6p', 'new_SevereAD.s6p']]",0.0,0.3333333333333333
+"[['Brain_sevem_layer_MildAD.s6p', 'new_MildAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_Healthy.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_SevereAD.s6p']]",1.0,1.0
+"[['Brain_sevem_layer_MildAD.s6p', 'new_Healthy.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_SevereAD.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_MildAD.s6p']]",0.0,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'brain_sevem_layer_SevereAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_MildAD.s6p'], ['new_Healthy.s6p', 'new_SevereAD.s6p']]",0.49444444444444446,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'new_MildAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_SevereAD.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_Healthy.s6p']]",0.3333333333333333,0.6666666666666666
+"[['Brain_sevem_layer_MildAD.s6p', 'brain_sevem_layer_SevereAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_Healthy.s6p'], ['new_MildAD.s6p', 'new_SevereAD.s6p']]",1.0,0.3333333333333333
+"[['Brain_sevem_layer_MildAD.s6p', 'new_SevereAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_MildAD.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_Healthy.s6p']]",0.3194444444444445,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'new_SevereAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_Healthy.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_MildAD.s6p']]",0.3333333333333333,0.3333333333333333
+"[['Brain_sevem_layer_MildAD.s6p', 'brain_sevem_layer_SevereAD.s6p'], ['brain_sevem_layer_Healthy.s6p', 'new_SevereAD.s6p'], ['new_Healthy.s6p', 'new_MildAD.s6p']]",0.4777777777777778,0.0
+"[['Brain_sevem_layer_MildAD.s6p', 'brain_sevem_layer_Healthy.s6p'], ['brain_sevem_layer_SevereAD.s6p', 'new_Healthy.s6p'], ['new_MildAD.s6p', 'new_SevereAD.s6p']]",0.3361111111111111,0.0

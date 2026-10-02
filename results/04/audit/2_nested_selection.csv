@@ -1,0 +1,4 @@
+scheme,outer folds,nested-selection LOSO bal. acc,folds choosing only ratio features,folds choosing >=1 ratio feature,fixed G_ratio LDA LOSO bal. acc (not nested)
+three,6,1.0,6/6,6/6,1.0
+three_merged,8,1.0,8/8,8/8,1.0
+binary,8,1.0,8/8,8/8,1.0

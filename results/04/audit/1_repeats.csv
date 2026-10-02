@@ -1,0 +1,5 @@
+stage,v2 solve,v1 solve,v2 project,v1 project,v1 native band,masked glitch pts v2/v1,mesh tets,sweep type,R31 v1-v2 dB,R21 v1-v2 dB,R32 v1-v2 dB
+Normal,new_Healthy.s6p,brain_sevem_layer_Healthy.s6p,new,new,2.8-4.2 GHz @5 MHz,1/6,not in files - ask user,not in files - ask user,+0.199 ± 0.004,+0.323 ± 0.008,-0.123 ± 0.008
+Mild,new_MildAD.s6p,Brain_sevem_layer_MildAD.s6p,new,Brain_sevem_layer,2.8-4.2 GHz @5 MHz,0/13,not in files - ask user,not in files - ask user,-0.137 ± 0.005,+0.169 ± 0.007,-0.306 ± 0.008
+Moderate,new_ModerateAD.s6p,Brain_sevem_layer_ModerateAD.s6p,new,Brain_sevem_layer,2.8-4.2 GHz @5 MHz,0/0,not in files - ask user,not in files - ask user,-0.341 ± 0.005,-0.240 ± 0.007,-0.102 ± 0.008
+Severe,new_SevereAD.s6p,brain_sevem_layer_SevereAD.s6p,new,new,3.2-4.2 GHz @2 MHz,6/18,not in files - ask user,not in files - ask user,+0.000 ± 0.005,-0.106 ± 0.006,+0.106 ± 0.007

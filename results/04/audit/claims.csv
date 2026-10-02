@@ -1,0 +1,22 @@
+claim,number,baseline,verdict
+R21 separates Mild vs Severe beyond solve noise,"gap +1.28 dB; t=8.1 (4 pairs, p=0.0013); t=8.7 (Mild+Moderate pairs only, p=0.013)",solve-to-solve SD (4 pairs / 2 pairs that changed project),holds
+R32 separates Mild vs Severe beyond solve noise,"gap -1.00 dB; t=-7.8 (4 pairs, p=0.0014); t=-6.2 (Mild+Moderate pairs only, p=0.025)",solve-to-solve SD (4 pairs / 2 pairs that changed project),holds
+R21 Normal vs AD beyond solve noise,"gap +1.51 dB; t=12.6, p=0.0062 (2-pair SD)",solve SD from Mild+Moderate pairs,holds
+R31 Normal vs AD beyond solve noise,"gap -1.53 dB; t=-10.2, p=0.0095 (2-pair SD)",solve SD from Mild+Moderate pairs,holds
+Mild vs Moderate separable,R32 gap +0.04 dB; t=0.26,solve SD (2 pairs),not supported (no claim made)
+3-class staging survives selection inside the folds,nested bal. acc 1.000; ratios-only chosen in 6/6 folds,chance 0.333; non-nested G_ratio 1.000,holds
+three result is not achievable by arbitrary solve groupings,exact p = 0.133 (2/15); null max 1.000,smallest attainable p = 0.0667,cannot reach p<0.05 with these solves
+three_merged result is not achievable by arbitrary solve groupings,exact p = 0.005 (1/210); null max 0.910,smallest attainable p = 0.0048,holds
+R21: Mild vs Severe in band 3.2-4.2 (reference),"gap +1.28 dB, solve SD 0.16 dB, t=8.1, p=0.0013",solve SD in that band (4 pairs),holds
+R32: Mild vs Severe in band 3.2-4.2 (reference),"gap -1.00 dB, solve SD 0.13 dB, t=-7.9, p=0.0014",solve SD in that band (4 pairs),holds
+R21: Mild vs Severe in band 3.2-3.6,"gap +1.35 dB, solve SD 0.86 dB, t=1.6, p=0.19",solve SD in that band (4 pairs),retracted
+R32: Mild vs Severe in band 3.2-3.6,"gap -0.99 dB, solve SD 0.06 dB, t=-17.3, p=6.6e-05",solve SD in that band (4 pairs),holds
+R21: Mild vs Severe in band 3.6-4.2,"gap +0.83 dB, solve SD 0.72 dB, t=1.2, p=0.31",solve SD in that band (4 pairs),retracted
+R32: Mild vs Severe in band 3.6-4.2,"gap -1.13 dB, solve SD 0.54 dB, t=-2.1, p=0.1",solve SD in that band (4 pairs),weakened
+R21: Mild vs Severe in band 3.2-4.2 minus 3.72-3.90 (k2 nulls),"gap +1.32 dB, solve SD 0.27 dB, t=4.9, p=0.0082",solve SD in that band (4 pairs),holds
+R32: Mild vs Severe in band 3.2-4.2 minus 3.72-3.90 (k2 nulls),"gap -1.04 dB, solve SD 0.14 dB, t=-7.2, p=0.002",solve SD in that band (4 pairs),holds
+R21: Mild vs Severe in band 2.8-3.2 (no v1 Severe),"gap +0.83 dB, solve SD 0.26 dB, t=2.6, p=0.079",solve SD in that band (3 pairs),weakened
+R32: Mild vs Severe in band 2.8-3.2 (no v1 Severe),"gap -0.36 dB, solve SD 0.06 dB, t=-4.7, p=0.018",solve SD in that band (3 pairs),holds
+staging survives ±2 dB gain + ±10° phase per port,3-class bal. acc 1.000; R21 gap/noise 29.8,"reference condition, chance 0.333",holds
+staging survives floor -60 dB,3-class bal. acc 1.000; R21 gap/noise 8.9,"reference condition, chance 0.333",holds
+minimum instrument floor for the R21 staging rule,<= -55.0 dB,C2 level -56.8 dB,requirement
