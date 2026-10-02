@@ -210,7 +210,7 @@ Numbers are across the t equivalent pairs at each ring distance k:
 | Antenna polarisation | **SETTLED: ≈ 65% θ / 35% φ** (HFSS fields, Part 4) | θ-fraction 0.65 for all six antennas. The point-dipole forward model (pure φ) is therefore wrong in kind; this is part of its validation failure. |
 | Field-level ring symmetry | **SETTLED: 11–16% rms; T1, T4 ≈ 4% stronger** (HFSS fields, Part 4) | The field-level counterpart of the S-parameter port asymmetry. |
 | Meaning of `ant_dist`, `z_ebg` | **OPEN — GUI** | Not in the data. |
-| Sweep type (interpolating vs discrete), convergence ΔS, mesh settings per project | **PARTLY OPEN** | v1 and v2 differ only in sweep settings (user, 2026-10-01). Mesh settings have not been varied yet; a Normal mesh repeat is planned (`data/sim_plan.csv`). |
+| Sweep type, convergence, mesh settings | **PARTLY SETTLED (user, 2026-10-02)** | Adaptive meshing: max 6 passes, Max ΔS 0.02, 30% refinement per pass (all designs). Normal (v2) stopped at the pass limit WITHOUT reaching ΔS 0.02 (HFSS: "Adaptive Passes did not converge"); other designs not yet checked. v2 S-parameters: interpolating sweep, 281 points; field exports: 3-point discrete sweep. Because adaptive meshing is deterministic, the v1/v2 repeat pairs very likely share the same mesh, so the solve-to-solve SD is a sweep-interpolation spread and the **mesh error is unmeasured**. A re-solve with Max ΔS 0.01 but still 6 passes was bit-identical (cached; no new passes). Still needed per design: passes reached, final ΔS, tetrahedra. |
 
 ### Project-confound assessment (common grid)
 
