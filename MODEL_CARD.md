@@ -210,7 +210,7 @@ Numbers are across the t equivalent pairs at each ring distance k:
 | Antenna polarisation | **SETTLED: ≈ 65% θ / 35% φ** (HFSS fields, Part 4) | θ-fraction 0.65 for all six antennas. The point-dipole forward model (pure φ) is therefore wrong in kind; this is part of its validation failure. |
 | Field-level ring symmetry | **SETTLED: 11–16% rms; T1, T4 ≈ 4% stronger** (HFSS fields, Part 4) | The field-level counterpart of the S-parameter port asymmetry. |
 | Meaning of `ant_dist`, `z_ebg` | **OPEN — GUI** | Not in the data. |
-| Sweep type, convergence, mesh settings | **PARTLY SETTLED (user, 2026-10-02)** | Adaptive meshing: max 6 passes, Max ΔS 0.02, 30% refinement per pass (all designs). Normal (v2) stopped at the pass limit WITHOUT reaching ΔS 0.02 (HFSS: "Adaptive Passes did not converge"); other designs not yet checked. v2 S-parameters: interpolating sweep, 281 points; field exports: 3-point discrete sweep. Because adaptive meshing is deterministic, the v1/v2 repeat pairs very likely share the same mesh, so the solve-to-solve SD is a sweep-interpolation spread and the **mesh error is unmeasured**. A re-solve with Max ΔS 0.01 but still 6 passes was bit-identical (cached; no new passes). Still needed per design: passes reached, final ΔS, tetrahedra. |
+| Sweep type, convergence, mesh settings | **SETTLED from HFSS convergence tables (user, 2026-10-02) — settings DIFFER between designs** | v2 adaptive meshing, max 6 passes, 30% refinement. Healthy: ΔS target 0.02, 6 passes, NOT converged. MCI: target 0.02, 5 passes, final ΔS 0.0200, 910,960 tets (pass 1: 450,277). MildAD: target **0.05**, 4 passes, ΔS 0.0410, 672,508 tets (383,901). ModerateAD: target **0.05**, 6 passes, ΔS 0.0261, 569,697 tets (212,567; ΔS N/A at pass 4). SevereAD: target **0.05**, 6 passes, ΔS 0.0288, 606,640 tets (200,893; ΔS N/A at pass 4). The mesh settings split along Normal/MCI (0.02) vs AD (0.05), the same split as the main findings: a mesh contribution to Normal-vs-AD cannot be excluded. v2 S-parameters: interpolating sweep, 281 points; field exports: 3-point discrete sweep. v1/v2 repeat pairs very likely share meshes (deterministic meshing), so the solve-to-solve SD is a sweep spread and mesh error is unmeasured. |
 
 ### Project-confound assessment (common grid)
 
@@ -332,3 +332,16 @@ strongest air nodes at r = 89–93 mm.
 - **Effect on results: none.** The classification pipeline uses only the ring order, which is
   unchanged; no rerun is needed. The imaging forward model (point dipole, φ-polarised, T1 at 0°)
   disagrees with these facts. That is consistent with its documented validation failure.
+
+### Pre-registered test for the equal-settings re-solves (written 2026-10-02, before any re-solve exists)
+
+All five designs (Normal, MCI, Mild, Moderate, Severe) are to be re-solved with identical settings: Max ΔS 0.01, max passes
+10-12, minimum converged passes 2, 30% refinement, all ending CONVERGED, same 281-point interpolating sweep. The frozen rule
+`results/04/frozen_rule.json` (commit 2baddee) is applied unchanged to noisy draws of the re-solves (typical + ±0.5 dB gain):
+
+- **Detection (R31 rule) is retracted** if any re-solved AD stage is labelled Normal, or the re-solved Normal labelled AD,
+  in > 5% of measurements; or if the re-solved Normal-vs-AD R31 gap falls below 0.75 dB (half of the current 1.53 dB).
+- **Staging (R21 / R32 rules) is retracted** under the conditions in `results/04/audit/report.md` §7 (items 1-2), and also
+  if the re-solved Mild-Severe gap in R21 or R32 falls below 0.5 dB.
+- **"Normal ≈ MCI"** stays as stated only if the re-solved MCI-Normal R31/R21/R32 differences stay below 2x the solve SD.
+
