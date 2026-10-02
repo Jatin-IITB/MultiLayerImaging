@@ -241,13 +241,30 @@ def run(sd, model, val, profile="typical", n_draw=20, n_starts=6, seed=3300, log
     ck_path = (ck_dir or OUT / "cache") / f"i3_checkpoint_n{n_draw}_s{n_starts}_seed{seed}.pkl"
     ck_path.parent.mkdir(parents=True, exist_ok=True)
     ck = pickle.loads(ck_path.read_bytes()) if ck_path.exists() else {}
+    tmp0 = ck_path.with_suffix(".tmp")
+    if tmp0.exists():                        # a complete newer checkpoint left by a locked save
+        try:
+            newer = pickle.loads(tmp0.read_bytes())
+            if set(ck) <= set(newer):
+                ck = newer
+        except Exception:                    # pragma: no cover
+            pass
     if ck:
         log(f"I3 resuming from checkpoint: {len(ck)} fits already done")
 
     def save():
+        """Atomic write; retries while another process (a reader, OneDrive sync) holds the
+        file open on Windows. If the lock persists, the complete .tmp is left for the next save."""
+        import time
         tmp = ck_path.with_suffix(".tmp")
         tmp.write_bytes(pickle.dumps(ck))
-        tmp.replace(ck_path)
+        for _ in range(40):
+            try:
+                tmp.replace(ck_path)
+                return
+            except PermissionError:
+                time.sleep(0.5)
+        log(f"I3: checkpoint locked, kept {tmp.name} (complete) for the next save")
 
     def memo(key, fn):
         if key not in ck:
