@@ -1,4 +1,4 @@
-# Lobe-sector phantom (set lobe_v1): analysis (code 7ccec7f)
+# Lobe-sector phantom (set lobe_v1): analysis (code bac41d4)
 
 Designs: Healthy_sliced, Mild_lobe, Moderate_lobe, Severe_lobe (3.2-4.2 GHz, 201 points). One solve per design: within-simulation noise robustness, not generalisation. Noise unless stated: typical profile + setup perturbation + per-port gain ±0.5 dB. Antennas in ring order T1..T6 = Frontal, Temporal L, Parietal L, Occipital, Parietal R, Temporal R.
 
@@ -208,6 +208,36 @@ These raw cross-ratios mix path distances (e.g. T1T4·T2T5 / T1T5·T2T4 = (oppos
 | T1T2·T3T4 / T1T4·T2T3 | -0.013 | -0.378 | 0.046 | 0.164 | 0.286 | 0.424 | 1.482 | True |
 | T1T2·T3T6 / T1T3·T2T6 | 0.142 | -0.631 | -0.176 | -0.128 | 0.307 | 0.455 | 1.481 | True |
 
+## Mesh scale (lobe_v1 is mesh-unmatched)
+HFSS Setup1 per design (from the HFSS solution dialogs, user 2026-10-03; `data/mesh_lobe.csv`). Common: adaptive at 3.4 GHz, Max Delta S 0.02, max 8 passes, 30% refinement, first-order basis, iterative solver. **The settings are not matched:** the healthy reference has ~1.8x the elements and ~2x tighter final Delta S than every AD stage (minimum converged passes 2 vs 1), the same healthy-vs-AD mesh imbalance as in v2.
+| file | set | passes | final_dS | elements | min_converged_passes | status |
+|---|---|---|---|---|---|---|
+| new_with_slices_Healthy_sliced.s6p | lobe_v1 | 7 | 0.0092 | 1349491 | 2 | CONVERGED |
+| new_with_slices_Mild_lobe.s6p | lobe_v1 | 5 | 0.0186 | 739774 | 1 | CONVERGED |
+| new_with_slices_Moderate_lobe.s6p | lobe_v1 | 5 | 0.0194 | 796281 | 1 | CONVERGED |
+| new_with_slices_Severe_lobe.s6p | lobe_v1 | 5 | 0.02 | 690077 | 1 | CONVERGED (marginal) |
+
+Rough mesh scale = Healthy_sliced vs v2 new_Healthy (two healthy heads, different meshes; one pair, so not an SD; may include a small geometry difference): R31 0.065 dB, R21 0.215 dB, R32 0.150 dB; neighbour paths 0.234 dB rms per path; front-back neighbour index 0.173 dB; asymmetry cross-ratios 0.365 dB rms. Each lobe-set effect as a multiple of it:
+| effect | dB | mesh scale dB | x own-feature mesh scale | x largest ratio mesh scale | verdict (own-feature scale) |
+|---|---|---|---|---|---|
+| detection: R31 Healthy_sliced -> Mild_lobe | -1.213 | 0.065 | 18.773 | 5.651 | exceeds the mesh scale (>= 5x) |
+| detection: R31 Healthy_sliced -> Moderate_lobe | -1.399 | 0.065 | 21.647 | 6.516 | exceeds the mesh scale (>= 5x) |
+| detection: R31 Healthy_sliced -> Severe_lobe | -0.924 | 0.065 | 14.305 | 4.306 | exceeds the mesh scale (>= 5x) |
+| detection: distance of Healthy_sliced R31 from tau | 0.664 | 0.065 | 10.274 | 3.092 | exceeds the mesh scale (>= 5x) |
+| detection: distance of Mild_lobe R31 from tau | -0.549 | 0.065 | 8.499 | 2.558 | exceeds the mesh scale (>= 5x) |
+| detection: distance of Moderate_lobe R31 from tau | -0.735 | 0.065 | 11.374 | 3.424 | exceeds the mesh scale (>= 5x) |
+| detection: distance of Severe_lobe R31 from tau | -0.261 | 0.065 | 4.032 | 1.214 | mesh-sensitive (2-5x) |
+| staging: R21 Healthy_sliced -> Mild_lobe | 0.533 | 0.215 | 2.482 | 2.482 | mesh-sensitive (2-5x) |
+| staging: R21 Healthy_sliced -> Severe_lobe | 2.505 | 0.215 | 11.670 | 11.670 | exceeds the mesh scale (>= 5x) |
+| staging: R32 Healthy_sliced -> Mild_lobe | -1.746 | 0.150 | 11.635 | 8.133 | exceeds the mesh scale (>= 5x) |
+| staging: R32 Healthy_sliced -> Severe_lobe | -3.429 | 0.150 | 22.856 | 15.976 | exceeds the mesh scale (>= 5x) |
+| localisation: front-back index, neighbour paths, Moderate_lobe | -0.211 | 0.173 | 1.221 | 0.983 | not separable from mesh (< 2x) |
+| localisation: frontal neighbour path T1-T2, Moderate_lobe | -0.287 | 0.234 | 1.228 | 1.339 | not separable from mesh (< 2x) |
+| localisation: frontal neighbour path T1-T6, Moderate_lobe | -0.295 | 0.234 | 1.261 | 1.375 | not separable from mesh (< 2x) |
+| localisation: best asymmetry cross-ratio, Moderate-Mild (T1T4·T5T6 / T1T5·T4T6) | -0.693 | 0.365 | 1.901 | 3.230 | not separable from mesh (< 2x) |
+
+Localisation effects are within a few mesh scales, so they are **not separable from mesh** until the mesh-matched re-solves (set lobe_v1m) exist. The v1 vs v1m difference of Mild/Moderate/Severe will measure the mesh effect on the AD stages directly.
+
 ### (d) LeftOnly_test predictions
 Written to `results/05_lobe/predictions.md` (pre-registered; scored only after LeftOnly_test arrives).
 
@@ -222,12 +252,28 @@ Written to `results/05_lobe/predictions.md` (pre-registered; scored only after L
 | frozen three rule labels Mild_lobe as Mild (no refitting) | 0.41 correct, 0.16 uncertain (±2 dB/±10°: 0.43) | trained on uniform-atrophy solves only | retracted |
 | frozen three rule labels Severe_lobe as Severe (no refitting) | 1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00) | trained on uniform-atrophy solves only | holds |
 | frozen three_merged rule labels Moderate_lobe as Mild+Moderate (no refitting) | 1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00) | trained on uniform-atrophy solves only | holds |
-| front-affected Moderate differs front-to-back (front-back, neighbour paths) | Moderate -0.21 dB = -2.6x floor (Mild +0.05); with ±0.5 dB gain errors -0.4x | symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain | clean: weakened; with gain errors: retracted |
-| front-affected Moderate differs front-to-back (front-back, all paths) | Moderate +0.07 dB = +0.8x floor (Mild +0.14); with ±0.5 dB gain errors +0.1x | symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain | clean: retracted; with gain errors: retracted |
+| front-affected Moderate differs front-to-back (front-back, neighbour paths) | Moderate -0.21 dB = -2.6x floor (Mild +0.05); with ±0.5 dB gain errors -0.4x | symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain | clean: weakened; with gain errors: retracted; not separable from mesh (lobe_v1 mesh-unmatched) |
+| front-affected Moderate differs front-to-back (front-back, all paths) | Moderate +0.07 dB = +0.8x floor (Mild +0.14); with ±0.5 dB gain errors +0.1x | symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain | clean: retracted; with gain errors: retracted; not separable from mesh (lobe_v1 mesh-unmatched) |
 | raw cross-ratios separate Moderate from Mild (severity, not location) | 24/45 >= 3 SD; best T1T4·T2T5 / T1T5·T2T4 -1.80 dB (15.9 SD) | symmetry floor + measurement noise | holds as severity; not a location claim |
-| gain-invariant ASYMMETRY cross-ratios see the front-lobe involvement of Moderate | 0/45 >= 3 SD (0 involve T1); best T1T4·T5T6 / T1T5·T4T6 -0.69 dB (2.3 SD) | larger of healthy / staged-mirror asymmetry floor, x sqrt2 (two designs), + measurement noise | not significant (best 2.3 SD; 7 of the top 8 involve T1) |
+| gain-invariant ASYMMETRY cross-ratios see the front-lobe involvement of Moderate | 0/45 >= 3 SD (0 involve T1); best T1T4·T5T6 / T1T5·T4T6 -0.69 dB (2.3 SD) | larger of healthy / staged-mirror asymmetry floor, x sqrt2 (two designs), + measurement noise | not significant (best 2.3 SD; 7 of the top 8 involve T1); not separable from mesh (lobe_v1 mesh-unmatched) |
 | left-right index of Mild_lobe is ~0 (mirror-symmetric by construction; a check) | +0.084 dB = +1.2x floor | larger of healthy / staged-mirror floor | check passes |
 | left-right index of Moderate_lobe is ~0 (mirror-symmetric by construction; a check) | -0.025 dB = -0.4x floor | larger of healthy / staged-mirror floor | check passes |
 | left-right index of Severe_lobe is ~0 (mirror-symmetric by construction; a check) | -0.034 dB = -0.5x floor | larger of healthy / staged-mirror floor | check passes |
+| mesh scale: how far mesh alone moves the features (Healthy_sliced vs v2 new_Healthy) | R31 0.06, R21 0.21, R32 0.15 dB; neighbour path 0.23 dB; front-back neighbour index 0.17 dB | one pair of healthy heads with different meshes (rough; may include geometry) | ruler for the rows below |
+| detection: R31 Healthy_sliced -> Mild_lobe exceeds the mesh scale | -1.21 dB = 18.8x own-feature mesh scale (5.7x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| detection: R31 Healthy_sliced -> Moderate_lobe exceeds the mesh scale | -1.40 dB = 21.6x own-feature mesh scale (6.5x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| detection: R31 Healthy_sliced -> Severe_lobe exceeds the mesh scale | -0.92 dB = 14.3x own-feature mesh scale (4.3x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| detection: distance of Healthy_sliced R31 from tau exceeds the mesh scale | +0.66 dB = 10.3x own-feature mesh scale (3.1x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| detection: distance of Mild_lobe R31 from tau exceeds the mesh scale | -0.55 dB = 8.5x own-feature mesh scale (2.6x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| detection: distance of Moderate_lobe R31 from tau exceeds the mesh scale | -0.73 dB = 11.4x own-feature mesh scale (3.4x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| detection: distance of Severe_lobe R31 from tau exceeds the mesh scale | -0.26 dB = 4.0x own-feature mesh scale (1.2x the largest ratio scale) | mesh scale above | mesh-sensitive (2-5x) |
+| staging: R21 Healthy_sliced -> Mild_lobe exceeds the mesh scale | +0.53 dB = 2.5x own-feature mesh scale (2.5x the largest ratio scale) | mesh scale above | mesh-sensitive (2-5x) |
+| staging: R21 Healthy_sliced -> Severe_lobe exceeds the mesh scale | +2.51 dB = 11.7x own-feature mesh scale (11.7x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| staging: R32 Healthy_sliced -> Mild_lobe exceeds the mesh scale | -1.75 dB = 11.6x own-feature mesh scale (8.1x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| staging: R32 Healthy_sliced -> Severe_lobe exceeds the mesh scale | -3.43 dB = 22.9x own-feature mesh scale (16.0x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
+| localisation: front-back index, neighbour paths, Moderate_lobe exceeds the mesh scale | -0.21 dB = 1.2x own-feature mesh scale (1.0x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
+| localisation: frontal neighbour path T1-T2, Moderate_lobe exceeds the mesh scale | -0.29 dB = 1.2x own-feature mesh scale (1.3x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
+| localisation: frontal neighbour path T1-T6, Moderate_lobe exceeds the mesh scale | -0.30 dB = 1.3x own-feature mesh scale (1.4x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
+| localisation: best asymmetry cross-ratio, Moderate-Mild (T1T4·T5T6 / T1T5·T4T6) exceeds the mesh scale | -0.69 dB = 1.9x own-feature mesh scale (3.2x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
 
 One solve per design: within-simulation noise robustness, not generalisation.
