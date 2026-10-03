@@ -185,10 +185,12 @@ def section(res):
          "Which class moves most depends on the statistic: "
          + "; ".join(f"{st}: {max(CLASSES, key=lambda c: max(v[c][st] for v in pdb.values()))}"
                      for st in ("band", "median", "worst"))
-         + ". The opposite paths dominate only at single frequencies (notches). These numbers are not the "
-         "0.16–0.30 dB (opposite) / ≤ 0.05 dB (others) quoted for this check; that was presumably a different "
-         "statistic (e.g. band-averaged ratio features), and I could not reproduce it from per-path amplitudes. "
-         "The inversion uses complex S at "
+         + ". The opposite paths dominate only at single frequencies (notches). The 0.16–0.30 dB (opposite) / "
+         "≤ 0.05 dB (others) quoted for this check is the ring-mean change computed without glitch masking; "
+         "`docs/01_claims_register.md` §L traces its 0.30 dB end (Mild 5→6) to one non-reciprocal sample on "
+         "T2–T5 at 3.855 GHz in `Mild_lobe_new` (−34 dB against ≈ −70 dB at the neighbouring samples). Here "
+         "that sample is glitch-masked (−30 dB rule; it becomes −58 dB) and 3.855 GHz is not one of the fit "
+         "frequencies, so it does not enter any inversion below. The inversion uses complex S at "
          + ", ".join(f"{x:g}" for x in res["f_GHz"]) + " GHz, so the table above is what it sees. "
          "This yardstick replaces §5b (v2 Normal − Healthy_sliced), which compared different projects as well "
          "as meshes.", ""]
