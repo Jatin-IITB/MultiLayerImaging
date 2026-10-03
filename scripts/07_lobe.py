@@ -202,8 +202,12 @@ def main():
     sig_path = {k: float(np.sqrt(np.mean(staged[staged.path == PATH[k]]["band-power rms diff dB"] ** 2)) / np.sqrt(2))
                 for k in range(4)}
     L += ["## 3.1 QC and symmetry floors",
-          "Parsing, passivity, reciprocity, glitches and the port-map search: `results/05_lobe/qc/qc_report.md` "
-          "(all four files pass; the port map T4,T3,T2,T1,T6,T5 ranks 1st of 60 in every file; no glitches).",
+          f"Parsing, passivity, reciprocity and the port-map search: `{cfg['results']['out_root']}/qc/qc_report.md` "
+          "(its glitch count uses a local detector, |Sij - Sji|/|Sij| > -20 dB). Points masked by the analysis "
+          "(|Sij - Sji| > -30 dB of the pair's band level; log of all lobe files: `results/05_lobe/qc/masked_points.csv`): "
+          + ("; ".join(f"{Path(str(r.file)).stem.replace('new_with_slices_', '')} {r.f_GHz:.3f} GHz ports "
+                       f"{r.port_i}-{r.port_j}" for r in ds.masked_log.itertuples()) if len(ds.masked_log) else "none")
+          + ".",
           "Circulant floor = spread of equivalent paths in Healthy_sliced (should be identical by symmetry):",
           md(circ, ".3f"), "",
           "Mirror floor = difference between mirror-image paths (T2<->T6, T3<->T5) in the mirror-symmetric designs:",
