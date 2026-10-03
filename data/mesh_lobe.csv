@@ -1,0 +1,9 @@
+# HFSS Setup1 mesh convergence per lobe design, from the HFSS solution dialogs (user, 2026-10-03); not from Touchstone headers.
+# Common to set lobe_v1: adaptive at 3.4 GHz, Max Delta S 0.02, max 8 passes, 30% refinement/pass, first-order basis,
+# iterative solver; interpolating sweep 3.2-4.2 GHz, 201 points, converged. Settings are NOT matched: min converged passes
+# 2 for Healthy_sliced vs 1 for the AD stages. Mesh-matched re-solves (set lobe_v1m, *_m2.s6p) use min converged passes 2, max passes 10.
+file,set,passes,final_dS,elements,min_converged_passes,status
+new_with_slices_Healthy_sliced.s6p,lobe_v1,7,0.0092,1349491,2,CONVERGED
+new_with_slices_Mild_lobe.s6p,lobe_v1,5,0.0186,739774,1,CONVERGED
+new_with_slices_Moderate_lobe.s6p,lobe_v1,5,0.0194,796281,1,CONVERGED
+new_with_slices_Severe_lobe.s6p,lobe_v1,5,0.019999,690077,1,CONVERGED (marginal)

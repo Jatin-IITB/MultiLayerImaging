@@ -453,6 +453,88 @@ def main():
                        "baseline": "larger of healthy / staged-mirror floor",
                        "verdict": "check passes" if abs(r["/ floor (larger)"]) < 2 else "check FAILS"})
 
+    # ---------------------------------------------------------------- mesh scale (Setup1 table from the user, 2026-10-03)
+    # lobe_v1 is mesh-unmatched (Healthy_sliced ~1.8x the elements of every AD stage). Two healthy heads solved with
+    # different meshes (Healthy_sliced vs v2 new_Healthy) give a rough, single-pair estimate of how far mesh alone moves
+    # each statistic. It may also contain a small geometry difference (v2 skull inner radius unknown).
+    mesh = pd.read_csv(ROOT / "data" / "mesh_lobe.csv", comment="#")
+    dmesh = db(band_power(f, Su[iH])) - BPdb["Normal"]
+    ms = {r: abs(float(Xu[iH][names.index(r)] - Xl[des["Normal"]][names.index(r)])) for r in ("R31", "R21", "R32")}
+    ms_max = max(ms.values())
+    nbm = DIST == 1
+    ms_nb = float(np.sqrt(np.mean(dmesh[nbm] ** 2)))                    # neighbour-path shift, rms over paths
+    ms_fb = abs(float(index(dmesh, restrict(FB_PATHS, 1))))              # mesh-only front-back (neighbour) index
+    AS_v2 = asym(cross_ratios(band_power(f, Su[iH])))
+    multi = [n for n in cnames if len(cls[n]) > 1]
+    ms_as = float(np.sqrt(np.mean([(AS_v2[n] - AS["Normal"][n]) ** 2 for n in multi])))
+    tau = rule["detection_binary_R31"]["tau_dB"]
+
+    def mesh_verdict(x):
+        return ("exceeds the mesh scale (>= 5x)" if x >= 5 else
+                "mesh-sensitive (2-5x)" if x >= 2 else "not separable from mesh (< 2x)")
+
+    rx = lambda c, r: float(Xl[des[c]][names.index(r)])                # noqa: E731
+    eff = []
+    for c in ("Mild", "Moderate", "Severe"):
+        v = rx(c, "R31") - rx("Normal", "R31")
+        eff.append({"effect": f"detection: R31 Healthy_sliced -> {name[c]}", "dB": v, "mesh scale dB": ms["R31"],
+                    "x own-feature mesh scale": abs(v) / ms["R31"], "x largest ratio mesh scale": abs(v) / ms_max})
+    for c in ("Normal", "Mild", "Moderate", "Severe"):
+        v = rx(c, "R31") - tau
+        eff.append({"effect": f"detection: distance of {name[c]} R31 from tau", "dB": v, "mesh scale dB": ms["R31"],
+                    "x own-feature mesh scale": abs(v) / ms["R31"], "x largest ratio mesh scale": abs(v) / ms_max})
+    for r in ("R21", "R32"):
+        for c in ("Mild", "Severe"):
+            v = rx(c, r) - rx("Normal", r)
+            eff.append({"effect": f"staging: {r} Healthy_sliced -> {name[c]}", "dB": v, "mesh scale dB": ms[r],
+                        "x own-feature mesh scale": abs(v) / ms[r], "x largest ratio mesh scale": abs(v) / ms_max})
+    fb_m = float(idt[(idt.design == "Moderate_lobe") & (idt["index"] == "front-back, neighbour paths")]["value dB"].iloc[0])
+    eff.append({"effect": "localisation: front-back index, neighbour paths, Moderate_lobe", "dB": fb_m,
+                "mesh scale dB": ms_fb, "x own-feature mesh scale": abs(fb_m) / ms_fb,
+                "x largest ratio mesh scale": abs(fb_m) / ms_max})
+    for p in ("T1-T2", "T1-T6"):
+        v = float(pt[(pt.design == "Moderate_lobe") & (pt.path == p)]["change dB"].iloc[0])
+        eff.append({"effect": f"localisation: frontal neighbour path {p}, Moderate_lobe", "dB": v, "mesh scale dB": ms_nb,
+                    "x own-feature mesh scale": abs(v) / ms_nb, "x largest ratio mesh scale": abs(v) / ms_max})
+    eff.append({"effect": f"localisation: best asymmetry cross-ratio, Moderate-Mild ({ba['asymmetry cross-ratio']})",
+                "dB": float(ba["Moderate-Mild dB"]), "mesh scale dB": ms_as,
+                "x own-feature mesh scale": abs(float(ba["Moderate-Mild dB"])) / ms_as,
+                "x largest ratio mesh scale": abs(float(ba["Moderate-Mild dB"])) / ms_max})
+    et = pd.DataFrame(eff)
+    et["verdict (own-feature scale)"] = [mesh_verdict(x) for x in et["x own-feature mesh scale"]]
+    et.to_csv(OUT / "6_mesh_scale.csv", index=False)
+    L += ["## Mesh scale (lobe_v1 is mesh-unmatched)",
+          "HFSS Setup1 per design (from the HFSS solution dialogs, user 2026-10-03; `data/mesh_lobe.csv`). Common: adaptive "
+          "at 3.4 GHz, Max Delta S 0.02, max 8 passes, 30% refinement, first-order basis, iterative solver. **The settings "
+          "are not matched:** the healthy reference has ~1.8x the elements and ~2x tighter final Delta S than every AD "
+          "stage (minimum converged passes 2 vs 1), the same healthy-vs-AD mesh imbalance as in v2.",
+          md(mesh, ".4g"), "",
+          "Rough mesh scale = Healthy_sliced vs v2 new_Healthy (two healthy heads, different meshes; one pair, so not an "
+          "SD; may include a small geometry difference): "
+          + ", ".join(f"{r} {v:.3f} dB" for r, v in ms.items())
+          + f"; neighbour paths {ms_nb:.3f} dB rms per path; front-back neighbour index {ms_fb:.3f} dB; asymmetry "
+          f"cross-ratios {ms_as:.3f} dB rms. Each lobe-set effect as a multiple of it:",
+          md(et, ".3f"), "",
+          "Localisation effects are within a few mesh scales, so they are **not separable from mesh** until the "
+          "mesh-matched re-solves (set lobe_v1m) exist. The v1 vs v1m difference of Mild/Moderate/Severe will measure the "
+          "mesh effect on the AD stages directly.", ""]
+    claims.append({"claim": "mesh scale: how far mesh alone moves the features (Healthy_sliced vs v2 new_Healthy)",
+                   "number": ", ".join(f"{r} {v:.2f}" for r, v in ms.items())
+                             + f" dB; neighbour path {ms_nb:.2f} dB; front-back neighbour index {ms_fb:.2f} dB",
+                   "baseline": "one pair of healthy heads with different meshes (rough; may include geometry)",
+                   "verdict": "ruler for the rows below"})
+    for _, r in et.iterrows():
+        if r.effect.startswith("detection: R31") or r.effect.startswith("staging") or r.effect.startswith("localisation"):
+            claims.append({"claim": f"{r.effect} exceeds the mesh scale", "number":
+                           f"{r['dB']:+.2f} dB = {r['x own-feature mesh scale']:.1f}x own-feature mesh scale "
+                           f"({r['x largest ratio mesh scale']:.1f}x the largest ratio scale)",
+                           "baseline": "mesh scale above", "verdict":
+                           mesh_verdict(r["x own-feature mesh scale"]) + ("; not separable from mesh until lobe_v1m"
+                                                                          if r.effect.startswith("localisation") else "")})
+    for cl in claims:
+        if "front-back" in cl["claim"] or "ASYMMETRY" in cl["claim"]:
+            cl["verdict"] += "; not separable from mesh (lobe_v1 mesh-unmatched)"
+
     # ---------------------------------------------------------------- 3.4 (d) predictions
     fl_fb = max(floor_fb, index_floor(FB_PATHS, sig_path))
     fl_lr = max(floor_lr, index_floor(LR_PATHS, sig_path))
