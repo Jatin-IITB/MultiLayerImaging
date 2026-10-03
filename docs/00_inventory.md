@@ -180,13 +180,16 @@ Tests: `tests/test_touchstone.py` (16 tests incl. gate, folds, R31 and χ gain c
 | `results/05_lobe/figures/3_ratios_lobe_vs_uniform.png` | R31/R21/R32 for lobe and uniform solves with frozen boundaries | yes | **Yes** |
 | `results/05_lobe/figures/4a_path_change_maps.png` | 6×6 ΔP maps (stage − Healthy_sliced), per lobe stage | yes | **No**: x-axis tick labels overlap ("Temporal L" / "Parietal L" collide). Regenerate |
 | `results/imaging/figures/lobe_maps.png` | Polar lobe maps: true vs recovered dε″ for 3 methods × 3 stages | yes | **Yes** (dense; fine for report, crop for slides) |
-| `results/imaging/figures/lobe_kernels.png` | Sector kernel heatmap | no | UNKNOWN (not inspected) |
-| `results/imaging/figures/lobe_radar.png` | DAS/DMAS images of lobe dS | no | UNKNOWN |
-| `results/imaging/figures/lobe_null_lr.png` | Null distribution of LR_inv with threshold and the pre-registered prediction | no | UNKNOWN |
-| `results/imaging/figures/i1_ring_plane.png`, `i1_vertical_plane.png`, `i1_radial_profiles.png` | I1 radar images and radial profiles (v2) | no | UNKNOWN |
-| `results/imaging/figures/i2h_sensitivity_maps.png`, `i2h_inversions.png`, `i2h_voxel.png` | Born sensitivity maps; radial and voxel inversions | no | UNKNOWN |
+| `results/imaging/figures/lobe_kernels.png` | Pair × region Born kernel heatmap (3.6 GHz, plain path names) + singular values | yes (D0b) | **Yes** |
+| `results/imaging/figures/lobe_radar.png` | DAS/DMAS images of lobe dS, ring plane | yes (D0b) | **No**: panel titles overlap each other |
+| `results/imaging/figures/lobe_null_lr.png` | Null distribution of LR_inv with ±T_LR, mirror-symmetric designs and the pre-registered LeftOnly band | yes (D0b) | **Yes** |
+| `results/imaging/figures/i1_ring_plane.png` | DAS/DMAS/MVDR ring-plane images, noise-only + 4 stages (v2) | yes (D0b) | **Yes** |
+| `results/imaging/figures/i1_vertical_plane.png`, `i1_radial_profiles.png` | I1 vertical images and radial profiles (v2) | no | UNKNOWN |
+| `results/imaging/figures/i2h_sensitivity_maps.png` | Σ\|J\| per ring distance (ring plane, x = 0) + log SNR maps | yes (D0b) | **Partly**: "k=0…3" labels, last title truncated |
+| `results/imaging/figures/i2h_inversions.png` | Radial inversion (synthetic, HFSS, noise-only), resolution diagonal, voxel PSF offset | yes (D0b) | **Yes** for the report (dense); not for slides |
+| `results/imaging/figures/i2h_voxel.png` | Voxel inversion | no | UNKNOWN |
 | `results/imaging/figures/i3_csf_thickness.png` | CSF thickness estimate vs k3 metric | no | UNKNOWN |
-| `results/imaging/figures/ratios_kernels.png` | Where R21 is sensitive (kernel regions) | no | UNKNOWN |
+| `results/imaging/figures/ratios_kernels.png` | Radial kernels of C1, C2, R21 (left); shell-integrated path sensitivity incl. air (right) | yes (D0b) | **Yes** |
 | `results/04/figures/04_divergence.png`, `04_mi_map.png` | Divergences with/without between-solve term; MI map | no | UNKNOWN |
 | `results/04/audit/4_per_solve.png`, `6_floor_sweep.png` | Per-solve R31/R21/R32; R21 rule vs instrument floor | no | UNKNOWN |
 | `results/figures/02_*.png` (5), `03_*.png` (5), `qc_ring_modes.png` | Prompt 02/03 run 1 on v2 only (5 solves) | no | UNKNOWN; superseded by run 2 for most claims |

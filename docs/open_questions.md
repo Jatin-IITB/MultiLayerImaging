@@ -56,6 +56,20 @@ IDs are stable; later packs will close them with a note.
 - **F1 ★** The record of what Prof. Sarkar asked and when. The only trace is Prompt 07 §1: "The professor asked us to combine the earlier sectored phantom with the layered phantom." → Pack 04.
 - **F2** Was the "6 sectors × 60°" lobe layout taken from the S0 sector phantom (also 6 × 60°)? → Pack 01/04.
 
+## Q-H. From the D0b outline and figure plan (added after D0b)
+
+- **H1** D0b Ch. 3 mentions a sphere-radius correction 58 → ~100 mm, Bruggeman mixing of materials, and F-K migration / MF-Born imaging. None of these is in the repo (the pptx states R = 58 mm and mentions only DAS-type sector scoring + SVD). → P01.
+- **H2** D0b Ch. 5 cites `[EXIST field_route]`. No file of that name exists in the repo. The nearest is `results/imaging/figures/i2h_k3_path.png` (opposite path only). Is `field_route` in a pack, or should neighbour / second-neighbour routes be made as [CODE] from `data/fields/`?
+- **H3** D0b Ch. 2 gives the operating band as ~3.4–3.6 GHz. The in-situ S_ii notch is at 3.64–3.66 GHz (v2, lobe) and 3.62 GHz (v1); the design centre in the S0 deck is 3.4 GHz; the analyses use 3.2–4.2 GHz. Which band should the report call "operating band", and how was it chosen? → P02.
+- **H4** D0b Ch. 7 calls the frozen-rule result a "generalisation result". The repo's label is transfer to regional atrophy in the same head, one solve per design = within-simulation noise robustness. I will use the repo's wording unless you object.
+- **H5** D0b 8.2 "6 → 21 independent paths for a symmetric ring": for a symmetric ring/head only 4 entry types are independent; 21 reciprocal pairs only for an asymmetric head. I will write it that way unless you object.
+- **H6** D0b has no chapter for the professor's review asks (P04). Appendix table, or woven into each chapter?
+- **H7 Missing figure inputs** (plan.md "need" rows):
+  - Screenshots: F1.1 `cst_head_skin.png`, F1.2 `cst_csf.png`, F2.1 antenna geometry, F2.4 radiation pattern, F3.1 single-layer geometry, F4.1 layered cross-section, F4.3 array view, F7.1 lobe sectors per stage, F9.1 CST head + antennas; optional F5.1 field plots.
+  - Data: antenna parametric S11 sweeps and a single-antenna free-space S11 (F2.2, F2.3); single-layer Touchstone files and imaging outputs (F3.2–F3.5, F8.1); `LeftOnly_test_m2`, `MCI_lobe_m2`, `*_lobe_m2` files (F7.7–F7.9, F8.13); CST Touchstone files + port map (F9.2–F9.3); P05 imaging extraction (F8.13 and any [IMG] replacements).
+  - v1 solver settings (for F4.5) — OQ B5.
+- **H8** Fields exist only for the **v2 Normal** design at 3.4/3.6/3.8 GHz. Chapter 5 and the lobe kernels therefore use the unsliced healthy fields for every stage. Are stage or lobe field exports available or planned? (relates to B13)
+
 ## Q-G. Reproducibility and housekeeping (for you, not the report)
 
 - **G1** The four lobe `.s6p` files, `prompts/` and the pptx are **untracked** in git, although committed results depend on the lobe files. Do you want them committed by the analysis session? (I may only commit `docs/`.)
