@@ -420,26 +420,43 @@ def _verdict(res, blind=None):
     sc = res["scores"]
     fb = res["front_back"][0]
     bp = res["blind_pred"]["LeftOnly_test"][PRIMARY]
+    mp = OUT / "lobe_mesh_yardstick.json"
+    mesh = json.loads(mp.read_text(encoding="utf-8")) if mp.exists() else None
+    ms = mesh["summary"][0] if mesh else None
+    if mesh:
+        fb_txt = (f"- **Front/back:** Moderate's frontal lobe is recovered above its occipital lobe (frontal "
+                  f"{fb['S1']:.1f} vs occipital {fb['S4']:.1f}, contrast {fb['FB']:+.1f} > frozen {fb['T_FB']:.1f}), "
+                  f"but a mesh difference alone gives |FB| up to {ms['max_abs_FB']:.1f} (§5b). **Not separable from "
+                  "mesh** until the designs are re-solved on matched meshes.")
+    else:
+        fb_txt = (f"- **Front/back:** yes for Moderate (frontal {fb['S1']:.1f} vs occipital {fb['S4']:.1f}, contrast "
+                  f"{fb['FB']:+.1f} > {fb['T_FB']:.1f}).")
     L = ["## 7. Verdict — can this 6-antenna ring localise lobe-level AD?", "",
          "Within these simulations (one head, one solve per design, typical noise, Born kernels on the v2 Normal fields):", "",
          f"- **Which lobes (pattern):** yes, as a ranking. The recovered sector conductivity correlates "
          f"{min(s['corr_truth'] for s in sc if s['stage'] != 'Severe_lobe'):.2f}–"
          f"{max(s['corr_truth'] for s in sc if s['stage'] != 'Severe_lobe'):.2f} with the truth and the affected lobes "
          "are always the most changed. Absolute 'affected' calls need a threshold calibrated on a known stage (Mild), "
-         "because healthy lobes are biased upward by model error and leakage.",
-         f"- **Front/back:** yes for Moderate (frontal {fb['S1']:.1f} vs occipital {fb['S4']:.1f}, contrast "
-         f"{fb['FB']:+.1f} > {fb['T_FB']:.1f}).",
+         "because healthy lobes are biased upward by model error, leakage"
+         + (" and the unmatched meshes (a mesh difference alone lifts every sector above the threshold, §5b)."
+            if mesh else "."),
+         fb_txt,
          "- **Left/right:** "
          + (f"{blind}" if blind else
             f"not testable on the available designs (all mirror-symmetric; they give |LR| ≤ "
             f"{res['rules'][PRIMARY]['LR_sym_max']:.1f}). The frozen pipeline predicts LR = {bp['LR_mean']:+.1f} ± "
-            f"{bp['LR_sd']:.1f} for LeftOnly_test (left in {bp['p_left']:.0%} of noisy draws); the blind test decides."),
-         "- **Depth:** only coarsely. Under-skull gap and deeper cortex are separable in principle, but the deeper "
-         "region's CRLB is 2–3× larger; the core (hippocampus) is not determined at all.",
+            f"{bp['LR_sd']:.1f} for LeftOnly_test (left in {bp['p_left']:.0%} of noisy draws); the blind test decides.")
+         + (f" Mesh yardstick: a mesh difference alone gives |LR| up to {ms['max_abs_LR']:.1f} (threshold "
+            f"{ms['T_LR']:.1f}), so only a left/right contrast well above {ms['max_abs_LR']:.1f} can be attributed to "
+            "the lobes." if mesh else ""),
+         "- **Depth:** no, beyond the outermost cortex. The under-skull gap (76–83.5 mm) is determined where it "
+         "changes; the deeper cortex (60–76 mm) has a 2–3× larger CRLB and is not determined in any sector at any "
+         "stage (§2); the core (hippocampus) is not determined at all.",
          "- **Radar imaging:** no — it still peaks at the centre and its energy direction does not track the lobes.",
          "- **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and "
          "the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at "
-         "the ring height); everything is within one simulated head.", ""]
+         "the ring height); everything is within one simulated head"
+         + ("; the healthy reference and the stages are on different meshes (§5b)." if mesh else "."), ""]
     return L
 
 
