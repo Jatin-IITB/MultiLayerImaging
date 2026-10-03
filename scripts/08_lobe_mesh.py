@@ -120,7 +120,9 @@ def main():
     Sd = dict(zip(dn, S))
     man = ds.manifest.assign(design=dn)
     p2a = np.asarray(cfg["ring"]["port_to_ant"])
-    tau = float(json.loads((ROOT / "results" / "04" / "frozen_rule.json").read_text())["detection_binary_R31"]["tau_dB"])
+    rule = json.loads((ROOT / "results" / "04" / "frozen_rule.json").read_text())
+    tau = float(rule["detection_binary_R31"]["tau_dB"])
+    b_nm = float(L7.boundaries(rule)["three (R21)"].split("Normal|Mild at ")[1].split(",")[0])
     L = [f"# Lobe convergence study: stop-rule matched sets and one-extra-pass mesh yardstick (code {gh})", "",
          "HFSS Setup1 (user, from the convergence tables): adaptive at 3.4 GHz, Max Delta S 0.02, 30% refinement per pass, "
          "first-order basis, iterative solver; interpolating sweep 3.2-4.2 GHz, 201 points. Meshing is deterministic. "
@@ -239,6 +241,7 @@ def main():
             v = g(a, k) - g(b, k)
             r[f"{e} dB"] = v
             r[f"{e} / yardstick"] = abs(v) / yard[k]
+            r[f"{e} / noise SD"] = abs(v) / sd[k]
             r[f"{e} / clean ruler"] = abs(v) / max(yard[k], fdiff[k])
             r[f"{e} / measured ruler"] = abs(v) / max(yard[k], tot[k])
         rows.append(r)
@@ -261,8 +264,8 @@ def main():
           "### Ring averages, ratios and front-back / left-right indices",
           md(named[show], ".3f"), ""]
     for e in eff:
-        L += [f"**{e}**:", md(named[["quantity", f"{e} dB", f"{e} / yardstick", f"{e} / clean ruler",
-                                      f"{e} / measured ruler"]], ".2f"), ""]
+        L += [f"**{e}**:", md(named[["quantity", f"{e} dB", f"{e} / yardstick", f"{e} / noise SD",
+                                      f"{e} / clean ruler", f"{e} / measured ruler"]], ".2f"), ""]
     fam_rows = []
     for fm in ("path (reflection)", "path (neighbour)", "path (second-neighbour)", "path (opposite)",
                "cross-ratio", "asymmetry cross-ratio", "index"):
@@ -364,10 +367,15 @@ def main():
                        "baseline": "frozen rule unchanged", "verdict": "holds" if fc >= 0.95 else
                        ("weakened" if fc >= 0.5 else "retracted (reported as-is, no refitting)")})
     rB = ct[(ct.set == "lobe_B (stop rule 2)") & (ct.rule == "three") & (ct.design == M6)]
-    if not rB.empty:
-        claims.append({"claim": "frozen three labels Mild_lobe_new as Mild in lobe_B",
-                       "number": f"{rB['fraction correct'].iloc[0]:.2f} correct", "baseline": "frozen rule unchanged",
-                       "verdict": "holds" if rB['fraction correct'].iloc[0] >= 0.95 else "retracted (as-is)"})
+    rA = okA[(okA.rule == "three") & (okA.design == M5)]
+    if not rB.empty and not rA.empty:
+        fa, fb = rA["fraction correct"].iloc[0], rB["fraction correct"].iloc[0]
+        claims.append({"claim": "the frozen three-class result on lobe-Mild is decided by the mesh (one extra pass)",
+                       "number": f"Mild_lobe (pass 5, A) {fa:.2f} vs Mild_lobe_new (pass 6, B) {fb:.2f} correct; R21 "
+                                 f"{g(M5, 'R21') - b_nm:+.3f} / {g(M6, 'R21') - b_nm:+.3f} dB from the Normal|Mild "
+                                 f"boundary ({b_nm:.2f}) against a one-pass R21 change of {abs(YM['R21']):.3f} dB",
+                       "baseline": "frozen rule unchanged; one-pass yardstick",
+                       "verdict": "retracted for lobe-Mild in both sets (< 0.95); the difference between sets is mesh"})
     for e in ("Moderate - Mild (A, front lobe added)",):
         for q in ("index: front-back, neighbour paths", "index: front-back, all paths", "path T1-T2", "path T1-T6"):
             r = yt[yt.quantity == q].iloc[0]
@@ -427,7 +435,7 @@ def fig_maps(Q, H6, H7, M5, M6, A):
             for j in range(6):
                 a.text(j, i, f"{M[i, j]:+.2f}", ha="center", va="center", fontsize=6.5,
                        color="white" if abs(M[i, j]) > 0.6 * vmax else "#1f1e1c")
-        a.set_xticks(range(6), L7.LAB, fontsize=6.5)
+        a.set_xticks(range(6), L7.LAB, fontsize=6.5, rotation=60, ha="right", rotation_mode="anchor")
         a.set_yticks(range(6), L7.LAB, fontsize=6.5)
         a.set_title(t, loc="left", fontsize=9)
     fig.colorbar(im, ax=ax, shrink=0.8, label="change in band-averaged power (dB)")
