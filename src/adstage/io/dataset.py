@@ -127,6 +127,10 @@ def load_dataset(cfg: dict, root: str | Path = ".", classes: list[str] | None = 
         files = sorted(p.name for p in raw_dir.glob("*.s*p"))
         man = pd.DataFrame({"file": files, "class": [class_from_filename(f) for f in files],
                             "head_scale": 1.0, "standoff_mm": np.nan, "notes": ""})
+    if dcfg.get("set") is not None:                      # rows whose space-separated `set` lists it
+        man = man[man["set"].astype(str).str.split().apply(lambda v: dcfg["set"] in v)].reset_index(drop=True)
+        if man.empty:
+            raise ValueError(f"{man_path}: no rows in set {dcfg['set']}")
     if classes is not None:
         man = man[man["class"].isin(classes)].reset_index(drop=True)
     man = man.assign(_o=man["class"].map(STAGES.index)).sort_values(["_o", "file"])

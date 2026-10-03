@@ -1,11 +1,13 @@
-"""Prompt 07: lobe-sector phantom (set lobe_v1). QC floors, sliced-vs-v2 healthy, frozen-rule test,
-asymmetry / localisation, pre-registered LeftOnly predictions.
+"""Prompt 07: lobe-sector phantom. QC floors, sliced-vs-v2 healthy, frozen-rule test,
+asymmetry / localisation, pre-registered LeftOnly predictions (lobe_v1 only).
 
-    python scripts/07_lobe.py [--n 300] [--write-predictions]
+    python scripts/07_lobe.py [--config config_lobe.yaml] [--n 300] [--write-predictions]
 
-Reads only the files listed in data/sims_lobe.csv (LeftOnly_test / MCI_lobe are not read here).
-Writes results/05_lobe/{report.md, *.csv, figures/*.png}; with --write-predictions also
-results/05_lobe/predictions.md + predictions.csv (commit them before LeftOnly_test exists).
+The config selects one set of data/sims_lobe.csv (data.set: lobe_v1 = unmatched stop rules, lobe_A /
+lobe_B = stop-rule matched) and the output folder (results.out_root). Sets may lack stages (lobe_B has
+Healthy + Mild only); sections that need a missing stage are skipped.
+lobe_v1 writes results/05_lobe/{report.md, *.csv, figures/*.png}; with --write-predictions also
+results/05_lobe/predictions.md + predictions.csv (committed at cf56de8; never rewrite them).
 Every number is from one solve per design: within-simulation noise robustness, not generalisation.
 """
 from __future__ import annotations
@@ -126,19 +128,28 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=300)
     ap.add_argument("--write-predictions", action="store_true")
+    ap.add_argument("--config", default="config_lobe.yaml")
     args = ap.parse_args()
+    global OUT, FIG
     sys.stdout.reconfigure(encoding="utf-8")
     warnings.filterwarnings("ignore")
     np.seterr(all="ignore")
-    FIG.mkdir(parents=True, exist_ok=True)
-    os.environ["MLI_CONFIG"] = "config_lobe.yaml"
+    os.environ["MLI_CONFIG"] = args.config
     cfg = load_config(ROOT)
+    SET = cfg["data"]["set"]
+    OUT = ROOT / cfg["results"]["out_root"]
+    FIG = OUT / "figures"
+    FIG.mkdir(parents=True, exist_ok=True)
+    if args.write_predictions and SET != "lobe_v1":
+        raise SystemExit("predictions are pre-registered from lobe_v1 only (cf56de8)")
     gh = git_hash(ROOT)
     ds = load_dataset(cfg, ROOT)
     f = ds.f_hz
     S = to_ring_order(ds.S, ds.port_to_ant)
     des = {c: i for i, c in enumerate(ds.classes)}          # Normal/Mild/Moderate/Severe -> index
-    name = {"Normal": "Healthy_sliced", "Mild": "Mild_lobe", "Moderate": "Moderate_lobe", "Severe": "Severe_lobe"}
+    name = {c: Path(str(fn)).stem.replace("new_with_slices_", "") for c, fn in zip(ds.classes, ds.files)}
+    STG = [c for c in ("Mild", "Moderate", "Severe") if c in des]            # stages present in this set
+    has_mm = "Mild" in des and "Moderate" in des
     cfg_u = load_config(ROOT, "config_repeats.yaml")
     du = load_dataset(cfg_u, ROOT)
     Su = to_ring_order(du.S, du.port_to_ant)
@@ -148,7 +159,7 @@ def main():
     acfg["gain_err_db"] = 0.5
     prof = PROFILES["typical"]
     print(f"code {gh}; lobe designs {[name[c] for c in ds.classes]}; band {f[0] / 1e9:.1f}-{f[-1] / 1e9:.1f} GHz")
-    L = [f"# Lobe-sector phantom (set lobe_v1): analysis (code {gh})", "",
+    L = [f"# Lobe-sector phantom (set {SET}): analysis (code {gh})", "",
          f"Designs: {', '.join(name[c] for c in ds.classes)} (3.2-4.2 GHz, 201 points). {NOTE} "
          "Noise unless stated: typical profile + setup perturbation + per-port gain ±0.5 dB. "
          "Antennas in ring order T1..T6 = Frontal, Temporal L, Parietal L, Occipital, Parietal R, Temporal R.", ""]
@@ -168,7 +179,7 @@ def main():
                      "band-power SD dB": float(Hn[m].std(ddof=1)), "band-power max-min dB": float(np.ptp(Hn[m])),
                      "median over f of per-frequency SD dB": float(np.median(db(per_f).std(1, ddof=1)))})
     mirror_rows = []
-    for c in ("Normal", "Mild", "Moderate", "Severe"):
+    for c in ["Normal"] + STG:
         Pd = BPdb[c]
         Sf = np.abs(S[des[c]]) ** 2
         for k in range(4):
@@ -185,9 +196,9 @@ def main():
     circ, mir = pd.DataFrame(rows), pd.DataFrame(mirror_rows)
     circ.to_csv(OUT / "1_circulant_floor.csv", index=False)
     mir.to_csv(OUT / "1_mirror_floor.csv", index=False)
-    floor_mirror = float(np.sqrt(np.mean(mir[mir.design != "Healthy_sliced"]["band-power rms diff dB"] ** 2)))
+    floor_mirror = float(np.sqrt(np.mean(mir[mir.design != name["Normal"]]["band-power rms diff dB"] ** 2)))
     # per-path numerical SD of the staged (mirror-symmetric) designs: mirror-pair rms difference / sqrt 2
-    staged = mir[mir.design != "Healthy_sliced"]
+    staged = mir[mir.design != name["Normal"]]
     sig_path = {k: float(np.sqrt(np.mean(staged[staged.path == PATH[k]]["band-power rms diff dB"] ** 2)) / np.sqrt(2))
                 for k in range(4)}
     L += ["## 3.1 QC and symmetry floors",
@@ -213,7 +224,7 @@ def main():
     sym_sd = per_antenna_spread(f, S[des["Normal"]])
     key = ["R31", "R21", "R32", "k0_band", "k1_band", "k2_band", "k3_band", "logN"]
     d = Xl[des["Normal"]] - Xu[iH]
-    cmp = pd.DataFrame([{"feature": nm, "Healthy_sliced": Xl[des["Normal"]][names.index(nm)],
+    cmp = pd.DataFrame([{"feature": nm, name["Normal"]: Xl[des["Normal"]][names.index(nm)],
                          "new_Healthy (v2)": Xu[iH][names.index(nm)], "difference dB": d[names.index(nm)],
                          "/ v2 solve SD": d[names.index(nm)] / solve_sd[names.index(nm)],
                          "sliced antenna-spread SE dB": sym_sd.get(nm, np.nan),
@@ -263,11 +274,12 @@ def main():
     dec = pd.DataFrame(dec_rows)
     dec.to_csv(OUT / "3_frozen_rule_decisions.csv", index=False)
     show = dec.loc[:, (dec != 0).any(axis=0)]
-    expect = {("binary_R31", "Healthy_sliced"): "Normal", ("binary_R31", "Mild_lobe"): "AD",
-              ("binary_R31", "Moderate_lobe"): "AD", ("binary_R31", "Severe_lobe"): "AD",
-              ("three", "Healthy_sliced"): "Normal", ("three", "Mild_lobe"): "Mild", ("three", "Severe_lobe"): "Severe",
-              ("three_merged", "Healthy_sliced"): "Normal", ("three_merged", "Mild_lobe"): "Mild+Moderate",
-              ("three_merged", "Moderate_lobe"): "Mild+Moderate", ("three_merged", "Severe_lobe"): "Severe"}
+    expect_c = {("binary_R31", "Normal"): "Normal", ("binary_R31", "Mild"): "AD",
+                ("binary_R31", "Moderate"): "AD", ("binary_R31", "Severe"): "AD",
+                ("three", "Normal"): "Normal", ("three", "Mild"): "Mild", ("three", "Severe"): "Severe",
+                ("three_merged", "Normal"): "Normal", ("three_merged", "Mild"): "Mild+Moderate",
+                ("three_merged", "Moderate"): "Mild+Moderate", ("three_merged", "Severe"): "Severe"}
+    expect = {(r, name[c]): v for (r, c), v in expect_c.items() if c in des}
     ok_rows = []
     for (rule, dn), want in expect.items():
         for cname in conds:
@@ -291,7 +303,7 @@ def main():
     vt.to_csv(OUT / "3_ratios_lobe_vs_uniform.csv", index=False)
     bounds = boundaries(rule)
     mono = {r: bool(np.all(np.diff(vt[vt.set == "lobe"].set_index("stage").reindex(
-        ["Normal", "Mild", "Moderate", "Severe"])[r].values) * (1 if r == "R21" else -1) > 0)) for r in ("R21", "R32")}
+        ["Normal"] + STG)[r].values) * (1 if r == "R21" else -1) > 0)) for r in ("R21", "R32")}
     L += ["## 3.3 Frozen rule applied unchanged to the lobe designs",
           f"`results/04/frozen_rule.json` (commit 2baddee) and the gain-invariant gate (Normal window fitted on the v2 "
           f"Normal, floor limit from the v2 thresholds) are applied without refitting to {args.n} noisy measurements per "
@@ -305,9 +317,12 @@ def main():
           + "; ".join(f"{k}: {v}" for k, v in bounds.items()) + ".",
           f"Lobe ordering Normal -> Mild -> Moderate -> Severe monotone: R21 {mono['R21']}, R32 {mono['R32']} "
           "(R31 is not monotone in the uniform set either).", ""]
-    for rule_n, dn in (("binary_R31", "Mild_lobe"), ("binary_R31", "Moderate_lobe"), ("binary_R31", "Severe_lobe"),
-                       ("binary_R31", "Healthy_sliced"), ("three", "Mild_lobe"), ("three", "Severe_lobe"),
-                       ("three_merged", "Moderate_lobe")):
+    for rule_n, dc in (("binary_R31", "Mild"), ("binary_R31", "Moderate"), ("binary_R31", "Severe"),
+                       ("binary_R31", "Normal"), ("three", "Mild"), ("three", "Severe"),
+                       ("three_merged", "Moderate")):
+        if dc not in des:
+            continue
+        dn = name[dc]
         r = okt[(okt.rule == rule_n) & (okt.design == dn) & (okt.condition == "typical, ±0.5 dB gain")].iloc[0]
         r2 = okt[(okt.rule == rule_n) & (okt.design == dn) & (okt.condition != "typical, ±0.5 dB gain")].iloc[0]
         fc = r["fraction correct"]
@@ -318,7 +333,7 @@ def main():
     fig_ratios(vt, rule, bounds)
 
     # ---------------------------------------------------------------- 3.4 asymmetry / localisation
-    dP = {c: BPdb[c] - BPdb["Normal"] for c in ("Mild", "Moderate", "Severe")}
+    dP = {c: BPdb[c] - BPdb["Normal"] for c in STG}
     path_rows = []
     for c, M in dP.items():
         for i, j in itertools.combinations_with_replacement(range(6), 2):
@@ -338,7 +353,7 @@ def main():
     for k in (1, 2):
         variants.append((f"front-back, {PATH[k]} paths", restrict(FB_PATHS, k)))
         variants.append((f"left-right, {PATH[k]} paths", restrict(LR_PATHS, k)))
-    for c in ("Normal", "Mild", "Moderate", "Severe"):
+    for c in ["Normal"] + STG:
         nb = db(noisy_bp[c]) - nb_h.mean(0)
         for iname, paths in variants:
             flh = float(np.sqrt(np.mean([index(Rh[np.ix_(t, t)], paths) ** 2 for t in symmetry_transforms()])))
@@ -361,9 +376,10 @@ def main():
     meas_chi = np.array([chin["Normal"][n].std(ddof=1) for n in cnames])
     sd_chi = np.hypot(floor_chi, meas_chi)
     ct = pd.DataFrame({"cross-ratio": cnames,
-                       **{f"Δ {name[c]} dB": [CH[c][n] - CH["Normal"][n] for n in cnames] for c in ("Mild", "Moderate", "Severe")},
+                       **{f"Δ {name[c]} dB": [CH[c][n] - CH["Normal"][n] for n in cnames] for c in STG},
                        "symmetry floor dB": floor_chi, "measurement SD dB": meas_chi})
-    ct["Moderate-Mild (front affected vs not) dB"] = ct["Δ Moderate_lobe dB"] - ct["Δ Mild_lobe dB"]
+    ct["Moderate-Mild (front affected vs not) dB"] = (ct[f"Δ {name['Moderate']} dB"] - ct[f"Δ {name['Mild']} dB"]
+                                                      if has_mm else np.nan)
     ct["|Moderate-Mild| / SD"] = np.abs(ct["Moderate-Mild (front affected vs not) dB"]) / sd_chi
     ct["involves T1 (front)"] = ct["cross-ratio"].str.contains("T1")
     ct = ct.sort_values("|Moderate-Mild| / SD", ascending=False)
@@ -380,15 +396,15 @@ def main():
     floor_as = np.array([abs(AS["Normal"][n]) for n in cnames])            # healthy residual = numerical floor
     pooled_floor_as = float(np.sqrt(np.mean(floor_as ** 2)))
     mm = mirror_map()
-    dm = [AS[c][n] - sg * AS[c][m] for c in ("Mild", "Moderate", "Severe") for n, (m, sg) in mm.items() if m != n]
+    dm = [AS[c][n] - sg * AS[c][m] for c in STG for n, (m, sg) in mm.items() if m != n]
     mirror_floor_as = float(np.sqrt(np.mean(np.square(dm))) / np.sqrt(2))   # per-design numerical SD
     fl_as = max(pooled_floor_as, mirror_floor_as)
     meas_as = np.array([ASn["Normal"][n].std(ddof=1) for n in cnames])
     sd_as = np.sqrt(2) * np.hypot(fl_as, meas_as)                          # Moderate - Mild: two designs
     at = pd.DataFrame({"asymmetry cross-ratio": cnames,
-                       **{f"{name[c]} dB": [AS[c][n] for n in cnames] for c in ("Normal", "Mild", "Moderate", "Severe")},
+                       **{f"{name[c]} dB": [AS[c][n] for n in cnames] for c in ["Normal"] + STG},
                        "SD dB (floor+meas)": sd_as})
-    at["Moderate-Mild dB"] = at["Moderate_lobe dB"] - at["Mild_lobe dB"]
+    at["Moderate-Mild dB"] = at[f"{name['Moderate']} dB"] - at[f"{name['Mild']} dB"] if has_mm else np.nan
     at["|Moderate-Mild| / SD"] = np.abs(at["Moderate-Mild dB"]) / sd_as
     at["involves T1 (front)"] = at["asymmetry cross-ratio"].str.contains("T1")
     at = at[[len(cls[n]) > 1 for n in at["asymmetry cross-ratio"]]].sort_values("|Moderate-Mild| / SD", ascending=False)
@@ -423,30 +439,32 @@ def main():
           f"(floor (+) measurement). "
           f"{nsig_as} of {len(at)} separate Moderate from Mild by >= 3 SD ({nsig_as_t1} of them involve T1). Top 8:",
           md(at.head(8), ".3f"), ""]
-    for iname in ("front-back, neighbour paths", "front-back, all paths"):
-        fb_mod = idt[(idt.design == "Moderate_lobe") & (idt["index"] == iname)].iloc[0]
-        fb_mild = idt[(idt.design == "Mild_lobe") & (idt["index"] == iname)].iloc[0]
+    for iname in ("front-back, neighbour paths", "front-back, all paths") if has_mm else ():
+        fb_mod = idt[(idt.design == name["Moderate"]) & (idt["index"] == iname)].iloc[0]
+        fb_mild = idt[(idt.design == name["Mild"]) & (idt["index"] == iname)].iloc[0]
         claims.append({"claim": f"front-affected Moderate differs front-to-back ({iname})",
                        "number": f"Moderate {fb_mod['value dB']:+.2f} dB = {fb_mod['/ floor (larger)']:+.1f}x floor (Mild "
                                  f"{fb_mild['value dB']:+.2f}); with ±0.5 dB gain errors {fb_mod['/ sqrt(floor^2+meas^2)']:+.1f}x",
                        "baseline": "symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain",
                        "verdict": f"clean: {verdict_ratio(abs(fb_mod['/ floor (larger)']))}; with gain errors: "
                                   f"{verdict_ratio(abs(fb_mod['/ sqrt(floor^2+meas^2)']))}"})
-    claims.append({"claim": "raw cross-ratios separate Moderate from Mild (severity, not location)",
+    if has_mm:
+        claims.append({"claim": "raw cross-ratios separate Moderate from Mild (severity, not location)",
                    "number": f"{nsig}/45 >= 3 SD; best {top.iloc[0]['cross-ratio']} "
                              f"{top.iloc[0]['Moderate-Mild (front affected vs not) dB']:+.2f} dB "
                              f"({top.iloc[0]['|Moderate-Mild| / SD']:.1f} SD)",
                    "baseline": "symmetry floor + measurement noise",
                    "verdict": "holds as severity; not a location claim"})
     ba = at.iloc[0]
-    claims.append({"claim": "gain-invariant ASYMMETRY cross-ratios see the front-lobe involvement of Moderate",
+    if has_mm:
+        claims.append({"claim": "gain-invariant ASYMMETRY cross-ratios see the front-lobe involvement of Moderate",
                    "number": f"{nsig_as}/{len(at)} >= 3 SD ({nsig_as_t1} involve T1); best {ba['asymmetry cross-ratio']} "
                              f"{ba['Moderate-Mild dB']:+.2f} dB ({ba['|Moderate-Mild| / SD']:.1f} SD)",
                    "baseline": "larger of healthy / staged-mirror asymmetry floor, x sqrt2 (two designs), + measurement noise",
                    "verdict": (verdict_ratio(ba["|Moderate-Mild| / SD"]) if nsig_as else
                                f"not significant (best {ba['|Moderate-Mild| / SD']:.1f} SD; "
                                f"{int(at.head(8)['involves T1 (front)'].sum())} of the top 8 involve T1)")})
-    for c in ("Mild", "Moderate", "Severe"):
+    for c in STG:
         r = idt[(idt.design == name[c]) & (idt["index"] == "left-right, all paths")].iloc[0]
         claims.append({"claim": f"left-right index of {name[c]} is ~0 (mirror-symmetric by construction; a check)",
                        "number": f"{r['value dB']:+.3f} dB = {r['/ floor (larger)']:+.1f}x floor",
@@ -457,7 +475,9 @@ def main():
     # lobe_v1 is mesh-unmatched (Healthy_sliced ~1.8x the elements of every AD stage). Two healthy heads solved with
     # different meshes (Healthy_sliced vs v2 new_Healthy) give a rough, single-pair estimate of how far mesh alone moves
     # each statistic. It may also contain a small geometry difference (v2 skull inner radius unknown).
-    mesh = pd.read_csv(ROOT / "data" / "mesh_lobe.csv", comment="#")
+    if SET != "lobe_v1":                          # superseded by the one-pass yardstick (scripts/08_lobe_mesh.py)
+        return finish(L, claims, args, None, OUT)
+    mesh = ds.manifest[["file", "stop_rule", "passes", "final_dS", "elements"]]
     dmesh = db(band_power(f, Su[iH])) - BPdb["Normal"]
     ms = {r: abs(float(Xu[iH][names.index(r)] - Xl[des["Normal"]][names.index(r)])) for r in ("R31", "R21", "R32")}
     ms_max = max(ms.values())
@@ -504,7 +524,8 @@ def main():
     et["verdict (own-feature scale)"] = [mesh_verdict(x) for x in et["x own-feature mesh scale"]]
     et.to_csv(OUT / "6_mesh_scale.csv", index=False)
     L += ["## Mesh scale (lobe_v1 is mesh-unmatched)",
-          "HFSS Setup1 per design (from the HFSS solution dialogs, user 2026-10-03; `data/mesh_lobe.csv`). Common: adaptive "
+          "SUPERSEDED (2026-10-04) by the one-extra-pass yardstick, `results/05_lobe/mesh/`. "
+          "HFSS Setup1 per design (HFSS convergence tables, user; `data/sims_lobe.csv`). Common: adaptive "
           "at 3.4 GHz, Max Delta S 0.02, max 8 passes, 30% refinement, first-order basis, iterative solver. **The settings "
           "are not matched:** the healthy reference has ~1.8x the elements and ~2x tighter final Delta S than every AD "
           "stage (minimum converged passes 2 vs 1), the same healthy-vs-AD mesh imbalance as in v2.",
@@ -515,9 +536,8 @@ def main():
           + f"; neighbour paths {ms_nb:.3f} dB rms per path; front-back neighbour index {ms_fb:.3f} dB; asymmetry "
           f"cross-ratios {ms_as:.3f} dB rms. Each lobe-set effect as a multiple of it:",
           md(et, ".3f"), "",
-          "Localisation effects are within a few mesh scales, so they are **not separable from mesh** until the "
-          "mesh-matched re-solves (set lobe_v1m) exist. The v1 vs v1m difference of Mild/Moderate/Severe will measure the "
-          "mesh effect on the AD stages directly.", ""]
+          "Localisation effects are within a few mesh scales, so they are **not separable from mesh** in this "
+          "stop-rule-unmatched set; see the stop-rule matched sets lobe_A / lobe_B.", ""]
     for cl in claims:
         if "front-back" in cl["claim"] or "ASYMMETRY" in cl["claim"]:
             cl["verdict"] += "; not separable from mesh (lobe_v1 mesh-unmatched)"
@@ -532,10 +552,26 @@ def main():
                            f"{r['dB']:+.2f} dB = {r['x own-feature mesh scale']:.1f}x own-feature mesh scale "
                            f"({r['x largest ratio mesh scale']:.1f}x the largest ratio scale)",
                            "baseline": "mesh scale above", "verdict":
-                           mesh_verdict(r["x own-feature mesh scale"]) + ("; not separable from mesh until lobe_v1m"
+                           mesh_verdict(r["x own-feature mesh scale"]) + ("; not separable from mesh in lobe_v1"
                                                                           if r.effect.startswith("localisation") else "")})
 
-    # ---------------------------------------------------------------- 3.4 (d) predictions
+    return finish(L, claims, args, dict(floor_fb=floor_fb, floor_lr=floor_lr, sig_path=sig_path, dP=dP, BPdb=BPdb,
+                                        Xl=Xl, names=names, des=des, rule=rule, bounds=bounds, CH=CH, sd_chi=sd_chi,
+                                        cnames=cnames, gh=gh), OUT)
+
+
+def finish(L, claims, args, P, OUT):
+    if P is not None:                                     # lobe_v1 only: 3.4 (d) predictions
+        _predict(args, **P)
+        L += ["### (d) LeftOnly_test predictions", "Written to `results/05_lobe/predictions.md` (pre-registered at "
+              "cf56de8; scored only after LeftOnly_test arrives).", ""]
+    L += ["## Claims", md(pd.DataFrame(claims)), "", NOTE]
+    (OUT / "report.md").write_text("\n".join(L), encoding="utf-8")
+    pd.DataFrame(claims).to_csv(OUT / "claims.csv", index=False)
+    print((OUT / "report.md").read_text(encoding="utf-8"))
+
+
+def _predict(args, floor_fb, floor_lr, sig_path, dP, BPdb, Xl, names, des, rule, bounds, CH, sd_chi, cnames, gh):
     fl_fb = max(floor_fb, index_floor(FB_PATHS, sig_path))
     fl_lr = max(floor_lr, index_floor(LR_PATHS, sig_path))
     pred = predictions(dP["Mild"], BPdb, Xl, names, des, rule, bounds, fl_fb, fl_lr, CH, sd_chi, cnames)
@@ -543,12 +579,6 @@ def main():
                                                           for t in pred["paths"]["type"]]
     if args.write_predictions:
         write_predictions(pred, gh, fl_fb, fl_lr, sig_path)
-    L += ["### (d) LeftOnly_test predictions", "Written to `results/05_lobe/predictions.md` (pre-registered; "
-          "scored only after LeftOnly_test arrives).", ""]
-    L += ["## Claims", md(pd.DataFrame(claims)), "", NOTE]
-    (OUT / "report.md").write_text("\n".join(L), encoding="utf-8")
-    pd.DataFrame(claims).to_csv(OUT / "claims.csv", index=False)
-    print((OUT / "report.md").read_text(encoding="utf-8"))
 
 
 def index_floor(paths, sig_path):
@@ -746,7 +776,8 @@ def fig_maps(dP, name):
     import matplotlib.pyplot as plt
     from matplotlib.colors import TwoSlopeNorm
     vmax = max(np.abs(M).max() for M in dP.values())
-    fig, ax = plt.subplots(1, 3, figsize=(15, 4.8))
+    fig, ax = plt.subplots(1, len(dP), figsize=(5 * len(dP), 4.8), squeeze=False)
+    ax = ax[0]
     for a, (c, M) in zip(ax, dP.items()):
         im = a.imshow(M, cmap="RdBu_r", norm=TwoSlopeNorm(0, -vmax, vmax))
         for i in range(6):

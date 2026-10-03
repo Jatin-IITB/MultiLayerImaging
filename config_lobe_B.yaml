@@ -1,0 +1,11 @@
+# Lobe-sector phantom, set lobe_B: stop-rule matched, stop rule 2 (two consecutive passes): Healthy_sliced (p7), Mild_lobe_new (p6) only.
+extends: config_lobe.yaml
+
+data:
+  set: lobe_B
+
+metrics:
+  sim_set: lobe_B-masked
+
+results:
+  out_root: results/05_lobe/lobe_B

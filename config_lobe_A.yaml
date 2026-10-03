@@ -1,0 +1,11 @@
+# Lobe-sector phantom, set lobe_A: stop-rule matched, stop rule 1 (first pass with dS < 0.02): Healthy_sliced_new, Mild, Moderate, Severe. PRIMARY.
+extends: config_lobe.yaml
+
+data:
+  set: lobe_A
+
+metrics:
+  sim_set: lobe_A-masked
+
+results:
+  out_root: results/05_lobe/lobe_A

@@ -1,9 +1,18 @@
-# Lobe-sector phantom, set lobe_v1 (project new_with_slices; copies of the v2 Normal design with gray/white matter cut
-# into six 60-degree lobe sectors S1..S6 centred on antennas T1..T6). One solve per design. See MODEL_CARD Part 5.
+# Lobe-sector phantom (project new_with_slices): copies of the v2 Normal design with gray/white matter cut into six
+# 60-degree lobe sectors S1..S6 centred on antennas T1..T6. One solve per design and stop rule. See MODEL_CARD Part 5.
 # sectors_affected: S1 frontal, S2 temporal L, S3 parietal L, S4 occipital, S5 parietal R, S6 temporal R; core = hippocampus.
-# Pending (do not add before predictions are committed): new_with_slices_LeftOnly_test.s6p (S2,S3 + core), new_with_slices_MCI_lobe.s6p (core).
-file,class,head_scale,standoff_mm,notes,project,head_id,role,repeat_of,set,sectors_affected
-new_with_slices_Healthy_sliced.s6p,Normal,1.0,9.55,sliced healthy head,new_with_slices,h_lobe,primary,,lobe_v1,none
-new_with_slices_Mild_lobe.s6p,Mild,1.0,9.55,"e = 0/7.5/11.5/0/11.5/7.5 mm, r_hip 17.5",new_with_slices,h_lobe,primary,,lobe_v1,S2 S3 S5 S6 core
-new_with_slices_Moderate_lobe.s6p,Moderate,1.0,9.55,"e = 11.5/12.5/15.5/0/15.5/12.5 mm, r_hip 12.5",new_with_slices,h_lobe,primary,,lobe_v1,S1 S2 S3 S5 S6 core
-new_with_slices_Severe_lobe.s6p,Severe,1.0,9.55,"e = 15.5/17.5/18/11.5/18/17.5 mm, r_hip 7.5",new_with_slices,h_lobe,primary,,lobe_v1,S1 S2 S3 S4 S5 S6 core
+# Mesh/stop rule from the HFSS convergence tables (user, 2026-10-04); common: adaptive at 3.4 GHz, Max Delta S 0.02,
+# 30% refinement, first-order basis, iterative solver; interpolating sweep 3.2-4.2 GHz, 201 points. Meshing is
+# deterministic (same rule -> identical passes). stop_rule: 1 = first pass with dS < 0.02; 2 = two consecutive passes.
+# sets (space-separated): lobe_v1 = Prompt 07 files, stop rules NOT matched (kept as-is);
+#   lobe_A = stop-rule matched, rule 1 (PRIMARY from 2026-10-04); lobe_B = stop-rule matched, rule 2 (Healthy + Mild only).
+# DUPLICATES not listed: new_with_slices_Moderate_lobe_new.s6p and new_with_slices_Severe_lobe_new.s6p were re-solved with
+#   rule 1 and equal Moderate_lobe / Severe_lobe to ~1e-8 (deterministic meshing).
+# Pending: new_with_slices_LeftOnly_test.s6p (S2,S3 + core), new_with_slices_MCI_lobe.s6p (core); stop rule to be given.
+file,class,head_scale,standoff_mm,notes,project,head_id,role,repeat_of,set,sectors_affected,stop_rule,passes,final_dS,elements
+new_with_slices_Healthy_sliced.s6p,Normal,1.0,9.55,sliced healthy head,new_with_slices,h_lobe,primary,,lobe_v1 lobe_B,none,2,7,0.0092,1349491
+new_with_slices_Healthy_sliced_new.s6p,Normal,1.0,9.55,sliced healthy head,new_with_slices,h_lobe,primary,,lobe_A,none,1,6,0.0155,1081728
+new_with_slices_Mild_lobe.s6p,Mild,1.0,9.55,"e = 0/7.5/11.5/0/11.5/7.5 mm, r_hip 17.5",new_with_slices,h_lobe,primary,,lobe_v1 lobe_A,S2 S3 S5 S6 core,1,5,0.0186,739774
+new_with_slices_Mild_lobe_new.s6p,Mild,1.0,9.55,"e = 0/7.5/11.5/0/11.5/7.5 mm, r_hip 17.5",new_with_slices,h_lobe,primary,,lobe_B,S2 S3 S5 S6 core,2,6,0.0150,878656
+new_with_slices_Moderate_lobe.s6p,Moderate,1.0,9.55,"e = 11.5/12.5/15.5/0/15.5/12.5 mm, r_hip 12.5",new_with_slices,h_lobe,primary,,lobe_v1 lobe_A,S1 S2 S3 S5 S6 core,1,5,0.0194,796281
+new_with_slices_Severe_lobe.s6p,Severe,1.0,9.55,"e = 15.5/17.5/18/11.5/18/17.5 mm, r_hip 7.5",new_with_slices,h_lobe,primary,,lobe_v1 lobe_A,S1 S2 S3 S4 S5 S6 core,1,5,0.019999,690077

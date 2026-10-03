@@ -212,3 +212,19 @@ def test_cross_ratios_cancel_per_port_gains_and_vanish_when_symmetric():
     chi = mod.cross_ratios(circ)
     asym = [chi[n] - np.mean([s * chi[m] for m, s in cls[n]]) for n in chi]
     np.testing.assert_allclose(asym, 0, atol=1e-10)
+
+
+def test_manifest_set_filter_selects_rows_listing_the_set():
+    import pathlib
+    from adstage.config import load_config
+    from adstage.io.dataset import load_dataset
+    root = pathlib.Path(__file__).resolve().parents[1]
+    sets = {}
+    for name in ("config_lobe.yaml", "config_lobe_A.yaml", "config_lobe_B.yaml"):
+        ds = load_dataset(load_config(root, name), root)
+        sets[name] = dict(zip(ds.classes, ds.files))
+    assert sets["config_lobe.yaml"]["Normal"].endswith("Healthy_sliced.s6p") and len(sets["config_lobe.yaml"]) == 4
+    assert sets["config_lobe_A.yaml"]["Normal"].endswith("Healthy_sliced_new.s6p")
+    assert sets["config_lobe_A.yaml"]["Mild"].endswith("Mild_lobe.s6p") and len(sets["config_lobe_A.yaml"]) == 4
+    assert set(sets["config_lobe_B.yaml"]) == {"Normal", "Mild"}
+    assert sets["config_lobe_B.yaml"]["Mild"].endswith("Mild_lobe_new.s6p")

@@ -1,8 +1,10 @@
-# Overlay on config.yaml for the lobe-sector phantom (set lobe_v1). Run with MLI_CONFIG=config_lobe.yaml.
+# Overlay on config.yaml for the lobe-sector phantom, set lobe_v1 (stop rules NOT matched; Prompt 07).
+# Stop-rule matched sets: config_lobe_A.yaml (primary), config_lobe_B.yaml.
 extends: config.yaml
 
 data:
   manifest: data/sims_lobe.csv
+  set: lobe_v1
 
 metrics:
   sim_set: lobe_v1-masked
