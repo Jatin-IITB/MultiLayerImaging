@@ -44,3 +44,22 @@ def test_rules_left_right_front_back():
     c = apply_rules(x, rule)
     assert c["side"] == "none" and c["frontback"] == "front"
     assert contrasts(x)["FB"] == 11
+
+
+def test_whitened_log_projection_removes_port_gains_and_frozen_one_does_not():
+    from imaging.lobe_A import KEEP_ALL
+    from imaging.lobe_rulers import WhitenedLog
+    rng = np.random.default_rng(0)
+    F, n = 3, SL.N_ANT
+    fh = np.array([3.4e9, 3.6e9, 3.8e9])
+    S = rng.normal(size=(F, n, n)) + 1j * rng.normal(size=(F, n, n))
+    S = 0.5 * (S + S.transpose(0, 2, 1))
+    K = rng.normal(size=(21, F, 6)) + 1j * rng.normal(size=(21, F, 6))
+    sig = np.abs(SL.recip(S)) * rng.uniform(0.01, 0.2, (21, F))         # unequal per-path weights
+    g = 10 ** (rng.uniform(-2, 2, n) / 20) * np.exp(1j * np.deg2rad(rng.uniform(-10, 10, n)))
+    Sg = S * g[None, :, None] * g[None, None, :]
+    kappa = np.ones(F, complex)
+    w = WhitenedLog(K, fh, kappa, sig, KEEP_ALL, S)
+    assert np.max(np.abs(w.data(S_stage=Sg, S_ref=S))) < 1e-9
+    frozen = SL.RegionModel(K, fh, kappa, sig, S_ref=S, kind="log")
+    assert np.max(np.abs(frozen.data(S_stage=Sg, S_ref=S))) > 1e-3        # documents the erratum

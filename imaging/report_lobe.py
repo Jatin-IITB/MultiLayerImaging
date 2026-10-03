@@ -452,6 +452,40 @@ def _verdict(res, blind=None):
         cav_mesh = ("; lobe_A matches the stop rule, not the pass count (reference 6 passes, stages 5), and the "
                     "yardstick is a single extra pass, so mesh error relative to a converged solution is not bounded "
                     "by it (§5c).")
+        pr = OUT / "lobe_rulers.json"
+        Rj = json.loads(pr.read_text(encoding="utf-8")) if pr.exists() else {}
+        Rl = Rj.get("summary")
+        if Rl:
+            WN = "tikhonov log, whitened projection (post-hoc)"
+            g05, g2 = "±0.5 dB gain", "±2 dB gain, ±10° phase"
+            trio = ((PRIMARY, "Tikhonov dS"), (SECOND, "frozen log"), (WN, "whitened log"))
+
+            def rr(key, g, field):
+                return ", ".join(f"{lab} {Rl[key][m][g][field]:.1f}×" for m, lab in trio)
+            mf = Rl["mod_FB"][PRIMARY][g05]
+            bias_c = [Rl["bias"][m][c]["clean_ratio"] for m, _ in trio for c in Rl["bias"][m]]
+            fb_txt = (f"- **Front/back: not established.** Moderate − Healthy FB on lobe_A = {mf['clean']:+.1f} (primary; "
+                      f"truth {mf['truth']:+.1f}). Against the simulation-level ruler max(one-pass mesh, symmetry floor): "
+                      f"{rr('mod_FB', g05, 'clean_ratio')} (≥ 3× exceeds, 2–3× sensitive). With the Prompt 07 measurement "
+                      f"errors: {rr('mod_FB', g05, 'ratio')} (±0.5 dB) and {rr('mod_FB', g2, 'ratio')} (±2 dB/±10°). "
+                      f"Mild and Severe carry a front-positive bias of about +4 that is itself "
+                      f"{min(bias_c):.1f}–{max(bias_c):.1f}× the clean ruler, and Moderate − Mild (not a pure frontal "
+                      f"contrast) is {rr('mm_FB', g05, 'clean_ratio')} the clean ruler. This agrees with the main session: "
+                      "localisation is not separable from error once symmetry floor and gain/phase errors are included (§5d).")
+            lo = Rl["leftonly"]
+            lr_add = (f" Rulers (§5d): the predicted LeftOnly contrast is {lo[PRIMARY]['LR'] / lo[PRIMARY]['clean']:.0f}× the "
+                      f"clean LR ruler, so the clean simulation can test left/right; with the Prompt 07 measurement errors "
+                      f"it would be only {lo[PRIMARY]['LR'] / lo[PRIMARY]['ruler05']:.1f}× (Tikhonov dS) / "
+                      f"{lo[SECOND]['LR'] / lo[SECOND]['ruler05']:.1f}× (frozen log) the ruler at ±0.5 dB: not separable "
+                      "in a measurement with the frozen pipeline. The mirror-symmetric designs themselves (true LR = 0) "
+                      f"reach up to {Rl['lr_max_clean']:.1f}× the clean LR ruler, so that ruler underestimates "
+                      "left/right error by up to that factor; the LeftOnly margin would survive it.")
+            ph = next(c for c in Rj["components"] if c["component"].startswith("per-port amplitude"))
+            cav_mesh += (" **Erratum (§5d):** the frozen 'gain-invariant' log method projects out the port gains before "
+                         "noise whitening, so it is not gain-invariant (the Prompt 07 per-port amplitude/phase "
+                         f"perturbation alone moves its FB by SD {ph['FB sd, ' + SECOND]:.0f}); a post-hoc whitened "
+                         f"projection is exactly gain-invariant (SD {ph['FB sd, ' + WN]:.2f}) and is limited by the "
+                         "measurement noise instead.")
     else:
         pat_txt = (f"- **Which lobes (pattern):** yes, as a ranking. The recovered sector conductivity correlates "
                    f"{min(s['corr_truth'] for s in sc if s['stage'] != 'Severe_lobe'):.2f}–"
@@ -559,34 +593,50 @@ def run_blind():
     S, f, fh, fi, P = RL.build(reuse=True)
     kappa = np.array(fz["kappa_re"]) + 1j * np.array(fz["kappa_im"])
     from .common import PROFILES
-    M = RL.models(S, fh, fi, P, kappa, PROFILES["typical"])
-    H = S["Healthy_sliced"]
+    # decision 4 Oct: score against both references; the frozen 7-pass Healthy_sliced is primary, the
+    # stop-rule-matched Healthy_sliced_new (lobe_A) is reported alongside
+    refs = {"Healthy_sliced (7 passes, frozen, primary)": S["Healthy_sliced"]}
+    if (ROOT / "data" / "raw" / "new_with_slices_Healthy_sliced_new.s6p").exists():
+        refs["Healthy_sliced_new (6 passes, matched)"], _ = SL.load_design("Healthy_sliced_new", f)
     lam = {"dS": fz["lambda_dS"], "log": fz["lambda_log"]}
+    pr = OUT / "lobe_rulers.json"
+    lo = (json.loads(pr.read_text(encoding="utf-8")).get("summary") or {}).get("leftonly", {}) if pr.exists() else {}
     out = []
-    for d in present:
-        Sd, _ = SL.load_design(d, f)
-        for m in RL.METHODS:
-            lm = lam["dS"] if m.endswith("dS") else lam["log"]
-            x = RL.invert(M, m, lm, S_stage_fi=Sd[fi], S_ref_fi=H[fi], dS_fi=SL.recip(Sd[fi] - H[fi]))
-            c = RL.apply_rules(x, fz["rules"][m])
-            calls = " ".join(f"S{k + 1}" for k in range(6) if c["affected"][k]) or "none"
-            if d == "LeftOnly_test":
-                ok = (c["side"] == "left" and c["affected"][1] and c["affected"][2]
-                      and not c["affected"][4] and not c["affected"][5])
-                partial = c["side"] == "left" and c["affected"][2] and not c["affected"][4] and not c["affected"][5]
-                verdict = "SUCCESS" if ok else ("PARTIAL" if partial else "FAIL")
-            else:
-                ok = not any(c["affected"]) and c["side"] == "none" and c["frontback"] == "none"
-                verdict = "SUCCESS" if ok else "FAIL"
-            out.append(dict(design=d, method=m, **{f"dε'' {SHORT[k]}": x[6 + k] for k in range(6)},
-                            called=calls, LR=c["LR"], side=c["side"], FB=c["FB"], frontback=c["frontback"],
-                            verdict=verdict))
+    for rname, H in refs.items():
+        S_r = {**S, "Healthy_sliced": H}
+        M = RL.models(S_r, fh, fi, P, kappa, PROFILES["typical"])
+        for d in present:
+            Sd, _ = SL.load_design(d, f)
+            for m in RL.METHODS:
+                lm = lam["dS"] if m.endswith("dS") else lam["log"]
+                x = RL.invert(M, m, lm, S_stage_fi=Sd[fi], S_ref_fi=H[fi], dS_fi=SL.recip(Sd[fi] - H[fi]))
+                c = RL.apply_rules(x, fz["rules"][m])
+                calls = " ".join(f"S{k + 1}" for k in range(6) if c["affected"][k]) or "none"
+                if d == "LeftOnly_test":
+                    ok = (c["side"] == "left" and c["affected"][1] and c["affected"][2]
+                          and not c["affected"][4] and not c["affected"][5])
+                    partial = c["side"] == "left" and c["affected"][2] and not c["affected"][4] and not c["affected"][5]
+                    verdict = "SUCCESS" if ok else ("PARTIAL" if partial else "FAIL")
+                else:
+                    ok = not any(c["affected"]) and c["side"] == "none" and c["frontback"] == "none"
+                    verdict = "SUCCESS" if ok else "FAIL"
+                q = lo.get(m, {})
+                out.append(dict(reference=rname, design=d, method=m, **{f"dε'' {SHORT[k]}": x[6 + k] for k in range(6)},
+                                called=calls, LR=c["LR"], side=c["side"], FB=c["FB"], frontback=c["frontback"],
+                                verdict=verdict,
+                                LR_over_clean_ruler=abs(c["LR"]) / q["clean"] if q else float("nan"),
+                                LR_over_ruler_05dB=abs(c["LR"]) / q["ruler05"] if q else float("nan")))
     L = ["## 6. Blind test outcome (pre-registered)", "",
          f"Frozen at code `{fz['code']}`; predictions in `lobe_predictions.md`. Scored now at code `{git_hash(ROOT)}` "
          "with the unchanged frozen κ, λ and thresholds.", "",
-         _t(out, ["design", "method"] + [f"dε'' {s}" for s in SHORT] + ["called", "LR", "side", "FB", "frontback", "verdict"],
-            {**{f"dε'' {s}": ".1f" for s in SHORT}, "LR": "+.1f", "FB": "+.1f"}), ""]
-    prim = {o["design"]: o for o in out if o["method"] == PRIMARY}
+         "Two references (decision of 4 Oct): the frozen 7-pass Healthy_sliced is primary and decides the verdict; "
+         "the stop-rule-matched Healthy_sliced_new is shown alongside. LR / ruler columns use the Mild − Healthy LR "
+         "rulers of §5d (clean = max(one-pass mesh, symmetry floor); 0.5 dB = with the Prompt 07 measurement errors).", "",
+         _t(out, ["reference", "design", "method"] + [f"dε'' {s}" for s in SHORT]
+            + ["called", "LR", "side", "FB", "frontback", "verdict", "LR_over_clean_ruler", "LR_over_ruler_05dB"],
+            {**{f"dε'' {s}": ".1f" for s in SHORT}, "LR": "+.1f", "FB": "+.1f", "LR_over_clean_ruler": ".1f",
+             "LR_over_ruler_05dB": ".1f"}), ""]
+    prim = {o["design"]: o for o in out if o["method"] == PRIMARY and o["reference"].endswith("primary)")}
     blind_txt = None
     if "LeftOnly_test" in prim:
         o = prim["LeftOnly_test"]
