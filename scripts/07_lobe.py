@@ -518,22 +518,22 @@ def main():
           "Localisation effects are within a few mesh scales, so they are **not separable from mesh** until the "
           "mesh-matched re-solves (set lobe_v1m) exist. The v1 vs v1m difference of Mild/Moderate/Severe will measure the "
           "mesh effect on the AD stages directly.", ""]
+    for cl in claims:
+        if "front-back" in cl["claim"] or "ASYMMETRY" in cl["claim"]:
+            cl["verdict"] += "; not separable from mesh (lobe_v1 mesh-unmatched)"
     claims.append({"claim": "mesh scale: how far mesh alone moves the features (Healthy_sliced vs v2 new_Healthy)",
                    "number": ", ".join(f"{r} {v:.2f}" for r, v in ms.items())
                              + f" dB; neighbour path {ms_nb:.2f} dB; front-back neighbour index {ms_fb:.2f} dB",
                    "baseline": "one pair of healthy heads with different meshes (rough; may include geometry)",
                    "verdict": "ruler for the rows below"})
     for _, r in et.iterrows():
-        if r.effect.startswith("detection: R31") or r.effect.startswith("staging") or r.effect.startswith("localisation"):
+        if r.effect.startswith("detection") or r.effect.startswith("staging") or r.effect.startswith("localisation"):
             claims.append({"claim": f"{r.effect} exceeds the mesh scale", "number":
                            f"{r['dB']:+.2f} dB = {r['x own-feature mesh scale']:.1f}x own-feature mesh scale "
                            f"({r['x largest ratio mesh scale']:.1f}x the largest ratio scale)",
                            "baseline": "mesh scale above", "verdict":
                            mesh_verdict(r["x own-feature mesh scale"]) + ("; not separable from mesh until lobe_v1m"
                                                                           if r.effect.startswith("localisation") else "")})
-    for cl in claims:
-        if "front-back" in cl["claim"] or "ASYMMETRY" in cl["claim"]:
-            cl["verdict"] += "; not separable from mesh (lobe_v1 mesh-unmatched)"
 
     # ---------------------------------------------------------------- 3.4 (d) predictions
     fl_fb = max(floor_fb, index_floor(FB_PATHS, sig_path))
