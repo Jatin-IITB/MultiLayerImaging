@@ -513,6 +513,18 @@ Findings:
   - Front-back neighbour index of Moderate against the healthy head: −0.21 dB (2.6x floor) → −0.14 dB (1.8x).
   - Asymmetry cross-ratios: unchanged (same stage files).
 
+**Feature roles (user note, 2026-10-04).**
+- **R31 is a detection feature only.** It separates Normal from AD but is not monotonic across the AD stages:
+  - lobe_A: Moderate −16.01 dB, Severe −15.53 dB;
+  - uniform v2: Moderate −16.17 dB, Severe −15.85 dB.
+
+  In both uniform solves Severe also lies above Mild.
+- **R21 is the staging feature** (the three-class rule). It is monotonic across the four lobe stages in lobe_A:
+  −20.57, −19.97, −19.45, −18.00 dB.
+- **R32** is used by the merged rule (Normal / Mild+Moderate / Severe) and is also monotonic in the lobe set.
+- **Mild and Moderate overlap** on both R21 and R32 in the uniform solves (audit: not separable). That is why the frozen
+  staging rules leave Moderate out or merge it with Mild.
+
 ### 5.5 Claims (lobe_A primary; full table `results/05_lobe/mesh/claims.csv`)
 | claim | verdict |
 |---|---|
@@ -521,6 +533,7 @@ Findings:
 | Frozen detection (R31), stop-rule matched: Healthy_sliced_new, Mild, Moderate correct with margins 3.9–5.4x yardstick | holds |
 | Frozen detection on Severe_lobe | holds on this mesh (100%), but its margin −0.26 dB is 1.9x the yardstick: one more pass could bring it to the threshold |
 | Frozen merged staging (three_merged, R32) labels all lobe_A designs correctly | holds |
+| R31 orders the AD stages | retracted: R31 is a detection feature only (Severe above Moderate in the lobe and uniform sets); staging uses R21 (and R32 for the merged rule) |
 | Frozen three-class (R21) labels lobe-Mild as Mild | retracted (0.41 in lobe_A, 0.69 in lobe_B); which value you get is decided by the mesh |
 | Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x); measured with ±0.5 dB gain: not detectable (0.3x) |
 | Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh (best 2.3x the clean ruler) |
