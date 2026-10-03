@@ -240,8 +240,9 @@ def main():
           md(cmp, ".3f"), "",
           f"Across all 89 ring-symmetrised features: {100 * frac[1]:.0f}% within 1x, {100 * frac[2]:.0f}% within 2x, "
           f"{100 * frac[3]:.0f}% within 3x the v2 solve-to-solve SD; largest: {', '.join(worst)}. "
-          f"The resonance moved by {res_v2:+.1f} MHz (3640 -> 3659 MHz) and the notch is shallower (-21 vs -34…-39 dB). "
-          f"Verdict on the classifier features above: **{verdict}**. Caveat: the v2 skull inner radius (hidden tool "
+          + (f"The resonance moved by {res_v2:+.1f} MHz (3640 -> 3659 MHz) and the notch is shallower (-21 vs -34…-39 dB). "
+             if name["Normal"] == "Healthy_sliced" else "")
+          + f"Verdict on the classifier features above: **{verdict}**. Caveat: the v2 skull inner radius (hidden tool "
           "Brain_sphere_1) is unknown, so a small geometry difference cannot be excluded.", ""]
     claims.append({"claim": "Healthy_sliced reproduces the v2 healthy head on the classifier features",
                    "number": "; ".join(f"{r.feature} {r['difference dB']:+.2f} dB ({r['/ v2 solve SD']:+.1f} SD)"
