@@ -262,7 +262,7 @@ Amplitude change per path class (dB, largest path of the class, 3.2–4.2 GHz, 2
 | Mild 6 - 5 passes | median | 0.085 | 0.112 | 0.186 | 0.102 |
 | Mild 6 - 5 passes | worst | 0.978 | 0.445 | 5.676 | 9.458 |
 
-Which class moves most depends on the statistic: band: second-neighbour; median: second-neighbour; worst: opposite. The opposite paths dominate only at single frequencies (notches). These numbers are not the 0.16–0.30 dB (opposite) / ≤ 0.05 dB (others) quoted for this check; that was presumably a different statistic (e.g. band-averaged ratio features), and I could not reproduce it from per-path amplitudes. The inversion uses complex S at 3.4, 3.6, 3.8 GHz, so the table above is what it sees. This yardstick replaces §5b (v2 Normal − Healthy_sliced), which compared different projects as well as meshes.
+Which class moves most depends on the statistic: band: second-neighbour; median: second-neighbour; worst: opposite. The opposite paths dominate only at single frequencies (notches). The 0.16–0.30 dB (opposite) / ≤ 0.05 dB (others) quoted for this check is the ring-mean change computed without glitch masking; `docs/01_claims_register.md` §L traces its 0.30 dB end (Mild 5→6) to one non-reciprocal sample on T2–T5 at 3.855 GHz in `Mild_lobe_new` (−34 dB against ≈ −70 dB at the neighbouring samples). Here that sample is glitch-masked (−30 dB rule; it becomes −58 dB) and 3.855 GHz is not one of the fit frequencies, so it does not enter any inversion below. The inversion uses complex S at 3.4, 3.6, 3.8 GHz, so the table above is what it sees. This yardstick replaces §5b (v2 Normal − Healthy_sliced), which compared different projects as well as meshes.
 
 ### lobe_A, all 21 paths
 
