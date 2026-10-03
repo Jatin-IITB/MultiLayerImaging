@@ -4,7 +4,7 @@ Regenerate: `python imaging/run_lobe.py` (blind stage: `python imaging/run_lobe.
 
 ## 0. Data, background, scope
 
-- Designs (project `new_with_slices`, one solve each, 3.2–4.2 GHz, 201 points, glitch masking ON): `Healthy_sliced`, `Mild_lobe`, `Moderate_lobe`, `Severe_lobe`. Every difference is dS = S(stage) − S(Healthy_sliced) (same project, setup and mesh recipe). LeftOnly_test and MCI_lobe are the blind set (§6).
+- Designs (project `new_with_slices`, one solve each, 3.2–4.2 GHz, 201 points, glitch masking ON): `Healthy_sliced`, `Mild_lobe`, `Moderate_lobe`, `Severe_lobe`. Every difference is dS = S(stage) − S(Healthy_sliced) (same project and setup; meshes NOT matched, see §5b). LeftOnly_test and MCI_lobe are the blind set (§6).
 - **Background fields.** The Born kernels use the HFSS field exports of the *unsliced* v2 Normal design (`data/fields`, 3.4/3.6/3.8 GHz). At e = 0 the sliced head is the same head geometrically, except that its skull inner surface was set explicitly to 83.5 mm and its mesh differs; the kernels are therefore an approximation of the sliced background.
 - **One simulation per design and one head.** Everything below is within-simulation capability under the stated noise, not generalisation to other heads or setups.
 - **Calibration.** κ(f) is fitted on Mild only and frozen: |κ| = 3.29, 3.60, 6.38 at 3.4/3.6/3.8 GHz. With κ the linear model reproduces Mild 0.81, Moderate 0.86, Severe 0.93 (shape correlation with HFSS dS) but with relative errors 0.59, 0.56, 0.61; the absolute Born prediction is 0.23, 0.29, 0.35 of the HFSS dS size. The AD changes are far from Born-small.
@@ -214,6 +214,35 @@ Frozen rules (per method):
 
 Figure: `figures/lobe_null_lr.png` (null distribution of the left−right contrast, the mirror-symmetric designs, the threshold and the pre-registered LeftOnly prediction).
 
+## 5b. Mesh yardstick (added after the freeze; frozen pipeline unchanged)
+
+The designs were **not** solved on matched meshes (results/STATUS.md §7 (HFSS solution dialogs): Healthy_sliced 1,349,491 elements, Mild 739,774, Moderate 796,281, Severe 690,077): the healthy reference has ~1.8× the elements of every stage, so each dS = S(stage) − S(Healthy_sliced) also contains a mesh difference. To size it, the difference between two healthy heads solved with different meshes (v2 Normal `new_Healthy.s6p` − Healthy_sliced) and its 12 ring-symmetry images were passed through the frozen inversions and rules as if they were a stage.
+
+Size of the mesh difference at the fit frequencies: 0.511 (Frobenius norm over 21 pairs × 3 frequencies) vs Mild 0.174, Moderate 0.185, Severe 0.243 for the stage differences (293% of Mild).
+
+Recovered values for the unrotated mesh difference:
+
+| method | dε'' S1 Fr | dε'' S2 TL | dε'' S3 PL | dε'' S4 Oc | dε'' S5 PR | dε'' S6 TR | called | LR | side | FB | frontback |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | 25.5 | 28.9 | 24.5 | 24.6 | 20.4 | 35.4 | S1 S2 S3 S4 S5 S6 | -1.2 | none | +0.9 | none |
+| bounded dS | 25.5 | 28.9 | 24.5 | 24.6 | 20.4 | 35.4 | S1 S2 S3 S4 S5 S6 | -1.2 | none | +0.9 | none |
+| tikhonov log (gain-inv.) | 17.5 | 16.7 | 14.8 | 15.5 | 15.8 | 24.2 | S1 S2 S3 S4 S5 S6 | -4.2 | right | +2.0 | none |
+| bounded log (gain-inv.) | 17.5 | 16.7 | 14.8 | 15.5 | 15.8 | 24.2 | S1 S2 S3 S4 S5 S6 | -4.2 | right | +2.0 | none |
+
+Over all 12 symmetry images (largest values, and how many of the 12 trigger a call):
+
+| method | max_sector | T_abs | n_sector_calls | max_abs_LR | T_LR | n_side_calls | max_abs_FB | T_FB | n_fb_calls |
+|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | 36.3 | 13.8 | 72 | 6.7 | 4.1 | 4 | 9.4 | 6.4 | 6 |
+| bounded dS | 36.3 | 13.8 | 72 | 6.7 | 3.9 | 4 | 9.4 | 3.8 | 6 |
+| tikhonov log (gain-inv.) | 24.9 | 13.3 | 64 | 6.7 | 3.9 | 6 | 8.2 | 7.8 | 2 |
+| bounded log (gain-inv.) | 24.9 | 13.3 | 64 | 6.7 | 3.9 | 6 | 8.2 | 4.5 | 4 |
+
+- **Absolute level.** The mesh difference alone lifts every sector to dε'' ≈ 15–35, above the frozen T_abs, and its norm is 2.9× Mild's dS. The upward offset of the healthy sectors in §3 (6–11 instead of 0.3) is therefore consistent with a mesh contribution as well as Born error, and absolute 'affected' calls are not mesh-robust.
+- **Contrasts.** Unrotated, the mesh difference gives LR -1.2 / FB +0.9 (primary) and LR -4.2 / FB +2.0 (gain-invariant). Under the 12 ring symmetries |LR| reaches 6.7 and |FB| 9.4; a mesh difference alone triggers a side call in 4 and a front/back call in 6 of 12 images (primary).
+- Moderate's front/back contrast (primary +10.1) is 1.1× the largest |FB| a mesh difference between two fine healthy meshes produces (9.4); the left/right threshold T_LR = 4.1 compares with a largest mesh |LR| of 6.7. The pre-registered LeftOnly contrast (+14.7) would be 2.2× the largest mesh |LR|; a left call near the threshold would not be distinguishable from mesh.
+- Caveat: this yardstick compares two fine meshes; the disease stages are on coarser meshes (~0.7–0.8 M elements), whose error is probably larger. It also includes any other difference between the two projects (e.g. the internal wedge faces of the sliced head). Mesh-matched re-solves are needed before the front/back and left/right results can be called mesh-independent.
+
 ## 6. Blind test (pre-registered, §4 of the brief)
 
 Pipeline frozen in `results/imaging/lobe_frozen.json` and predictions written to `results/imaging/lobe_predictions.md` before LeftOnly_test or MCI_lobe were opened. Outcome: **pending** (the two designs are still solving). Run `python imaging/run_lobe.py --blind` when they arrive; this section will then be replaced by the scored outcome.
@@ -222,10 +251,10 @@ Pipeline frozen in `results/imaging/lobe_frozen.json` and predictions written to
 
 Within these simulations (one head, one solve per design, typical noise, Born kernels on the v2 Normal fields):
 
-- **Which lobes (pattern):** yes, as a ranking. The recovered sector conductivity correlates 0.90–0.95 with the truth and the affected lobes are always the most changed. Absolute 'affected' calls need a threshold calibrated on a known stage (Mild), because healthy lobes are biased upward by model error and leakage.
-- **Front/back:** yes for Moderate (frontal 17.7 vs occipital 7.5, contrast +10.1 > 6.4).
-- **Left/right:** not testable on the available designs (all mirror-symmetric; they give |LR| ≤ 3.9). The frozen pipeline predicts LR = +14.7 ± 2.2 for LeftOnly_test (left in 100% of noisy draws); the blind test decides.
-- **Depth:** only coarsely. Under-skull gap and deeper cortex are separable in principle, but the deeper region's CRLB is 2–3× larger; the core (hippocampus) is not determined at all.
+- **Which lobes (pattern):** yes, as a ranking. The recovered sector conductivity correlates 0.90–0.95 with the truth and the affected lobes are always the most changed. Absolute 'affected' calls need a threshold calibrated on a known stage (Mild), because healthy lobes are biased upward by model error, leakage and the unmatched meshes (a mesh difference alone lifts every sector above the threshold, §5b).
+- **Front/back:** Moderate's frontal lobe is recovered above its occipital lobe (frontal 17.7 vs occipital 7.5, contrast +10.1 > frozen 6.4), but a mesh difference alone gives |FB| up to 9.4 (§5b). **Not separable from mesh** until the designs are re-solved on matched meshes.
+- **Left/right:** not testable on the available designs (all mirror-symmetric; they give |LR| ≤ 3.9). The frozen pipeline predicts LR = +14.7 ± 2.2 for LeftOnly_test (left in 100% of noisy draws); the blind test decides. Mesh yardstick: a mesh difference alone gives |LR| up to 6.7 (threshold 4.1), so only a left/right contrast well above 6.7 can be attributed to the lobes.
+- **Depth:** no, beyond the outermost cortex. The under-skull gap (76–83.5 mm) is determined where it changes; the deeper cortex (60–76 mm) has a 2–3× larger CRLB and is not determined in any sector at any stage (§2); the core (hippocampus) is not determined at all.
 - **Radar imaging:** no — it still peaks at the centre and its energy direction does not track the lobes.
-- **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at the ring height); everything is within one simulated head.
+- **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at the ring height); everything is within one simulated head; the healthy reference and the stages are on different meshes (§5b).
 
