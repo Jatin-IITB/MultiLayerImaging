@@ -216,6 +216,8 @@ Figure: `figures/lobe_null_lr.png` (null distribution of the left−right contra
 
 ## 5b. Mesh yardstick (added after the freeze; frozen pipeline unchanged)
 
+*Superseded by §5c (4 Oct): this compared two different projects as well as meshes; the mesh-matched set and the one-extra-pass yardstick are in §5c.*
+
 The designs were **not** solved on matched meshes (results/STATUS.md §7 (HFSS solution dialogs): Healthy_sliced 1,349,491 elements, Mild 739,774, Moderate 796,281, Severe 690,077): the healthy reference has ~1.8× the elements of every stage, so each dS = S(stage) − S(Healthy_sliced) also contains a mesh difference. To size it, the difference between two healthy heads solved with different meshes (v2 Normal `new_Healthy.s6p` − Healthy_sliced) and its 12 ring-symmetry images were passed through the frozen inversions and rules as if they were a stage.
 
 Size of the mesh difference at the fit frequencies: 0.511 (Frobenius norm over 21 pairs × 3 frequencies) vs Mild 0.174, Moderate 0.185, Severe 0.243 for the stage differences (293% of Mild).
@@ -243,6 +245,187 @@ Over all 12 symmetry images (largest values, and how many of the 12 trigger a ca
 - Moderate's front/back contrast (primary +10.1) is 1.1× the largest |FB| a mesh difference between two fine healthy meshes produces (9.4); the left/right threshold T_LR = 4.1 compares with a largest mesh |LR| of 6.7. The pre-registered LeftOnly contrast (+14.7) would be 2.2× the largest mesh |LR|; a left call near the threshold would not be distinguishable from mesh.
 - Caveat: this yardstick compares two fine meshes; the disease stages are on coarser meshes (~0.7–0.8 M elements), whose error is probably larger. It also includes any other difference between the two projects (e.g. the internal wedge faces of the sliced head). Mesh-matched re-solves are needed before the front/back and left/right results can be called mesh-independent.
 
+## 5c. Mesh-matched set lobe_A (4 Oct): frozen pipeline, one-extra-pass yardstick, opposite paths
+
+**Data.** lobe_A = `Healthy_sliced_new` (6 adaptive passes, same stop rule as the stages; the stages converged in 5 passes, results/STATUS.md §7) as the reference, with `Mild_lobe`, `Moderate_lobe`, `Severe_lobe` (the `_new` Moderate and Severe files are identical to the old ones: max |ΔS| 9e-09, 4e-09). Frozen κ, λ and thresholds from `lobe_frozen.json` (code `fb5b775`) are applied unchanged; only the reference (its noise weights and the log-ratio reference) is now Healthy_sliced_new. The pre-registered predictions are unchanged.
+
+**Mesh yardstick = one extra adaptive pass.** Two pass-to-pass differences, each passed through the pipeline as if it were a stage: Healthy 7 − 6 passes (`Healthy_sliced` − `Healthy_sliced_new`) and Mild 6 − 5 passes (`Mild_lobe_new` − `Mild_lobe`). The sign of a mesh error is not known, so each difference is passed with both signs (+ and −); for the linear Tikhonov fits the two give the same |dε''|, for the bounded fits only one sign survives the bound dε'' ≥ 0.
+
+Amplitude change per path class (dB, largest path of the class, 3.2–4.2 GHz, 201 points, glitch-masked): band = band-mean power ratio; median = median over frequency; worst = worst single frequency (set by spectral notches, where |S| is small):
+
+| difference | statistic | reflection | neighbour | second-neighbour | opposite |
+|---|---|---|---|---|---|
+| Healthy 7 - 6 passes | band | 0.019 | 0.081 | 0.174 | 0.126 |
+| Healthy 7 - 6 passes | median | 0.044 | 0.095 | 0.156 | 0.046 |
+| Healthy 7 - 6 passes | worst | 0.961 | 0.422 | 2.484 | 4.548 |
+| Mild 6 - 5 passes | band | 0.039 | 0.048 | 0.258 | 0.146 |
+| Mild 6 - 5 passes | median | 0.085 | 0.112 | 0.186 | 0.102 |
+| Mild 6 - 5 passes | worst | 0.978 | 0.445 | 5.676 | 9.458 |
+
+Which class moves most depends on the statistic: band: second-neighbour; median: second-neighbour; worst: opposite. The opposite paths dominate only at single frequencies (notches). These numbers are not the 0.16–0.30 dB (opposite) / ≤ 0.05 dB (others) quoted for this check; that was presumably a different statistic (e.g. band-averaged ratio features), and I could not reproduce it from per-path amplitudes. The inversion uses complex S at 3.4, 3.6, 3.8 GHz, so the table above is what it sees. This yardstick replaces §5b (v2 Normal − Healthy_sliced), which compared different projects as well as meshes.
+
+### lobe_A, all 21 paths
+
+Recovered dε'' per sector (* = exceeds the one-extra-pass yardstick of that sector and method, i.e. the larger of the two pass differences' |dε''| in that sector), calls by the frozen rules:
+
+| method | stage | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR | called | correct | corr_truth | LR | side | FB | frontback |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | Mild_lobe | 9.2* | 18.2* | 14.9* | 5.4* | 13.8* | 18.6* | S2 S3 S6 | 5 | 0.91 | +0.3 | none | +3.9 | none |
+| tikhonov dS | Moderate_lobe | 15.5* | 13.1* | 13.9* | 5.3* | 16.2* | 17.9* | S1 S3 S5 S6 | 5 | 0.92 | -3.5 | none | +10.2 | front |
+| tikhonov dS | Severe_lobe | 18.4* | 15.5* | 17.1* | 14.6* | 15.3* | 18.1* | S1 S2 S3 S4 S5 S6 | 6 | 0.55 | -0.4 | none | +3.8 | none |
+| bounded dS | Mild_lobe | 9.2* | 18.2* | 14.9* | 5.4* | 13.8* | 18.6* | S2 S3 S6 | 5 | 0.91 | +0.3 | none | +3.9 | front |
+| bounded dS | Moderate_lobe | 15.5* | 13.1* | 13.9* | 5.3* | 16.2* | 17.9* | S1 S3 S5 S6 | 5 | 0.92 | -3.5 | none | +10.2 | front |
+| bounded dS | Severe_lobe | 18.4* | 15.5* | 17.1* | 14.6* | 15.3* | 18.1* | S1 S2 S3 S4 S5 S6 | 6 | 0.55 | -0.4 | none | +3.8 | front |
+| tikhonov log (gain-inv.) | Mild_lobe | 8.6* | 16.1* | 14.3* | 4.7* | 15.1* | 15.8* | S2 S3 S5 S6 | 6 | 0.96 | -0.3 | none | +3.9 | none |
+| tikhonov log (gain-inv.) | Moderate_lobe | 15.4* | 14.7* | 13.8* | 5.0* | 15.7* | 19.9* | S1 S2 S3 S5 S6 | 6 | 0.91 | -3.6 | none | +10.4 | front |
+| tikhonov log (gain-inv.) | Severe_lobe | 20.6* | 16.7* | 19.7* | 16.4* | 17.8* | 19.6* | S1 S2 S3 S4 S5 S6 | 6 | 0.56 | -0.5 | none | +4.1 | none |
+| bounded log (gain-inv.) | Mild_lobe | 8.6* | 16.1* | 14.3* | 4.7* | 15.1* | 15.8* | S2 S3 S5 S6 | 6 | 0.96 | -0.3 | none | +3.9 | none |
+| bounded log (gain-inv.) | Moderate_lobe | 15.4* | 14.7* | 13.8* | 5.0* | 15.7* | 19.9* | S1 S2 S3 S5 S6 | 6 | 0.91 | -3.6 | none | +10.4 | front |
+| bounded log (gain-inv.) | Severe_lobe | 20.6* | 16.7* | 19.7* | 16.4* | 17.8* | 19.6* | S1 S2 S3 S4 S5 S6 | 6 | 0.56 | -0.5 | none | +4.1 | none |
+
+The yardstick itself (each pass difference, both signs, through the same pipeline):
+
+| method | difference | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR | called | LR | FB |
+|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | +(Healthy 7 - 6 passes) | -2.2 | -2.0 | -2.7 | -2.2 | -2.4 | -3.0 | none | +0.3 | +0.0 |
+| tikhonov dS | -(Healthy 7 - 6 passes) | 2.2 | 2.0 | 2.7 | 2.2 | 2.4 | 3.0 | none | -0.3 | -0.0 |
+| tikhonov dS | +(Mild 6 - 5 passes) | -3.1 | -4.2 | -2.4 | -2.4 | -2.5 | -5.2 | none | +0.5 | -0.7 |
+| tikhonov dS | -(Mild 6 - 5 passes) | 3.1 | 4.2 | 2.4 | 2.4 | 2.5 | 5.2 | none | -0.5 | +0.7 |
+| bounded dS | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Healthy 7 - 6 passes) | 2.2 | 2.0 | 2.7 | 2.2 | 2.4 | 3.0 | none | -0.3 | -0.0 |
+| bounded dS | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Mild 6 - 5 passes) | 3.1 | 4.2 | 2.4 | 2.4 | 2.5 | 5.2 | none | -0.5 | +0.7 |
+| tikhonov log (gain-inv.) | +(Healthy 7 - 6 passes) | -1.7 | -1.2 | -2.0 | -1.5 | -1.7 | -2.1 | none | +0.3 | -0.2 |
+| tikhonov log (gain-inv.) | -(Healthy 7 - 6 passes) | 1.7 | 1.2 | 1.9 | 1.4 | 1.6 | 2.0 | none | -0.3 | +0.2 |
+| tikhonov log (gain-inv.) | +(Mild 6 - 5 passes) | -2.5 | -2.8 | -1.0 | -1.9 | -1.5 | -3.6 | none | +0.7 | -0.6 |
+| tikhonov log (gain-inv.) | -(Mild 6 - 5 passes) | 2.4 | 2.9 | 1.1 | 1.6 | 1.6 | 3.4 | none | -0.5 | +0.8 |
+| bounded log (gain-inv.) | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Healthy 7 - 6 passes) | 1.7 | 1.2 | 1.9 | 1.4 | 1.6 | 2.0 | none | -0.3 | +0.2 |
+| bounded log (gain-inv.) | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Mild 6 - 5 passes) | 2.4 | 2.9 | 1.1 | 1.6 | 1.6 | 3.4 | none | -0.5 | +0.8 |
+
+Against the yardstick (sectors over the larger / over the sum of the two pass differences; contrasts vs the larger pass-difference |LR|, |FB|):
+
+| method | stage | n_sectors_over_yard | n_sectors_over_sum | n_healthy_over_yard | LR | yard_LR | LR_exceeds | FB | yard_FB | FB_exceeds |
+|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | Mild_lobe | 6 | 4 | 2 | +0.3 | 0.5 | False | +3.9 | 0.7 | True |
+| tikhonov dS | Moderate_lobe | 6 | 5 | 1 | -3.5 | 0.5 | True | +10.2 | 0.7 | True |
+| tikhonov dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.5 | False | +3.8 | 0.7 | True |
+| bounded dS | Mild_lobe | 6 | 6 | 2 | +0.3 | 0.5 | False | +3.9 | 0.7 | True |
+| bounded dS | Moderate_lobe | 6 | 6 | 1 | -3.5 | 0.5 | True | +10.2 | 0.7 | True |
+| bounded dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.5 | False | +3.8 | 0.7 | True |
+| tikhonov log (gain-inv.) | Mild_lobe | 6 | 5 | 2 | -0.3 | 0.7 | False | +3.9 | 0.8 | True |
+| tikhonov log (gain-inv.) | Moderate_lobe | 6 | 5 | 1 | -3.6 | 0.7 | True | +10.4 | 0.8 | True |
+| tikhonov log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.5 | 0.7 | False | +4.1 | 0.8 | True |
+| bounded log (gain-inv.) | Mild_lobe | 6 | 6 | 2 | -0.3 | 0.5 | False | +3.9 | 0.8 | True |
+| bounded log (gain-inv.) | Moderate_lobe | 6 | 6 | 1 | -3.6 | 0.5 | True | +10.4 | 0.8 | True |
+| bounded log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.5 | 0.5 | True | +4.1 | 0.8 | True |
+
+### lobe_A, without opposite paths
+
+Recovered dε'' per sector (* = exceeds the one-extra-pass yardstick of that sector and method, i.e. the larger of the two pass differences' |dε''| in that sector), calls by the frozen rules:
+
+| method | stage | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR | called | correct | corr_truth | LR | side | FB | frontback |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | Mild_lobe | 10.5* | 19.9* | 16.7* | 6.8* | 15.5* | 20.6* | S2 S3 S5 S6 | 6 | 0.92 | +0.3 | none | +3.7 | none |
+| tikhonov dS | Moderate_lobe | 16.4* | 15.1* | 15.4* | 6.6* | 18.0* | 19.6* | S1 S2 S3 S5 S6 | 6 | 0.93 | -3.5 | none | +9.9 | front |
+| tikhonov dS | Severe_lobe | 20.6* | 17.9* | 19.2* | 17.1* | 17.2* | 20.6* | S1 S2 S3 S4 S5 S6 | 6 | 0.49 | -0.4 | none | +3.5 | none |
+| bounded dS | Mild_lobe | 10.5* | 19.9* | 16.7* | 6.8* | 15.5* | 20.6* | S2 S3 S5 S6 | 6 | 0.92 | +0.3 | none | +3.7 | none |
+| bounded dS | Moderate_lobe | 16.4* | 15.1* | 15.4* | 6.6* | 18.0* | 19.6* | S1 S2 S3 S5 S6 | 6 | 0.93 | -3.5 | none | +9.9 | front |
+| bounded dS | Severe_lobe | 20.6* | 17.9* | 19.2* | 17.1* | 17.2* | 20.6* | S1 S2 S3 S4 S5 S6 | 6 | 0.49 | -0.4 | none | +3.5 | none |
+| tikhonov log (gain-inv.) | Mild_lobe | 10.5* | 18.6* | 16.5* | 7.2* | 17.1* | 18.7* | S2 S3 S5 S6 | 6 | 0.96 | -0.4 | none | +3.3 | none |
+| tikhonov log (gain-inv.) | Moderate_lobe | 16.0* | 17.8* | 15.9* | 6.2* | 18.2* | 22.7* | S1 S2 S3 S5 S6 | 6 | 0.89 | -3.6 | none | +9.8 | front |
+| tikhonov log (gain-inv.) | Severe_lobe | 24.2* | 22.1* | 23.9* | 21.0* | 22.5* | 25.2* | S1 S2 S3 S4 S5 S6 | 6 | 0.67 | -0.8 | none | +3.2 | none |
+| bounded log (gain-inv.) | Mild_lobe | 10.5* | 18.6* | 16.5* | 7.2* | 17.1* | 18.7* | S2 S3 S5 S6 | 6 | 0.96 | -0.4 | none | +3.3 | none |
+| bounded log (gain-inv.) | Moderate_lobe | 16.0* | 17.8* | 15.9* | 6.2* | 18.2* | 22.7* | S1 S2 S3 S5 S6 | 6 | 0.89 | -3.6 | none | +9.8 | front |
+| bounded log (gain-inv.) | Severe_lobe | 24.2* | 22.1* | 23.9* | 21.0* | 22.5* | 25.2* | S1 S2 S3 S4 S5 S6 | 6 | 0.67 | -0.8 | none | +3.2 | none |
+
+The yardstick itself (each pass difference, both signs, through the same pipeline):
+
+| method | difference | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR | called | LR | FB |
+|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | +(Healthy 7 - 6 passes) | -2.5 | -2.1 | -3.1 | -2.4 | -2.7 | -3.2 | none | +0.4 | -0.1 |
+| tikhonov dS | -(Healthy 7 - 6 passes) | 2.5 | 2.1 | 3.1 | 2.4 | 2.7 | 3.2 | none | -0.4 | +0.1 |
+| tikhonov dS | +(Mild 6 - 5 passes) | -3.6 | -4.5 | -3.2 | -2.7 | -3.3 | -5.8 | none | +0.6 | -0.9 |
+| tikhonov dS | -(Mild 6 - 5 passes) | 3.6 | 4.5 | 3.2 | 2.7 | 3.3 | 5.8 | none | -0.6 | +0.9 |
+| bounded dS | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Healthy 7 - 6 passes) | 2.5 | 2.1 | 3.1 | 2.4 | 2.7 | 3.2 | none | -0.4 | +0.1 |
+| bounded dS | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Mild 6 - 5 passes) | 3.6 | 4.5 | 3.2 | 2.7 | 3.3 | 5.8 | none | -0.6 | +0.9 |
+| tikhonov log (gain-inv.) | +(Healthy 7 - 6 passes) | -2.1 | -1.6 | -2.6 | -2.0 | -2.1 | -2.7 | none | +0.3 | -0.1 |
+| tikhonov log (gain-inv.) | -(Healthy 7 - 6 passes) | 2.1 | 1.5 | 2.5 | 1.9 | 2.0 | 2.7 | none | -0.3 | +0.2 |
+| tikhonov log (gain-inv.) | +(Mild 6 - 5 passes) | -3.5 | -3.9 | -2.4 | -3.0 | -2.7 | -5.1 | none | +0.8 | -0.5 |
+| tikhonov log (gain-inv.) | -(Mild 6 - 5 passes) | 3.5 | 4.0 | 2.6 | 2.7 | 2.9 | 4.9 | none | -0.6 | +0.8 |
+| bounded log (gain-inv.) | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Healthy 7 - 6 passes) | 2.1 | 1.5 | 2.5 | 1.9 | 2.0 | 2.7 | none | -0.3 | +0.2 |
+| bounded log (gain-inv.) | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Mild 6 - 5 passes) | 3.5 | 4.0 | 2.6 | 2.7 | 2.9 | 4.9 | none | -0.6 | +0.8 |
+
+Against the yardstick (sectors over the larger / over the sum of the two pass differences; contrasts vs the larger pass-difference |LR|, |FB|):
+
+| method | stage | n_sectors_over_yard | n_sectors_over_sum | n_healthy_over_yard | LR | yard_LR | LR_exceeds | FB | yard_FB | FB_exceeds |
+|---|---|---|---|---|---|---|---|---|---|---|
+| tikhonov dS | Mild_lobe | 6 | 4 | 2 | +0.3 | 0.6 | False | +3.7 | 0.9 | True |
+| tikhonov dS | Moderate_lobe | 6 | 5 | 1 | -3.5 | 0.6 | True | +9.9 | 0.9 | True |
+| tikhonov dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.6 | False | +3.5 | 0.9 | True |
+| bounded dS | Mild_lobe | 6 | 6 | 2 | +0.3 | 0.6 | False | +3.7 | 0.9 | True |
+| bounded dS | Moderate_lobe | 6 | 6 | 1 | -3.5 | 0.6 | True | +9.9 | 0.9 | True |
+| bounded dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.6 | False | +3.5 | 0.9 | True |
+| tikhonov log (gain-inv.) | Mild_lobe | 6 | 4 | 2 | -0.4 | 0.8 | False | +3.3 | 0.8 | True |
+| tikhonov log (gain-inv.) | Moderate_lobe | 6 | 5 | 1 | -3.6 | 0.8 | True | +9.8 | 0.8 | True |
+| tikhonov log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.8 | 0.8 | False | +3.2 | 0.8 | True |
+| bounded log (gain-inv.) | Mild_lobe | 6 | 6 | 2 | -0.4 | 0.6 | False | +3.3 | 0.8 | True |
+| bounded log (gain-inv.) | Moderate_lobe | 6 | 6 | 1 | -3.6 | 0.6 | True | +9.8 | 0.8 | True |
+| bounded log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.8 | 0.6 | True | +3.2 | 0.8 | True |
+
+Change of the recovered dε'' when the 7-pass reference (§3) is replaced by the 6-pass reference (lobe_A − §3, all paths). For the linear fits it equals minus the Healthy 7 − 6 yardstick row above:
+
+| method | stage | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR |
+|---|---|---|---|---|---|---|---|
+| tikhonov dS | Mild_lobe | -2.2 | -2.0 | -2.7 | -2.2 | -2.5 | -3.0 |
+| tikhonov dS | Moderate_lobe | -2.2 | -2.0 | -2.7 | -2.2 | -2.4 | -3.0 |
+| tikhonov dS | Severe_lobe | -2.2 | -2.0 | -2.7 | -2.2 | -2.5 | -2.9 |
+| bounded dS | Mild_lobe | -2.2 | -2.0 | -2.7 | -2.2 | -2.5 | -3.0 |
+| bounded dS | Moderate_lobe | -2.2 | -2.0 | -2.7 | -2.2 | -2.4 | -3.0 |
+| bounded dS | Severe_lobe | -2.2 | -2.0 | -2.7 | -2.2 | -2.5 | -2.9 |
+| tikhonov log (gain-inv.) | Mild_lobe | -1.8 | -0.9 | -1.9 | -1.2 | -1.8 | -1.8 |
+| tikhonov log (gain-inv.) | Moderate_lobe | -1.7 | -1.3 | -1.9 | -1.3 | -1.7 | -2.2 |
+| tikhonov log (gain-inv.) | Severe_lobe | -2.0 | -1.4 | -2.2 | -1.6 | -1.9 | -2.6 |
+| bounded log (gain-inv.) | Mild_lobe | -1.8 | -0.9 | -1.9 | -1.2 | -1.8 | -1.8 |
+| bounded log (gain-inv.) | Moderate_lobe | -1.7 | -1.3 | -1.9 | -1.3 | -1.7 | -2.2 |
+| bounded log (gain-inv.) | Severe_lobe | -2.0 | -1.4 | -2.2 | -1.6 | -1.9 | -2.6 |
+
+### Does the reconstruction depend on the opposite paths?
+
+Share of the information (whitened Fisher diagonal) on each sector's dε'' that comes from the 3 opposite paths, and share of the whitened data energy in those paths (all-path model):
+
+| model | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR |
+|---|---|---|---|---|---|---|
+| dS | 9.1% | 9.9% | 10.0% | 10.4% | 10.2% | 9.7% |
+| log | 12.6% | 12.2% | 12.6% | 14.2% | 14.0% | 13.2% |
+
+| model | Mild_lobe | Moderate_lobe | Severe_lobe | Healthy 7 - 6 passes | Mild 6 - 5 passes |
+|---|---|---|---|---|---|
+| dS | 4.5% | 9.1% | 12.4% | 12.5% | 8.6% |
+| log | 11.9% | 20.8% | 25.2% | 11.8% | 5.1% |
+
+Information share per path class (mean over the six sectors' dε''):
+
+| model | reflection | neighbour | second-neighbour | opposite |
+|---|---|---|---|---|
+| dS | 19.4% | 56.5% | 14.2% | 9.9% |
+| log | 25.3% | 45.9% | 15.6% | 13.1% |
+
+(For the gain-invariant model the rows are taken after the gain projection, which mixes paths, so its shares are approximate; the 'without opposite paths' fits rebuild the projection on the 18 kept paths.)
+
+### Reading
+
+- **Absolute sector levels.** A one-pass mesh change shifts every sector by up to 5.2 (dε''), almost uniformly (same sign in all six sectors; table 'yardstick itself'). Every recovered sector value, healthy ones included, exceeds its own sector's yardstick (3 healthy-sector estimates over the yardstick, primary method, all paths). So the upward offset of the healthy sectors (about 5–10 instead of 0.3) is not explained by a one-pass mesh change; Born model error and leakage from neighbouring affected sectors are the likely cause. Per-sector exceedance is therefore not a test of 'affected'; the contrasts below are.
+- **The frozen absolute threshold is sensitive to the reference mesh.** Replacing the 7-pass reference by the 6-pass one lowers every sector by about 2–3 (table above), comparable to the margin of some calls around T_abs = 13.8. Primary method, all paths: Mild S2 S3 S6 (5/6 correct); Moderate S1 S3 S5 S6 (5/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct). Without the opposite paths: Mild S2 S3 S5 S6 (6/6 correct); Moderate S1 S2 S3 S5 S6 (6/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct). Gain-invariant, all paths: Mild S2 S3 S5 S6 (6/6 correct); Moderate S1 S2 S3 S5 S6 (6/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct). Without: Mild S2 S3 S5 S6 (6/6 correct); Moderate S1 S2 S3 S5 S6 (6/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct).
+- **Front/back.** Moderate's FB = S1 − S4 is +10.2 (all paths) and +9.9 (without opposite paths) for the primary method, +10.4 / +9.8 gain-invariant; the one-pass yardstick gives |FB| ≤ 0.9. Front is called for Moderate by every method in both path sets. Mild and Severe (S1 and S4 equal in truth) give FB of about +3 to +4, also well above the yardstick: a systematic front-positive bias of about 4 that is not mesh. The frozen T_FB (Mild's |FB|) absorbs it, except in the bounded-dS fit, whose T_FB = 3.8 lets Mild and Severe through in the all-path version.
+- **Left/right.** The one-pass yardstick gives |LR| ≤ 0.8. The mirror-symmetric designs give |LR| up to 3.6 (Moderate): more than the mesh yardstick, but below the frozen T_LR = 4.1. The pre-registered LeftOnly contrast (+14.7 ± 2.2, Born-simulated) is about 20× the one-pass yardstick.
+- **Opposite paths.** They carry 9%–14% of the information on each sector and 4%–25% of the stage data energy; in the whitened complex data they carry 5%–13% of the pass-difference energy, i.e. not more than their information share, so the pass difference is not concentrated on them as seen by the inversion. Removing them moves the sector estimates by +0.5 to +5.5, raises the yardstick slightly, and changes calls only where a sector sits near T_abs. Pattern, front/back and left/right conclusions are the same with and without them. Both versions are tabulated above and neither is preferred.
+
 ## 6. Blind test (pre-registered, §4 of the brief)
 
 Pipeline frozen in `results/imaging/lobe_frozen.json` and predictions written to `results/imaging/lobe_predictions.md` before LeftOnly_test or MCI_lobe were opened. Outcome: **pending** (the two designs are still solving). Run `python imaging/run_lobe.py --blind` when they arrive; this section will then be replaced by the scored outcome.
@@ -251,10 +434,11 @@ Pipeline frozen in `results/imaging/lobe_frozen.json` and predictions written to
 
 Within these simulations (one head, one solve per design, typical noise, Born kernels on the v2 Normal fields):
 
-- **Which lobes (pattern):** yes, as a ranking. The recovered sector conductivity correlates 0.90–0.95 with the truth and the affected lobes are always the most changed. Absolute 'affected' calls need a threshold calibrated on a known stage (Mild), because healthy lobes are biased upward by model error, leakage and the unmatched meshes (a mesh difference alone lifts every sector above the threshold, §5b).
-- **Front/back:** Moderate's frontal lobe is recovered above its occipital lobe (frontal 17.7 vs occipital 7.5, contrast +10.1 > frozen 6.4), but a mesh difference alone gives |FB| up to 9.4 (§5b). **Not separable from mesh** until the designs are re-solved on matched meshes.
-- **Left/right:** not testable on the available designs (all mirror-symmetric; they give |LR| ≤ 3.9). The frozen pipeline predicts LR = +14.7 ± 2.2 for LeftOnly_test (left in 100% of noisy draws); the blind test decides. Mesh yardstick: a mesh difference alone gives |LR| up to 6.7 (threshold 4.1), so only a left/right contrast well above 6.7 can be attributed to the lobes.
+- **Which lobes (pattern):** yes, as a ranking. On the mesh-matched set lobe_A (§5c) the recovered sector conductivity correlates 0.89–0.96 with the truth for Mild and Moderate (all four methods, with and without the opposite paths) and the affected lobes are the most changed. Absolute 'affected' calls depend on a threshold calibrated on Mild and are fragile: a one-pass change of the reference mesh shifts every sector by about 2–3, enough to move sectors near T_abs = 13.8 across it (primary, all paths: 5/6, 5/6, 6/6 correct for Mild/Moderate/Severe; without opposite paths: 6/6, 6/6, 6/6). Healthy lobes are biased upward by about 5–10, more than a one-pass mesh change; Born model error and leakage are the likely cause.
+- **Front/back:** yes for Moderate on lobe_A: FB = +10.2 (all paths) / +9.9 (without opposite paths), primary method, against a one-pass mesh yardstick of |FB| ≤ 0.9; front is called by every method in both path sets. A front-positive bias of about 4 is present in every stage (also Mild and Severe, where S1 and S4 are equal in truth); it is not mesh, and the frozen T_FB absorbs it except for the bounded-dS fit.
+- **Left/right:** not testable on the available designs (all mirror-symmetric). The frozen pipeline predicts LR = +14.7 ± 2.2 for LeftOnly_test (left in 100% of noisy draws); the blind test decides. One-pass mesh yardstick: |LR| ≤ 0.8; the mirror-symmetric designs give up to 3.6 on lobe_A, below the frozen T_LR = 4.1.
 - **Depth:** no, beyond the outermost cortex. The under-skull gap (76–83.5 mm) is determined where it changes; the deeper cortex (60–76 mm) has a 2–3× larger CRLB and is not determined in any sector at any stage (§2); the core (hippocampus) is not determined at all.
 - **Radar imaging:** no — it still peaks at the centre and its energy direction does not track the lobes.
-- **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at the ring height); everything is within one simulated head; the healthy reference and the stages are on different meshes (§5b).
+- **Opposite paths:** they carry 9%–14% of the information per sector; removing them shifts sector values by +0.5 to +5.5 and flips only near-threshold calls. No conclusion depends on them (both versions in §5c).
+- **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at the ring height); everything is within one simulated head; lobe_A matches the stop rule, not the pass count (reference 6 passes, stages 5), and the yardstick is a single extra pass, so mesh error relative to a converged solution is not bounded by it (§5c).
 
