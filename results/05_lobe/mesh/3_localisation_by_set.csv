@@ -1,0 +1,33 @@
+set,design,statistic,value dB,/ symmetry floor,/ floor+gain noise
+lobe_v1 (unmatched),Healthy_sliced,"front-back, all paths",0.0,0.0,0.0
+lobe_v1 (unmatched),Healthy_sliced,"front-back, neighbour paths",0.0,0.0,0.0
+lobe_v1 (unmatched),Healthy_sliced,"front-back, second-neighbour paths",0.0,0.0,0.0
+lobe_v1 (unmatched),Mild_lobe,"front-back, all paths",0.1412907167266226,1.672482738855067,0.309849658337415
+lobe_v1 (unmatched),Mild_lobe,"front-back, neighbour paths",0.0469398937909595,0.583998583813877,0.0858210181166013
+lobe_v1 (unmatched),Mild_lobe,"front-back, second-neighbour paths",0.2356415396622857,1.5855697218389675,0.4192695472055345
+lobe_v1 (unmatched),Moderate_lobe,"front-back, all paths",0.069326854199792,0.820634006780621,0.146031474082954
+lobe_v1 (unmatched),Moderate_lobe,"front-back, neighbour paths",-0.2110809339323758,-2.6261449809747885,-0.3763917893294343
+lobe_v1 (unmatched),Moderate_lobe,"front-back, second-neighbour paths",0.3497346423319598,2.353272094361928,0.5713805144885687
+lobe_v1 (unmatched),Severe_lobe,"front-back, all paths",0.0739062792535918,0.8748414560299566,0.1722733489632646
+lobe_v1 (unmatched),Severe_lobe,"front-back, neighbour paths",0.054900873998104,0.6830444228915559,0.1070949893292426
+lobe_v1 (unmatched),Severe_lobe,"front-back, second-neighbour paths",0.0929116845090796,0.6251782006423098,0.1654238077247217
+lobe_v1 (unmatched),Moderate - Mild,best asymmetry cross-ratio T1T4·T5T6 / T1T5·T4T6,-0.6933399400265934,,2.257015913034368
+lobe_A (stop rule 1),Healthy_sliced_new,"front-back, all paths",0.0,0.0,0.0
+lobe_A (stop rule 1),Healthy_sliced_new,"front-back, neighbour paths",0.0,0.0,0.0
+lobe_A (stop rule 1),Healthy_sliced_new,"front-back, second-neighbour paths",0.0,0.0,0.0
+lobe_A (stop rule 1),Mild_lobe,"front-back, all paths",0.2107928554960096,2.495191619511532,0.4622674140848202
+lobe_A (stop rule 1),Mild_lobe,"front-back, neighbour paths",0.1149571990543556,1.430229939290651,0.2101782314764782
+lobe_A (stop rule 1),Mild_lobe,"front-back, second-neighbour paths",0.3066285119376637,2.063222320978201,0.5455744243763616
+lobe_A (stop rule 1),Moderate_lobe,"front-back, all paths",0.138828992969179,1.643342887437086,0.2924321710936958
+lobe_A (stop rule 1),Moderate_lobe,"front-back, neighbour paths",-0.1430636286689797,-1.7799136254980146,-0.2551058221105386
+lobe_A (stop rule 1),Moderate_lobe,"front-back, second-neighbour paths",0.4207216146073378,2.830924693501161,0.687355793546547
+lobe_A (stop rule 1),Severe_lobe,"front-back, all paths",0.1434084180229788,1.6975503366864215,0.3342807768413221
+lobe_A (stop rule 1),Severe_lobe,"front-back, neighbour paths",0.1229181792615001,1.52927577836833,0.2397761663472771
+lobe_A (stop rule 1),Severe_lobe,"front-back, second-neighbour paths",0.1638986567844575,1.1028307997815432,0.2918119505583039
+lobe_A (stop rule 1),Moderate - Mild,best asymmetry cross-ratio T1T4·T5T6 / T1T5·T4T6,-0.6933399400265934,,2.253596954315276
+lobe_B (stop rule 2),Healthy_sliced,"front-back, all paths",0.0,0.0,0.0
+lobe_B (stop rule 2),Healthy_sliced,"front-back, neighbour paths",0.0,0.0,0.0
+lobe_B (stop rule 2),Healthy_sliced,"front-back, second-neighbour paths",0.0,0.0,0.0
+lobe_B (stop rule 2),Mild_lobe_new,"front-back, all paths",0.1068359287317406,1.620164274185453,0.2358071840407179
+lobe_B (stop rule 2),Mild_lobe_new,"front-back, neighbour paths",0.0442664363567786,1.5813746407123694,0.0817143025686487
+lobe_B (stop rule 2),Mild_lobe_new,"front-back, second-neighbour paths",0.1694054211067026,1.4261926821964963,0.3051546556185932

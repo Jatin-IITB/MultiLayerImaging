@@ -346,12 +346,15 @@ All five designs (Normal, MCI, Mild, Moderate, Severe) are to be re-solved with 
 - **"Normal ≈ MCI"** stays as stated only if the re-solved MCI-Normal R31/R21/R32 differences stay below 2x the solve SD.
 
 
-## Part 5 — Lobe-sector phantom, set lobe_v1 (2026-10-03)
+## Part 5 — Lobe-sector phantom (2026-10-03, convergence study 2026-10-04)
 
-**Source:** Prompt 07 (`prompts/07_lobe_analysis_prompt.md`); analysis code 7ccec7f; results
-`results/05_lobe/` (report, claims, QC); manifest `data/sims_lobe.csv`; run with
-`python scripts/07_lobe.py --n 300 --write-predictions` (config overlay `config_lobe.yaml`). The v1/v2 results are
-untouched; this is a separate dataset.
+**Sources.**
+- Prompt 07 (`prompts/07_lobe_analysis_prompt.md`) and the user's HFSS checks of 2026-10-03/04.
+- Manifest `data/sims_lobe.csv` (with stop rule, passes, final ΔS and elements, and set membership).
+- Analysis: `scripts/07_lobe.py --config config_lobe{,_A,_B}.yaml` writes `results/05_lobe/`, `results/05_lobe/lobe_A/` and
+  `results/05_lobe/lobe_B/`; `scripts/08_lobe_mesh.py` writes `results/05_lobe/mesh/` (reproduction, one-pass yardstick,
+  set comparison, claims). Results at code 7f5b39b (07 and 08).
+- The v1/v2 results are untouched; this is a separate dataset.
 
 ### 5.1 Supplied facts (from the user; not read from Touchstone headers)
 - HFSS project `new_with_slices`: copies of the v2 Normal design (same 7-layer sphere, same ring, same port map
@@ -366,102 +369,175 @@ untouched; this is a separate dataset.
   17.5; Moderate_lobe 11.5/12.5/15.5/0/15.5/12.5, 12.5; Severe_lobe 15.5/17.5/18/11.5/18/17.5, 7.5. Pending:
   MCI_lobe (no CSF expansion, r_hip 21.25, hippocampus material only; extra `Ventricle_CSF` sphere added to fix a
   meshing failure) and LeftOnly_test (= Mild with S5, S6 reset to healthy).
+- Moderate − Mild is not a pure "frontal lobe added" contrast. Moderate also deepens the temporal and parietal
+  atrophy, and it changes the CSF and hippocampus materials everywhere.
 - Materials (εr / σ S/m, Shehab 2025 Table 5): healthy gray 47.7/2.42, white 35.3/1.65, hippocampus 47.7/2.42,
   CSF 65/4.27; Mild 40.3/5.203, 31.77/2.39, 39.11/5.687, 55.25/4.91; Moderate 39.11/5.687, 31.064/2.722,
   38.39/5.92, 48.75/5.337; Severe 38.39/5.92, 30.35/2.88, 37.2/6.413, 32.5/6.405 (gray, white, hippocampus,
   CSF); MCI hippocampus 40.3/5.203. Unaffected sectors keep healthy materials.
 - Symmetry by construction: Healthy_sliced and MCI_lobe are rotationally symmetric; Mild/Moderate/Severe are mirror-
   symmetric about the Y axis (T2↔T6, T3↔T5); LeftOnly_test breaks left-right symmetry.
-- Sweep: 3.2–4.2 GHz, 5 MHz, 201 points, interpolating. One solve per design, no repeats.
+- Sweep: 3.2–4.2 GHz, 5 MHz, 201 points, interpolating, "Converged". One solve per design and stop rule.
 
-### 5.2 VERIFY items
-| Item | Status |
-|---|---|
-| Setup1 mesh settings and convergence | **SETTLED from the HFSS solution dialogs (user, 2026-10-03): settings are NOT matched** (table below; `data/mesh_lobe.csv`). The Prompt 07 statement "one Setup1, identical mesh settings across stages" is **retracted** |
-| Healthy material values in the HFSS material table equal the values in 5.1 exactly | **VERIFIED in HFSS (user, 2026-10-03):** Gray_Matter_healthy 47.7/2.42, WhiteMatterHealthy 35.3/1.65, Hippocampus_healthy 47.7/2.42, CSF_Healthy 65/4.27; μr 1, dielectric loss tangent 0, constant (no frequency dependence). Per-object assignments checked by script against the stage table, including LeftOnly_test (GM/WM_Mild in S2, S3 only; HIP_Mild; CSF_Mild) and MCI_lobe (HIP_MCI only; CSF healthy) |
-| v2 skull inner radius (`Brain_sphere_1`) vs 83.5 mm here | unknown; a small Normal-geometry difference cannot be excluded |
+### 5.2 VERIFIED items (user, in HFSS, 2026-10-03/04)
+**Materials, VERIFIED in the HFSS material editor.**
+- Gray_Matter_healthy 47.7/2.42, WhiteMatterHealthy 35.3/1.65, Hippocampus_healthy 47.7/2.42, CSF_Healthy 65/4.27.
+- μr 1, dielectric loss tangent 0, no frequency dependence.
+- Per-object assignments, read by script for all six designs, match the stage table:
+  - LeftOnly_test: GM/WM_Mild in S2, S3 only; HIP_Mild; CSF_Mild.
+  - MCI_lobe: HIP_MCI only; CSF_outer and Ventricle_CSF = CSF_Healthy.
 
-**Setup1 (lobe_v1).** Common: adaptive solution at 3.4 GHz, Max ΔS 0.02, max 8 passes, 30% refinement per pass,
-first-order basis, iterative solver; interpolating sweep 3.2–4.2 GHz, 201 points, converged.
+**Setup1 and convergence, VERIFIED from the HFSS convergence tables.** Common to all designs:
+- adaptive solution at 3.4 GHz (single frequency), Max ΔS 0.02, 30% refinement per pass;
+- first-order basis, iterative solver, no ABC on ports.
 
-| Design | Passes | Final ΔS | Elements | Min converged passes | Status |
+Adaptive meshing is deterministic: re-solving with the same stop rule reproduces every pass exactly.
+
+| File (`data/raw/new_with_slices_…`) | Stop rule | Passes | Final ΔS | Elements | Set |
 |---|---|---|---|---|---|
-| Healthy_sliced | 7 | 0.0092 | 1,349,491 | 2 | CONVERGED |
-| Mild_lobe | 5 | 0.0186 | 739,774 | 1 | CONVERGED |
-| Moderate_lobe | 5 | 0.0194 | 796,281 | 1 | CONVERGED |
-| Severe_lobe | 5 | 0.019999 | 690,077 | 1 | CONVERGED (marginal) |
+| Healthy_sliced.s6p | ΔS < 0.02, 2 consecutive | 7 | 0.0092 | 1,349,491 | lobe_v1, lobe_B |
+| Healthy_sliced_new.s6p | ΔS < 0.02, 1 | 6 | 0.0155 | 1,081,728 | lobe_A |
+| Mild_lobe.s6p | ΔS < 0.02, 1 | 5 | 0.0186 | 739,774 | lobe_v1, lobe_A |
+| Mild_lobe_new.s6p | ΔS < 0.02, 2 consecutive | 6 | 0.0150 | 878,656 | lobe_B |
+| Moderate_lobe.s6p (= Moderate_lobe_new.s6p) | ΔS < 0.02, 1 | 5 | 0.0194 | 796,281 | lobe_v1, lobe_A |
+| Severe_lobe.s6p (= Severe_lobe_new.s6p) | ΔS < 0.02, 1 | 5 | 0.019999 | 690,077 | lobe_v1, lobe_A |
 
-The healthy reference has ~1.8x the elements and ~2x tighter final ΔS than every disease stage: the same healthy-vs-AD
-mesh imbalance as in v2. Every lobe_v1 healthy-vs-stage comparison therefore mixes disease and mesh.
+The `_new` files of Moderate and Severe equal the originals to ≤ 1.7e-8 (`results/05_lobe/mesh/0_duplicates.csv`).
+Only one of each is in the manifest.
 
-**CSF in LeftOnly_test.** CSF is one object, so LeftOnly_test carries CSF_Mild on the right side too, but only as the
-0.5 mm layer (e_S5 = e_S6 = 0). The pre-registered predictions (cf56de8) did **not** model this: they treat the right
-lobes as fully healthy (right-side paths predicted to change by ~0). This is stated when LeftOnly is scored; the
-predictions are not edited.
+**Correction of the record.**
+- The Prompt 07 files (lobe_v1) were **not** solved under one stopping rule: Healthy_sliced needed 2 consecutive
+  converged passes, the stages 1.
+- "Identical mesh settings" is **retracted** wherever it was written, and so is the inference that 100% detection in
+  lobe_v1 is independent of mesh.
+- My Part 5 of 2026-10-03 listed "max 8 passes / min converged passes 2 vs 1". The table above supersedes it.
 
-### 5.3 Results (one solve per design: within-simulation noise robustness, not generalisation)
-- **QC.** All four files parse and pass passivity/reciprocity; no glitches masked; the port map T4,T3,T2,T1,T6,T5 ranks
-  1st of 60 in every file (`results/05_lobe/qc/qc_report.md`).
-- **Numerical symmetry floors.** In Healthy_sliced, paths that should be identical by symmetry differ by band-power SD
-  0.003 (reflection), 0.028 (neighbour), 0.095 (second-neighbour), 0.054 dB (opposite). In the mirror-symmetric staged
-  designs, mirror-image paths differ more: per-path SD 0.007 / 0.080 / 0.149 / 0.063 dB (2–5x the healthy values).
-  The staged floor is the noise ruler for every asymmetry claim.
-- **Healthy_sliced ≈ v2 Normal.** R31 +0.07 dB (0.4 v2 solve SD), R21 +0.21 dB (1.3 SD), R32 −0.15 dB (1.2 SD);
-  93% of the 89 ring features within 3 SD. The resonance is 19 MHz higher (3659 vs 3640 MHz) and the notch shallower.
-- **Frozen rule (commit 2baddee) applied unchanged**, 300 noisy measurements per design, typical noise + ±0.5 dB gain
-  and ±2 dB gain + ±10° phase:
-  - Detection (R31): 100% correct on all four designs in both conditions, 0% UNCERTAIN. Healthy_sliced is meshed
-    ~1.8x finer than the AD stages, so this does not show that detection is independent of mesh settings.
-  - three_merged (R32): 100% correct (Mild_lobe, Moderate_lobe → Mild+Moderate; Severe_lobe → Severe).
-  - three (R21): Severe_lobe 100%; **Mild_lobe 41–43% correct** (R21 −19.97 dB sits on the Normal|Mild boundary
-    −19.98 dB). Regional Mild atrophy produces about half the uniform Mild R21 change.
-  - R21 and R32 order Normal → Mild → Moderate → Severe monotonically in the lobe set.
+**Sets.**
+- **lobe_v1** (unmatched): the Prompt 07 results, kept as-is.
+- **lobe_A** (stop rule 1, *stop-rule matched*): the primary set from 2026-10-04.
+- **lobe_B** (stop rule 2): Healthy + Mild only.
+
+lobe_A and lobe_B are stop-rule matched, not mesh-matched: the healthy head still has 1.46x (A) / 1.54x (B) the
+elements of Mild.
+
+**Still open.** The v2 skull inner radius (`Brain_sphere_1`) against 83.5 mm here is unknown, so a small
+Normal-geometry difference cannot be excluded.
+
+**Two caveats for scoring LeftOnly_test** (both reported with the score; cf56de8 is not edited):
+- **Right-side CSF.** CSF is one object, so LeftOnly_test carries CSF_Mild on the right too, but only as the 0.5 mm
+  layer (e_S5 = e_S6 = 0). The pre-registered predictions did **not** model this: they treat the right lobes as fully
+  healthy, so right-side paths are predicted to change by ~0.
+- **Unmatched derivation.** The predictions were derived from the lobe_v1 pair (Healthy_sliced, stop rule 2, against
+  Mild_lobe, stop rule 1), so mesh is part of their per-path "Mild change".
+- LeftOnly is scored against the Healthy file with its own stop rule.
+
+### 5.3 Prompt 07 results on lobe_v1 (unmatched; one solve per design: within-simulation noise robustness, not generalisation)
+- **QC.** All four files parse and pass passivity/reciprocity; the port map T4,T3,T2,T1,T6,T5 ranks 1st of 60 in every file.
+  - **Correction:** the QC report's "no glitches" used a local detector (|Sij − Sji|/|Sij| > −20 dB).
+  - The analysis mask (band-relative, −30 dB) did mask one weak point each: Healthy_sliced T1–T4 at 3.525 GHz and
+    Severe_lobe T3–T6 at 3.845 GHz. Masking was on for every lobe_v1 number.
+  - Glitch log: `results/05_lobe/qc/masked_points.csv`. It also holds the Mild_lobe_new T2–T5 glitch at 3.855 GHz,
+    a single sample at −34/−38 dB on a ≈ −70 dB path, non-reciprocal by ≈ 5 dB.
+- **Numerical symmetry floors.**
+  - In Healthy_sliced, paths that should be identical by symmetry differ by band-power SD 0.003 (reflection), 0.028
+    (neighbour), 0.095 (second-neighbour) and 0.054 dB (opposite).
+  - In the mirror-symmetric stages, mirror-image paths differ by 0.007 / 0.080 / 0.149 / 0.063 dB.
+- **Healthy_sliced ≈ v2 Normal.** R31 +0.06 dB (0.4 v2 solve SD), R21 +0.21 (1.3 SD), R32 −0.15 (1.2 SD).
+  - Healthy_sliced_new ≈ v2 Normal too: R31 −0.07 (0.5 SD), R21 +0.16 (1.0 SD), R32 −0.23 dB (1.7 SD).
+- **Frozen rule (commit 2baddee), applied unchanged.**
+  - Detection: 100% on all four designs.
+  - Merged staging (three_merged): 100%.
+  - Three-class: Mild_lobe 41–43%, Severe_lobe 100%.
 - **Localisation.**
-  - The largest per-path changes are on second-neighbour and opposite paths, and they follow severity.
-  - Front-back index on neighbour paths for front-affected Moderate: −0.21 dB, 2.6x the floor on clean data (weakened). It
-    disappears under ±0.5 dB per-port gain errors (0.4x).
-  - Gain-invariant asymmetry cross-ratios: 0 of 45 separate Moderate from Mild by ≥ 3 SD (best 2.3 SD). 7 of the top 8 involve
-    T1 (suggestive, not significant).
-  - Left-right indices of the mirror-symmetric designs are within 1.2x the floor (consistency check passes).
-- **Pre-registered predictions for LeftOnly_test** are in `results/05_lobe/predictions.md`, committed at cf56de8 before the
-  file existed, and are not to be edited:
-  - left-right index +0.23 dB (3.3x floor), with locality per path;
-  - R31 −15.22 dB, so the frozen detection rule is expected to give mostly UNCERTAIN.
+  - Front-back neighbour index, Moderate: −0.21 dB = 2.6x the floor.
+  - Asymmetry cross-ratios: best 2.3 SD.
+- **Pre-registered LeftOnly_test predictions** (cf56de8): left-right index +0.23 dB; R31 −15.22 dB, so mostly UNCERTAIN.
+- **Superseded:** the 2026-10-03 "mesh scale" (Healthy_sliced against the v2 healthy head). It is replaced by the
+  one-pass yardstick in 5.4.
 
-### 5.4 Claims
+### 5.4 Convergence study (lobe_A primary, lobe_B; frozen-rule recipe throughout)
+**Reproduction.** The user's table (`results/05_lobe/mesh/report.md` §1) reproduces exactly:
+- the plain-mean table to 0.01 dB;
+- the frozen-rule recipe values (glitch masking, trapezoid integration, geometric-mean ratios) to 0.001 dB.
+
+The plain-mean "+0.30 dB through C3" for Mild 5 → 6 is the 3.855 GHz glitch. With masking it is −0.03 dB.
+
+**One extra adaptive pass** (Healthy 6 → 7, Mild 5 → 6):
+
+| Ratio | Healthy 6 → 7 | Mild 5 → 6 |
+|---|---|---|
+| R31 | +0.135 dB | −0.034 dB |
+| R21 | +0.060 dB | +0.034 dB |
+| R32 | +0.075 dB | −0.068 dB |
+
+There is no consistent sign. Against this:
+- **Normal − Mild R31:** 1.08 (A) / 1.25 (B) / 1.21 dB (v1), i.e. 8–9x the R31 yardstick.
+- **R31 margins to τ (−15.27 dB) in lobe_A:**
+
+  | Design | Margin to τ | × yardstick |
+  |---|---|---|
+  | Healthy_sliced_new | +0.53 dB | 3.9 |
+  | Mild_lobe | −0.55 dB | 4.1 |
+  | Moderate_lobe | −0.74 dB | 5.4 |
+  | Severe_lobe | −0.26 dB | 1.9 |
+
+- **R31 margins in lobe_B:** Healthy_sliced +0.66, Mild_lobe_new −0.58 dB.
+
+**Yardstick against every statistic** (`results/05_lobe/mesh/2_yardstick_all.csv`).
+- *Yardstick:* per statistic, the larger of the two one-pass changes. For per-path values and cross-ratios it is at least
+  the rms one-pass change of that family: neighbour paths 0.037, second-neighbour 0.122, opposite 0.111, cross-ratios
+  0.188, asymmetry cross-ratios 0.169 dB.
+- *Symmetry floor:* the mirror residual of the lobe_A stages, ×√2 for a difference of two designs: neighbour paths
+  0.114, indices 0.185, asymmetry cross-ratios 0.298 dB.
+- *Noise:* typical noise with ±0.5 dB per-port gain errors.
+- *Rulers:* clean ruler = max(yardstick, floor); measured ruler = max(yardstick, floor ⊕ noise).
+
+Findings:
+- **Ring ratios** (detection/staging), lobe_A Mild − healthy:
+  - R31 −1.08 dB = 8.0x yardstick;
+  - R21 +0.59 = 9.9x;
+  - R32 −1.67 = 22x.
+  - Severe: R21 43x, R32 45x.
+- **Frontal lobe (Moderate − Mild, lobe_A).** Moderate − Mild is independent of the healthy file.
+  - Front-back neighbour index: −0.26 dB = 3.8x yardstick, but only 2.3x the clean ruler (the floor dominates) and
+    0.3x the measured ruler.
+  - Front neighbour path T1–T6: 3.4x clean ruler, 0.6x measured. A single path mixes severity and location.
+  - Asymmetry cross-ratios: 0 of 45 reach 3x the clean ruler (best 2.3x).
+  - Raw cross-ratios separate Moderate from Mild (15/45 at 3x clean) through overall severity, not location.
+- **Three-class rule on lobe-Mild is decided by the mesh.**
+  - Mild_lobe (pass 5, lobe_A) is 0.41 correct; Mild_lobe_new (pass 6, lobe_B) is 0.69 (0.72 with ±2 dB / ±10°).
+  - R21 sits 0.006 / 0.040 dB inside the Normal|Mild boundary (−19.98 dB), against a one-pass R21 change of 0.034 dB.
+- **Changes against lobe_v1.**
+  - Detection and merged staging: unchanged (100%).
+  - Healthy margin to τ: +0.66 → +0.53 dB.
+  - Front-back neighbour index of Moderate against the healthy head: −0.21 dB (2.6x floor) → −0.14 dB (1.8x).
+  - Asymmetry cross-ratios: unchanged (same stage files).
+
+### 5.5 Claims (lobe_A primary; full table `results/05_lobe/mesh/claims.csv`)
 | claim | verdict |
 |---|---|
-| Healthy_sliced reproduces the v2 healthy head on the classifier features | holds |
-| Frozen detection (R31) generalises from uniform to regional atrophy, same head | holds (4/4 designs, 100%) |
-| Frozen three_merged (R32) labels the lobe stages correctly | holds |
-| Frozen three (R21) labels regional Mild as Mild | retracted (0.41–0.43) |
-| Front-lobe involvement is visible front-to-back (neighbour paths) | weakened on clean data (2.6x); retracted with gain errors |
-| Gain-invariant asymmetry cross-ratios localise the front lobe | not significant (best 2.3 SD) |
-| Left-right asymmetry is detectable | not testable yet (LeftOnly_test pending; prediction committed) |
-| MCI_lobe is indistinguishable from Healthy_sliced | not testable yet (MCI_lobe pending) |
-| The lobe set has identical mesh settings across stages; hence 100% detection here is independent of mesh settings | **retracted** (Setup1 table above: healthy 1.35 M elements, AD stages 0.69–0.80 M) |
-| Mesh scale: how far mesh alone moves the features (Healthy_sliced vs v2 new_Healthy, two healthy heads with different meshes; one pair, rough, may include geometry) | R31 0.065, R21 0.215, R32 0.150 dB; neighbour path 0.23 dB rms; front-back neighbour index 0.17 dB; asymmetry cross-ratios 0.37 dB rms (the ruler for the rows below) |
-| Detection effect vs mesh: R31 healthy → Mild / Moderate / Severe lobe −1.21 / −1.40 / −0.92 dB | 19 / 22 / 14x the R31 mesh scale (4–7x the largest ratio scale): exceeds the mesh scale |
-| Detection margin vs mesh: distance from τ of Healthy_sliced / Mild / Moderate / Severe lobe +0.66 / −0.55 / −0.74 / −0.26 dB | 10 / 8.5 / 11 / 4.0x the R31 scale; Severe_lobe only 1.2x the largest ratio scale: mesh-sensitive for Severe_lobe |
-| Staging effect vs mesh: R21 healthy → Mild lobe +0.53 dB; R32 healthy → Mild lobe −1.75 dB | 2.5x (mesh-sensitive) and 11.6x (exceeds) |
-| Localisation vs mesh: front-back neighbour index −0.21 dB; frontal neighbour paths T1-T2 / T1-T6 −0.29 / −0.30 dB; best asymmetry cross-ratio −0.69 dB | 1.2x / 1.2–1.3x / 1.9x their mesh scales: **not separable from mesh** until the mesh-matched re-solves (lobe_v1m) exist |
+| The user's convergence table reproduces (frozen recipe) | holds |
+| One extra pass moves R31/R21/R32 by ≤ 0.14 dB, against Normal − Mild R31 1.08–1.25 dB | holds |
+| Frozen detection (R31), stop-rule matched: Healthy_sliced_new, Mild, Moderate correct with margins 3.9–5.4x yardstick | holds |
+| Frozen detection on Severe_lobe | holds on this mesh (100%), but its margin −0.26 dB is 1.9x the yardstick: one more pass could bring it to the threshold |
+| Frozen merged staging (three_merged, R32) labels all lobe_A designs correctly | holds |
+| Frozen three-class (R21) labels lobe-Mild as Mild | retracted (0.41 in lobe_A, 0.69 in lobe_B); which value you get is decided by the mesh |
+| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x); measured with ±0.5 dB gain: not detectable (0.3x) |
+| Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh (best 2.3x the clean ruler) |
+| Raw cross-ratios separate Moderate from Mild | holds as severity; not a location claim |
+| Healthy_sliced(_new) reproduces the v2 healthy head | holds (both files within 1.7 v2 solve SD on R31/R21/R32) |
+| Left-right checks on the mirror-symmetric designs (A, B) | pass (≤ 1.3x floor) |
+| Lobe set had identical mesh settings, so detection is independent of mesh | **retracted** |
+| Left-right asymmetry detectable (LeftOnly_test) | not testable yet; prediction committed (cf56de8) |
+| MCI_lobe ≈ healthy | not testable yet |
 
-Caveat on the mesh scale: it comes from two fine healthy meshes. The coarser AD-stage meshes are 2–5x less symmetric
-than Healthy_sliced (5.3 floors), so their mesh error is probably larger and these multiples are optimistic.
-
-### 5.5 Mesh-matched re-solves (set lobe_v1m, running from 2026-10-03)
-All lobe designs are re-solved with min converged passes 2 and max passes 10 (matching Healthy_sliced), arriving as
-`data/raw/new_with_slices_<Design>_m2.s6p` for Mild_lobe, Moderate_lobe, Severe_lobe, LeftOnly_test and MCI_lobe.
-- The current four files stay as **lobe_v1** (mesh-unmatched); the re-solves are registered as **lobe_v1m** (mesh-matched,
-  with Healthy_sliced as the reference).
-- For Mild/Moderate/Severe, the per-feature v1 vs v1m difference is a direct measurement of the mesh effect on the AD
-  stages.
-- §3.3 and §3.4(a–c) are rerun on lobe_v1m. The predictions in cf56de8 are not rewritten.
-- LeftOnly_test is scored only from the mesh-matched file, against cf56de8 unchanged:
-  - primary test: gain-invariant cross-ratios χ;
-  - also ±0.5 dB and ±2 dB gain-error versions;
-  - an unmatched LeftOnly file, if one arrives, is scored separately and labelled.
-- Then §3.5 (MCI_lobe, mesh-matched).
-- Exploratory, no refitting: lobe-Mild vs uniform Mild on R21/R32 in lobe_v1m (the frozen rule's 41–43% on lobe-Mild
-  is reported as-is).
-
+### 5.6 Pending data
+- `data/raw/new_with_slices_LeftOnly_test.s6p` and `new_with_slices_MCI_lobe.s6p`; the user will give their stop rule.
+- LeftOnly is scored against cf56de8 unchanged, compared with the Healthy file of the same stop rule:
+  - primary test: gain-invariant cross-ratios;
+  - also with ±0.5 dB and ±2 dB gain errors;
+  - the two caveats in 5.2 are stated with the score.
+- Then §3.5 for MCI_lobe.
+- Exploratory, no refitting: lobe-Mild against uniform Mild on R21/R32.
+- Not solved: Moderate_lobe and Severe_lobe with stop rule 2. Their `_new` re-solves used rule 1 and are identical to
+  the originals. They would complete lobe_B and give the Severe_lobe margin its own one-pass change.

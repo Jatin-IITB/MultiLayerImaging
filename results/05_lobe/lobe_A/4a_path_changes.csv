@@ -1,0 +1,64 @@
+design,path,type,lobes,change dB
+Mild_lobe,T1 refl.,reflection,Frontal,0.008203503758371866
+Mild_lobe,T1-T2,neighbour,Frontal / Temporal L,0.05724718364098891
+Mild_lobe,T1-T3,second-neighbour,Frontal / Parietal L,0.6115800948859018
+Mild_lobe,T1-T4,opposite,Frontal / Occipital,-0.7858361134633043
+Mild_lobe,T1-T5,second-neighbour,Frontal / Parietal R,0.6161506630418856
+Mild_lobe,T1-T6,neighbour,Frontal / Temporal R,0.10614311266436971
+Mild_lobe,T2 refl.,reflection,Temporal L,-0.03955013919752748
+Mild_lobe,T2-T3,neighbour,Temporal L / Parietal L,0.0734566273271966
+Mild_lobe,T2-T4,second-neighbour,Temporal L / Occipital,0.3710520639967285
+Mild_lobe,T2-T5,opposite,Temporal L / Parietal R,-1.120562636598443
+Mild_lobe,T2-T6,second-neighbour,Temporal L / Temporal R,1.0939865574759722
+Mild_lobe,T3 refl.,reflection,Parietal L,-0.05427348111135677
+Mild_lobe,T3-T4,neighbour,Parietal L / Occipital,0.0030295168028757757
+Mild_lobe,T3-T5,second-neighbour,Parietal L / Parietal R,0.851050735544618
+Mild_lobe,T3-T6,opposite,Parietal L / Temporal R,-1.2115531765016385
+Mild_lobe,T4 refl.,reflection,Occipital,0.022467991641157425
+Mild_lobe,T4-T5,neighbour,Occipital / Parietal R,-0.06955361860622844
+Mild_lobe,T4-T6,second-neighbour,Occipital / Temporal R,0.24342167005573145
+Mild_lobe,T5 refl.,reflection,Parietal R,-0.060006198620387696
+Mild_lobe,T5-T6,neighbour,Parietal R / Temporal R,0.0610140824966976
+Mild_lobe,T6 refl.,reflection,Temporal R,-0.03953129911073061
+Moderate_lobe,T1 refl.,reflection,Frontal,-0.07045799176213707
+Moderate_lobe,T1-T2,neighbour,Frontal / Temporal L,-0.2489217967168713
+Moderate_lobe,T1-T3,second-neighbour,Frontal / Parietal L,0.7953145359058311
+Moderate_lobe,T1-T4,opposite,Frontal / Occipital,-1.4511771727967755
+Moderate_lobe,T1-T5,second-neighbour,Frontal / Parietal R,1.2305099565256654
+Moderate_lobe,T1-T6,neighbour,Frontal / Temporal R,-0.2793615890782135
+Moderate_lobe,T2 refl.,reflection,Temporal L,-0.05878364557221971
+Moderate_lobe,T2-T3,neighbour,Temporal L / Parietal L,-0.2521711516348759
+Moderate_lobe,T2-T4,second-neighbour,Temporal L / Occipital,0.5705260256373279
+Moderate_lobe,T2-T5,opposite,Temporal L / Parietal R,-1.4408701297471396
+Moderate_lobe,T2-T6,second-neighbour,Temporal L / Temporal R,1.0753961967985148
+Moderate_lobe,T3 refl.,reflection,Parietal L,-0.06717610229895588
+Moderate_lobe,T3-T4,neighbour,Parietal L / Occipital,-0.07161921379251623
+Moderate_lobe,T3-T5,second-neighbour,Parietal L / Parietal R,1.172635739688296
+Moderate_lobe,T3-T6,opposite,Parietal L / Temporal R,-1.517418203124663
+Moderate_lobe,T4 refl.,reflection,Occipital,-0.0012693275402280157
+Moderate_lobe,T4-T5,neighbour,Occipital / Parietal R,-0.17053691466460918
+Moderate_lobe,T4-T6,second-neighbour,Occipital / Temporal R,0.613855237579493
+Moderate_lobe,T5 refl.,reflection,Parietal R,-0.06022632192623778
+Moderate_lobe,T5-T6,neighbour,Parietal R / Temporal R,-0.21442363316504043
+Moderate_lobe,T6 refl.,reflection,Temporal R,-0.07151094506654676
+Severe_lobe,T1 refl.,reflection,Frontal,-0.0923440373645743
+Severe_lobe,T1-T2,neighbour,Frontal / Temporal L,-0.7485886655571647
+Severe_lobe,T1-T3,second-neighbour,Frontal / Parietal L,1.8314937246754255
+Severe_lobe,T1-T4,opposite,Frontal / Occipital,-1.6728946896183743
+Severe_lobe,T1-T5,second-neighbour,Frontal / Parietal R,1.7973990805885194
+Severe_lobe,T1-T6,neighbour,Frontal / Temporal R,-0.7945898022987734
+Severe_lobe,T2 refl.,reflection,Temporal L,-0.07154129745278848
+Severe_lobe,T2-T3,neighbour,Temporal L / Parietal L,-0.9911659373066755
+Severe_lobe,T2-T4,second-neighbour,Temporal L / Occipital,1.512207100613196
+Severe_lobe,T2-T5,opposite,Temporal L / Parietal R,-1.5884687091658733
+Severe_lobe,T2-T6,second-neighbour,Temporal L / Temporal R,1.7925021232824108
+Severe_lobe,T3 refl.,reflection,Parietal L,-0.08486212132352033
+Severe_lobe,T3-T4,neighbour,Parietal L / Occipital,-0.8898718091888043
+Severe_lobe,T3-T5,second-neighbour,Parietal L / Parietal R,1.5996079426273297
+Severe_lobe,T3-T6,opposite,Parietal L / Temporal R,-1.640795115911203
+Severe_lobe,T4 refl.,reflection,Occipital,-0.08628210280492787
+Severe_lobe,T4-T5,neighbour,Occipital / Parietal R,-0.8991430171901342
+Severe_lobe,T4-T6,second-neighbour,Occipital / Temporal R,1.7888883910818336
+Severe_lobe,T5 refl.,reflection,Parietal R,-0.09868409149608981
+Severe_lobe,T5-T6,neighbour,Parietal R / Temporal R,-0.7457142328667601
+Severe_lobe,T6 refl.,reflection,Temporal R,-0.09383113956413514

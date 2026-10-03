@@ -1,0 +1,3 @@
+class,file,N,F_native,f_min_GHz,f_max_GHz,step_MHz,uniform,option_line,values_per_f
+Normal,new_with_slices_Healthy_sliced.s6p,6,201,3.2,4.2,5.0,True,# GHz S MA R 50.000000,72
+Mild,new_with_slices_Mild_lobe_new.s6p,6,201,3.2,4.2,5.0,True,# GHz S MA R 50.000000,72

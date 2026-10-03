@@ -1,0 +1,5 @@
+floor,path,band-power SD dB,band-power max-min dB,median over f of per-frequency SD dB
+circulant (Healthy_sliced),reflection,0.0030507847908176964,0.008520144667893526,0.024215611903382735
+circulant (Healthy_sliced),neighbour,0.027864696837104273,0.07622153267912779,0.05816207156828012
+circulant (Healthy_sliced),second-neighbour,0.09506781060027464,0.2920039810560766,0.10191877309844673
+circulant (Healthy_sliced),opposite,0.0541412703049535,0.11232212542444842,0.06590090967668166

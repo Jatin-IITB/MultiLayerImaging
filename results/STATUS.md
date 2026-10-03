@@ -1,4 +1,4 @@
-# Microwave AD staging, Track A: status (3 Oct 2026; §7 and §6 updated, §1–5 as of 2 Oct)
+# Microwave AD staging, Track A: status (4 Oct 2026; §7 updated 4 Oct, §6 3 Oct, §1–5 as of 2 Oct)
 
 **Setup.** A 7-layer spherical head phantom with six patch antennas on one ring, simulated in
 HFSS over 2.8–4.2 GHz. The stages simulated are Normal, MCI, Mild, Moderate and Severe.
@@ -108,72 +108,72 @@ Planned in `data/sim_plan.csv`:
 Beyond these two, generalisation needs **several head geometries per stage**: different head
 radius, skull/scalp thickness, CSF thickness and antenna stand-off.
 
-## 7. Lobe phantom: disease in selected lobes only (3 Oct)
+## 7. Lobe phantom: disease in selected lobes only (3–4 Oct)
 
 As the professor suggested, the layered head and the sectored head are now one geometry. The
 healthy head was cut into six 60° lobe wedges, one facing each antenna: frontal, left temporal,
 left parietal, occipital, right parietal and right temporal. Atrophy (CSF widening under the
 skull, and diseased tissue properties) is applied only in the lobes affected at each stage:
 - Mild: temporal and parietal lobes on both sides;
-- Moderate: Mild plus frontal;
+- Moderate: Mild plus frontal, with deeper atrophy elsewhere;
 - Severe: all six lobes.
 
-There is one simulation per design, so these are noise-robustness results within a simulation,
-not generalisation.
+There is one simulation per design and mesh setting, so these are noise-robustness results
+within a simulation, not generalisation. The tissue values were checked in HFSS.
 
-**Mesh settings are not matched.** The table comes from the HFSS solution dialogs. All designs share
-a convergence target of ΔS 0.02 and at most 8 passes, but the healthy head required 2 converged
-passes and the disease stages only 1.
+**Mesh: the first comparison was not like-for-like.** HFSS refines its mesh in passes until the
+answer stops changing. In the first set, the healthy head was refined until two passes in a row
+had converged (7 passes, 1.35 M elements), but each disease stage stopped at the first converged
+pass (5 passes, 0.69–0.80 M elements). So the earlier statement "same mesh settings for all
+stages" was wrong and is withdrawn. The healthy head and Mild were therefore re-solved:
 
-| Design | Passes | Final ΔS | Mesh elements | Status |
-|---|---|---|---|---|
-| Healthy (sliced) | 7 | 0.0092 | 1,349,491 | converged |
-| Mild (lobes) | 5 | 0.0186 | 739,774 | converged |
-| Moderate (lobes) | 5 | 0.0194 | 796,281 | converged |
-| Severe (lobes) | 5 | 0.0200 | 690,077 | converged (marginal) |
+| Design | Stopping rule | Passes | Mesh elements |
+|---|---|---|---|
+| Healthy (sliced) | first converged pass | 6 | 1,081,728 |
+| Healthy (sliced) | two converged passes | 7 | 1,349,491 |
+| Mild (lobes) | first converged pass | 5 | 739,774 |
+| Mild (lobes) | two converged passes | 6 | 878,656 |
+| Moderate (lobes) | first converged pass | 5 | 796,281 |
+| Severe (lobes) | first converged pass | 5 | 690,077 |
 
-The healthy reference therefore has ~1.8× the mesh and ~2× tighter convergence than every
-disease stage. This is the same imbalance as in the earlier set. To size it roughly, compare
-the two healthy heads solved with different meshes, the sliced one and the earlier one. That
-mesh change alone moves the classifier ratios by 0.07–0.21 dB. Measured against this yardstick:
-- **Detection:** the healthy-to-disease change is 0.9–1.4 dB, 14–22× the yardstick of its own
-  feature and 4–7× the largest one. Severe (lobes), however, sits only 0.26 dB past the
-  threshold: 4× its own yardstick, 1.2× the largest.
-- **Staging:** the second-neighbour ratio moves 0.53 dB from healthy to Mild (lobes), only 2.5×
-  the yardstick.
-- **Localisation:** the front-lobe effects are 0.2–0.3 dB, only 1–2× the yardstick. They are
-  **not separable from mesh** until mesh-matched re-solves exist.
+The main comparison now uses the same stopping rule for every design (first converged pass).
+It is a matched stopping rule, not a matched mesh: the healthy head still has ~1.5× the
+elements of Mild.
 
-The yardstick comes from two fine meshes; the coarser disease meshes probably err more.
+**How much does one more refinement pass move the numbers?** That serves as the yardstick for
+mesh error.
+- **Detection ratio:** one extra pass moves it by at most 0.14 dB, the other two ratios by at
+  most 0.08 dB, in no consistent direction. The healthy-vs-Mild difference is 1.1–1.25 dB,
+  8–9× larger.
+- **Detection holds under the matched rule:** the unchanged rule labels every design correctly
+  in 100% of noisy measurements, including with ±2 dB / ±10° antenna errors.
+- **Distance from the threshold:**
+  - Healthy (sliced): 0.53 dB, 4× the yardstick;
+  - Mild (lobes): 0.55 dB, 4×;
+  - Moderate (lobes): 0.74 dB, 5×;
+  - Severe (lobes): only 0.26 dB, 1.9×, so one more pass could push it to the threshold.
+- **Merged staging** (Normal / Mild+Moderate / Severe) labels every lobe design correctly.
+- **The finer three-stage rule fails on lobe-Mild, and the mesh decides by how much:** 41%
+  correct at 5 passes, 69% at 6. Lobe-Mild sits right on the Normal|Mild boundary, closer to it
+  than one pass moves the feature.
+- **Where the disease is still cannot be told.**
+  - When the frontal lobe is added (Mild → Moderate), the front-to-back difference is −0.26 dB.
+    That is 3.8× the one-pass change, but only 2.3× the numerical symmetry error of these
+    simulations. It is invisible with ±0.5 dB antenna gain errors (0.3×).
+  - Gain-proof combinations of the antenna paths stay below 3× (best 2.3×).
+  - These effects are **not separable from mesh and numerical error**.
+- **Pending:** a left-lobes-only design (left-right asymmetry) and an MCI design. The
+  predictions for the left-only design were written and committed before the file existed
+  (`results/05_lobe/predictions.md`). It will be scored against them unchanged, using the
+  healthy head solved with the same stopping rule. Two caveats go with the score: the
+  predictions came from the first, unmatched pair; and the left-only design keeps a thin layer
+  of diseased CSF on the right.
+- **Suggested simulations:** Moderate and Severe (lobes) with the two-pass stopping rule. This
+  completes the second matched set, and shows whether Severe stays on the AD side of the
+  threshold.
 
-- **The sliced healthy head matches the earlier healthy head.** The opposite/neighbour ratio
-  differs by 0.07 dB, which is within the solve-to-solve noise.
-- **Detection still works, without retraining.** The frozen Normal-vs-AD rule from §1 was
-  trained only on uniform atrophy. It labels the sliced healthy head Normal, and all three
-  lobe stages AD, in 100% of noisy measurements, including with ±2 dB / ±10° per-antenna errors.
-  - **Correction:** the lobe designs were *not* meshed alike (table above), so this does
-    not show that detection is independent of mesh settings. That earlier inference is
-    retracted.
-- **Staging is partly fragile.**
-  - The frozen rule with merged stages (Normal / Mild+Moderate / Severe) labels every lobe stage
-    correctly.
-  - The finer three-class rule calls lobe-Mild correctly only ~42% of the time. Lobe-Mild
-    changes the staging feature half as much as uniform Mild, and lands right on the Normal|Mild
-    boundary.
-  - Stage order is preserved: both staging ratios move monotonically from Normal to Severe.
-- **Where the disease is cannot be told reliably.** When the frontal lobe becomes affected
-  (Mild → Moderate), the front-to-back difference in neighbour-antenna coupling is −0.21 dB. That
-  is 2.6× the numerical noise on clean data, but it vanishes under ±0.5 dB antenna gain errors.
-  Gain-proof combinations of the antenna paths stay below 3× the noise (best 2.3×).
-- **Running:** Mild, Moderate and Severe (lobes) are being re-solved with mesh settings matched
-  to the healthy head. Their difference from the current files measures the mesh effect
-  directly.
-- **Pending:** a left-lobes-only design (left-right asymmetry) and an MCI design, both
-  mesh-matched. The predictions for the left-only design were written and committed before
-  the file existed (`results/05_lobe/predictions.md`). It will be scored against them
-  unchanged.
-
-Details: `results/05_lobe/report.md`, `MODEL_CARD.md` Part 5.
+Details: `results/05_lobe/mesh/report.md` (convergence study), `results/05_lobe/lobe_A/` (main
+set), `MODEL_CARD.md` Part 5.
 
 ## Figures for slides
 
@@ -186,9 +186,11 @@ Details: `results/05_lobe/report.md`, `MODEL_CARD.md` Part 5.
 4. `results/imaging/figures/i2h_detectability_radial.png`: the array senses only the outer
    ~1–1.5 cm.
 5. `results/imaging/figures/k3_path_time.png`: the delay test (around the head, not through it).
-6. `results/05_lobe/figures/3_ratios_lobe_vs_uniform.png`: lobe-phantom stages next to the uniform
-   ones on the frozen decision boundaries.
-7. `results/05_lobe/figures/4a_path_change_maps.png`: which antenna paths change per lobe stage.
+6. `results/05_lobe/lobe_A/figures/3_ratios_lobe_vs_uniform.png`: lobe-phantom stages (matched stopping
+   rule) next to the uniform ones on the frozen decision boundaries.
+7. `results/05_lobe/lobe_A/figures/4a_path_change_maps.png`: which antenna paths change per lobe stage.
+8. `results/05_lobe/mesh/figures/yardstick_maps.png`: one extra mesh pass against the disease
+   effects, on the same colour scale.
 
 Source tables: `results/v2_with_v1_repeats/03/` (rules, thresholds, CV results),
 `results/v2_with_v1_repeats/02/` (gaps vs noise), `results/qc/solve_comparison.md`,

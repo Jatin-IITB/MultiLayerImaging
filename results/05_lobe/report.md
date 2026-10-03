@@ -1,9 +1,9 @@
-# Lobe-sector phantom (set lobe_v1): analysis (code bac41d4)
+# Lobe-sector phantom (set lobe_v1): analysis (code 7f5b39b)
 
 Designs: Healthy_sliced, Mild_lobe, Moderate_lobe, Severe_lobe (3.2-4.2 GHz, 201 points). One solve per design: within-simulation noise robustness, not generalisation. Noise unless stated: typical profile + setup perturbation + per-port gain ±0.5 dB. Antennas in ring order T1..T6 = Frontal, Temporal L, Parietal L, Occipital, Parietal R, Temporal R.
 
 ## 3.1 QC and symmetry floors
-Parsing, passivity, reciprocity, glitches and the port-map search: `results/05_lobe/qc/qc_report.md` (all four files pass; the port map T4,T3,T2,T1,T6,T5 ranks 1st of 60 in every file; no glitches).
+Parsing, passivity, reciprocity and the port-map search: `results/05_lobe/qc/qc_report.md` (its glitch count uses a local detector, |Sij - Sji|/|Sij| > -20 dB). Points masked by the analysis (|Sij - Sji| > -30 dB of the pair's band level; log of all lobe files: `results/05_lobe/qc/masked_points.csv`): Healthy_sliced 3.525 GHz ports 1-4; Severe_lobe 3.845 GHz ports 2-5.
 Circulant floor = spread of equivalent paths in Healthy_sliced (should be identical by symmetry):
 | floor | path | band-power SD dB | band-power max-min dB | median over f of per-frequency SD dB |
 |---|---|---|---|---|
@@ -209,13 +209,13 @@ These raw cross-ratios mix path distances (e.g. T1T4·T2T5 / T1T5·T2T4 = (oppos
 | T1T2·T3T6 / T1T3·T2T6 | 0.142 | -0.631 | -0.176 | -0.128 | 0.307 | 0.455 | 1.481 | True |
 
 ## Mesh scale (lobe_v1 is mesh-unmatched)
-HFSS Setup1 per design (from the HFSS solution dialogs, user 2026-10-03; `data/mesh_lobe.csv`). Common: adaptive at 3.4 GHz, Max Delta S 0.02, max 8 passes, 30% refinement, first-order basis, iterative solver. **The settings are not matched:** the healthy reference has ~1.8x the elements and ~2x tighter final Delta S than every AD stage (minimum converged passes 2 vs 1), the same healthy-vs-AD mesh imbalance as in v2.
-| file | set | passes | final_dS | elements | min_converged_passes | status |
-|---|---|---|---|---|---|---|
-| new_with_slices_Healthy_sliced.s6p | lobe_v1 | 7 | 0.0092 | 1349491 | 2 | CONVERGED |
-| new_with_slices_Mild_lobe.s6p | lobe_v1 | 5 | 0.0186 | 739774 | 1 | CONVERGED |
-| new_with_slices_Moderate_lobe.s6p | lobe_v1 | 5 | 0.0194 | 796281 | 1 | CONVERGED |
-| new_with_slices_Severe_lobe.s6p | lobe_v1 | 5 | 0.02 | 690077 | 1 | CONVERGED (marginal) |
+SUPERSEDED (2026-10-04) by the one-extra-pass yardstick, `results/05_lobe/mesh/`. HFSS Setup1 per design (HFSS convergence tables, user; `data/sims_lobe.csv`). Common: adaptive at 3.4 GHz, Max Delta S 0.02, max 8 passes, 30% refinement, first-order basis, iterative solver. **The settings are not matched:** the healthy reference has ~1.8x the elements and ~2x tighter final Delta S than every AD stage (minimum converged passes 2 vs 1), the same healthy-vs-AD mesh imbalance as in v2.
+| file | stop_rule | passes | final_dS | elements |
+|---|---|---|---|---|
+| new_with_slices_Healthy_sliced.s6p | 2 | 7 | 0.0092 | 1349491 |
+| new_with_slices_Mild_lobe.s6p | 1 | 5 | 0.0186 | 739774 |
+| new_with_slices_Moderate_lobe.s6p | 1 | 5 | 0.0194 | 796281 |
+| new_with_slices_Severe_lobe.s6p | 1 | 5 | 0.02 | 690077 |
 
 Rough mesh scale = Healthy_sliced vs v2 new_Healthy (two healthy heads, different meshes; one pair, so not an SD; may include a small geometry difference): R31 0.065 dB, R21 0.215 dB, R32 0.150 dB; neighbour paths 0.234 dB rms per path; front-back neighbour index 0.173 dB; asymmetry cross-ratios 0.365 dB rms. Each lobe-set effect as a multiple of it:
 | effect | dB | mesh scale dB | x own-feature mesh scale | x largest ratio mesh scale | verdict (own-feature scale) |
@@ -236,10 +236,10 @@ Rough mesh scale = Healthy_sliced vs v2 new_Healthy (two healthy heads, differen
 | localisation: frontal neighbour path T1-T6, Moderate_lobe | -0.295 | 0.234 | 1.261 | 1.375 | not separable from mesh (< 2x) |
 | localisation: best asymmetry cross-ratio, Moderate-Mild (T1T4·T5T6 / T1T5·T4T6) | -0.693 | 0.365 | 1.901 | 3.230 | not separable from mesh (< 2x) |
 
-Localisation effects are within a few mesh scales, so they are **not separable from mesh** until the mesh-matched re-solves (set lobe_v1m) exist. The v1 vs v1m difference of Mild/Moderate/Severe will measure the mesh effect on the AD stages directly.
+Localisation effects are within a few mesh scales, so they are **not separable from mesh** in this stop-rule-unmatched set; see the stop-rule matched sets lobe_A / lobe_B.
 
 ### (d) LeftOnly_test predictions
-Written to `results/05_lobe/predictions.md` (pre-registered; scored only after LeftOnly_test arrives).
+Written to `results/05_lobe/predictions.md` (pre-registered at cf56de8; scored only after LeftOnly_test arrives).
 
 ## Claims
 | claim | number | baseline | verdict |
@@ -271,9 +271,9 @@ Written to `results/05_lobe/predictions.md` (pre-registered; scored only after L
 | staging: R21 Healthy_sliced -> Severe_lobe exceeds the mesh scale | +2.51 dB = 11.7x own-feature mesh scale (11.7x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
 | staging: R32 Healthy_sliced -> Mild_lobe exceeds the mesh scale | -1.75 dB = 11.6x own-feature mesh scale (8.1x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
 | staging: R32 Healthy_sliced -> Severe_lobe exceeds the mesh scale | -3.43 dB = 22.9x own-feature mesh scale (16.0x the largest ratio scale) | mesh scale above | exceeds the mesh scale (>= 5x) |
-| localisation: front-back index, neighbour paths, Moderate_lobe exceeds the mesh scale | -0.21 dB = 1.2x own-feature mesh scale (1.0x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
-| localisation: frontal neighbour path T1-T2, Moderate_lobe exceeds the mesh scale | -0.29 dB = 1.2x own-feature mesh scale (1.3x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
-| localisation: frontal neighbour path T1-T6, Moderate_lobe exceeds the mesh scale | -0.30 dB = 1.3x own-feature mesh scale (1.4x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
-| localisation: best asymmetry cross-ratio, Moderate-Mild (T1T4·T5T6 / T1T5·T4T6) exceeds the mesh scale | -0.69 dB = 1.9x own-feature mesh scale (3.2x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh until lobe_v1m |
+| localisation: front-back index, neighbour paths, Moderate_lobe exceeds the mesh scale | -0.21 dB = 1.2x own-feature mesh scale (1.0x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh in lobe_v1 |
+| localisation: frontal neighbour path T1-T2, Moderate_lobe exceeds the mesh scale | -0.29 dB = 1.2x own-feature mesh scale (1.3x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh in lobe_v1 |
+| localisation: frontal neighbour path T1-T6, Moderate_lobe exceeds the mesh scale | -0.30 dB = 1.3x own-feature mesh scale (1.4x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh in lobe_v1 |
+| localisation: best asymmetry cross-ratio, Moderate-Mild (T1T4·T5T6 / T1T5·T4T6) exceeds the mesh scale | -0.69 dB = 1.9x own-feature mesh scale (3.2x the largest ratio scale) | mesh scale above | not separable from mesh (< 2x); not separable from mesh in lobe_v1 |
 
 One solve per design: within-simulation noise robustness, not generalisation.

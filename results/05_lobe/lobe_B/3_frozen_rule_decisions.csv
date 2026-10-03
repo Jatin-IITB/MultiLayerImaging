@@ -1,0 +1,13 @@
+condition,design,rule,Normal,AD,Mild,Mild+Moderate,Severe,UNCERTAIN,INVALID
+"typical, ±0.5 dB gain",Healthy_sliced,binary_R31,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",Healthy_sliced,three,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",Healthy_sliced,three_merged,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",Mild_lobe_new,binary_R31,0.0,1.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",Mild_lobe_new,three,0.19,0.0,0.69,0.0,0.0,0.12,0.0
+"typical, ±0.5 dB gain",Mild_lobe_new,three_merged,0.0,0.0,0.0,1.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,Healthy_sliced,binary_R31,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,Healthy_sliced,three,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,Healthy_sliced,three_merged,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,Mild_lobe_new,binary_R31,0.0,1.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,Mild_lobe_new,three,0.15333333333333332,0.0,0.7166666666666667,0.0,0.0,0.13,0.0
+±2 dB gain + ±10° phase,Mild_lobe_new,three_merged,0.0,0.0,0.0,1.0,0.0,0.0,0.0

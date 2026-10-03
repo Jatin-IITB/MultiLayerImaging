@@ -1,0 +1,5 @@
+file,f_GHz,ports,path,type,|Sij| dB,|Sji| dB,reciprocity error dB (re band level),masked
+new_with_slices_Healthy_sliced.s6p,3.525,1-4,T1-T4,opposite,-42.42450251119099,-42.49468571606957,-23.34567510759223,True
+new_with_slices_Mild_lobe_new.s6p,3.855,3-6,T2-T5,opposite,-34.0254106219757,-38.86638034574145,10.931268827182858,True
+new_with_slices_Severe_lobe.s6p,3.845,2-5,T3-T6,opposite,-53.36642737967766,-53.18750320693971,-25.694001717585824,True
+new_with_slices_Severe_lobe_new.s6p,3.845,2-5,T3-T6,opposite,-53.36644230591052,-53.187447690901465,-25.69402332310763,True

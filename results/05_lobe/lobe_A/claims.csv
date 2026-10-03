@@ -1,0 +1,16 @@
+claim,number,baseline,verdict
+Healthy_sliced reproduces the v2 healthy head on the classifier features,R31 -0.07 dB (-0.5 SD); R21 +0.15 dB (+1.0 SD); R32 -0.23 dB (-1.7 SD),v2 solve-to-solve SD (4 pairs),holds
+frozen binary_R31 rule labels Mild_lobe as AD (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen binary_R31 rule labels Moderate_lobe as AD (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen binary_R31 rule labels Severe_lobe as AD (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen binary_R31 rule labels Healthy_sliced_new as Normal (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen three rule labels Mild_lobe as Mild (no refitting),"0.41 correct, 0.16 uncertain (±2 dB/±10°: 0.43)",trained on uniform-atrophy solves only,retracted
+frozen three rule labels Severe_lobe as Severe (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen three_merged rule labels Moderate_lobe as Mild+Moderate (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+"front-affected Moderate differs front-to-back (front-back, neighbour paths)",Moderate -0.14 dB = -1.8x floor (Mild +0.11); with ±0.5 dB gain errors -0.3x,symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain,clean: retracted; with gain errors: retracted
+"front-affected Moderate differs front-to-back (front-back, all paths)",Moderate +0.14 dB = +1.6x floor (Mild +0.21); with ±0.5 dB gain errors +0.3x,symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain,clean: retracted; with gain errors: retracted
+"raw cross-ratios separate Moderate from Mild (severity, not location)",24/45 >= 3 SD; best T1T4·T2T5 / T1T5·T2T4 -1.80 dB (14.2 SD),symmetry floor + measurement noise,holds as severity; not a location claim
+gain-invariant ASYMMETRY cross-ratios see the front-lobe involvement of Moderate,0/45 >= 3 SD (0 involve T1); best T1T4·T5T6 / T1T5·T4T6 -0.69 dB (2.3 SD),"larger of healthy / staged-mirror asymmetry floor, x sqrt2 (two designs), + measurement noise",not significant (best 2.3 SD; 7 of the top 8 involve T1)
+left-right index of Mild_lobe is ~0 (mirror-symmetric by construction; a check),+0.032 dB = +0.4x floor,larger of healthy / staged-mirror floor,check passes
+left-right index of Moderate_lobe is ~0 (mirror-symmetric by construction; a check),-0.077 dB = -1.1x floor,larger of healthy / staged-mirror floor,check passes
+left-right index of Severe_lobe is ~0 (mirror-symmetric by construction; a check),-0.087 dB = -1.2x floor,larger of healthy / staged-mirror floor,check passes
