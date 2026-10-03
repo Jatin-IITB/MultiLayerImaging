@@ -173,6 +173,38 @@ All NR (one solve per design) and **mesh-unmatched** (A10).
 | J2 | "8 antennas with ~16 mm range resolution can stage AD severity at the sector level" | ~16 mm | slide 9 | UNKNOWN | Conflicts in spirit with later findings (no depth/lobe localisation in the layered phantom); needs Pack 01 |
 | J3 | Dominant error is a multiplicative per-port gain (~10× on Port 5), not additive clutter | 2.76× estimated vs ~10× "ground truth" | slides 12–13 | UNKNOWN | Motivates the later gain-invariant features (R31, χ) — worth stating in the report if Pack 01 confirms |
 
+## L. Lobe convergence study (user message 2026-10-04; not yet in any project file)
+
+Source: your message of 2026-10-04 (§1–§3), referred to below as **U4**. The four new files are on disk, untracked and in no manifest; `MODEL_CARD.md`, `STATUS.md` and `results/05_lobe/` do **not** contain this yet.
+
+**Reproduction (2026-10-04, read-only, my own script on the raw files).** Your table is reproduced **exactly** with your recipe: plain mean of \|S\|² over the 201 points, **no glitch masking**, arithmetic ring means C_k^ring over the 12/12/6 pairs, ratios = differences of the C_k in dB. The frozen rule's recipe (−30 dB glitch masking, trapezoid band average, geometric-mean ratios R^GM, N §3) gives the right-hand columns:
+
+| File (passes) | C1 | C2 | C3 | R31 | R21 | R32 | ‖ R31^GM | R21^GM | R32^GM | glitches masked |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Healthy_sliced (p7) | −36.87 | −57.37 | −51.44 | −14.57 | −20.50 | 5.93 | −14.609 | −20.507 | 5.898 | 1 (T1–T4, 3.525 GHz) |
+| Healthy_sliced_new (p6) | −36.86 | −57.42 | −51.60 | −14.74 | −20.56 | 5.82 | −14.744 | −20.567 | 5.823 | 0 |
+| Mild_lobe (p5) | −36.82 | −56.78 | −52.63 | −15.81 | −19.96 | 4.15 | −15.822 | −19.974 | 4.152 | 0 |
+| Mild_lobe_new (p6) | −36.82 | −56.75 | −52.33 | −15.51 | −19.93 | 4.43 | **−15.856** | −19.940 | **4.084** | **1 (T2–T5, 3.855 GHz)** |
+| Moderate_lobe (p5) | −37.06 | −56.51 | −53.07 | −16.00 | −19.44 | 3.44 | −16.008 | −19.451 | 3.443 | 0 |
+| Severe_lobe (p5) | −37.70 | −55.70 | −53.23 | −15.52 | −18.00 | 2.47 | −15.533 | −18.002 | 2.469 | 1 |
+
+**The glitch.** In `Mild_lobe_new` the opposite path T2–T5 has one sample at 3.855 GHz where \|S_52\| = −38.9 dB and \|S_25\| = −34.0 dB, against −71.1/−69.8 dB at 3.850 GHz and −53.6/−53.5 dB at 3.860 GHz. That is a ~30 dB, non-reciprocal (≈ 5 dB) single-point spike, the signature of an interpolating-sweep artefact. It raises the band power of that path by 0.5–1.4 dB and the ring-mean C3 by ≈ 0.3 dB. After masking, T2–T5 equals its mirror path T3–T6 (both −52.87 dB), as the mirror symmetry of the design requires. Healthy_sliced (p7) has a smaller masked bump on T1–T4 at 3.525 GHz (≈ +5 dB, reciprocal to −23 dB), which shifts its R31 by 0.04 dB.
+
+| # | Claim (U4) | Number(s) | Status as stated | My check | Caveats |
+|---|---|---|---|---|---|
+| L1 | Materials of all lobe designs VERIFIED in the HFSS material editor; per-object assignments match the stage table; LeftOnly CSF_Mild also on the right as the 0.5 mm layer; MCI_lobe HIP_MCI only, CSF_outer and Ventricle_CSF healthy | — | fact | REPORTED (user, HFSS) | Same as MODEL_CARD 5.2 (A11); adds MCI_lobe assignments |
+| L2 | Lobe Setup1: adaptive at 3.4 GHz, Max ΔS 0.02, 30 %, first-order, iterative, no ABC on ports; interpolating 3.2–4.2 GHz, 201 pts | — | fact | REPORTED; grid VERIFIED (201 pts, 3.2–4.2) | — |
+| L3 | Adaptive meshing is deterministic: same stop rule reproduces every pass exactly | — | fact | consistent with data: Moderate_new = Moderate, Severe_new = Severe to max \|ΔS\| ≈ 10⁻⁸ (VERIFIED) | Explains the bit-identical v2 Normal "mesh repeat" of 2026-10-02 (`data/sim_plan.csv`) |
+| L4 | lobe_v1 files were NOT under one stopping rule (Healthy 2 consecutive, stages 1); retract "identical mesh settings" | — | **retracted** (already in the repo since `bac41d4`, CR G13) | REPORTED | Nothing new to retract; U4 confirms it |
+| L5 | One extra pass moves C3 by +0.30 dB (Mild 5→6) and +0.16 dB (Healthy 6→7): same sign, shrinking step = ordinary convergence | Mild +0.30, Healthy +0.16 dB | holds (U4) | **reproduced with the unmasked recipe; not supported with the frozen-rule recipe.** Masked: R31 step Healthy 6→7 **+0.135 dB**, Mild 5→6 **−0.034 dB** (opposite signs). The Mild +0.30 dB is the 3.855 GHz glitch | Two steps cannot establish "ordinary convergence" in either recipe |
+| L6 | C1, C2 move ≤ 0.05 dB; median change over all entries and frequencies 0.09 dB (Mild) | ≤ 0.05; 0.09 | holds (U4) | VERIFIED: median \|Δ dB\| Mild 5→6 = 0.090 (off-diagonal 0.094, reflections 0.058); Healthy 6→7 = 0.066 | — |
+| L7 | R21 is mesh-converged | ≤ 0.06 dB | holds (U4) | VERIFIED in both recipes: Healthy +0.06, Mild +0.03 dB | One step per design |
+| L8 | R31 and R32 carry ≈ ±0.15–0.3 dB mesh uncertainty, entirely through C3 | ±0.15–0.3 dB | holds (U4) | **Not supported as stated.** Masked: R31 +0.135 / −0.034, R32 +0.075 / −0.068 dB. The 0.3 dB end of the range comes from the glitch | Under the frozen-rule recipe the one-pass yardstick is ≤ 0.14 dB for all three ratios |
+| L9 | Physical reason: opposite path is the weakest entry (\|S\| ≈ 0.0025, ≈ −52 dB) far below what ΔS 0.02 controls; it travels through air (field study) | — | PHY (U4) | Plausible; consistent with CR B2. Not tested | ΔS is an absolute change of any S entry, so a −52 dB entry can change by much more in relative terms before ΔS reacts |
+| L10 | Normal − Mild R31 | set A 1.07, set B 0.94, unmatched 1.24 dB | holds (U4) | Reproduced with the unmasked recipe. Frozen-rule recipe: **set A 1.078, set B 1.247, unmatched 1.213 dB** | Under the frozen rule the set-B gap is not smaller than the others |
+| L11 | Proposed sets: **lobe_A** = Healthy_sliced_new, Mild_lobe, Moderate_lobe, Severe_lobe (stop rule 1); **lobe_B** = Healthy_sliced (p7), Mild_lobe_new (p6) (stop rule 2-consecutive); Prompt 07 results = "lobe_v1 (unmatched)" | — | proposed (U4) | — | Matched **stop rule**, not matched mesh: in lobe_A the healthy mesh still has 1.46× the elements of Mild (1,081,728 vs 739,774) and a tighter final ΔS (0.0155 vs 0.0186–0.0200) |
+| L12 | Frozen R31 margin to τ (−15.273 dB) in lobe_A | — | not computed by the analysis session yet | from my R^GM column (clean data): Healthy_sliced_new **+0.53**, Mild −0.55, Moderate −0.74, Severe **−0.26 dB** | Severe_lobe was not re-solved: its margin is unchanged and still the smallest |
+
 ## K. Contradictions and stale statements found (Phase 0)
 
 1. **k = 3 delays** (B1): MODEL_CARD caveat 5 and STATUS §2 use v1 numbers (3.61/3.69/6.03 ns); current v2 report 3.11/2.97/5.31 ns.
@@ -183,3 +215,5 @@ All NR (one solve per design) and **mesh-unmatched** (A10).
 6. **MCI hippocampus material**: imaging code models v2 MCI with Normal materials (`imaging/common.py`), while MCI_lobe uses HIP_MCI 40.3/5.203 (MODEL_CARD 5.1). v2 MCI material is not documented.
 7. **Lobe geometry ≠ uniform geometry**: in the lobe phantom gray matter is always 7 mm thick (76 − e … 83 − e); in the uniform phantom gray thickness changes with stage (e.g. Mild 64.6–70.55 mm). So "Mild_lobe" is not "uniform Mild restricted to some lobes". Not stated anywhere explicitly.
 8. **v1 prompt-02/03 numbers in `results/summary.md`** no longer match the files in `results/02`, `results/03` (overwritten by v2 run 1).
+9. **(2026-10-04) Two recipes for the same ratio names.** U4 computes R31/R21/R32 as arithmetic ring means without glitch masking; the frozen rule uses glitch-masked, geometric-mean ratios. They agree within 0.04 dB except where a glitch hits a weak path (Mild_lobe_new: 0.35 dB on R31). Any "mesh yardstick" must use the frozen-rule recipe, because the frozen rule is what is being judged (section L).
+10. **(2026-10-04) File naming.** `data/sim_plan.csv` announced the lobe re-solves as `*_m2.s6p` with min converged passes 2 and max passes 10. The files arrived as `*_new.s6p`, and only Mild_lobe_new used 2 consecutive passes. Healthy_sliced_new used 1, and Moderate/Severe_new are copies of the originals.

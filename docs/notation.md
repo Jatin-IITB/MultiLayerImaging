@@ -164,6 +164,9 @@ Reciprocity is preserved by the setup perturbation, not by the profile noise.
 | ΔS adaptive convergence ("Max Delta S") | HFSS adaptive meshing stops when the max change of any S-parameter magnitude between successive passes is below the target | `MODEL_CARD.md` Part 2, 5.2 | REPORTED (standard HFSS meaning) |
 | passes, tets/elements | Adaptive passes; tetrahedral mesh elements | same | REPORTED |
 | interpolating vs discrete sweep | HFSS frequency-sweep types; S-parameter files used interpolating sweeps; field exports used a 3-point discrete sweep | `MODEL_CARD.md` Part 2 | REPORTED |
+| stop rule | HFSS adaptive stopping criterion: "ΔS < 0.02, N consecutive" = stop after N consecutive passes below the ΔS target ("min converged passes" N). Lobe files: N = 1 or 2 (CR §L) | user 2026-10-04; `data/mesh_lobe.csv` | REPORTED |
+| lobe_v1 / lobe_A / lobe_B | lobe_v1 = the four Prompt-07 files (stop rules **not** matched). lobe_A = Healthy_sliced_new + Mild/Moderate/Severe_lobe (all stop rule 1). lobe_B = Healthy_sliced (p7) + Mild_lobe_new (p6) (stop rule 2-consecutive). A and B are **proposed** (2026-10-04) and not yet in any manifest | CR L11 | REPORTED |
+| one-pass yardstick | Change of a feature when the same design is solved with one more adaptive pass (Healthy 6→7, Mild 5→6). Different from the earlier "mesh yardstick" (v2 Normal − Healthy_sliced, two projects) | CR L5–L8 | — |
 | solve / repeat | One HFSS solution of a design. v1 and v2 solves of the same design are treated as repeats (role `mesh_repeat` in `data/sims_with_repeats.csv`), although they differ in **sweep** settings only (see §9) | `data/sims_with_repeats.csv` | VERIFIED |
 | glitch | (f, i, j) point with \|S_ij − S_ji\| > 10^{−30/20} × band-rms level of the pair; masked by complex linear interpolation | `src/adstage/io/masking.py` | VERIFIED |
 | header policy | Touchstone `!` comment lines are kept but never interpreted; labels from `data/sims*.csv`, ports from `config.yaml` | `src/adstage/io/touchstone.py` docstring | VERIFIED |
@@ -177,6 +180,7 @@ Reciprocity is preserved by the setup perturbation, not by the profile noise.
 4. **"front-back index"** = path-power index I_FB (dB) in `results/05_lobe/`, but sector contrast FB_inv (dε″) in `results/imaging/lobe_report.md` (§5 above).
 5. **"absorbed power"** (N) is not head absorption (§2).
 6. **k = 3 group delay numbers**: `MODEL_CARD.md` caveat 5 and `results/STATUS.md` §2 quote 3.61 ns measured / 3.69 ns creeping / 6.03 ns straight. These are the **v1-data** values (`git show 935f26d:results/imaging/report.md` §1). The current v2 report gives 3.11 / 2.97 / 5.31 ns (`results/imaging/report.md` §1). The conclusion is the same; the numbers in MODEL_CARD and STATUS are stale.
+7. **Two recipes for R31/R21/R32 (found 2026-10-04).** *Frozen-rule recipe* (`ring_features.py`): glitch masking −30 dB, trapezoid band average, floor subtraction on noisy data, geometric mean over the six antennas (C_k^GM). *Ring-mean recipe* (your 2026-10-04 table): plain mean over frequency points, no masking, arithmetic mean over the 12/12/6 pairs, R_ab^ring = C_a^ring − C_b^ring (dB). They agree within 0.04 dB on clean, glitch-free files, but differ by 0.35 dB on `Mild_lobe_new` (CR §L). In the docs, R31 without a superscript always means the frozen-rule recipe.
 
 ## 10. Running glossary (plain words)
 

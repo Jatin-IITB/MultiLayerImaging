@@ -104,6 +104,10 @@ All Touchstone facts in the first table were **VERIFIED** by parsing each file w
 | `data/raw/new_with_slices_Mild_lobe.s6p` | lobe_v1 | Mild | same, e = 0/7.5/11.5/0/11.5/7.5 (header VERIFIED) | new_with_slices / Mild_lobe | 3.2–4.2 | 201 / 5 MHz | same |
 | `data/raw/new_with_slices_Moderate_lobe.s6p` | lobe_v1 | Moderate | same, e = 11.5/12.5/15.5/0/15.5/12.5 | new_with_slices / Moderate_lobe | 3.2–4.2 | 201 / 5 MHz | same |
 | `data/raw/new_with_slices_Severe_lobe.s6p` | lobe_v1 | Severe | same, e = 15.5/17.5/18/11.5/18/17.5 | new_with_slices / Severe_lobe | 3.2–4.2 | 201 / 5 MHz | same |
+| `data/raw/new_with_slices_Healthy_sliced_new.s6p` | lobe re-solve (2026-10-04) | Normal | lobe-sector, as Healthy_sliced | (not re-read) | 3.2–4.2 | 201 / 5 MHz | same |
+| `data/raw/new_with_slices_Mild_lobe_new.s6p` | lobe re-solve | Mild | as Mild_lobe | — | 3.2–4.2 | 201 / 5 MHz | same; **one non-reciprocal glitch, T2–T5 at 3.855 GHz** (\|S_52\| −38.9, \|S_25\| −34.0 dB vs ≈ −70 dB at the neighbouring samples) |
+| `data/raw/new_with_slices_Moderate_lobe_new.s6p` | lobe re-solve | Moderate | as Moderate_lobe | — | 3.2–4.2 | 201 / 5 MHz | numerically equal to `Moderate_lobe.s6p` (max \|ΔS\| = 9·10⁻⁹, print precision) |
+| `data/raw/new_with_slices_Severe_lobe_new.s6p` | lobe re-solve | Severe | as Severe_lobe | — | 3.2–4.2 | 201 / 5 MHz | numerically equal to `Severe_lobe.s6p` (max \|ΔS\| = 1.7·10⁻⁸) |
 | `data/fields/E_Normal_T{1..6}_{3p4,3p6,3p8}GHz.fld` + `E_Normal_T1_3p6GHz_wide.fld` | fields | Normal (v2) | complex E, 61³ nodes, 3 mm grid ±90 mm (wide: ±120 mm / 4 mm) | new / Healthy, HFSS 2024.2 | 3.4, 3.6, 3.8 | — | one file per driven antenna, 1 V incident, others matched |
 
 Field-file facts: 19 files present, ~48.4 MB each (VERIFIED, file system); grid and source description REPORTED (`imaging/fields.py` docstring, `results/imaging/report.md` §4.0).
@@ -115,6 +119,7 @@ Field-file facts: 19 files present, ~48.4 MB each (VERIFIED, file system); grid 
 | v1 | UNKNOWN (mesh stats not in files; user said only sweep settings differ from v2) | UNKNOWN | UNKNOWN type; Severe exported 3.2–4.2 GHz / 2 MHz | `MODEL_CARD.md` Part 2; `data/sims_with_repeats.csv` header |
 | v2 | max 6 passes, 30 % refinement; Max ΔS **0.02** (Normal, MCI) vs **0.05** (Mild, Moderate, Severe) | Normal: 6 passes, NOT converged. MCI: 5 passes, ΔS 0.0200, 910,960 tets. Mild: 4, 0.0410, 672,508. Moderate: 6, 0.0261, 569,697. Severe: 6, 0.0288, 606,640 | interpolating, 281 points; field exports: 3-point discrete | `MODEL_CARD.md` Part 2 (VERIFY table) |
 | lobe_v1 | adaptive at 3.4 GHz, Max ΔS 0.02, max 8 passes, 30 %, first-order basis, iterative solver | Healthy_sliced 7 passes, 0.0092, 1,349,491 elements, min converged passes 2. Mild_lobe 5, 0.0186, 739,774, 1. Moderate_lobe 5, 0.0194, 796,281, 1. Severe_lobe 5, 0.019999, 690,077, 1 (marginal) | interpolating 3.2–4.2 GHz, 201 points; FieldSweep disabled | `data/mesh_lobe.csv`; `MODEL_CARD.md` 5.2; `prompts/07…` §1.5 |
+| lobe re-solves (user, 2026-10-04; HFSS convergence tables) | adaptive at 3.4 GHz (single), Max ΔS 0.02, 30 %, first-order, iterative, no ABC on ports; interpolating 3.2–4.2 GHz, 201 pts; **adaptive meshing is deterministic** (same rule reproduces every pass exactly) | Stop rule "ΔS < 0.02, N consecutive": Healthy_sliced 2-consec, 7 passes, 0.0092, 1,349,491 · Healthy_sliced_new 1, 6, 0.0155, 1,081,728 · Mild_lobe 1, 5, 0.0186, 739,774 · Mild_lobe_new 2-consec, 6, 0.0150, 878,656 · Moderate_lobe = Moderate_lobe_new 1, 5, 0.0194, 796,281 · Severe_lobe = Severe_lobe_new 1, 5, 0.019999, 690,077 | interpolating | user message 2026-10-04 (REPORTED); duplicates and grid VERIFIED |
 | Normal mesh repeat (attempt 2026-10-02) | ΔS 0.01 but still 6 passes | "bit-identical to new_Healthy.s6p and is not a repeat" | — | `data/sim_plan.csv` |
 
 **Phantom geometry and materials** (REPORTED from `MODEL_CARD.md` Part 1 and 5.1; sphere radii also hard-coded in `imaging/common.py`, VERIFIED).
@@ -227,6 +232,7 @@ Pre-repo items are dated by file-modification time only; repo items by commit da
 | 2026-10-03 21:24–21:25 | Prompt 07 analysis; LeftOnly predictions **pre-registered** (`7ccec7f`, `cf56de8`) | git |
 | 2026-10-03 22:30–22:32 | Lobe mesh table from user: lobe_v1 mesh-unmatched; identical-mesh claim retracted; mesh-scale section; MODEL_CARD Part 5; STATUS §7 (`cd4a7cc` … `4073d25`) | git |
 | 2026-10-03 22:36–22:43 | Prompt 08 lobe imaging; blind predictions **pre-registered** (`fb5b775`, `62709e0`); mesh yardstick §5b (`6db4c39`, `ecacd35`) | git |
+| 2026-10-04 01:11–02:34 | Lobe re-solves written: `Mild_lobe_new`, `Severe_lobe_new` (01:11–01:12), `Healthy_sliced_new`, `Moderate_lobe_new` (02:33–02:34); user's convergence study and proposed sets lobe_A / lobe_B (chat 2026-10-04). Not yet in any manifest or analysis | file mtimes; chat |
 | after 2026-10-03 | **S8** CST voxel head | UNKNOWN (no files) |
 
 Order of the work (one line): single-layer 8-antenna sector phantom (S0) → 7-layer sphere v1, metrics and classifiers (S1) → imaging/localisation on the sphere (S2) → re-solved v2 + MCI and cross-solve tests (S3) → field exports, likelihood, audit, frozen rule (S4–S5) → mesh-settings confound found (S6) → lobe-sector phantom, frozen-rule transfer, pre-registered localisation tests (S7) → CST voxel model (S8, outside this repo).

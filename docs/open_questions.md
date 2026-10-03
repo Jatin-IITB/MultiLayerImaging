@@ -56,6 +56,16 @@ IDs are stable; later packs will close them with a note.
 - **F1 ★** The record of what Prof. Sarkar asked and when. The only trace is Prompt 07 §1: "The professor asked us to combine the earlier sectored phantom with the layered phantom." → Pack 04.
 - **F2** Was the "6 sectors × 60°" lobe layout taken from the S0 sector phantom (also 6 × 60°)? → Pack 01/04.
 
+## Q-I. From your message of 2026-10-04 (lobe convergence study)
+
+- **I1 ★** That message reads as addressed to the **analysis session** (Prompt 07 answers; edit the lobe manifest, MODEL_CARD Part 5, STATUS §7; rerun §3.3–3.4; commit). My rules for this session are read-only on `data/`, `results/`, `scripts/`, `MODEL_CARD.md` and `STATUS.md`, so I documented it in `docs/` only. Please forward it, together with the glitch finding (I2), to the analysis session.
+- **I2 ★** `Mild_lobe_new.s6p` has a non-reciprocal single-sample spike on T2–T5 at 3.855 GHz (~30 dB). It produces the "+0.30 dB C3 per extra pass" and the set-B Normal−Mild R31 of 0.94 dB in your table. Under the frozen rule's recipe (masked) the one-pass R31 change is +0.135 (Healthy) and −0.034 dB (Mild), with opposite signs. Should the convergence conclusion (U4 §3: "R31, R32 carry ±0.15–0.3 dB through C3") be restated with the masked numbers, or should that frequency be re-solved with a discrete sweep?
+- **I3** Is lobe_A "matched" enough? The stop rule is matched, but the healthy mesh still has 1.46× Mild's elements and a tighter final ΔS. Should the report call lobe_A "stop-rule matched" rather than "mesh-matched"?
+- **I4** `data/sim_plan.csv` planned `*_m2` files with min converged passes 2 and max passes 10 for all lobe stages. Only Mild was re-solved that way. Are 2-consecutive re-solves of Moderate and Severe planned (lobe_B would then cover all stages)?
+- **I5** "No ABC on ports": does this mean the HFSS port option "Use ABC / do not use ABC on port" (radiation boundary on the port face)? For the report's setup section.
+- **I6** Closes **C2/L3**: deterministic meshing explains why the 2026-10-02 v2 Normal re-solve with the old pass limit was bit-identical. Confirm this applies to the v2 project as well.
+- **I7** LeftOnly_test and MCI_lobe will arrive as `new_with_slices_LeftOnly_test.s6p` / `new_with_slices_MCI_lobe.s6p` (not `_m2`). The scoring compares each with "the Healthy file of the same stop rule". Noted for the plan (F7.7, F7.8, F8.13).
+
 ## Q-H. From the D0b outline and figure plan (added after D0b)
 
 - **H1** D0b Ch. 3 mentions a sphere-radius correction 58 → ~100 mm, Bruggeman mixing of materials, and F-K migration / MF-Born imaging. None of these is in the repo (the pptx states R = 58 mm and mentions only DAS-type sector scoring + SVD). → P01.
