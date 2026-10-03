@@ -1,0 +1,9 @@
+# Lobe-sector phantom, set lobe_v1 (project new_with_slices; copies of the v2 Normal design with gray/white matter cut
+# into six 60-degree lobe sectors S1..S6 centred on antennas T1..T6). One solve per design. See MODEL_CARD Part 5.
+# sectors_affected: S1 frontal, S2 temporal L, S3 parietal L, S4 occipital, S5 parietal R, S6 temporal R; core = hippocampus.
+# Pending (do not add before predictions are committed): new_with_slices_LeftOnly_test.s6p (S2,S3 + core), new_with_slices_MCI_lobe.s6p (core).
+file,class,head_scale,standoff_mm,notes,project,head_id,role,repeat_of,set,sectors_affected
+new_with_slices_Healthy_sliced.s6p,Normal,1.0,9.55,sliced healthy head,new_with_slices,h_lobe,primary,,lobe_v1,none
+new_with_slices_Mild_lobe.s6p,Mild,1.0,9.55,"e = 0/7.5/11.5/0/11.5/7.5 mm, r_hip 17.5",new_with_slices,h_lobe,primary,,lobe_v1,S2 S3 S5 S6 core
+new_with_slices_Moderate_lobe.s6p,Moderate,1.0,9.55,"e = 11.5/12.5/15.5/0/15.5/12.5 mm, r_hip 12.5",new_with_slices,h_lobe,primary,,lobe_v1,S1 S2 S3 S5 S6 core
+new_with_slices_Severe_lobe.s6p,Severe,1.0,9.55,"e = 15.5/17.5/18/11.5/18/17.5 mm, r_hip 7.5",new_with_slices,h_lobe,primary,,lobe_v1,S1 S2 S3 S4 S5 S6 core

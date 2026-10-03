@@ -188,3 +188,27 @@ def test_r31_cancels_per_port_gains_and_floor_estimate():
                                             + 1j * rng.standard_normal((20, 101, n, n)))
     est = 10 * np.log10(floor_power(noisy))
     assert np.all(np.abs(est + 70) < 0.5)
+
+
+def test_cross_ratios_cancel_per_port_gains_and_vanish_when_symmetric():
+    import importlib.util
+    import pathlib
+    p = pathlib.Path(__file__).resolve().parents[1] / "scripts" / "07_lobe.py"
+    spec = importlib.util.spec_from_file_location("lobe07", p)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    rng = np.random.default_rng(5)
+    bp = np.exp(rng.normal(size=(6, 6)))
+    bp = bp + bp.T                                         # reciprocal band powers
+    g = 10 ** (rng.uniform(-2, 2, 6) / 10)                 # per-port power gains, ±2 dB
+    bpg = bp * g[:, None] * g[None, :]
+    a, b = mod.cross_ratios(bp), mod.cross_ratios(bpg)
+    assert len(a) == 45
+    np.testing.assert_allclose([a[k] for k in a], [b[k] for k in a], atol=1e-10)
+    # a rotationally symmetric (circulant) head has zero asymmetry cross-ratios
+    d = mod.DIST
+    circ = np.array([[1.0, 0.3, 0.05, 0.1][d[i, j]] for i in range(6) for j in range(6)]).reshape(6, 6)
+    cls = mod.chi_classes()
+    chi = mod.cross_ratios(circ)
+    asym = [chi[n] - np.mean([s * chi[m] for m, s in cls[n]]) for n in chi]
+    np.testing.assert_allclose(asym, 0, atol=1e-10)

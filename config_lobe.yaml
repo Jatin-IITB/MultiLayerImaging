@@ -1,0 +1,11 @@
+# Overlay on config.yaml for the lobe-sector phantom (set lobe_v1). Run with MLI_CONFIG=config_lobe.yaml.
+extends: config.yaml
+
+data:
+  manifest: data/sims_lobe.csv
+
+metrics:
+  sim_set: lobe_v1-masked
+
+results:
+  out_root: results/05_lobe     # qc/, figures/ (and 02/03 if ever run) go here; metrics.csv stays shared
