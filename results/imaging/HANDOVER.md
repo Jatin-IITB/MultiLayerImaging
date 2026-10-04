@@ -89,8 +89,34 @@ A replication design (RightOnly_test) was proposed and its prediction committed.
 - **Pass gap** (RightOnly p5 vs LeftOnly p6, against the three p5/p6 twins): LR, LR_anti, amplitude and phase parts,
   and phase share are within the twins (≤ 1.08×). RightOnly's absolute level is not: common-mode delay +4.3° vs
   twins ≤ 3.3°, affected sectors 23–45 % higher.
-- **Next action:** when Null_rot31 and Null_rot43 arrive, add them to `REGISTRY` (`imaging/lobe_c3.py`) and to
-  `ROT` (`imaging/lobe_round3.py`), re-run `python imaging/lobe_round3.py --n 100`, and update the survival table.
+
+**Round 4 (POST-HOC; `lobe_round4.md`, `lobe_report.md` §13; code `a6cf6cc`, results `79ed048`). Round 3
+statements corrected:**
+- **Fit rejection**: "rot19 correctly rejected" is withdrawn.
+  - The rule is a gate on the *sector-shaped* part of the data (explained norm: nulls 1.3–4.3, targets 9.8–35.7)
+    against mesh structure. It is neither a model-validity check nor a total-size gate: rot19's total norm is
+    comparable to LeftOnly's and Test_B's.
+  - It fires on mesh noise alone, and would reject a real change with a null-sized sector component.
+  - Its limit (0.82–0.87) sits above the observed null/target gap in ρ (targets ≤ 0.58, nulls ≥ 0.756), so it
+    accepts some nulls and rejects others.
+- **Pass gap**: "not explained by the pass gap" is withdrawn. As ratios to the largest of n = 3 twins, the
+  common-mode delay is 1.31× and the sector level 1.86–2.06×: **undetermined**. LR and phase share: not separable
+  from the pass gap.
+- **Born vs raw delay, identically calibrated** (thresholds from the null rows only, rotated nulls included, zero
+  false alarms on the nulls, fixed before hits were counted):
+  - Threshold readings: Born adds **nothing measurable** (+1 exact set of 26).
+  - Rank (largest-gap) reading: Born keeps +4…+6 exact sets and 0 false alarms against raw's 5–6.
+  - Label-tuned thresholds (leave-one-family-out): Born 21/26 exact with 3 false alarms, raw 17/26 with 16.
+  - The round-3 raw rule's mid-run redefinition is documented with its before/after numbers: 0/72/0/8 → 43/29/6/14.
+- **Rank rules out of sample** (leave-one-design-out and leave-one-family-out, Test_B never in selection): Born
+  58 hits / 0 false alarms / 20 of 26 exact, the same as in sample. The selected rule is stable ("above midpoint",
+  gate ≈ 8.5). Test_B is read as S2 + S5 against both references. Not adopted; all from one head.
+- **Next action:** when Null_rot31 and Null_rot43 arrive:
+  1. Add them to `REGISTRY` (`imaging/lobe_c3.py`) and to `ROT` (`imaging/lobe_round3.py`); nothing else needs
+     editing.
+  2. Re-run `python imaging/lobe_round3.py --n 100` and `python imaging/lobe_round4.py`. Round 4 includes points 1
+     (fit statistic) and 3 (Born vs raw).
+  3. Update the survival tables.
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -150,6 +176,7 @@ Only CONFIRMED / CHANGED items. [POST-HOC] = built after unblinding.
 | MCI_lobe shows nothing beyond the rulers in any variant (never flips with λ, reference or calibration) | CONFIRMED | B17, round 1 |
 | R31 detection is defensible on the uniform training data and fragile on lobe Severe/LeftOnly; no single feature determines every lobe design | CONFIRMED | R4 |
 | Thresholds were frozen before LeftOnly/MCI existed but tuned on Mild of the same head; Mild calls are in-sample | CHANGED | B19 |
+| **Round 4 [POST-HOC]:** the fit-rejection rule is a gate on the sector-shaped part of the data, not a model-validity check, and fires on mesh noise alone. Born vs raw delay under identical null-only calibration: no measurable difference for threshold readings, +4…+6 exact sets for rank readings. The rank rule out of sample (leave-one-family-out, Test_B never selected on) scores 58 hits / 0 FA / 20 of 26 exact. The pass-gap explanation of RightOnly's level is undetermined (1.31×, 1.86–2.06× the largest of 3 twins) | CHANGED | round 4, `lobe_round4.md` |
 | **Round 3 [POST-HOC]:** the Test_B committed reading is a MISS (truth S2 + S5); its ranking S2 > S5 was the correct pair in the correct order. The raw neighbour-path delay per antenna ranks affected sectors as well as the Born map (top-k with the true k 0.96 vs 1.00), so the ranking is not evidence for the Born pipeline. The rotated nulls stay inside the LR_anti envelope (pair rank p ≈ 0.007 if independent), but exceed the old floors for single-path phase and second-neighbour power | CHANGED | round 3, `lobe_round3.md` |
 | **Added after round 2:** RightOnly_test (mirror of LeftOnly, independent mesh) is REPLICATED under the committed C6 rule: LR −9.44 (H6) / −9.83 (H7), phase sign at 3.4 and 3.6 GHz, 83 % phase. [POST-HOC] LR_anti −10.15 = 2.5× (Tikhonov dS) to 3.4× (whitened log) the R1c ruler; both mirror designs beyond all nine nulls with opposite signs | CONFIRMED (prediction held) | C6, `rightonly_score.md`, report §10 |
 
@@ -273,6 +300,9 @@ python imaging/score_testb.py --n 200
 ```bash
 python imaging/lobe_round3.py --n 100
 ```
+```bash
+python imaging/lobe_round4.py
+```
 
 What each writes:
 1. `rebuild_stage1_cache.py` (17 s): cache only.
@@ -290,6 +320,7 @@ What each writes:
 10. `score_testb.py` (≈ 40 s): `testb_report.md`, `testb.json`, §11. It refuses to run if the protocol is not
     committed.
 11. `lobe_round3.py` (≈ 40 s): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
+12. `lobe_round4.py` (≈ 30 s): POST-HOC round 4, `lobe_round4.md` / `.json`, §13.
 
 The §8 and §9 writers keep later sections. `lobe_c3` (step 5) still truncates everything after §6, which is why
 steps 6–10 must follow it.
@@ -419,6 +450,7 @@ python imaging/score_rightonly.py
 | `report_rightonly.py` | §10: RightOnly QC, verdict, post-hoc mirror-pair table |
 | `score_testb.py` | Test_B blind scorer implementing `testb_protocol.md` (`--dry-run STEM` on known designs only) |
 | `lobe_round3.py` + `lobe_round3_md.py` | round 3 (POST-HOC): rotated nulls, rulers rebuilt, rank readings, raw delay vs Born, pass gap |
+| `lobe_round4.py` | round 4 (POST-HOC): fit-rejection analysis, identically calibrated Born vs raw, out-of-sample rank rules |
 | `run_imaging.py`, `study_i1/i2/i2_hfss/i3/ratios.py`, `beamform.py`, `forward.py`, `mie.py`, `linear.py`, `timedomain.py`, `paths.py`, `stage_snr.py`, `report*.py` | Track A |
 | `tests/` | `test_imaging.py` (Track A), `test_lobe.py` (geometry, rules, one bar, whitened projection) |
 | `hpc/` | SLURM / env scripts for the Praganak cluster |
@@ -430,7 +462,7 @@ Key commits:
 - `237ad47` / `b543b33` round 1; `0ceb626` round-2 predictions; `66c04db` / `e4c33d3` round 2.
 - `226f9b1` safe rebuild + RightOnly scorer; `2a75644` this handover.
 - `b2f1472` / `24aa0c4` Test_B scorer and protocol (before loading); RightOnly REPLICATED.
-- `6efd1db` / `5818235` §10 writer and Test_B estimates; `be15287` / `ad1bacb` round 3 (Test_B scored, rotated nulls).
+- `6efd1db` / `5818235` §10 writer and Test_B estimates; `be15287` / `ad1bacb` round 3 (Test_B scored, rotated nulls); `a6cf6cc` / `79ed048` round 4.
 
 ## 8. Pitfalls seen in this project
 

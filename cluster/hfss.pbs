@@ -1,0 +1,36 @@
+#!/bin/sh
+# HFSS batch solve on Praganak (PBS Pro, AEDT 2025 R2).
+#
+# Usage (from the folder holding the .aedt file, ideally under /scratch):
+#   qsub -v PROJECT=head.aedt cluster/hfss.pbs                                   # all setups
+#   qsub -v PROJECT=head.aedt,TARGET=HeadModel:Nominal:Setup1 cluster/hfss.pbs   # one setup
+#
+# Defaults are a debug-queue smoke test (30 min). For a real solve override on the command line:
+#   qsub -q small -l walltime=24:00:00 -v PROJECT=head.aedt cluster/hfss.pbs
+# ncpus must be a multiple of 56 (one node = 112 cores, 512 GB).
+#PBS -N hfss
+#PBS -q debug
+#PBS -l select=1:ncpus=56:mem=256gb
+#PBS -l place=pack
+#PBS -l walltime=00:30:00
+#PBS -j oe
+
+AEDT=/apps/ansys2025r2/ansys_inc/v252/AnsysEM/ansysedt
+export ANSYSLMD_LICENSE_FILE=1055@license35.iitb.ac.in
+export ANSYSLI_SERVERS=2325@license35.iitb.ac.in
+
+cd "$PBS_O_WORKDIR" || exit 1
+: "${PROJECT:?pass -v PROJECT=<file>.aedt}"
+[ -f "$PROJECT" ] || { echo "no such project: $PWD/$PROJECT"; exit 1; }
+CORES=${NCPUS:-56}
+
+# A lock left by a crashed or Windows session makes the batch solve refuse to open the project.
+rm -f "$PROJECT.lock"
+
+echo "node $(hostname), $CORES cores, project $PROJECT, target ${TARGET:-all setups}, $(date)"
+"$AEDT" -ng -monitor -waitforlicense \
+  -distributed -machinelist numcores="$CORES" \
+  -batchsolve ${TARGET:+"$TARGET"} "$PROJECT"
+rc=$?
+echo "ansysedt exit code $rc, $(date)"
+exit $rc

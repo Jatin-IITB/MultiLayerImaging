@@ -33,8 +33,9 @@ very lossy Severe CSF screens tissue more than about 5 mm below the skull.
 **Post hoc, after the truth (§11):**
 - Rotated-mesh nulls come out empty.
 - The lobe calls survive every null reference and an inflated noise model.
-- Interval coverage on affected lobes is 69% → 78% with every solve-to-solve offset added. That is above 70% but
-  below the nominal 90%: depth intervals remain the open problem.
+- Interval coverage on affected lobes is 69% → 78% with every solve-to-solve offset added. Coverage of 78% on
+  affected lobes is accepted with the warning (nominal 90%).
+- P = 1.00 means the data strongly prefer the lobe under this model.
 - One model-free reading (Test_B's ring spread) does not survive the rotated nulls.
 
 Everything below z ≈ 30 mm and deeper than ≈ 1.5–2 cm is not measured by this array. The images fade/hatch it.
@@ -402,8 +403,8 @@ rot07 phase pairs at 3.4 GHz 1.67 / 1.78°; ring spread 1.42° / 0.68°.
 | before (committed noise model) | 83% | **69%** | 98% |
 | after | 88% | **78%** | 100% (Mild p5's false S1 call disappears) |
 
-- **78% is above the 70% threshold** but below the nominal 90%. So depth intervals are reportable with the warning that
-  they under-cover.
+- Coverage of 78% on affected lobes is accepted with the warning: it is above the 70% threshold but below the nominal
+  90%.
 - **The 8 remaining misses:**
   - 3 near-misses on Mild's 7.5 mm lobes (intervals start at 8.0);
   - Severe S1/S2 on both meshes (depth undetermined);
@@ -415,7 +416,7 @@ rot07 phase pairs at 3.4 GHz 1.67 / 1.78°; ring spread 1.42° / 0.68°.
   - RightOnly's wrong lobes stay: gain-removing P(S2) = **1.00**, P(S3) = 0.67; against H7, P(S1) = 0.69.
 - **Calibration:** confident calls (P ≥ 0.99 or ≤ 0.01) were wrong 1 of 84 times before and 1 of 82 after. It is the
   same call each time, RightOnly gain-removing S2.
-- **Reading:** P = 1.00 means "these data strongly prefer this lobe *under this model*". The model does not represent
+- **Reading:** P = 1.00 means the data strongly prefer the lobe under this model. The model does not represent
   solve-to-solve offsets well enough for the number to be a probability.
 
 **F. Ring-mean-phase variant** (the phase ring mean of every path class removed at every frequency):
