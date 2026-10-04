@@ -1,4 +1,4 @@
-# Lobe-sector phantom (set lobe_v1): analysis (code 7f5b39b)
+# Lobe-sector phantom (set lobe_v1): analysis (code 08a9a53)
 
 Designs: Healthy_sliced, Mild_lobe, Moderate_lobe, Severe_lobe (3.2-4.2 GHz, 201 points). One solve per design: within-simulation noise robustness, not generalisation. Noise unless stated: typical profile + setup perturbation + per-port gain ±0.5 dB. Antennas in ring order T1..T6 = Frontal, Temporal L, Parietal L, Occipital, Parietal R, Temporal R.
 

@@ -3,11 +3,21 @@ condition,rule,design,expected,fraction correct,UNCERTAIN,INVALID
 ±2 dB gain + ±10° phase,binary_R31,Healthy_sliced,Normal,1.0,0.0,0.0
 "typical, ±0.5 dB gain",binary_R31,Mild_lobe_new,AD,1.0,0.0,0.0
 ±2 dB gain + ±10° phase,binary_R31,Mild_lobe_new,AD,1.0,0.0,0.0
+"typical, ±0.5 dB gain",binary_R31,Moderate_lobe_c3,AD,1.0,0.0,0.0
+±2 dB gain + ±10° phase,binary_R31,Moderate_lobe_c3,AD,1.0,0.0,0.0
+"typical, ±0.5 dB gain",binary_R31,Severe_lobe_c3,AD,1.0,0.0,0.0
+±2 dB gain + ±10° phase,binary_R31,Severe_lobe_c3,AD,1.0,0.0,0.0
 "typical, ±0.5 dB gain",three,Healthy_sliced,Normal,1.0,0.0,0.0
 ±2 dB gain + ±10° phase,three,Healthy_sliced,Normal,1.0,0.0,0.0
 "typical, ±0.5 dB gain",three,Mild_lobe_new,Mild,0.69,0.12,0.0
 ±2 dB gain + ±10° phase,three,Mild_lobe_new,Mild,0.7166666666666667,0.13,0.0
+"typical, ±0.5 dB gain",three,Severe_lobe_c3,Severe,1.0,0.0,0.0
+±2 dB gain + ±10° phase,three,Severe_lobe_c3,Severe,1.0,0.0,0.0
 "typical, ±0.5 dB gain",three_merged,Healthy_sliced,Normal,1.0,0.0,0.0
 ±2 dB gain + ±10° phase,three_merged,Healthy_sliced,Normal,1.0,0.0,0.0
 "typical, ±0.5 dB gain",three_merged,Mild_lobe_new,Mild+Moderate,1.0,0.0,0.0
 ±2 dB gain + ±10° phase,three_merged,Mild_lobe_new,Mild+Moderate,1.0,0.0,0.0
+"typical, ±0.5 dB gain",three_merged,Moderate_lobe_c3,Mild+Moderate,1.0,0.0,0.0
+±2 dB gain + ±10° phase,three_merged,Moderate_lobe_c3,Mild+Moderate,1.0,0.0,0.0
+"typical, ±0.5 dB gain",three_merged,Severe_lobe_c3,Severe,1.0,0.0,0.0
+±2 dB gain + ±10° phase,three_merged,Severe_lobe_c3,Severe,1.0,0.0,0.0

@@ -1,0 +1,23 @@
+claim,number,baseline,verdict
+the LeftOnly predictions were scored unchanged (cf56de8),predictions.md / .csv identical to cf56de8: True,git,holds
+"LeftOnly prediction 1 left-right index (Healthy_sliced (7 passes, primary))",observed +0.023 dB vs predicted +0.232; incorrect,sign + and |index| >= 3 x 0.071 dB,not separable (measured: not separable)
+"LeftOnly prediction 2 front-back index (Healthy_sliced (7 passes, primary))",observed +0.068 dB vs predicted +0.038; correct,|index| <= floor 0.084 dB (strict; < 3x floor: True),hit (measured: hit)
+"LeftOnly prediction 3 right paths ~0 (Healthy_sliced (7 passes, primary))",7/7 correct,per path (see section 1),"7 hit, 0 miss, 0 not separable (measured: 7 hit, 0 miss, 0 not separable)"
+"LeftOnly prediction 4 left paths ~ full Mild (Healthy_sliced (7 passes, primary))",4/7 correct,per path (see section 1),"1 hit, 0 miss, 6 not separable (measured: 1 hit, 0 miss, 6 not separable)"
+"LeftOnly prediction locality model vs no-locality baseline (Healthy_sliced (7 passes, primary))",locality loses (rms 0.166 vs 0.135 dB),locality wins if its rms error over all 21 paths is lower,miss
+"LeftOnly prediction 1 left-right index (Healthy_sliced_new (6 passes, matched))",observed -0.029 dB vs predicted +0.232; incorrect,sign + and |index| >= 3 x 0.071 dB,not separable (measured: not separable)
+"LeftOnly prediction 2 front-back index (Healthy_sliced_new (6 passes, matched))",observed +0.137 dB vs predicted +0.038; incorrect,|index| <= floor 0.084 dB (strict; < 3x floor: True),not separable (measured: not separable)
+"LeftOnly prediction 3 right paths ~0 (Healthy_sliced_new (6 passes, matched))",4/7 correct,per path (see section 1),"4 hit, 0 miss, 3 not separable (measured: 4 hit, 0 miss, 3 not separable)"
+"LeftOnly prediction 4 left paths ~ full Mild (Healthy_sliced_new (6 passes, matched))",4/7 correct,per path (see section 1),"1 hit, 0 miss, 6 not separable (measured: 1 hit, 0 miss, 6 not separable)"
+"LeftOnly prediction locality model vs no-locality baseline (Healthy_sliced_new (6 passes, matched))",locality loses (rms 0.189 vs 0.144 dB),locality wins if its rms error over all 21 paths is lower,miss
+LeftOnly prediction 5 R31 level ((absolute value)),observed -15.445 dB vs predicted -15.220; correct,within 0.3 dB,hit (measured: hit)
+LeftOnly prediction 5 R21 level ((absolute value)),observed -20.200 dB vs predicted -20.240; correct,within 0.3 dB,hit (measured: hit)
+LeftOnly prediction 5 R32 level ((absolute value)),observed +4.755 dB vs predicted +5.030; correct,within 0.3 dB,hit (measured: hit)
+LeftOnly prediction 6 frozen detection label UNCERTAIN ((noisy measurements)),0.00 UNCERTAIN (±2 dB/±10°: 0.00); R31 -15.44 dB vs tau -15.27 ± 0.08,>= 80% of noisy measurements labelled UNCERTAIN,miss
+"gain-invariant left-right cross-ratios: LeftOnly asymmetry detected and in the predicted direction (Healthy_sliced (7 passes, primary))",0/22 beyond 3x measured ruler (±2 dB: 0); rms error locality 0.678 vs baseline 0.465 dB; sign agrees 0/0,decision rule fixed before the first run; derived from cf56de8,fails
+"gain-invariant left-right cross-ratios: LeftOnly asymmetry detected and in the predicted direction (Healthy_sliced_new (6 passes, matched))",0/22 beyond 3x measured ruler (±2 dB: 0); rms error locality 0.931 vs baseline 0.622 dB; sign agrees 0/0,decision rule fixed before the first run; derived from cf56de8,fails
+descriptive (post hoc): frozen rules on LeftOnly_test (one-sided mild atrophy),"detection 1.00 AD, R31 margin to tau -0.17 dB = 1.3x the R31 yardstick; three 1.00 Normal, three_merged 0.99 Normal","frozen rule unchanged (typical, ±0.5 dB gain)","AD on this mesh, but the margin is < 2x the yardstick; both staging rules say Normal (inconsistent with detection)"
+MCI_lobe - Healthy_sliced_new exceeds the rulers on any feature (expected: no),"0/228 beyond 3x clean ruler, 0/228 beyond 3x measured ruler; largest asym chi T1T2·T4T6 / T1T6·T2T4 +0.672 dB (2.0x clean)",clean / measured ruler,no (as expected)
+frozen binary_R31 labels MCI_lobe as Normal,"1.00 Normal, 0.00 UNCERTAIN, 0.00 INVALID","frozen rule unchanged (typical, ±0.5 dB gain)",holds
+frozen three labels MCI_lobe as Normal,"1.00 Normal, 0.00 UNCERTAIN, 0.00 INVALID","frozen rule unchanged (typical, ±0.5 dB gain)",holds
+frozen three_merged labels MCI_lobe as Normal,"1.00 Normal, 0.00 UNCERTAIN, 0.00 INVALID","frozen rule unchanged (typical, ±0.5 dB gain)",holds

@@ -1,0 +1,15 @@
+reference,prediction,predicted dB,committed rule,observed dB,committed verdict,label,label (measured),label (±2 dB),/ noise SD,/ yardstick,/ symmetry floor,/ spread ±0.5 dB,/ spread ±2 dB
+"Healthy_sliced (7 passes, primary)",1 left-right index,0.232,sign + and |index| >= 3 x 0.071 dB,0.02316893059187919,incorrect,not separable,not separable,not separable,0.09795722995466916,0.364446704516593,0.22618958314714435,0.0454092162225004,0.011667374682899322
+"Healthy_sliced (7 passes, primary)",2 front-back index,0.038,|index| <= floor 0.084 dB (strict; < 3x floor: True),0.06784404335183325,correct,hit,hit,hit,0.24624225077993364,0.9761432461370816,0.5567708436846492,0.10840734437769949,0.02871799063088578
+"Healthy_sliced (7 passes, primary)",3 right paths ~0,,per path (see section 1),,7/7 correct,"7 hit, 0 miss, 0 not separable","7 hit, 0 miss, 0 not separable",,,,,,
+"Healthy_sliced (7 passes, primary)",4 left paths ~ full Mild,,per path (see section 1),,4/7 correct,"1 hit, 0 miss, 6 not separable","1 hit, 0 miss, 6 not separable",,,,,,
+"Healthy_sliced (7 passes, primary)",locality model vs no-locality baseline,,locality wins if its rms error over all 21 paths is lower,,locality loses (rms 0.166 vs 0.135 dB),miss,on the 14 paths where the models differ: 0.148 vs 0.089 dB,,,,,,
+"Healthy_sliced_new (6 passes, matched)",1 left-right index,0.232,sign + and |index| >= 3 x 0.071 dB,-0.02922767944239979,incorrect,not separable,not separable,not separable,0.12357335634576196,0.45975067391256824,0.28533887670033214,0.057283870320154244,0.014718430175870002
+"Healthy_sliced_new (6 passes, matched)",2 front-back index,0.038,|index| <= floor 0.084 dB (strict; < 3x floor: True),0.1373461821212345,incorrect,not separable,not separable,not separable,0.49850261497790854,1.9761432461370816,1.1271490600867744,0.2194641434762978,0.058137843449139935
+"Healthy_sliced_new (6 passes, matched)",3 right paths ~0,,per path (see section 1),,4/7 correct,"4 hit, 0 miss, 3 not separable","4 hit, 0 miss, 3 not separable",,,,,,
+"Healthy_sliced_new (6 passes, matched)",4 left paths ~ full Mild,,per path (see section 1),,4/7 correct,"1 hit, 0 miss, 6 not separable","1 hit, 0 miss, 6 not separable",,,,,,
+"Healthy_sliced_new (6 passes, matched)",locality model vs no-locality baseline,,locality wins if its rms error over all 21 paths is lower,,locality loses (rms 0.189 vs 0.144 dB),miss,on the 14 paths where the models differ: 0.198 vs 0.130 dB,,,,,,
+(absolute value),5 R31 level,-15.22,within 0.3 dB,-15.444794443653606,correct,hit,hit,hit,6.275001158586066,1.6636001943659011,,5.790539975582114,5.838670203181394
+(absolute value),5 R21 level,-20.24,within 0.3 dB,-20.199685092134057,correct,hit,hit,hit,0.6818441305763097,0.3673544309046325,,0.6056721071310958,0.5774974706201161
+(absolute value),5 R32 level,5.03,within 0.3 dB,4.754890648480449,correct,hit,hit,hit,4.329516785128288,1.7103671876925564,,3.5775680166138044,3.530290481117082
+(noisy measurements),6 frozen detection label UNCERTAIN,,>= 80% of noisy measurements labelled UNCERTAIN,,0.00 UNCERTAIN (±2 dB/±10°: 0.00); R31 -15.44 dB vs tau -15.27 ± 0.08,miss,,,,,,,

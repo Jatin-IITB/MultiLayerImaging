@@ -1,0 +1,13 @@
+condition,design,rule,Normal,AD,Mild,Mild+Moderate,Severe,UNCERTAIN,INVALID
+"typical, ±0.5 dB gain",LeftOnly_test_c3,binary_R31,0.0,1.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",LeftOnly_test_c3,three,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",LeftOnly_test_c3,three_merged,0.99,0.0,0.0,0.0033333333333333335,0.0,0.006666666666666667,0.0
+"typical, ±0.5 dB gain",MCI_lobe_c3,binary_R31,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",MCI_lobe_c3,three,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+"typical, ±0.5 dB gain",MCI_lobe_c3,three_merged,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,LeftOnly_test_c3,binary_R31,0.0,1.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,LeftOnly_test_c3,three,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,LeftOnly_test_c3,three_merged,0.99,0.0,0.0,0.006666666666666667,0.0,0.0033333333333333335,0.0
+±2 dB gain + ±10° phase,MCI_lobe_c3,binary_R31,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,MCI_lobe_c3,three,1.0,0.0,0.0,0.0,0.0,0.0,0.0
+±2 dB gain + ±10° phase,MCI_lobe_c3,three_merged,1.0,0.0,0.0,0.0,0.0,0.0,0.0

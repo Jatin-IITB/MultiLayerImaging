@@ -28,6 +28,13 @@ lobe_A (stop rule 1),Moderate - Mild,best asymmetry cross-ratio T1T4·T5T6 / T1T
 lobe_B (stop rule 2),Healthy_sliced,"front-back, all paths",0.0,0.0,0.0
 lobe_B (stop rule 2),Healthy_sliced,"front-back, neighbour paths",0.0,0.0,0.0
 lobe_B (stop rule 2),Healthy_sliced,"front-back, second-neighbour paths",0.0,0.0,0.0
-lobe_B (stop rule 2),Mild_lobe_new,"front-back, all paths",0.1068359287317406,1.620164274185453,0.2358071840407179
-lobe_B (stop rule 2),Mild_lobe_new,"front-back, neighbour paths",0.0442664363567786,1.5813746407123694,0.0817143025686487
-lobe_B (stop rule 2),Mild_lobe_new,"front-back, second-neighbour paths",0.1694054211067026,1.4261926821964963,0.3051546556185932
+lobe_B (stop rule 2),Mild_lobe_new,"front-back, all paths",0.1068359287317406,1.2166176879731736,0.2338989238816081
+lobe_B (stop rule 2),Mild_lobe_new,"front-back, neighbour paths",0.0442664363567786,0.5759359876578293,0.0810101408300233
+lobe_B (stop rule 2),Mild_lobe_new,"front-back, second-neighbour paths",0.1694054211067026,1.0727523707920583,0.2999308976630395
+lobe_B (stop rule 2),Moderate_lobe_c3,"front-back, all paths",0.051205567767468,0.58311469004998,0.1077353664182636
+lobe_B (stop rule 2),Moderate_lobe_c3,"front-back, neighbour paths",-0.2239757492374785,-2.914074521581317,-0.3997614183818485
+lobe_B (stop rule 2),Moderate_lobe_c3,"front-back, second-neighbour paths",0.3263868847724147,2.0668305780752205,0.531163278741238
+lobe_B (stop rule 2),Severe_lobe_c3,"front-back, all paths",0.0169219051953479,0.1927019254595481,0.0393676550713398
+lobe_B (stop rule 2),Severe_lobe_c3,"front-back, neighbour paths",-0.0131517018873985,-0.1711124508612114,-0.0256830748193562
+lobe_B (stop rule 2),Severe_lobe_c3,"front-back, second-neighbour paths",0.0469955122780945,0.2975970124424695,0.083271341927391
+lobe_B (stop rule 2),Moderate - Mild,best asymmetry cross-ratio T1T4·T3T5 / T1T5·T3T4,-0.729936778551453,,2.342407704029821

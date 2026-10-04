@@ -353,7 +353,8 @@ All five designs (Normal, MCI, Mild, Moderate, Severe) are to be re-solved with 
 - Manifest `data/sims_lobe.csv` (with stop rule, passes, final ΔS and elements, and set membership).
 - Analysis: `scripts/07_lobe.py --config config_lobe{,_A,_B}.yaml` writes `results/05_lobe/`, `results/05_lobe/lobe_A/` and
   `results/05_lobe/lobe_B/`; `scripts/08_lobe_mesh.py` writes `results/05_lobe/mesh/` (reproduction, one-pass yardstick,
-  set comparison, claims). Results at code 7f5b39b (07 and 08).
+  set comparison, claims); `scripts/09_lobe_tests.py` writes `results/05_lobe/tests/` (LeftOnly_test scoring, MCI_lobe).
+  Results: 07 at code 08a9a53, 08 and 09 at e1b3629 (2026-10-04).
 - The v1/v2 results are untouched; this is a separate dataset.
 
 ### 5.1 Supplied facts (from the user; not read from Touchstone headers)
@@ -401,6 +402,14 @@ Adaptive meshing is deterministic: re-solving with the same stop rule reproduces
 | Mild_lobe_new.s6p | ΔS < 0.02, 2 consecutive | 6 | 0.0150 | 878,656 | lobe_B |
 | Moderate_lobe.s6p (= Moderate_lobe_new.s6p) | ΔS < 0.02, 1 | 5 | 0.0194 | 796,281 | lobe_v1, lobe_A |
 | Severe_lobe.s6p (= Severe_lobe_new.s6p) | ΔS < 0.02, 1 | 5 | 0.019999 | 690,077 | lobe_v1, lobe_A |
+| Moderate_lobe_c3.s6p | ΔS < 0.02, 2 consecutive | 6 | 0.014593 | 949,865 | lobe_B |
+| Severe_lobe_c3.s6p | ΔS < 0.02, 2 consecutive | 6 | 0.011567 | 819,294 | lobe_B |
+| LeftOnly_test_c3.s6p | ΔS < 0.02, 1 | 6 | 0.014686 | 941,358 | lobe_A (test design) |
+| MCI_lobe_c3.s6p | ΔS < 0.02, 1 | 6 | 0.013948 | 981,160 | lobe_A (test design) |
+
+The `_c3` suffix is only the user's label, not a stop rule. In LeftOnly_test, MCI_lobe and Healthy_sliced_new, pass 5
+missed ΔS 0.02 by ≈ 0.002, so all three have 6 passes. Header variables were checked by the user: LeftOnly
+e = 0/7.5/11.5/0/0/0 mm, r_hip 17.5; MCI e = 0, r_hip 21.25.
 
 The `_new` files of Moderate and Severe equal the originals to ≤ 1.7e-8 (`results/05_lobe/mesh/0_duplicates.csv`).
 Only one of each is in the manifest.
@@ -415,7 +424,10 @@ Only one of each is in the manifest.
 **Sets.**
 - **lobe_v1** (unmatched): the Prompt 07 results, kept as-is.
 - **lobe_A** (stop rule 1, *stop-rule matched*): the primary set from 2026-10-04.
-- **lobe_B** (stop rule 2): Healthy + Mild only.
+- **lobe_B** (stop rule 2): Healthy_sliced (7 passes), Mild_lobe_new, Moderate_lobe_c3, Severe_lobe_c3 (6 passes).
+  Complete for the four stages since 2026-10-04.
+- The test designs LeftOnly_test_c3 and MCI_lobe_c3 belong to lobe_A (manifest `kind = test`). The staging analysis
+  (`kind = stage`) excludes them, and `scripts/09_lobe_tests.py` scores them.
 
 lobe_A and lobe_B are stop-rule matched, not mesh-matched: the healthy head still has 1.46x (A) / 1.54x (B) the
 elements of Mild.
@@ -462,15 +474,16 @@ Normal-geometry difference cannot be excluded.
 
 The plain-mean "+0.30 dB through C3" for Mild 5 → 6 is the 3.855 GHz glitch. With masking it is −0.03 dB.
 
-**One extra adaptive pass** (Healthy 6 → 7, Mild 5 → 6):
+**One extra adaptive pass** (stop rule 1 → 2), all four stages since 2026-10-04:
 
-| Ratio | Healthy 6 → 7 | Mild 5 → 6 |
-|---|---|---|
-| R31 | +0.135 dB | −0.034 dB |
-| R21 | +0.060 dB | +0.034 dB |
-| R32 | +0.075 dB | −0.068 dB |
+| Ratio | Healthy 6 → 7 | Mild 5 → 6 | Moderate 5 → 6 | Severe 5 → 6 | Yardstick (largest) |
+|---|---|---|---|---|---|
+| R31 | +0.135 dB | −0.034 dB | −0.004 dB | −0.051 dB | 0.135 dB |
+| R21 | +0.060 dB | +0.034 dB | −0.000 dB | +0.110 dB | 0.110 dB |
+| R32 | +0.075 dB | −0.068 dB | −0.004 dB | −0.161 dB | 0.161 dB |
 
-There is no consistent sign. Against this:
+There is no consistent sign. The Severe 5 → 6 change is real, not a masking effect: the frozen mask removes 16 points
+from Severe_lobe_c3 but moves its ratios by ≤ 0.009 dB (`results/05_lobe/mesh/0_mask_effect.csv`). Against this:
 - **Normal − Mild R31:** 1.08 (A) / 1.25 (B) / 1.21 dB (v1), i.e. 8–9x the R31 yardstick.
 - **R31 margins to τ (−15.27 dB) in lobe_A:**
 
@@ -481,32 +494,48 @@ There is no consistent sign. Against this:
   | Moderate_lobe | −0.74 dB | 5.4 |
   | Severe_lobe | −0.26 dB | 1.9 |
 
-- **R31 margins in lobe_B:** Healthy_sliced +0.66, Mild_lobe_new −0.58 dB.
+- **R31 margins in lobe_B:**
+
+  | Design | Margin to τ | × yardstick |
+  |---|---|---|
+  | Healthy_sliced | +0.66 dB | 4.9 |
+  | Mild_lobe_new | −0.58 dB | 4.3 |
+  | Moderate_lobe_c3 | −0.74 dB | 5.5 |
+  | Severe_lobe_c3 | −0.31 dB | 2.3 |
+
+  **Severe stays on the AD side of τ in both matched sets** (100% AD, also with ±2 dB / ±10°). It remains the design
+  closest to the threshold.
 
 **Yardstick against every statistic** (`results/05_lobe/mesh/2_yardstick_all.csv`).
-- *Yardstick:* per statistic, the larger of the two one-pass changes. For per-path values and cross-ratios it is at least
-  the rms one-pass change of that family: neighbour paths 0.037, second-neighbour 0.122, opposite 0.111, cross-ratios
-  0.188, asymmetry cross-ratios 0.169 dB.
-- *Symmetry floor:* the mirror residual of the lobe_A stages, ×√2 for a difference of two designs: neighbour paths
-  0.114, indices 0.185, asymmetry cross-ratios 0.298 dB.
-- *Noise:* typical noise with ±0.5 dB per-port gain errors.
-- *Rulers:* clean ruler = max(yardstick, floor); measured ruler = max(yardstick, floor ⊕ noise).
+- *Yardstick:* per statistic, the largest of the four one-pass changes. For per-path values and cross-ratios it is at
+  least the rms one-pass change of that family: neighbour paths 0.041, second-neighbour 0.108, opposite 0.090,
+  cross-ratios 0.162, asymmetry cross-ratios 0.127 dB.
+- *Symmetry floor:* the mirror residual of the six mirror-symmetric stage designs (lobe_A and lobe_B), ×√2 for a
+  difference of two designs: neighbour paths 0.111, second-neighbour 0.217, opposite 0.117, indices 0.178, asymmetry
+  cross-ratios 0.291 dB.
+- *Noise SD:* typical noise and setup perturbation, without per-port calibration error.
+- *Measurement-error spread:* the same plus ±0.5 dB per-port gain, or ±2 dB gain + ±10° phase.
+- *Rulers:* clean ruler = max(yardstick, floor); measured ruler = max(yardstick, floor ⊕ ±0.5 dB spread).
 
 Findings:
-- **Ring ratios** (detection/staging), lobe_A Mild − healthy:
-  - R31 −1.08 dB = 8.0x yardstick;
-  - R21 +0.59 = 9.9x;
-  - R32 −1.67 = 22x.
-  - Severe: R21 43x, R32 45x.
-- **Frontal lobe (Moderate − Mild, lobe_A).** Moderate − Mild is independent of the healthy file.
-  - Front-back neighbour index: −0.26 dB = 3.8x yardstick, but only 2.3x the clean ruler (the floor dominates) and
-    0.3x the measured ruler.
-  - Front neighbour path T1–T6: 3.4x clean ruler, 0.6x measured. A single path mixes severity and location.
-  - Asymmetry cross-ratios: 0 of 45 reach 3x the clean ruler (best 2.3x).
-  - Raw cross-ratios separate Moderate from Mild (15/45 at 3x clean) through overall severity, not location.
+- **Ring ratios** (detection/staging), Mild − healthy:
+  - lobe_A: R31 −1.08 dB = 8.0x yardstick; R21 +0.59 = 5.4x; R32 −1.67 = 10.4x.
+  - lobe_B: R31 −1.25 = 9.2x; R21 +0.57 = 5.2x; R32 −1.81 = 11.3x.
+  - Severe − healthy: R21 23x (A) / 24x (B); R32 21x / 22x.
+- **Frontal lobe (Moderate − Mild).** Moderate − Mild is independent of the healthy file; A and B agree.
+  - Front-back neighbour index: −0.26 / −0.27 dB = 3.8x / 3.9x yardstick, but only 2.3x / 2.4x the clean ruler (the
+    floor dominates) and 0.3x the measured ruler.
+  - Front neighbour path T1–T6: 3.5x clean ruler, 0.6x measured. A single path mixes severity and location.
+  - Asymmetry cross-ratios: 0 of 45 reach 3x the clean ruler (best 2.4x / 2.5x).
+  - Raw cross-ratios separate Moderate from Mild (15/45 and 13/45 at 3x clean) through overall severity, not location.
 - **Three-class rule on lobe-Mild is decided by the mesh.**
   - Mild_lobe (pass 5, lobe_A) is 0.41 correct; Mild_lobe_new (pass 6, lobe_B) is 0.69 (0.72 with ±2 dB / ±10°).
-  - R21 sits 0.006 / 0.040 dB inside the Normal|Mild boundary (−19.98 dB), against a one-pass R21 change of 0.034 dB.
+  - R21 sits 0.006 / 0.040 dB inside the Normal|Mild boundary (−19.98 dB). Mild's own one-pass R21 change is 0.034 dB
+    (the four-stage R21 yardstick is 0.110 dB).
+- **Exploratory, no refitting: lobe-Mild against uniform Mild.** Lobe-Mild (4 of 6 sectors affected) lies between
+  healthy and uniform Mild on both staging ratios:
+  - R21: −19.97 (A) / −19.94 (B), against −19.48 (uniform v2) / −19.31 (uniform v1) dB;
+  - R32: 4.15 / 4.08, against 3.42 / 3.11 dB.
 - **Changes against lobe_v1.**
   - Detection and merged staging: unchanged (100%).
   - Healthy margin to τ: +0.66 → +0.53 dB.
@@ -529,28 +558,66 @@ Findings:
 | claim | verdict |
 |---|---|
 | The user's convergence table reproduces (frozen recipe) | holds |
-| One extra pass moves R31/R21/R32 by ≤ 0.14 dB, against Normal − Mild R31 1.08–1.25 dB | holds |
-| Frozen detection (R31), stop-rule matched: Healthy_sliced_new, Mild, Moderate correct with margins 3.9–5.4x yardstick | holds |
-| Frozen detection on Severe_lobe | holds on this mesh (100%), but its margin −0.26 dB is 1.9x the yardstick: one more pass could bring it to the threshold |
-| Frozen merged staging (three_merged, R32) labels all lobe_A designs correctly | holds |
+| One extra pass (four stages) moves R31 / R21 / R32 by ≤ 0.135 / 0.110 / 0.161 dB, against Normal − Mild R31 1.08–1.25 dB | holds |
+| Frozen detection (R31), stop-rule matched: healthy, Mild and Moderate correct in lobe_A and lobe_B, margins 3.9–5.5x yardstick | holds |
+| Frozen detection on Severe, both matched sets | holds: 100% AD; Severe stays on the AD side of τ in lobe_B. Margins −0.26 / −0.31 dB = 1.9x / 2.3x the yardstick, the closest to τ (mesh-sensitive) |
+| Frozen merged staging (three_merged, R32) labels all designs of lobe_A and lobe_B correctly | holds |
 | R31 orders the AD stages | retracted: R31 is a detection feature only (Severe above Moderate in the lobe and uniform sets); staging uses R21 (and R32 for the merged rule) |
-| Frozen three-class (R21) labels lobe-Mild as Mild | retracted (0.41 in lobe_A, 0.69 in lobe_B); which value you get is decided by the mesh |
-| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x); measured with ±0.5 dB gain: not detectable (0.3x) |
-| Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh (best 2.3x the clean ruler) |
+| Frozen three-class (R21) labels lobe-Mild as Mild | retracted (lobe_A 0.41; lobe_B 0.69, weakened); which value you get is decided by the mesh |
+| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x A, 2.4x B); measured with ±0.5 dB gain: not detectable (0.3x) |
+| Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh (best 2.4x / 2.5x the clean ruler) |
 | Raw cross-ratios separate Moderate from Mild | holds as severity; not a location claim |
 | Healthy_sliced(_new) reproduces the v2 healthy head | holds (both files within 1.7 v2 solve SD on R31/R21/R32) |
 | Left-right checks on the mirror-symmetric designs (A, B) | pass (≤ 1.3x floor) |
 | Lobe set had identical mesh settings, so detection is independent of mesh | **retracted** |
-| Left-right asymmetry detectable (LeftOnly_test) | not testable yet; prediction committed (cf56de8) |
-| MCI_lobe ≈ healthy | not testable yet |
+| Left-right asymmetry detectable (LeftOnly_test; scored blind against cf56de8) | **retracted**: no left-right difference beyond the rulers in the index or the gain-invariant cross-ratios; the locality predictions fail (5.7) |
+| MCI_lobe ≈ healthy (Prompt 07 §3.5) | holds: 0 of 228 features beyond 3x the clean ruler; all frozen rules 100% Normal |
 
-### 5.6 Pending data
-- `data/raw/new_with_slices_LeftOnly_test.s6p` and `new_with_slices_MCI_lobe.s6p`; the user will give their stop rule.
-- LeftOnly is scored against cf56de8 unchanged, compared with the Healthy file of the same stop rule:
-  - primary test: gain-invariant cross-ratios;
-  - also with ±0.5 dB and ±2 dB gain errors;
-  - the two caveats in 5.2 are stated with the score.
-- Then §3.5 for MCI_lobe.
-- Exploratory, no refitting: lobe-Mild against uniform Mild on R21/R32.
-- Not solved: Moderate_lobe and Severe_lobe with stop rule 2. Their `_new` re-solves used rule 1 and are identical to
-  the originals. They would complete lobe_B and give the Severe_lobe margin its own one-pass change.
+### 5.6 Data status
+- Every lobe design listed in Prompt 07 is now solved, as are both stop-rule matched sets (lobe_A, lobe_B).
+- Nothing in the lobe set is pending.
+- **Not tested at all:** variation of anatomy between people (head size, skull/scalp thickness, antenna stand-off).
+
+### 5.7 Pre-registered test designs (2026-10-04; `results/05_lobe/tests/`; one solve per design: within-simulation noise robustness, not generalisation)
+**LeftOnly_test_c3 (left temporal + left parietal lobes).**
+- **Scoring.** Scored blind against the predictions committed at cf56de8; git confirms they are unchanged.
+  - References: Healthy_sliced (7 passes; primary, as pre-registered) and Healthy_sliced_new (6 passes; stop-rule and
+    pass matched).
+  - Caveats stated with the score: the predictions were derived from the unmatched lobe_v1 pair; LeftOnly carries
+    CSF_Mild everywhere (a 0.5 mm layer on the right).
+  - Labels: hit = committed rule holds and the effect is separable (≥ 3x the clean ruler); miss = rule fails by
+    ≥ 3x the clean ruler; not separable = otherwise.
+
+| Prediction (cf56de8) | Observed (primary / matched) | Committed rule | Label |
+|---|---|---|---|
+| 1. Left-right index +0.232 dB | +0.023 / −0.029 dB (0.1x noise SD) | fails (needs ≥ +0.213) | not separable: even the predicted value is only 2.3x the clean ruler (0.10 dB); the index is ≈ 0 |
+| 2. Front-back index ≈ 0 (floor 0.084) | +0.068 / +0.137 dB | holds / fails | hit / not separable |
+| 3. Right-side paths ≈ 0 | 7/7 / 4/7 within tolerance | — | 7 hit / 4 hit, 3 not separable |
+| 4. Left-side paths ≈ full Mild change | 4/7 / 4/7 within tolerance | — | 1 hit, 6 not separable (both) |
+| Locality model beats the no-locality baseline | rms 0.166 vs 0.135 / 0.189 vs 0.144 dB | fails | miss (both) |
+| 5. R31 / R21 / R32 levels −15.22 / −20.24 / 5.03 dB | −15.445 / −20.200 / 4.755 dB | holds (all within 0.3 dB) | hit |
+| 6. Frozen detection mostly UNCERTAIN | 0% UNCERTAIN, 100% AD | fails | miss |
+| Gain-invariant left-right cross-ratios (primary test as agreed; predictions derived from cf56de8; decision rule fixed before the first run) | 0 of 22 beyond 3x the measured ruler (best 1.5x / 2.0x); locality rms 0.68 vs 0.47 / 0.93 vs 0.62 dB | fails | — |
+
+- **What LeftOnly shows.** No left-right difference survives the rulers.
+  - The numerical left-right asymmetry of the mirror-symmetric designs (clean ruler ≈ 0.43 dB for these
+    cross-ratios) exceeds every predicted value.
+  - The observed path changes look like a weaker, mirror-symmetric Mild change: the no-locality baseline wins.
+  - The likely reason: the long paths (second-neighbour, opposite) wrap around the head and average both sides, while
+    the short neighbour paths barely change even in Mild (≤ 0.1 dB).
+  - A global contribution from CSF_Mild, present everywhere, cannot be separated with this design.
+- **Frozen rules (unchanged) on LeftOnly.**
+  - Detection: 100% AD. The R31 margin is −0.17 dB = 1.3x the R31 yardstick, so it is not mesh-robust.
+  - Both staging rules say Normal: three 100%, three_merged 99%. That is inconsistent with detection.
+- **Post hoc, not pre-registered.** The halfway model re-derived from the matched pair gives R31 −15.28, R21 −20.27,
+  R32 4.99 dB.
+
+**MCI_lobe_c3 (hippocampus only; Prompt 07 §3.5).**
+- MCI − Healthy_sliced_new exceeds 3x the clean ruler on 0 of 228 quantities (largest 2.0x), and 3x the measured ruler
+  on 0. The quantities are ring averages, ratios, indices, 21 paths, cross-ratios and their asymmetry parts, and the
+  sub-band ring features.
+- All frozen rules label it 100% Normal.
+- Expected "no": confirmed.
+- A methods note: several MCI cross-ratios reach 4x the noise SD. MCI is rotationally symmetric, so that is mesh
+  asymmetry. Judged by noise alone, it would have looked like a finding; the mesh yardstick and symmetry floor are
+  required rulers.

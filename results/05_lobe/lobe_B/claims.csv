@@ -1,6 +1,16 @@
 claim,number,baseline,verdict
 Healthy_sliced reproduces the v2 healthy head on the classifier features,R31 +0.06 dB (+0.4 SD); R21 +0.21 dB (+1.3 SD); R32 -0.15 dB (-1.2 SD),v2 solve-to-solve SD (4 pairs),holds
 frozen binary_R31 rule labels Mild_lobe_new as AD (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen binary_R31 rule labels Moderate_lobe_c3 as AD (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen binary_R31 rule labels Severe_lobe_c3 as AD (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
 frozen binary_R31 rule labels Healthy_sliced as Normal (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
 frozen three rule labels Mild_lobe_new as Mild (no refitting),"0.69 correct, 0.12 uncertain (±2 dB/±10°: 0.72)",trained on uniform-atrophy solves only,weakened
-left-right index of Mild_lobe_new is ~0 (mirror-symmetric by construction; a check),+0.080 dB = +1.3x floor,larger of healthy / staged-mirror floor,check passes
+frozen three rule labels Severe_lobe_c3 as Severe (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+frozen three_merged rule labels Moderate_lobe_c3 as Mild+Moderate (no refitting),"1.00 correct, 0.00 uncertain (±2 dB/±10°: 1.00)",trained on uniform-atrophy solves only,holds
+"front-affected Moderate differs front-to-back (front-back, neighbour paths)",Moderate -0.22 dB = -2.9x floor (Mild +0.04); with ±0.5 dB gain errors -0.4x,symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain,clean: weakened; with gain errors: retracted
+"front-affected Moderate differs front-to-back (front-back, all paths)",Moderate +0.05 dB = +0.6x floor (Mild +0.11); with ±0.5 dB gain errors +0.1x,symmetry floor of the healthy sliced head; and measurement noise incl. per-port gain,clean: retracted; with gain errors: retracted
+"raw cross-ratios separate Moderate from Mild (severity, not location)",25/45 >= 3 SD; best T1T4·T2T5 / T1T5·T2T4 -1.69 dB (15.0 SD),symmetry floor + measurement noise,holds as severity; not a location claim
+gain-invariant ASYMMETRY cross-ratios see the front-lobe involvement of Moderate,0/45 >= 3 SD (0 involve T1); best T1T4·T3T5 / T1T5·T3T4 -0.73 dB (2.3 SD),"larger of healthy / staged-mirror asymmetry floor, x sqrt2 (two designs), + measurement noise",not significant (best 2.3 SD; 6 of the top 8 involve T1)
+left-right index of Mild_lobe_new is ~0 (mirror-symmetric by construction; a check),+0.080 dB = +1.1x floor,larger of healthy / staged-mirror floor,check passes
+left-right index of Moderate_lobe_c3 is ~0 (mirror-symmetric by construction; a check),-0.061 dB = -0.8x floor,larger of healthy / staged-mirror floor,check passes
+left-right index of Severe_lobe_c3 is ~0 (mirror-symmetric by construction; a check),+0.029 dB = +0.4x floor,larger of healthy / staged-mirror floor,check passes

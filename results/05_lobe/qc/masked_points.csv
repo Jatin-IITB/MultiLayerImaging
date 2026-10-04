@@ -1,5 +1,23 @@
 file,f_GHz,ports,path,type,|Sij| dB,|Sji| dB,reciprocity error dB (re band level),masked
 new_with_slices_Healthy_sliced.s6p,3.525,1-4,T1-T4,opposite,-42.42450251119099,-42.49468571606957,-23.34567510759223,True
+new_with_slices_LeftOnly_test_c3.s6p,3.85,2-5,T3-T6,opposite,-54.35699267291248,-54.40866520742794,-25.84986334337389,True
 new_with_slices_Mild_lobe_new.s6p,3.855,3-6,T2-T5,opposite,-34.0254106219757,-38.86638034574145,10.931268827182858,True
+new_with_slices_Moderate_lobe_c3.s6p,3.855,1-4,T1-T4,opposite,-55.90895638283308,-56.233571201410236,-29.228413690943476,True
 new_with_slices_Severe_lobe.s6p,3.845,2-5,T3-T6,opposite,-53.36642737967766,-53.18750320693971,-25.694001717585824,True
+new_with_slices_Severe_lobe_c3.s6p,3.225,2-6,T3-T5,second-neighbour,-57.87693157752627,-57.60017517901904,-29.631152685252246,True
+new_with_slices_Severe_lobe_c3.s6p,3.23,2-6,T3-T5,second-neighbour,-57.50289832797005,-57.17262280965788,-28.35682378750031,True
+new_with_slices_Severe_lobe_c3.s6p,3.235,2-6,T3-T5,second-neighbour,-57.14705309087975,-56.77243442431284,-27.422697746089526,True
+new_with_slices_Severe_lobe_c3.s6p,3.24,2-6,T3-T5,second-neighbour,-56.81063264506883,-56.40319805472923,-26.76835644720622,True
+new_with_slices_Severe_lobe_c3.s6p,3.245,2-6,T3-T5,second-neighbour,-56.494318502524294,-56.06691984896269,-26.355319417098414,True
+new_with_slices_Severe_lobe_c3.s6p,3.25,2-6,T3-T5,second-neighbour,-56.19822088913188,-55.76397961435826,-26.157244025761766,True
+new_with_slices_Severe_lobe_c3.s6p,3.255,2-6,T3-T5,second-neighbour,-55.92189625011123,-55.49324554176841,-26.155092942443833,True
+new_with_slices_Severe_lobe_c3.s6p,3.26,2-6,T3-T5,second-neighbour,-55.66439607347647,-55.252320315558485,-26.33477154327428,True
+new_with_slices_Severe_lobe_c3.s6p,3.265,2-6,T3-T5,second-neighbour,-55.42434113985931,-55.03786897257236,-26.686127571773287,True
+new_with_slices_Severe_lobe_c3.s6p,3.27,2-6,T3-T5,second-neighbour,-55.20001281116382,-54.845971949501504,-27.202781394918667,True
+new_with_slices_Severe_lobe_c3.s6p,3.275,2-6,T3-T5,second-neighbour,-54.98945205272308,-54.67245425247354,-27.882547767163626,True
+new_with_slices_Severe_lobe_c3.s6p,3.28,2-6,T3-T5,second-neighbour,-54.79055750021034,-54.51315806404415,-28.728411298847476,True
+new_with_slices_Severe_lobe_c3.s6p,3.285,2-6,T3-T5,second-neighbour,-54.601175642240776,-54.36414443565561,-29.750223341447434,True
+new_with_slices_Severe_lobe_c3.s6p,3.83,3-6,T2-T5,opposite,-61.79628919025244,-60.933286905885296,-27.878181079133007,True
+new_with_slices_Severe_lobe_c3.s6p,3.835,3-6,T2-T5,opposite,-52.24638832825239,-54.676506708953205,-5.596290529892566,True
+new_with_slices_Severe_lobe_c3.s6p,3.84,3-6,T2-T5,opposite,-56.90366311751747,-56.62946416472586,-25.535075659967625,True
 new_with_slices_Severe_lobe_new.s6p,3.845,2-5,T3-T6,opposite,-53.36644230591052,-53.187447690901465,-25.69402332310763,True
