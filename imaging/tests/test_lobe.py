@@ -63,3 +63,20 @@ def test_whitened_log_projection_removes_port_gains_and_frozen_one_does_not():
     assert np.max(np.abs(w.data(S_stage=Sg, S_ref=S))) < 1e-9
     frozen = SL.RegionModel(K, fh, kappa, sig, S_ref=S, kind="log")
     assert np.max(np.abs(frozen.data(S_stage=Sg, S_ref=S))) > 1e-3        # documents the erratum
+
+
+def test_one_bar_verdict():
+    from imaging.lobe_c3 import verdict
+    assert verdict("left", "left", 2.04, 0.0) == "sensitive"
+    assert verdict("left", "left", 3.2, 0.0) == "hit"
+    assert verdict("left", "left", 1.5, 0.0) == "not separable"
+    assert verdict(True, False, 5.0, 0.4) == "not separable"      # missed by 0.4 ruler: not a miss
+    assert verdict(True, False, 5.0, 3.5) == "miss"
+    assert verdict(False, False, 9.0, 0.0) == "hit"               # null prediction holds
+    assert verdict("none", "left", 4.0, 3.1) == "miss"
+
+
+def test_mirror_permutation_of_pairs_is_an_involution():
+    from imaging.lobe_review import PM, MS
+    assert np.array_equal(PM[PM], np.arange(len(PM)))
+    assert np.array_equal(MS[MS], np.arange(6))

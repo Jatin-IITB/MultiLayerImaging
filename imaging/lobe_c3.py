@@ -219,24 +219,26 @@ class Ctx:
 
 
 def ratios(r, k):
+    """Effect over each ruler. Clean ruler = max(yardstick, floor); measured ruler = max(yardstick,
+    floor (+) +-0.5 dB spread) (quadrature, as the main session; changed 5 Oct from a plain max)."""
     eff = abs(r["clean"][k])
     g05, g2 = list(GAIN)
     sim = max(r["yard"][k], r["floor"][k])
-    meas = max(r["sd_noise"][k], r["yard"][k], r["floor"][k], r[f"sd_{g05}"][k])
+    meas = max(r["yard"][k], float(np.hypot(r["floor"][k], r[f"sd_{g05}"][k])))
     return dict(over_noise=eff / r["sd_noise"][k], over_yard=eff / r["yard"][k], over_floor=eff / r["floor"][k],
                 over_meas_05=eff / r[f"sd_{g05}"][k], over_meas_2=eff / r[f"sd_{g2}"][k],
                 ruler_sim=sim, ratio_sim=eff / sim, ruler_meas=meas, ratio_meas=eff / meas)
 
 
-def verdict(expected, called, ratio):
-    """Pre-registered call vs the clean call, and whether the effect is separable from error (>= 2x)."""
-    if expected in ("left", "right", "front", "back", True):           # positive prediction
-        if called != expected:
-            return "miss"
-        return "hit" if ratio >= 2 else "not separable"
-    if called == expected:                                              # null prediction
+def verdict(expected, called, ratio, margin_ratio):
+    """One bar for every quantity (5 Oct): hit = committed call holds and (positive prediction) the effect is
+    >= 3x the ruler; sensitive = call holds, 2-3x; miss = call fails by >= 3x the ruler (distance of the
+    effect from the decision boundary); not separable = otherwise."""
+    if called == expected:
+        if expected in ("left", "right", "front", "back", True):
+            return "hit" if ratio >= 3 else ("sensitive" if ratio >= 2 else "not separable")
         return "hit"
-    return "miss" if ratio >= 2 else "not separable"
+    return "miss" if margin_ratio >= 3 else "not separable"
 
 
 def score_design(ctx, design_stem, items, floor_stage):
@@ -246,24 +248,29 @@ def score_design(ctx, design_stem, items, floor_stage):
             r = ctx.rulers(design_stem, ref, m, floor_stage)
             frozen = m in RL.METHODS
             x6 = np.r_[np.zeros(6), r["clean"][:6]]
-            c = RL.apply_rules(x6, ctx.fz["rules"][m]) if frozen else None
+            rule = ctx.fz["rules"][m] if frozen else None
+            c = RL.apply_rules(x6, rule) if frozen else None
             for name, k, expected in items:
                 q = ratios(r, k)
+                v = float(r["clean"][k])
                 if frozen:
                     called = {"LR": c["side"], "FB": c["frontback"]}.get(QN[k], bool(c["affected"][k]) if k < 6 else None)
-                elif k >= 6:            # post-hoc whitened log: no thresholds; 'call' = sign when >= 2x the ruler
-                    v = r["clean"][k]
+                    bnd = rule["T_abs"] if k < 6 else (rule["T_LR"] if QN[k] == "LR" else rule["T_FB"])
+                    margin = abs(v - bnd) if k < 6 else min(abs(v - bnd), abs(v + bnd))
+                elif k >= 6:            # post-hoc whitened log: no thresholds; 'call' = sign when >= 3x the clean ruler
                     if QN[k] == "LR":
-                        called = ("left" if v > 0 else "right") if q["ratio_sim"] >= 2 else "none"
+                        called = ("left" if v > 0 else "right") if q["ratio_sim"] >= 3 else "none"
                     else:
-                        called = ("front" if v > 0 else "back") if q["ratio_sim"] >= 2 else "none"
+                        called = ("front" if v > 0 else "back") if q["ratio_sim"] >= 3 else "none"
+                    margin = abs(v)
                 else:
-                    called = "n/a"
+                    called, margin = "n/a", np.nan
                 rows.append(dict(reference=rname, method=SHORTM[m] + (" (post-hoc)" if m == LR.WNAME else ""),
-                                 prediction=name, quantity=QN[k], effect=float(r["clean"][k]),
-                                 call=str(called), **q,
-                                 verdict_sim=verdict(expected, called, q["ratio_sim"]) if called != "n/a" else "n/a",
-                                 verdict_meas=verdict(expected, called, q["ratio_meas"]) if called != "n/a" else "n/a"))
+                                 prediction=name, quantity=QN[k], effect=v, call=str(called), **q,
+                                 verdict_sim=verdict(expected, called, q["ratio_sim"], margin / q["ruler_sim"])
+                                 if called != "n/a" else "n/a",
+                                 verdict_meas=verdict(expected, called, q["ratio_meas"], margin / q["ruler_meas"])
+                                 if called != "n/a" else "n/a"))
     return rows
 
 
@@ -447,12 +454,12 @@ def main():
           "reference); over_floor = / numerical symmetry floor (quadrature of the two designs' floors; LeftOnly is "
           "not mirror-symmetric, so its floor is the largest floor of the lobe_A symmetric designs); over_meas = / "
           "SD under the Prompt 07 measurement model (±0.5 dB gain, and ±2 dB/±10°). verdict_sim uses the clean "
-          "ruler max(yardstick, floor); verdict_meas uses max(noise SD, yardstick, floor, ±0.5 dB spread). "
-          "**hit** = the pre-registered call is made and (for a positive prediction) the effect is ≥ 2× the ruler; "
-          "**not separable** = right call but < 2× the ruler, or a wrong call within 2× the ruler; **miss** = wrong "
-          "call ≥ 2× the ruler, or a positive prediction not called. The whitened-projection log method has no "
-          "frozen thresholds: its 'call' is the sign of the contrast when it is ≥ 2× the clean ruler, it makes no "
-          "sector calls, and it is **post-hoc**.", "",
+          "ruler max(yardstick, floor); verdict_meas uses max(yardstick, floor ⊕ ±0.5 dB spread) (quadrature). One "
+          "bar for every quantity (revised 5 Oct, §8): **hit** = the pre-registered call holds and, for a positive "
+          "prediction, the effect is ≥ 3× the ruler; **sensitive** = call holds, 2–3×; **miss** = the call fails by "
+          "≥ 3× the ruler (distance of the effect from the frozen decision boundary); **not separable** = otherwise. "
+          "The whitened-projection log method has no frozen thresholds: its 'call' is the sign of the contrast when "
+          "it is ≥ 3× the clean ruler, it makes no sector calls, and it is **post-hoc**.", "",
           "**Caveats recorded before scoring:** (1) the predictions, κ, λ and thresholds were all derived from "
           "lobe_v1 (Mild_lobe p5 against Healthy_sliced p7: stop rules not matched), so mesh is part of the frozen "
           "'Mild change'; (2) LeftOnly carries CSF_Mild also as the 0.5 mm layer on the right (one CSF object). "
