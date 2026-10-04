@@ -8,6 +8,8 @@ only copy is this OneDrive folder.
 **Updated 2026-10-04 (later):** RightOnly_test scored (C6: NOT REPLICATED, 546d804). The Test_B blind protocol was
 committed (d3a4bbf) and the blind estimates were committed (0f49389). The truth is pending: see §7.1(a).
 
+**Documentation baseline: 9abd264** (main session; ledger `results/LEDGER_main.md` / `.csv`). Work stops here until the user asks.
+
 **Updated 2026-10-04 (final):**
 - All four rotated nulls are in.
 - The pre-registered evaluation was run unchanged: d5110bd.
