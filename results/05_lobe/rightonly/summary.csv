@@ -1,0 +1,7 @@
+prediction,observed,holds
+P1 sign flips within the clean ruler (>= 80% of informative),12/26 = 46% (sign flipped 26/26; within tolerance 12/26),False
+"P2 cross-ratio counts within +-2, opposite sign","band mean 3.2-4.2: RO 4 vs LO 4, opposite sign True; 3.30-3.65 GHz: RO 9 vs LO 9, opposite sign True",True
+P3 power LR indices < 2x; reflection pairs flip,"LR index / ruler 0.70, 0.25, 0.66; reflection pairs +0.070 dB, +0.073 dB",True
+P4 R31/R21/R32 = LeftOnly within the yardstick,"R31 -15.458 (|diff| 0.013 vs 0.135), R21 -20.067 (|diff| 0.133 vs 0.110), R32 4.609 (|diff| 0.146 vs 0.161)",False
+"P5 imaging LR sign flips, < 2x the max floor (Tikhonov dS)",Healthy_sliced (7 passes): T -10.17 (2.50x); Healthy_sliced_new (6 passes): T -10.15 (2.51x),False
+VERDICT (replicated iff P1 and P2),NOT REPLICATED,False
