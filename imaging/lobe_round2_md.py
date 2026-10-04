@@ -170,8 +170,8 @@ def write_md(res):
           "left neighbour paths', 56 % of which lies in the outer gap layer under T2/T3 (0ceb626). That is a few "
           "millimetres to about a centimetre below the skull, not a lobe.", ""]
     T.append(("R3 detuning", "CHANGED (rejected for transmissions)",
-              f"untested → per-port explains {band_pp.antisym_energy_explained_by_per_port.min():.0%}–"
-              f"{band_pp.antisym_energy_explained_by_per_port.max():.0%}; no resonance shift; left reflection depth +0.9–1.0 dB",
+              f"untested → per-port factors explain ≤ {band_pp.antisym_energy_explained_by_per_port.max():.0%} of the "
+              "antisymmetric change; no resonance shift; left reflection depth +0.9–1.0 dB",
               "lobe_round2.json: r3"))
 
     # ================================================================ R4
@@ -532,7 +532,7 @@ def write_md(res):
           "session.", ""]
     T += [("C1 post-hoc label", "CHANGED", "unlabelled → POST-HOC first line; pre-registered PARTIAL/FAIL primary", "this file; lobe_report §9"),
           ("C2 phase convergence", "CHANGED (quantified)", f"LR phase part {lo_lr['LR_phase_part']:+.2f} = {lo_lr['LR_phase_part'] / op_max:.1f}× one-pass; "
-           "T2–T3 3–5× at 3.4/3.6, < 1× at 3.8; weak paths 18°", "lobe_round2.json: c2_paths, c2_lr"),
+           "T2–T3 4.5×/2.7× at 3.4/3.6, < 1× at 3.8; weak paths 18°", "lobe_round2.json: c2_paths, c2_lr"),
           ("C3 null distribution", "CONFIRMED (outside); p ≥ 0.1", f"nulls ≤ 1/18 vs LeftOnly {v18['left_ge3_rms_rule']}/18 (rms), "
            f"{v18['left_ge3_max_rule']}/18 (max)", "lobe_round2.json: r2.views.per_file"),
           ("C4 physical sign", "CONFIRMED (sign); CHANGED (band)", "predicted −5…−25°, observed −7…−9°; asymmetry returns above 3.9 GHz",
@@ -555,7 +555,9 @@ def write_md(res):
         ("Pre-registered blind test: PARTIAL with the frozen 7-pass reference, FAIL with the matched reference; neither reference is more credible", "CONFIRMED", "B23"),
         ("[POST-HOC] LeftOnly left/right sign is in the data (mirror test) and stable over λ, references and kernel symmetrisation; size 1.93× (Tikhonov dS) to 2.77× (whitened log) the clean ruler under the fixed max-floor rule: not established; rank p = 0.1 with nine nulls", "CHANGED", "R1, B22"),
         ("[POST-HOC] 85–88 % of the LeftOnly LR comes from phase; it is not per-antenna detuning (per-port factors explain ≤ 20 %)", "CHANGED", "R3, C2"),
-        ("[POST-HOC] Cross-ratio phases: 12/18 distinct statistics ≥ 3× under the rms rule, 3/18 under the max rule; no symmetric file exceeds 1/18; 1/18 (max) with measurement errors", "CHANGED", "R2, C3, C5"),
+        (f"[POST-HOC] Cross-ratio phases: {v18['left_ge3_rms_rule']}/18 distinct statistics ≥ 3× under the rms rule, "
+         f"{v18['left_ge3_max_rule']}/18 under the max rule; no symmetric file exceeds 1/18; with measurement errors (±0.5 dB) "
+         f"{meas[list(meas)[0]]['n_ge3_rms_rule']}/18 (rms) and {meas[list(meas)[0]]['n_ge3_max_rule']}/18 (max)", "CHANGED", "R2, C3, C5"),
         ("Moderate_lobe's large mirror residual is mesh asymmetry of that pass-5 file (halved one pass later)", "CHANGED", "R1"),
         ("Left antennas' reflection depth changes by 0.9–1.0 dB (3–6× one-pass); resonance frequencies do not move", "CHANGED", "R3"),
         ("Phase change of the left neighbour path is negative (delay), −7 to −9° at 3.30–3.60 GHz, as the CSF-gap physics predicts", "CONFIRMED", "C4"),
