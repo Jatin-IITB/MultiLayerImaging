@@ -1,0 +1,595 @@
+{
+ "code": "ceb473b",
+ "c4": [
+  {
+   "reference": "H6",
+   "nulls": "11 nulls (round 3)",
+   "LeftOnly_dphi_deg": "-9.0\u2013-7.0",
+   "ruler_deg": "1.09\u20132.85",
+   "ratio_worst_frequency": 2.6688865365395973
+  },
+  {
+   "reference": "H6",
+   "nulls": "all",
+   "LeftOnly_dphi_deg": "-9.0\u2013-7.0",
+   "ruler_deg": "1.55\u20132.85",
+   "ratio_worst_frequency": 2.6688865365395973
+  },
+  {
+   "reference": "H6",
+   "nulls": "without rot19",
+   "LeftOnly_dphi_deg": "-9.0\u2013-7.0",
+   "ruler_deg": "1.55\u20132.85",
+   "ratio_worst_frequency": 2.6688865365395973
+  },
+  {
+   "reference": "H6",
+   "nulls": "rot19 alone",
+   "LeftOnly_dphi_deg": "-9.0\u2013-7.0",
+   "ruler_deg": "1.09\u20132.85",
+   "ratio_worst_frequency": 2.6688865365395973
+  },
+  {
+   "reference": "H7",
+   "nulls": "11 nulls (round 3)",
+   "LeftOnly_dphi_deg": "-10.2\u2013-7.9",
+   "ruler_deg": "1.15\u20133.10",
+   "ratio_worst_frequency": 2.951071139620767
+  },
+  {
+   "reference": "H7",
+   "nulls": "all",
+   "LeftOnly_dphi_deg": "-10.2\u2013-7.9",
+   "ruler_deg": "1.15\u20133.30",
+   "ratio_worst_frequency": 2.5470998680373995
+  },
+  {
+   "reference": "H7",
+   "nulls": "without rot19",
+   "LeftOnly_dphi_deg": "-10.2\u2013-7.9",
+   "ruler_deg": "1.15\u20133.30",
+   "ratio_worst_frequency": 2.5470998680373995
+  },
+  {
+   "reference": "H7",
+   "nulls": "rot19 alone",
+   "LeftOnly_dphi_deg": "-10.2\u2013-7.9",
+   "ruler_deg": "1.09\u20133.10",
+   "ratio_worst_frequency": 2.951071139620767
+  }
+ ],
+ "r3": [
+  {
+   "reference": "H6",
+   "antenna": "T2",
+   "nulls": "11 nulls (round 3)",
+   "depth_change_dB": 1.031960233063593,
+   "depth_ruler_dB": 0.5802404968235102,
+   "depth_ratio": 1.7785043248670058,
+   "fres_change_MHz": -1.2295009812257618,
+   "fres_ruler_MHz": 2.3633262382309894,
+   "fres_ratio": 0.5202417513656832
+  },
+  {
+   "reference": "H6",
+   "antenna": "T2",
+   "nulls": "all",
+   "depth_change_dB": 1.031960233063593,
+   "depth_ruler_dB": 0.6376230436349637,
+   "depth_ratio": 1.618448773715251,
+   "fres_change_MHz": -1.2295009812257618,
+   "fres_ruler_MHz": 2.3633262382309894,
+   "fres_ratio": 0.5202417513656832
+  },
+  {
+   "reference": "H6",
+   "antenna": "T2",
+   "nulls": "without rot19",
+   "depth_change_dB": 1.031960233063593,
+   "depth_ruler_dB": 0.6376230436349637,
+   "depth_ratio": 1.618448773715251,
+   "fres_change_MHz": -1.2295009812257618,
+   "fres_ruler_MHz": 2.1095817144800577,
+   "fres_ratio": 0.5828174243199644
+  },
+  {
+   "reference": "H6",
+   "antenna": "T2",
+   "nulls": "rot19 alone",
+   "depth_change_dB": 1.031960233063593,
+   "depth_ruler_dB": 0.3639172360621359,
+   "depth_ratio": 2.835700348326987,
+   "fres_change_MHz": -1.2295009812257618,
+   "fres_ruler_MHz": 2.3633262382309894,
+   "fres_ratio": 0.5202417513656832
+  },
+  {
+   "reference": "H6",
+   "antenna": "T3",
+   "nulls": "11 nulls (round 3)",
+   "depth_change_dB": 0.8575690635835116,
+   "depth_ruler_dB": 0.3916780896106822,
+   "depth_ratio": 2.189474178746922,
+   "fres_change_MHz": -0.6631951060454,
+   "fres_ruler_MHz": 3.6930127504808397,
+   "fres_ratio": 0.1795810496346243
+  },
+  {
+   "reference": "H6",
+   "antenna": "T3",
+   "nulls": "all",
+   "depth_change_dB": 0.8575690635835116,
+   "depth_ruler_dB": 0.540884911684433,
+   "depth_ratio": 1.5854926714684192,
+   "fres_change_MHz": -0.6631951060454,
+   "fres_ruler_MHz": 4.92785650041494,
+   "fres_ratio": 0.13458084787768415
+  },
+  {
+   "reference": "H6",
+   "antenna": "T3",
+   "nulls": "without rot19",
+   "depth_change_dB": 0.8575690635835116,
+   "depth_ruler_dB": 0.540884911684433,
+   "depth_ratio": 1.5854926714684192,
+   "fres_change_MHz": -0.6631951060454,
+   "fres_ruler_MHz": 4.92785650041494,
+   "fres_ratio": 0.13458084787768415
+  },
+  {
+   "reference": "H6",
+   "antenna": "T3",
+   "nulls": "rot19 alone",
+   "depth_change_dB": 0.8575690635835116,
+   "depth_ruler_dB": 0.30136092833202355,
+   "depth_ratio": 2.8456544394457377,
+   "fres_change_MHz": -0.6631951060454,
+   "fres_ruler_MHz": 3.6930127504808397,
+   "fres_ratio": 0.1795810496346243
+  },
+  {
+   "reference": "H7",
+   "antenna": "T2",
+   "nulls": "11 nulls (round 3)",
+   "depth_change_dB": 1.0618600309050876,
+   "depth_ruler_dB": 0.6101402946650047,
+   "depth_ratio": 1.7403538828526282,
+   "fres_change_MHz": -2.103545051873379,
+   "fres_ruler_MHz": 3.2373703088786066,
+   "fres_ratio": 0.6497696745115409
+  },
+  {
+   "reference": "H7",
+   "antenna": "T2",
+   "nulls": "all",
+   "depth_change_dB": 1.0618600309050876,
+   "depth_ruler_dB": 0.6675228414764582,
+   "depth_ratio": 1.590747109951198,
+   "fres_change_MHz": -2.103545051873379,
+   "fres_ruler_MHz": 3.2373703088786066,
+   "fres_ratio": 0.6497696745115409
+  },
+  {
+   "reference": "H7",
+   "antenna": "T2",
+   "nulls": "without rot19",
+   "depth_change_dB": 1.0618600309050876,
+   "depth_ruler_dB": 0.6675228414764582,
+   "depth_ratio": 1.590747109951198,
+   "fres_change_MHz": -2.103545051873379,
+   "fres_ruler_MHz": 2.983625785127675,
+   "fres_ratio": 0.7050297870325465
+  },
+  {
+   "reference": "H7",
+   "antenna": "T2",
+   "nulls": "rot19 alone",
+   "depth_change_dB": 1.0618600309050876,
+   "depth_ruler_dB": 0.33401743822064134,
+   "depth_ratio": 3.1790556701523367,
+   "fres_change_MHz": -2.103545051873379,
+   "fres_ruler_MHz": 3.2373703088786066,
+   "fres_ratio": 0.6497696745115409
+  },
+  {
+   "reference": "H7",
+   "antenna": "T3",
+   "nulls": "11 nulls (round 3)",
+   "depth_change_dB": 0.8106109373940278,
+   "depth_ruler_dB": 0.438636215800166,
+   "depth_ratio": 1.8480255578425064,
+   "fres_change_MHz": -1.6423296700298629,
+   "fres_ruler_MHz": 4.6721473144653025,
+   "fres_ratio": 0.3515149586454803
+  },
+  {
+   "reference": "H7",
+   "antenna": "T3",
+   "nulls": "all",
+   "depth_change_dB": 0.8106109373940278,
+   "depth_ruler_dB": 0.49392678549494917,
+   "depth_ratio": 1.6411560603698359,
+   "fres_change_MHz": -1.6423296700298629,
+   "fres_ruler_MHz": 5.906991064399403,
+   "fres_ratio": 0.27803151420491407
+  },
+  {
+   "reference": "H7",
+   "antenna": "T3",
+   "nulls": "without rot19",
+   "depth_change_dB": 0.8106109373940278,
+   "depth_ruler_dB": 0.49392678549494917,
+   "depth_ratio": 1.6411560603698359,
+   "fres_change_MHz": -1.6423296700298629,
+   "fres_ruler_MHz": 5.906991064399403,
+   "fres_ratio": 0.27803151420491407
+  },
+  {
+   "reference": "H7",
+   "antenna": "T3",
+   "nulls": "rot19 alone",
+   "depth_change_dB": 0.8106109373940278,
+   "depth_ruler_dB": 0.25440280214253974,
+   "depth_ratio": 3.186328651128022,
+   "fres_change_MHz": -1.6423296700298629,
+   "fres_ruler_MHz": 4.6721473144653025,
+   "fres_ratio": 0.3515149586454803
+  }
+ ],
+ "claims": [
+  {
+   "id": "F1",
+   "claim": "The sensitivity maps come from full 3-D field exports of the healthy head at 3.4, 3.6 and 3.8 GHz; no cut plane was used.",
+   "tier": "n/a (measurement)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (R7/G8)",
+   "commit": "e4c33d3",
+   "depends_on": "v2 Normal head geometry"
+  },
+  {
+   "id": "F2",
+   "claim": "Each antenna's field peaks at its own position; the port order T4, T3, T2, T1, T6, T5 and 'left = +X' hold for all six ports.",
+   "tier": "n/a (measurement)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (G4)",
+   "commit": "e4c33d3",
+   "depends_on": "field exports"
+  },
+  {
+   "id": "F3",
+   "claim": "The ring mostly senses the top of the head: 54\u201370 % of its sensitivity lies above z = 40 mm and at most 4 % below z = 0, so 'lobes' here are vertical wedges of the upper head.",
+   "tier": "n/a (measurement)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (G5)",
+   "commit": "e4c33d3",
+   "depends_on": "field exports; Born sensitivity"
+  },
+  {
+   "id": "F4",
+   "claim": "In front of each antenna the field points up\u2013down (along the meridian), not around the ring.",
+   "tier": "n/a (measurement)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (G3)",
+   "commit": "e4c33d3",
+   "depends_on": "field exports"
+  },
+  {
+   "id": "F5",
+   "claim": "Tissue properties are fixed at their 3.25 GHz values; real conductivity rises 29\u201338 % across 3.2\u20134.2 GHz, so realism above about 3.3 GHz is limited.",
+   "tier": "n/a (measurement)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (G7)",
+   "commit": "e4c33d3",
+   "depends_on": "HFSS material table (model family)"
+  },
+  {
+   "id": "F6",
+   "claim": "The linear (Born) model is poor here: its error is 50\u201358 % of the symmetric and 92\u201396 % of the left/right part of the LeftOnly signal, and the sensitivity maps move 24 % with the export grid.",
+   "tier": "n/a (model error)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (B14)",
+   "commit": "e4c33d3",
+   "depends_on": "Born kernels (model family)"
+  },
+  {
+   "id": "F7",
+   "claim": "The Born sector map is not reportable as a localisation method. Values and calls for single sectors change with the regularisation, the reference and the calibration, depend on depth, and each sector mostly (\u2248 80 %) reflects its own antenna.",
+   "tier": "n/a (negative result)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (review)",
+   "evidence": "results/imaging/lobe_round2.md (R5, B16, B17, B21, B25)",
+   "commit": "e4c33d3",
+   "depends_on": "Born kernels, \u03bb, reference, calibration"
+  },
+  {
+   "id": "P1",
+   "claim": "Pre-registered blind test (LeftOnly): partly right with the frozen 7-pass reference (left side found, S3 called, S2 missed) and wrong with the matched 6-pass reference (nothing called); neither reference is more credible.",
+   "tier": "scored: PARTIAL / FAIL",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "pre-registered (62709e0), scored",
+   "evidence": "results/imaging/lobe_blind_outcome.json",
+   "commit": "7944508",
+   "depends_on": "reference (H7 vs H6); frozen thresholds"
+  },
+  {
+   "id": "P2",
+   "claim": "Pre-registered blind test (MCI): nothing called, as predicted.",
+   "tier": "scored: SUCCESS",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "pre-registered (62709e0), scored",
+   "evidence": "results/imaging/lobe_blind_outcome.json",
+   "commit": "7944508",
+   "depends_on": "frozen thresholds"
+  },
+  {
+   "id": "P3",
+   "claim": "Pre-registered replication: the mirror design (RightOnly, its own mesh) reads right-higher as predicted under the rule committed before the file existed (left/right -9.44 against the bar \u22127.8, phase delay on the right path -7.3\u00b0 / -3.9\u00b0 at 3.4 / 3.6 GHz). It still replicates with H7 and with the mean healthy mesh as reference.",
+   "tier": "sensitive",
+   "ratio": 2.669288925584462,
+   "ratio_without_rot19": 2.669288925584462,
+   "origin": "pre-registered (0ceb626), scored; ratio post hoc",
+   "evidence": "results/imaging/rightonly_score.md; results/imaging/lobe_round5.json (alt_c6, rulers)",
+   "commit": "24aa0c4",
+   "depends_on": "phase (83 % of the reading); reference H6; Born left/right contrast"
+  },
+  {
+   "id": "P4",
+   "claim": "Pre-registered blind Test_B reading missed: it called no lobe (truth S2 and S5) and side 'none' (both sides affected); the ranking it reported put the right pair first, in the right order.",
+   "tier": "scored: MISS",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "pre-registered (24aa0c4), scored by the user",
+   "evidence": "results/imaging/testb_report.md; results/imaging/lobe_round3.md \u00a71",
+   "commit": "5818235",
+   "depends_on": "frozen threshold 13.81; Born sector values"
+  },
+  {
+   "id": "P5",
+   "claim": "Pre-registered sign: the left neighbour path (T2\u2013T3) of LeftOnly is delayed, -9.0\u2013-7.0\u00b0 against H6 at 3.30\u20133.60 GHz, as the CSF-gap physics predicts. Against the 13 nulls the delay is 2.7\u00d7 the ruler at its worst frequency (H7: 2.5\u00d7).",
+   "tier": "sensitive",
+   "ratio": 2.6688865365395973,
+   "ratio_without_rot19": 2.6688865365395973,
+   "origin": "pre-registered sign (0ceb626); ratio post hoc (this ledger)",
+   "evidence": "results/imaging/lobe_round2.json (c4); this ledger: results/imaging/lobe_ledger.json",
+   "commit": "documentation baseline (HANDOVER)",
+   "depends_on": "phase; reference H6; no model"
+  },
+  {
+   "id": "H1",
+   "claim": "LeftOnly reads left-higher than right after its own mesh asymmetry is removed; the size is 1.93\u20132.77\u00d7 the largest of the 13 healthy or symmetric re-meshes (1.93\u00d7 with the frozen method, up to 2.8\u00d7 with the whitened log).",
+   "tier": "not determined",
+   "ratio": 1.9304750768022454,
+   "ratio_without_rot19": 1.9304750768022454,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (anti3)",
+   "commit": "ceb473b",
+   "depends_on": "phase (85\u201388 %); Born left/right contrast; both references"
+  },
+  {
+   "id": "H2",
+   "claim": "RightOnly reads right-higher by 2.50\u20133.38\u00d7 the same ruler.",
+   "tier": "sensitive",
+   "ratio": 2.498190157104169,
+   "ratio_without_rot19": 2.498190157104169,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (anti3)",
+   "commit": "ceb473b",
+   "depends_on": "phase; Born left/right contrast; both references"
+  },
+  {
+   "id": "H3",
+   "claim": "Both mirror designs lie beyond all 13 nulls, with the predicted opposite signs. If they were just two more nulls this would happen with probability 0.0095 (0.0110 without rot19).",
+   "tier": "rank p 0.0095",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (pairs)",
+   "commit": "ceb473b",
+   "depends_on": "exchangeability of the 13 nulls; H4"
+  },
+  {
+   "id": "H4",
+   "claim": "Re-meshing the same healthy head in other orientations does not reproduce its left/right asymmetry: rotated meshes differ from H6 about as much as independent draws (q 0.83\u20130.94, both signs present). Tested for rotation only, not for mirroring.",
+   "tier": "n/a (check)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (criterion fixed before rot31/rot43 were loaded)",
+   "evidence": "results/imaging/lobe_round5.json (independence)",
+   "commit": "ceb473b",
+   "depends_on": "four rotated meshes"
+  },
+  {
+   "id": "H5",
+   "claim": "85\u201388 % of LeftOnly's left/right reading comes from phase; per-antenna detuning explains at most 20 % of it.",
+   "tier": "n/a (decomposition)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round2.md (R3, C2)",
+   "commit": "e4c33d3",
+   "depends_on": "phase; reference H6"
+  },
+  {
+   "id": "H6",
+   "claim": "LeftOnly's left reflection notches get +0.86\u2013+1.03 dB shallower (T2, T3, against H6), but healthy re-meshes alone move these notches by up to 0.64 dB, so the change is 1.6\u00d7 the 13-null ruler at the weaker antenna. The resonance frequency does not move (\u2264 0.65\u00d7 its ruler).",
+   "tier": "not determined",
+   "ratio": 1.5854926714684192,
+   "ratio_without_rot19": 1.5854926714684192,
+   "origin": "post hoc; ratio this ledger",
+   "evidence": "results/imaging/lobe_round2.json (r3); this ledger: results/imaging/lobe_ledger.json",
+   "commit": "documentation baseline (HANDOVER)",
+   "depends_on": "power (reflection); reference"
+  },
+  {
+   "id": "H7",
+   "claim": "Calibration-free phase ratios of LeftOnly: 12 of 18 exceed 3\u00d7 the null spread, 2 of 18 exceed 3\u00d7 the largest of 13 nulls; with \u00b10.5 dB measurement errors none do.",
+   "tier": "n/a (counts: 12/18 rms rule, 2/18 max rule)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (cr); results/imaging/lobe_round2.md (C5)",
+   "commit": "ceb473b",
+   "depends_on": "phase; measurement model"
+  },
+  {
+   "id": "H8",
+   "claim": "Moderate_lobe's large left/right residual is mesh asymmetry of that file: it halves one pass later.",
+   "tier": "n/a",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round2.md (R1)",
+   "commit": "e4c33d3",
+   "depends_on": "mesh pass"
+  },
+  {
+   "id": "H9",
+   "claim": "After correcting the front/back bias seen in Mild and Severe, Moderate reads front-heavy (6.3\u20137.4; truth 14.6): 2.23\u20132.80\u00d7 the ruler in the better-converged set, 1.38\u20131.88\u00d7 in the other.",
+   "tier": "sensitive",
+   "ratio": 2.61113658913751,
+   "ratio_without_rot19": 2.61113658913751,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (b24)",
+   "commit": "ceb473b",
+   "depends_on": "Born front/back contrast; set (lobe_B vs lobe_A); rot07 sets the ruler"
+  },
+  {
+   "id": "H10",
+   "claim": "MCI shows no sector, left/right or front/back change separable from the healthy re-meshes (0.93\u00d7 against H7, 0.50\u00d7 against H6).",
+   "tier": "< 2\u00d7 (nothing separable: the claim)",
+   "ratio": 0.9343386336767155,
+   "ratio_without_rot19": 0.9343386336767155,
+   "origin": "post hoc (wording); blind outcome pre-registered",
+   "evidence": "results/imaging/lobe_round5.json (mci)",
+   "commit": "ceb473b",
+   "depends_on": "rulers built without MCI; Born map"
+  },
+  {
+   "id": "H11",
+   "claim": "Detection without being told where: every lobe design's largest sector value is at least 2.4\u00d7 the largest healthy re-mesh's, and the part of the data the sector model explains is at least 2.3\u00d7 larger than any null's. (Told the true sectors, each design has one at \u2265 3.0\u00d7 its sector ruler.)",
+   "tier": "sensitive",
+   "ratio": 2.383367104553955,
+   "ratio_without_rot19": 2.383367104553955,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (detection, fit)",
+   "commit": "ceb473b",
+   "depends_on": "Born kernels (model family); reference; the parenthesis uses the truth"
+  },
+  {
+   "id": "H12",
+   "claim": "The protocol's fit-rejection rule does not test the model; it rejects healthy re-meshes whose sector-shaped part is small (against H6: 5 of 6 nulls rejected; against H7: 1 of 6; no lobe design rejected).",
+   "tier": "n/a (characterisation)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (fit)",
+   "commit": "ceb473b",
+   "depends_on": "Born fit"
+  },
+  {
+   "id": "H13",
+   "claim": "Under identical null-only calibration the Born map beats raw per-antenna phase delay only with a rank reading (24 vs 18 exact sets of 30, 0 vs 2 false alarms); with thresholds 19 vs 18.",
+   "tier": "n/a (comparison)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (r4.fair)",
+   "commit": "ceb473b",
+   "depends_on": "Born kernels; raw phase; calibration choice"
+  },
+  {
+   "id": "H14",
+   "claim": "A rank reading chosen on other designs (never on Test_B) finds 58 of 72 affected sectors with 0 false alarms and 24 of 30 exact sets, and reads Test_B as S2 + S5. Not adopted; not a method claim (F7).",
+   "tier": "n/a (not adopted)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (r4.loo)",
+   "commit": "ceb473b",
+   "depends_on": "Born sector values; one head"
+  },
+  {
+   "id": "H15",
+   "claim": "LeftOnly and mirrored RightOnly agree in left/right reading and phase share within the pass-5/pass-6 twins (\u2264 1.08\u00d7); whether RightOnly's larger overall level is a mesh-pass effect is undetermined (1.31\u20132.06\u00d7 the largest of 3 twins).",
+   "tier": "undetermined (< 2\u00d7)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round3.md \u00a79",
+   "commit": "562d5be",
+   "depends_on": "three twins only"
+  },
+  {
+   "id": "H16",
+   "claim": "R31 detection (main session's feature) is defensible on the uniform training designs and fragile on the lobe Severe and LeftOnly designs.",
+   "tier": "n/a (main's ruler)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (check of main's frozen rule)",
+   "evidence": "results/imaging/lobe_round2.md (R4)",
+   "commit": "e4c33d3",
+   "depends_on": "main's frozen rule (results/04/frozen_rule.json)"
+  },
+  {
+   "id": "H17",
+   "claim": "The frozen thresholds were fixed before LeftOnly and MCI existed but tuned on Mild of the same head, so Mild calls are in-sample.",
+   "tier": "n/a (provenance)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round2.md (B19)",
+   "commit": "e4c33d3",
+   "depends_on": "frozen thresholds"
+  },
+  {
+   "id": "H18",
+   "claim": "The four rotated healthy re-meshes give no frozen call in any method or reference (largest sector 4.75 against the threshold 13.81).",
+   "tier": "0.34\u00d7 the threshold (null behaves as null)",
+   "ratio": 0.3436461623949529,
+   "ratio_without_rot19": null,
+   "origin": "post hoc",
+   "evidence": "results/imaging/lobe_round5.json (nulls_rows)",
+   "commit": "ceb473b",
+   "depends_on": "frozen thresholds"
+  },
+  {
+   "id": "H19",
+   "claim": "The matched reference H6 sits apart from the other five healthy meshes on the right-parietal sector, left/right and front/back (all five on one side; chance 1/16 each). With the mean healthy mesh as reference RightOnly still replicates (REPLICATED).",
+   "tier": "n/a (reference check)",
+   "ratio": null,
+   "ratio_without_rot19": null,
+   "origin": "post hoc (criterion fixed before rot31/rot43 were loaded); not adopted",
+   "evidence": "results/imaging/lobe_round5.json (one_sided, alt_*)",
+   "commit": "ceb473b",
+   "depends_on": "reference H6"
+  }
+ ],
+ "loo_without_rot19": {
+  "held_out": "family",
+  "statistic": "Born",
+  "kinds": "gap/mid",
+  "hits": 58,
+  "misses": 14,
+  "false_alarms": 0,
+  "exact": 22,
+  "n": 28,
+  "exact_without_TestB": "20/26",
+  "false_without_TestB": 0,
+  "TestB_read": "H7: S2 S5; H6: S2 S5"
+ }
+}
