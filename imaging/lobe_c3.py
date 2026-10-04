@@ -541,7 +541,7 @@ def main():
                 and r["reference"].endswith("primary)"))
     blind_txt = (f"**pre-registered blind test: {off['verdict']}** (primary method, frozen 7-pass reference): "
                  f"LeftOnly side = {off['side']}, LR = {off['LR']:+.1f} (predicted {bpl['LR_mean']:+.1f} ± {bpl['LR_sd']:.1f}, "
-                 f"i.e. {(off['LR'] - bpl['LR_mean']) / bpl['LR_sd']:+.1f} SD: right side, smaller than predicted), "
+                 f"i.e. {(off['LR'] - bpl['LR_mean']) / bpl['LR_sd']:+.1f} SD: correct sign, smaller than predicted), "
                  f"called {off['called']} (S2 {off[chr(100) + chr(949) + chr(39) * 2 + ' S2 TL']:.1f} just below T_abs "
                  f"{fz['rules'][RL.METHODS[0]]['T_abs']:.1f}; predicted P(S2 called) {bpl['p_called'][1]:.2f}). Against the rulers: LR is {side_p['ratio_sim']:.1f}× the clean ruler "
                  f"({side_p['verdict_sim']}) and {side_p['ratio_meas']:.1f}× the measured ruler ({side_p['verdict_meas']}); "
