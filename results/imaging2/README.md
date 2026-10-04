@@ -34,7 +34,8 @@ very lossy Severe CSF screens tissue more than about 5 mm below the skull.
 - Rotated-mesh nulls come out empty.
 - The lobe calls survive every null reference and an inflated noise model.
 - Interval coverage on affected lobes is 69% → 78% with every solve-to-solve offset added. Coverage of 78% on
-  affected lobes is accepted with the warning (nominal 90%).
+  affected lobes is accepted with the warning (nominal 90%). **Superseded (§11c):** with all 13 nulls the
+  pre-registered coverage is 67% < 70%, so depth intervals are not reportable.
 - P = 1.00 means the data strongly prefer the lobe under this model.
 - One model-free reading (Test_B's ring spread) does not survive the rotated nulls.
 
@@ -492,6 +493,42 @@ rot07 phase pairs at 3.4 GHz 1.67 / 1.78°; ring spread 1.42° / 0.68°.
   - Show the standard and ring-phase results alongside it.
   - If calibration brings drift well below ±0.5 dB / ±5°, ring-phase is the more stable choice across references. The
     drift level at which that switch pays off has not been tested.
+
+## 11c. All four rotated nulls (pre-registered `a295006`, run unchanged; results `2f7f482`) and the ledger
+- **Ledger:** claims, tiers, failures, limitations and the report numbers are in **`LEDGER.md` / `LEDGER.csv`**.
+- **Pre-registered, 13 nulls:**
+  - R1: every rotated null reconstructs empty (0 lobes in all 60 runs).
+  - R2: no null is one-sided.
+  - R4: model-free side contrast 3.80× / 3.94×, floor rot31.
+  - R5: front − back 3.21× / 3.12×, floor rot07.
+  - R6: Test_B spread 1.25×, not separable.
+  - R7: 3.64×, post hoc statistic.
+  - R9: lobe calls exact with every rotated reference for standard and ring-phase; gain-removing wrong in 6 of 12.
+  - R10: stage wrong with rot19 **and rot43**.
+  - **R11: coverage on affected lobes 67% with all nulls (fails the 70% bar), 78% without rot19, 78% rot19 alone.**
+    8 of the 12 misses are Severe; without Severe it is 83% every way. By the accepted rule, **depth is not reportable
+    with intervals**; point estimates only.
+- **rot19 is not alone:** rot43 moves the stage as often as rot19 (8 of 14 standard runs each). The staging verdict
+  depends on two of four rotated heads. Without rot19 it still fails, through rot43.
+- **Detection (one sentence):** at least one lobe is called in every diseased design and in no healthy, MCI or
+  rotated-null head, against all six healthy references in all three variants (162 of 162, 0 of 93). A healthy head is
+  called "diseased" only by the stage alone, as "Mild with no lobe affected" (6 of 31 standard runs, against H7, rot19
+  or rot43).
+- **Is H6 typical?** (post hoc, `posthoc3/verify.md`)
+  - H6 has the lowest R31 of the six healthy meshes (−0.12 dB against the mean of the other five, z −1.9) and is
+    central in R21, R32 and the ring-mean phase.
+  - Your rot07 / rot19 ratio values reproduce without masking. With the masking rule, rot07's ΔR31 is +0.030 dB (not
+    +0.089).
+- **Mean of the six healthy meshes as reference** (post hoc, not adopted; `posthoc3/meanref.md`):
+  - standard lobe calls are exact for all 9 targets (Mild_p5's false S1 call disappears);
+  - the stage changes for 2 of 9 (Mild_p5 and RightOnly become Moderate);
+  - ring-phase loses 3 lobes on Moderate_p6;
+  - gain-removing is wrong on 3 targets.
+- **Variant recommendation, updated with six references:**
+  - Wrong lobe calls over 85 runs each: standard 11, ring-phase 15, gain-removing 34, gain + ring 39.
+  - Drift test, exact lobes: gain-removing 90%, standard 47%.
+  - The recommendation stands: gain-removing unless per-port drift is calibrated out, with its cross-reference weakness
+    stated. If drift is calibrated out, use the standard inversion: fewest wrong lobes across references.
 
 ## 12. What I would do next
 1. **Solve 2–3 designs that turn Severe into interpolation:** e.g. Severe materials in the left lobes only, and Mild
