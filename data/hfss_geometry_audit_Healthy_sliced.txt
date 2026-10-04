@@ -1,0 +1,273 @@
+*Global - Messages
+  [info] [geom] design: Healthy_sliced
+  [info] [geom] model units: mm
+  [info] [geom] Skin                       "skin"                 (no vertices: sphere/curved)  radius=r_skin
+  [info] [geom] Fat                        "fat"                  (no vertices: sphere/curved)  radius=r_fat
+  [info] [geom] Skull                      "Skull"                (no vertices: sphere/curved)  radius=r_skull
+  [info] [geom] RadiatingSurface           "air"                  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=8 
+  [info] [geom] HippocampusAD              "Hippocampus_healthy"  (no vertices: sphere/curved)  radius=r_hip
+  [info] [geom] gnd_3                      "copper"               c=(   -0.60,  -83.81,   50.12) az=  -90.4 pol=  59.1 d=  97.65 nv=8 
+  [info] [geom] SUB_3                      "Rogers RT/duroid 6010/6010LM (tm)" c=(   -0.51,  -79.36,   56.28) az=  -90.4 pol=  54.7 d=  97.30 nv=8 
+  [info] [geom] FEED_3                     "copper"               c=(   -0.50,  -79.32,   56.10) az=  -90.4 pol=  54.7 d=  97.15 nv=16 
+  [info] [geom] solid1_4_3                 "copper"               c=(   19.29,  -98.82,   44.53) az=  -79.0 pol=  66.1 d= 110.09 nv=32 
+  [info] [geom] solid1_3_3                 "copper"               c=(   19.53,  -87.44,   60.97) az=  -77.4 pol=  55.8 d= 108.37 nv=32 
+  [info] [geom] solid1_2_2_3               "copper"               c=(  -20.65,  -96.84,   43.74) az= -102.0 pol=  66.2 d= 108.25 nv=32 
+  [info] [geom] solid1_2_1_3               "copper"               c=(  -20.41,  -85.46,   60.18) az= -103.4 pol=  55.6 d= 106.50 nv=32 
+  [info] [geom] solid1_2_5                 "copper"               c=(  -20.18,  -74.08,   76.62) az= -105.2 pol=  45.1 d= 108.47 nv=32 
+  [info] [geom] solid1_1_2_3               "copper"               c=(   -0.68,  -97.83,   44.13) az=  -90.4 pol=  65.7 d= 107.33 nv=32 
+  [info] [geom] solid1_1_1_3               "copper"               c=(   -0.44,  -86.45,   60.58) az=  -90.3 pol=  55.0 d= 105.56 nv=32 
+  [info] [geom] solid1_1_5                 "copper"               c=(   -0.20,  -75.07,   77.02) az=  -90.2 pol=  44.3 d= 107.55 nv=32 
+  [info] [geom] solid1_7                   "copper"               c=(   19.77,  -76.06,   77.42) az=  -75.4 pol=  45.4 d= 110.31 nv=32 
+  [info] [geom] AMC_4_3                    "FR4_epoxy"            c=(   19.25,  -99.49,   44.99) az=  -79.0 pol=  66.1 d= 110.88 nv=8 
+  [info] [geom] AMC_3_3                    "FR4_epoxy"            c=(   19.49,  -88.11,   61.44) az=  -77.5 pol=  55.8 d= 109.17 nv=8 
+  [info] [geom] AMC_2_2_3                  "FR4_epoxy"            c=(  -20.69,  -97.51,   44.20) az= -102.0 pol=  66.1 d= 109.04 nv=8 
+  [info] [geom] AMC_2_1_3                  "FR4_epoxy"            c=(  -20.46,  -86.13,   60.65) az= -103.4 pol=  55.6 d= 107.31 nv=8 
+  [info] [geom] AMC_2_5                    "FR4_epoxy"            c=(  -20.22,  -74.75,   77.09) az= -105.1 pol=  45.1 d= 109.27 nv=8 
+  [info] [geom] AMC_1_2_3                  "FR4_epoxy"            c=(   -0.72,  -98.50,   44.60) az=  -90.4 pol=  65.6 d= 108.13 nv=8 
+  [info] [geom] AMC_1_1_3                  "FR4_epoxy"            c=(   -0.48,  -87.12,   61.04) az=  -90.3 pol=  55.0 d= 106.38 nv=8 
+  [info] [geom] AMC_1_5                    "FR4_epoxy"            c=(   -0.25,  -75.74,   77.49) az=  -90.2 pol=  44.3 d= 108.36 nv=8 
+  [info] [geom] AMCGND_3                   "copper"               c=(   -0.53,  -87.79,   61.51) az=  -90.3 pol=  55.0 d= 107.20 nv=8 
+  [info] [geom] AMC_7                      "FR4_epoxy"            c=(   19.73,  -76.73,   77.88) az=  -75.6 pol=  45.5 d= 111.10 nv=8 
+  [info] [geom] gnd_3_1                    "copper"               c=(   72.28,  -42.43,   50.12) az=  -30.4 pol=  59.1 d=  97.65 nv=8 
+  [info] [geom] gnd_3_2                    "copper"               c=(   72.88,   41.38,   50.12) az=   29.6 pol=  59.1 d=  97.65 nv=8 
+  [info] [geom] gnd_3_3                    "copper"               c=(    0.60,   83.81,   50.12) az=   89.6 pol=  59.1 d=  97.65 nv=8 
+  [info] [geom] gnd_3_4                    "copper"               c=(  -72.28,   42.43,   50.12) az=  149.6 pol=  59.1 d=  97.65 nv=8 
+  [info] [geom] gnd_3_5                    "copper"               c=(  -72.88,  -41.38,   50.12) az= -150.4 pol=  59.1 d=  97.65 nv=8 
+  [info] [geom] SUB_3_1                    "Rogers RT/duroid 6010/6010LM (tm)" c=(   68.48,  -40.12,   56.28) az=  -30.4 pol=  54.7 d=  97.30 nv=8 
+  [info] [geom] SUB_3_2                    "Rogers RT/duroid 6010/6010LM (tm)" c=(   68.98,   39.24,   56.28) az=   29.6 pol=  54.7 d=  97.30 nv=8 
+  [info] [geom] SUB_3_3                    "Rogers RT/duroid 6010/6010LM (tm)" c=(    0.51,   79.36,   56.28) az=   89.6 pol=  54.7 d=  97.30 nv=8 
+  [info] [geom] SUB_3_4                    "Rogers RT/duroid 6010/6010LM (tm)" c=(  -68.48,   40.12,   56.28) az=  149.6 pol=  54.7 d=  97.30 nv=8 
+  [info] [geom] SUB_3_5                    "Rogers RT/duroid 6010/6010LM (tm)" c=(  -68.98,  -39.24,   56.28) az= -150.4 pol=  54.7 d=  97.30 nv=8 
+  [info] [geom] FEED_3_1                   "copper"               c=(   68.44,  -40.09,   56.10) az=  -30.4 pol=  54.7 d=  97.15 nv=16 
+  [info] [geom] FEED_3_2                   "copper"               c=(   68.94,   39.23,   56.10) az=   29.6 pol=  54.7 d=  97.15 nv=16 
+  [info] [geom] FEED_3_3                   "copper"               c=(    0.50,   79.32,   56.10) az=   89.6 pol=  54.7 d=  97.15 nv=16 
+  [info] [geom] FEED_3_4                   "copper"               c=(  -68.44,   40.09,   56.10) az=  149.6 pol=  54.7 d=  97.15 nv=16 
+  [info] [geom] FEED_3_5                   "copper"               c=(  -68.94,  -39.23,   56.10) az= -150.4 pol=  54.7 d=  97.15 nv=16 
+  [info] [geom] solid1_4_3_1               "copper"               c=(   95.23,  -32.70,   44.53) az=  -19.0 pol=  66.1 d= 110.09 nv=32 
+  [info] [geom] solid1_4_3_2               "copper"               c=(   75.93,   66.12,   44.53) az=   41.0 pol=  66.1 d= 110.09 nv=32 
+  [info] [geom] solid1_4_3_3               "copper"               c=(  -19.29,   98.82,   44.53) az=  101.0 pol=  66.1 d= 110.09 nv=32 
+  [info] [geom] solid1_4_3_4               "copper"               c=(  -95.23,   32.70,   44.53) az=  161.0 pol=  66.1 d= 110.09 nv=32 
+  [info] [geom] solid1_4_3_5               "copper"               c=(  -75.93,  -66.12,   44.53) az= -139.0 pol=  66.1 d= 110.09 nv=32 
+  [info] [geom] solid1_3_3_1               "copper"               c=(   85.49,  -26.81,   60.97) az=  -17.4 pol=  55.8 d= 108.37 nv=32 
+  [info] [geom] solid1_3_3_2               "copper"               c=(   65.96,   60.63,   60.97) az=   42.6 pol=  55.8 d= 108.37 nv=32 
+  [info] [geom] solid1_3_3_3               "copper"               c=(  -19.53,   87.44,   60.97) az=  102.6 pol=  55.8 d= 108.37 nv=32 
+  [info] [geom] solid1_3_3_4               "copper"               c=(  -85.49,   26.81,   60.97) az=  162.6 pol=  55.8 d= 108.37 nv=32 
+  [info] [geom] solid1_3_3_5               "copper"               c=(  -65.96,  -60.63,   60.97) az= -137.4 pol=  55.8 d= 108.37 nv=32 
+  [info] [geom] solid1_2_2_3_1             "copper"               c=(   73.54,  -66.30,   43.74) az=  -42.0 pol=  66.2 d= 108.25 nv=32 
+  [info] [geom] solid1_2_2_3_2             "copper"               c=(   94.19,   30.54,   43.74) az=   18.0 pol=  66.2 d= 108.25 nv=32 
+  [info] [geom] solid1_2_2_3_3             "copper"               c=(   20.65,   96.84,   43.74) az=   78.0 pol=  66.2 d= 108.25 nv=32 
+  [info] [geom] solid1_2_2_3_4             "copper"               c=(  -73.54,   66.30,   43.74) az=  138.0 pol=  66.2 d= 108.25 nv=32 
+  [info] [geom] solid1_2_2_3_5             "copper"               c=(  -94.19,  -30.54,   43.74) az= -162.0 pol=  66.2 d= 108.25 nv=32 
+  [info] [geom] solid1_2_1_3_1             "copper"               c=(   63.80,  -60.41,   60.18) az=  -43.4 pol=  55.6 d= 106.50 nv=32 
+  [info] [geom] solid1_2_1_3_2             "copper"               c=(   84.22,   25.05,   60.18) az=   16.6 pol=  55.6 d= 106.50 nv=32 
+  [info] [geom] solid1_2_1_3_3             "copper"               c=(   20.41,   85.46,   60.18) az=   76.6 pol=  55.6 d= 106.50 nv=32 
+  [info] [geom] solid1_2_1_3_4             "copper"               c=(  -63.80,   60.41,   60.18) az=  136.6 pol=  55.6 d= 106.50 nv=32 
+  [info] [geom] solid1_2_1_3_5             "copper"               c=(  -84.22,  -25.05,   60.18) az= -163.4 pol=  55.6 d= 106.50 nv=32 
+  [info] [geom] solid1_2_5_1               "copper"               c=(   54.07,  -54.51,   76.62) az=  -45.2 pol=  45.1 d= 108.47 nv=32 
+  [info] [geom] solid1_2_5_2               "copper"               c=(   74.24,   19.57,   76.62) az=   14.8 pol=  45.1 d= 108.47 nv=32 
+  [info] [geom] solid1_2_5_3               "copper"               c=(   20.18,   74.08,   76.62) az=   74.8 pol=  45.1 d= 108.47 nv=32 
+  [info] [geom] solid1_2_5_4               "copper"               c=(  -54.07,   54.51,   76.62) az=  134.8 pol=  45.1 d= 108.47 nv=32 
+  [info] [geom] solid1_2_5_5               "copper"               c=(  -74.24,  -19.57,   76.62) az= -165.2 pol=  45.1 d= 108.47 nv=32 
+  [info] [geom] solid1_1_2_3_1             "copper"               c=(   84.38,  -49.50,   44.13) az=  -30.4 pol=  65.7 d= 107.33 nv=32 
+  [info] [geom] solid1_1_2_3_2             "copper"               c=(   85.06,   48.33,   44.13) az=   29.6 pol=  65.7 d= 107.33 nv=32 
+  [info] [geom] solid1_1_2_3_3             "copper"               c=(    0.68,   97.83,   44.13) az=   89.6 pol=  65.7 d= 107.33 nv=32 
+  [info] [geom] solid1_1_2_3_4             "copper"               c=(  -84.38,   49.50,   44.13) az=  149.6 pol=  65.7 d= 107.33 nv=32 
+  [info] [geom] solid1_1_2_3_5             "copper"               c=(  -85.06,  -48.33,   44.13) az= -150.4 pol=  65.7 d= 107.33 nv=32 
+  [info] [geom] solid1_1_1_3_1             "copper"               c=(   74.65,  -43.61,   60.58) az=  -30.3 pol=  55.0 d= 105.56 nv=32 
+  [info] [geom] solid1_1_1_3_2             "copper"               c=(   75.09,   42.84,   60.58) az=   29.7 pol=  55.0 d= 105.56 nv=32 
+  [info] [geom] solid1_1_1_3_3             "copper"               c=(    0.44,   86.45,   60.58) az=   89.7 pol=  55.0 d= 105.56 nv=32 
+  [info] [geom] solid1_1_1_3_4             "copper"               c=(  -74.65,   43.61,   60.58) az=  149.7 pol=  55.0 d= 105.56 nv=32 
+  [info] [geom] solid1_1_1_3_5             "copper"               c=(  -75.09,  -42.84,   60.58) az= -150.3 pol=  55.0 d= 105.56 nv=32 
+  [info] [geom] solid1_1_5_1               "copper"               c=(   64.91,  -37.71,   77.02) az=  -30.2 pol=  44.3 d= 107.55 nv=32 
+  [info] [geom] solid1_1_5_2               "copper"               c=(   65.11,   37.36,   77.02) az=   29.8 pol=  44.3 d= 107.55 nv=32 
+  [info] [geom] solid1_1_5_3               "copper"               c=(    0.20,   75.07,   77.02) az=   89.8 pol=  44.3 d= 107.55 nv=32 
+  [info] [geom] solid1_1_5_4               "copper"               c=(  -64.91,   37.71,   77.02) az=  149.8 pol=  44.3 d= 107.55 nv=32 
+  [info] [geom] solid1_1_5_5               "copper"               c=(  -65.11,  -37.36,   77.02) az= -150.2 pol=  44.3 d= 107.55 nv=32 
+  [info] [geom] solid1_7_1                 "copper"               c=(   75.75,  -20.91,   77.42) az=  -15.4 pol=  45.4 d= 110.31 nv=32 
+  [info] [geom] solid1_7_2                 "copper"               c=(   55.98,   55.15,   77.42) az=   44.6 pol=  45.4 d= 110.31 nv=32 
+  [info] [geom] solid1_7_3                 "copper"               c=(  -19.77,   76.06,   77.42) az=  104.6 pol=  45.4 d= 110.31 nv=32 
+  [info] [geom] solid1_7_4                 "copper"               c=(  -75.75,   20.91,   77.42) az=  164.6 pol=  45.4 d= 110.31 nv=32 
+  [info] [geom] solid1_7_5                 "copper"               c=(  -55.98,  -55.15,   77.42) az= -135.4 pol=  45.4 d= 110.31 nv=32 
+  [info] [geom] AMC_4_3_1                  "FR4_epoxy"            c=(   95.79,  -33.07,   44.99) az=  -19.0 pol=  66.1 d= 110.88 nv=8 
+  [info] [geom] AMC_4_3_2                  "FR4_epoxy"            c=(   76.54,   66.42,   44.99) az=   41.0 pol=  66.1 d= 110.88 nv=8 
+  [info] [geom] AMC_4_3_3                  "FR4_epoxy"            c=(  -19.25,   99.49,   44.99) az=  101.0 pol=  66.1 d= 110.88 nv=8 
+  [info] [geom] AMC_4_3_4                  "FR4_epoxy"            c=(  -95.79,   33.07,   44.99) az=  161.0 pol=  66.1 d= 110.88 nv=8 
+  [info] [geom] AMC_4_3_5                  "FR4_epoxy"            c=(  -76.54,  -66.42,   44.99) az= -139.0 pol=  66.1 d= 110.88 nv=8 
+  [info] [geom] AMC_3_3_1                  "FR4_epoxy"            c=(   86.05,  -27.18,   61.44) az=  -17.5 pol=  55.8 d= 109.17 nv=8 
+  [info] [geom] AMC_3_3_2                  "FR4_epoxy"            c=(   66.56,   60.93,   61.44) az=   42.5 pol=  55.8 d= 109.17 nv=8 
+  [info] [geom] AMC_3_3_3                  "FR4_epoxy"            c=(  -19.49,   88.11,   61.44) az=  102.5 pol=  55.8 d= 109.17 nv=8 
+  [info] [geom] AMC_3_3_4                  "FR4_epoxy"            c=(  -86.05,   27.18,   61.44) az=  162.5 pol=  55.8 d= 109.17 nv=8 
+  [info] [geom] AMC_3_3_5                  "FR4_epoxy"            c=(  -66.56,  -60.93,   61.44) az= -137.5 pol=  55.8 d= 109.17 nv=8 
+  [info] [geom] AMC_2_2_3_1                "FR4_epoxy"            c=(   74.10,  -66.68,   44.20) az=  -42.0 pol=  66.1 d= 109.04 nv=8 
+  [info] [geom] AMC_2_2_3_2                "FR4_epoxy"            c=(   94.79,   30.84,   44.20) az=   18.0 pol=  66.1 d= 109.04 nv=8 
+  [info] [geom] AMC_2_2_3_3                "FR4_epoxy"            c=(   20.69,   97.51,   44.20) az=   78.0 pol=  66.1 d= 109.04 nv=8 
+  [info] [geom] AMC_2_2_3_4                "FR4_epoxy"            c=(  -74.10,   66.68,   44.20) az=  138.0 pol=  66.1 d= 109.04 nv=8 
+  [info] [geom] AMC_2_2_3_5                "FR4_epoxy"            c=(  -94.79,  -30.84,   44.20) az= -162.0 pol=  66.1 d= 109.04 nv=8 
+  [info] [geom] AMC_2_1_3_1                "FR4_epoxy"            c=(   64.36,  -60.78,   60.65) az=  -43.4 pol=  55.6 d= 107.31 nv=8 
+  [info] [geom] AMC_2_1_3_2                "FR4_epoxy"            c=(   84.82,   25.35,   60.65) az=   16.6 pol=  55.6 d= 107.31 nv=8 
+  [info] [geom] AMC_2_1_3_3                "FR4_epoxy"            c=(   20.46,   86.13,   60.65) az=   76.6 pol=  55.6 d= 107.31 nv=8 
+  [info] [geom] AMC_2_1_3_4                "FR4_epoxy"            c=(  -64.36,   60.78,   60.65) az=  136.6 pol=  55.6 d= 107.31 nv=8 
+  [info] [geom] AMC_2_1_3_5                "FR4_epoxy"            c=(  -84.82,  -25.35,   60.65) az= -163.4 pol=  55.6 d= 107.31 nv=8 
+  [info] [geom] AMC_2_5_1                  "FR4_epoxy"            c=(   54.63,  -54.88,   77.09) az=  -45.1 pol=  45.1 d= 109.27 nv=8 
+  [info] [geom] AMC_2_5_2                  "FR4_epoxy"            c=(   74.85,   19.87,   77.09) az=   14.9 pol=  45.1 d= 109.27 nv=8 
+  [info] [geom] AMC_2_5_3                  "FR4_epoxy"            c=(   20.22,   74.75,   77.09) az=   74.9 pol=  45.1 d= 109.27 nv=8 
+  [info] [geom] AMC_2_5_4                  "FR4_epoxy"            c=(  -54.63,   54.88,   77.09) az=  134.9 pol=  45.1 d= 109.27 nv=8 
+  [info] [geom] AMC_2_5_5                  "FR4_epoxy"            c=(  -74.85,  -19.87,   77.09) az= -165.1 pol=  45.1 d= 109.27 nv=8 
+  [info] [geom] AMC_1_2_3_1                "FR4_epoxy"            c=(   84.94,  -49.88,   44.60) az=  -30.4 pol=  65.6 d= 108.13 nv=8 
+  [info] [geom] AMC_1_2_3_2                "FR4_epoxy"            c=(   85.67,   48.63,   44.60) az=   29.6 pol=  65.6 d= 108.13 nv=8 
+  [info] [geom] AMC_1_2_3_3                "FR4_epoxy"            c=(    0.72,   98.50,   44.60) az=   89.6 pol=  65.6 d= 108.13 nv=8 
+  [info] [geom] AMC_1_2_3_4                "FR4_epoxy"            c=(  -84.94,   49.88,   44.60) az=  149.6 pol=  65.6 d= 108.13 nv=8 
+  [info] [geom] AMC_1_2_3_5                "FR4_epoxy"            c=(  -85.67,  -48.63,   44.60) az= -150.4 pol=  65.6 d= 108.13 nv=8 
+  [info] [geom] AMC_1_1_3_1                "FR4_epoxy"            c=(   75.21,  -43.98,   61.04) az=  -30.3 pol=  55.0 d= 106.38 nv=8 
+  [info] [geom] AMC_1_1_3_2                "FR4_epoxy"            c=(   75.69,   43.14,   61.04) az=   29.7 pol=  55.0 d= 106.38 nv=8 
+  [info] [geom] AMC_1_1_3_3                "FR4_epoxy"            c=(    0.48,   87.12,   61.04) az=   89.7 pol=  55.0 d= 106.38 nv=8 
+  [info] [geom] AMC_1_1_3_4                "FR4_epoxy"            c=(  -75.21,   43.98,   61.04) az=  149.7 pol=  55.0 d= 106.38 nv=8 
+  [info] [geom] AMC_1_1_3_5                "FR4_epoxy"            c=(  -75.69,  -43.14,   61.04) az= -150.3 pol=  55.0 d= 106.38 nv=8 
+  [info] [geom] AMC_1_5_1                  "FR4_epoxy"            c=(   65.47,  -38.08,   77.49) az=  -30.2 pol=  44.3 d= 108.36 nv=8 
+  [info] [geom] AMC_1_5_2                  "FR4_epoxy"            c=(   65.72,   37.66,   77.49) az=   29.8 pol=  44.3 d= 108.36 nv=8 
+  [info] [geom] AMC_1_5_3                  "FR4_epoxy"            c=(    0.25,   75.74,   77.49) az=   89.8 pol=  44.3 d= 108.36 nv=8 
+  [info] [geom] AMC_1_5_4                  "FR4_epoxy"            c=(  -65.47,   38.08,   77.49) az=  149.8 pol=  44.3 d= 108.36 nv=8 
+  [info] [geom] AMC_1_5_5                  "FR4_epoxy"            c=(  -65.72,  -37.66,   77.49) az= -150.2 pol=  44.3 d= 108.36 nv=8 
+  [info] [geom] AMCGND_3_1                 "copper"               c=(   75.77,  -44.35,   61.51) az=  -30.3 pol=  55.0 d= 107.20 nv=8 
+  [info] [geom] AMCGND_3_2                 "copper"               c=(   76.29,   43.44,   61.51) az=   29.7 pol=  55.0 d= 107.20 nv=8 
+  [info] [geom] AMCGND_3_3                 "copper"               c=(    0.53,   87.79,   61.51) az=   89.7 pol=  55.0 d= 107.20 nv=8 
+  [info] [geom] AMCGND_3_4                 "copper"               c=(  -75.77,   44.35,   61.51) az=  149.7 pol=  55.0 d= 107.20 nv=8 
+  [info] [geom] AMCGND_3_5                 "copper"               c=(  -76.29,  -43.44,   61.51) az= -150.3 pol=  55.0 d= 107.20 nv=8 
+  [info] [geom] AMC_7_1                    "FR4_epoxy"            c=(   76.31,  -21.28,   77.88) az=  -15.6 pol=  45.5 d= 111.10 nv=8 
+  [info] [geom] AMC_7_2                    "FR4_epoxy"            c=(   56.59,   55.45,   77.88) az=   44.4 pol=  45.5 d= 111.10 nv=8 
+  [info] [geom] AMC_7_3                    "FR4_epoxy"            c=(  -19.73,   76.73,   77.88) az=  104.4 pol=  45.5 d= 111.10 nv=8 
+  [info] [geom] AMC_7_4                    "FR4_epoxy"            c=(  -76.31,   21.28,   77.88) az=  164.4 pol=  45.5 d= 111.10 nv=8 
+  [info] [geom] AMC_7_5                    "FR4_epoxy"            c=(  -56.59,  -55.45,   77.88) az= -135.6 pol=  45.5 d= 111.10 nv=8 
+  [info] [geom] WM_S1_Frontal              "WhiteMatterHealthy"   c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=76mm - e_S1
+  [info] [geom] GM_S1_Frontal              "Gray_Matter_healthy"  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=83mm - e_S1
+  [info] [geom] WM_S2_TemporalL            "WhiteMatterHealthy"   c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=76mm - e_S2
+  [info] [geom] GM_S2_TemporalL            "Gray_Matter_healthy"  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=83mm - e_S2
+  [info] [geom] WM_S3_ParietalL            "WhiteMatterHealthy"   c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=76mm - e_S3
+  [info] [geom] GM_S3_ParietalL            "Gray_Matter_healthy"  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=83mm - e_S3
+  [info] [geom] WM_S4_Occipital            "WhiteMatterHealthy"   c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=76mm - e_S4
+  [info] [geom] GM_S4_Occipital            "Gray_Matter_healthy"  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=83mm - e_S4
+  [info] [geom] WM_S5_ParietalR            "WhiteMatterHealthy"   c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=76mm - e_S5
+  [info] [geom] GM_S5_ParietalR            "Gray_Matter_healthy"  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=83mm - e_S5
+  [info] [geom] WM_S6_TemporalR            "WhiteMatterHealthy"   c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=76mm - e_S6
+  [info] [geom] GM_S6_TemporalR            "Gray_Matter_healthy"  c=(    0.00,    0.00,    0.00) az=    0.0 pol=   0.0 d=   0.00 nv=4 radius=83mm - e_S6
+  [info] [geom] CSF_outer                  "CSF_Healthy"          (no vertices: sphere/curved)  radius=r_csf_outer
+  [info] [geom] SHEET field_cutplane       c=(    0.05,    0.00,   -9.09) az=    0.0 d=   9.09
+  [info] [geom] SHEET Rectangle1           c=(    0.62,   85.05,   48.06) az=   89.6 d=  97.70
+  [info] [geom] SHEET Rectangle2           c=(   73.97,   41.99,   48.06) az=   29.6 d=  97.70
+  [info] [geom] SHEET Rectangle3           c=(   73.35,  -43.07,   48.06) az=  -30.4 d=  97.70
+  [info] [geom] SHEET Rectangle4           c=(   -0.62,  -85.05,   48.06) az=  -90.4 d=  97.70
+  [info] [geom] SHEET Rectangle5           c=(  -73.97,  -41.99,   48.06) az= -150.4 d=  97.70
+  [info] [geom] SHEET Rectangle6           c=(  -73.35,   43.07,   48.06) az=  149.6 d=  97.70
+  [info] [geom] excitations: FEED_3_T4, Lumped Port, FEED_3_T3, Lumped Port, FEED_3_T2, Lumped Port, FEED_3_T1, Lumped Port, FEED_3_T6, Lumped Port, FEED_3_T5, Lumped Port
+  [info] [geom] var L                    = 42mm           -> 42mm
+  [info] [geom] var H                    = 1.575mm        -> 1.575mm
+  [info] [geom] var W                    = 35mm           -> 35mm
+  [info] [geom] var d                    = 2mm            -> 2mm
+  [info] [geom] var Wb                   = r2             -> r2
+  [info] [geom] var a                    = 3.5mm          -> 3.5mm
+  [info] [geom] var r1                   = 3.5mm          -> 3.5mm
+  [info] [geom] var c                    = 5mm            -> 5mm
+  [info] [geom] var b                    = 5mm            -> 5mm
+  [info] [geom] var r2                   = 6mm            -> 6mm
+  [info] [geom] var wc                   = 12mm           -> 12mm
+  [info] [geom] var slot_distance        = 15mm           -> 15mm
+  [info] [geom] var g1                   = 2mm            -> 2mm
+  [info] [geom] var g2                   = 2mm            -> 2mm
+  [info] [geom] var y1                   = slot_distance  -> slot_distance
+  [info] [geom] var r_skin               = 88mm           -> 88mm
+  [info] [geom] var r_fat                = 87.5mm         -> 87.5mm
+  [info] [geom] var r_skull              = 86.5mm         -> 86.5mm
+  [info] [geom] var r_csf                = 95.5mm         -> 95.5mm
+  [info] [geom] var r_brain              = 95mm           -> 95mm
+  [info] [geom] var ant_gap              = 3mm            -> 3mm
+  [info] [geom] var ant_dist             = 115mm          -> 115mm
+  [info] [geom] var r_brain_ad           = 61.68mm        -> 61.68mm
+  [info] [geom] var r_csf_outer          = 83.5mm         -> 83.5mm
+  [info] [geom] var r_csf_inner          = 61.68mm        -> 61.68mm
+  [info] [geom] var r_gray               = 70.55mm        -> 70.55mm
+  [info] [geom] var r_csf_expanded       = 64.6mm         -> 64.6mm
+  [info] [geom] var r_white              = 17.5mm         -> 17.5mm
+  [info] [geom] var gap                  = 10mm           -> 10mm
+  [info] [geom] var g4                   = 2mm            -> 2mm
+  [info] [geom] var y2                   = 5mm            -> 5mm
+  [info] [geom] var y4                   = 11mm           -> 11mm
+  [info] [geom] var g3                   = 1mm            -> 1mm
+  [info] [geom] var z_ebg                = -(r_skin+15mm+H)+gap -> -(r_skin+15mm+H)+gap
+  [info] [geom] var r_grey_healthy       = 83mm           -> 83mm
+  [info] [geom] var r_gray_healthy       = 83mm           -> 83mm
+  [info] [geom] var r_white_healthy      = 76mm           -> 76mm
+  [info] [geom] var r_hippo_healthy      = 25mm           -> 25mm
+  [info] [geom] var e_S1                 = 0mm            -> 0mm
+  [info] [geom] var e_S2                 = 0mm            -> 0mm
+  [info] [geom] var e_S3                 = 0mm            -> 0mm
+  [info] [geom] var e_S4                 = 0mm            -> 0mm
+  [info] [geom] var e_S5                 = 0mm            -> 0mm
+  [info] [geom] var e_S6                 = 0mm            -> 0mm
+  [info] [geom] var r_hip                = 25mm           -> 25mm
+  [info] [geom] done
+new_with_slices (D:/Jatin/)
+  Healthy_sliced (Terminal Network)
+    [warning] Healthy_sliced: Solutions have been invalidated. (10:47:23 PM  Oct 03, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (02:27:55 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (02:27:56 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (02:27:56 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Healthy_sliced_new.s6p" (02:32:42 AM  Oct 04, 2026)
+  LeftOnly_test (Terminal Network)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (04:58:30 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (04:58:30 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (04:58:30 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_LeftOnly_test_c3.s6p" (09:18:27 AM  Oct 04, 2026)
+  MCI_lobe (Terminal Network)
+    [error] Simulation was aborted by user on server: Local Machine. (10:46:48 PM  Oct 03, 2026)
+    [error] Simulation was aborted by user on server: Local Machine. (10:50:48 PM  Oct 03, 2026)
+    [warning] MCI_lobe: Solutions have been invalidated. (10:51:00 PM  Oct 03, 2026)
+    [error] Simulation was aborted by user on server: Local Machine. (12:59:36 AM  Oct 04, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (06:28:46 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (06:28:46 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (06:28:46 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_MCI_lobe_c3.s6p" (09:18:53 AM  Oct 04, 2026)
+  Mild_lobe (Terminal Network)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (08:37:35 PM  Oct 03, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (08:37:35 PM  Oct 03, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (08:37:35 PM  Oct 03, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Mild_lobe.s6p" (09:02:47 PM  Oct 03, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (12:43:13 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (12:43:13 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (12:43:14 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Mild_lobe_new.s6p" (01:09:27 AM  Oct 04, 2026)
+  Moderate_lobe (Terminal Network)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (08:44:42 PM  Oct 03, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (08:44:42 PM  Oct 03, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (08:44:42 PM  Oct 03, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Moderate_lobe.s6p" (09:03:12 PM  Oct 03, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (10:40:58 PM  Oct 03, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (10:40:58 PM  Oct 03, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (10:40:58 PM  Oct 03, 2026)
+    [warning] Moderate_lobe: Solutions have been invalidated. (10:45:26 PM  Oct 03, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (01:19:55 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (01:19:55 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (01:19:56 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Moderate_lobe_new.s6p" (01:42:00 AM  Oct 04, 2026)
+    [warning] Moderate_lobe: Solutions have been invalidated. (03:15:57 AM  Oct 04, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (06:00:16 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (06:00:16 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (06:00:16 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Moderate_lobe_c3.s6p" (09:19:22 AM  Oct 04, 2026)
+  Severe_lobe (Terminal Network)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (08:16:16 PM  Oct 03, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (08:16:16 PM  Oct 03, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (08:16:16 PM  Oct 03, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Severe_lobe.s6p" (09:03:29 PM  Oct 03, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (10:40:41 PM  Oct 03, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (10:40:41 PM  Oct 03, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (10:40:41 PM  Oct 03, 2026)
+    [warning] Severe_lobe: Solutions have been invalidated. (10:45:10 PM  Oct 03, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (12:57:12 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (12:57:12 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (12:57:12 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Severe_lobe_new.s6p" (01:09:02 AM  Oct 04, 2026)
+    [warning] Severe_lobe: Solutions have been invalidated. (03:15:26 AM  Oct 04, 2026)
+    [info] An interpolating frequency sweep with 201 points has been started using HFSS - Solving Distributed. (05:35:50 AM  Oct 04, 2026)
+    [info] Interpolating frequency sweep complete. Converged. (05:35:50 AM  Oct 04, 2026)
+    [info] Normal completion of simulation on server: Local Machine. (05:35:50 AM  Oct 04, 2026)
+    [info] Touchstone export: Writing to "C:/Users/Admin/Downloads/new_with_slices_Severe_lobe_c3.s6p" (09:19:47 AM  Oct 04, 2026)
