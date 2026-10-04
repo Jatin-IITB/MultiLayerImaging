@@ -1,0 +1,235 @@
+{
+ "protocol": "results/imaging2/BLIND_PROTOCOL.md",
+ "code": "d83d1d5",
+ "file": "new_with_slices_Test_B.s6p",
+ "tag": "Test_B",
+ "grid_note": "native grid contains the common grid (no resampling)",
+ "masked_points": 3,
+ "training": [
+  "new_with_slices_Healthy_sliced.s6p",
+  "new_with_slices_Mild_lobe.s6p",
+  "new_with_slices_Mild_lobe_new.s6p",
+  "new_with_slices_Moderate_lobe.s6p",
+  "new_with_slices_Moderate_lobe_c3.s6p",
+  "new_with_slices_Severe_lobe.s6p",
+  "new_with_slices_Severe_lobe_c3.s6p",
+  "new_with_slices_LeftOnly_test_c3.s6p",
+  "new_with_slices_MCI_lobe_c3.s6p"
+ ],
+ "model": [
+  "tm0",
+  0.001
+ ],
+ "ell": 15,
+ "X_REJECT": 3.0,
+ "X_POOR": 1.5,
+ "variants": {
+  "standard_H6": {
+   "P_stage": {
+    "Healthy": 0.0,
+    "Mild": 1.0,
+    "Moderate": 1.356254126451601e-39,
+    "Severe": 1.8761253117668322e-252
+   },
+   "sectors": [
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.9999999999999999,
+     "e_mean": 13.732222222222223,
+     "e_median": 13.0,
+     "e_q05": 7.0,
+     "e_q95": 21.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 7.836666666666667,
+     "e_median": 7.0,
+     "e_q05": 6.5,
+     "e_q95": 12.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    }
+   ],
+   "role": "PRIMARY",
+   "reference": "new_with_slices_Healthy_sliced_new.s6p",
+   "gain_free": false,
+   "chi2_per_dof": 0.46321281747056675,
+   "tau": 1.0,
+   "fit": "OK",
+   "stage_MAP": "Mild",
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "left_right": "left and right",
+   "front_back": "neither front nor back"
+  },
+  "gainfree_H6": {
+   "P_stage": {
+    "Healthy": 0.0,
+    "Mild": 1.0,
+    "Moderate": 1.1082695253089088e-64,
+    "Severe": 0.0
+   },
+   "sectors": [
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.9999999999999999,
+     "e_mean": 7.486666666666668,
+     "e_median": 6.5,
+     "e_q05": 6.0,
+     "e_q95": 11.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 6.224444444444444,
+     "e_median": 6.0,
+     "e_q05": 6.0,
+     "e_q95": 6.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    }
+   ],
+   "role": "secondary",
+   "reference": "new_with_slices_Healthy_sliced_new.s6p",
+   "gain_free": true,
+   "chi2_per_dof": 0.7724427406208874,
+   "tau": 1.0,
+   "fit": "OK",
+   "stage_MAP": "Mild",
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "left_right": "left and right",
+   "front_back": "neither front nor back"
+  },
+  "standard_H7": {
+   "P_stage": {
+    "Healthy": 0.0,
+    "Mild": 1.0,
+    "Moderate": 8.495345124819333e-19,
+    "Severe": 9.10467690016671e-191
+   },
+   "sectors": [
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 5.7955555555555565,
+     "e_median": 3.5,
+     "e_q05": 3.0,
+     "e_q95": 9.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 8.70777777777778,
+     "e_median": 7.5,
+     "e_q05": 7.0,
+     "e_q95": 17.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    }
+   ],
+   "role": "secondary",
+   "reference": "new_with_slices_Healthy_sliced.s6p",
+   "gain_free": false,
+   "chi2_per_dof": 0.41678026539475854,
+   "tau": 1.0,
+   "fit": "OK",
+   "stage_MAP": "Mild",
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "left_right": "left and right",
+   "front_back": "neither front nor back"
+  }
+ }
+}
