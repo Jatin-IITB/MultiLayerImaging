@@ -97,8 +97,54 @@ def main(K=12, sweeps=300, procs=6):
     print("\n".join(L))
 
 
+
+
+# ---------------------------------------------------------------- cross-reference table for gain+ring (post hoc)
+def _xref_job(args):
+    tag, fold_name, key, refs = args
+    from . import lodo as LO
+    from .nullrulers import truth_calls_stage
+    PH.register()
+    fold = LO.fit_fold(fold_name)
+    tc, ts = truth_calls_stage(key)
+    rows = []
+    for ref in refs:
+        if ref == key:
+            continue
+        sm = PH.short(PH.summarize_run(make_post(fold, fold["s_re"], fold["s_im"], "gain+ring"), PH.L(key, ref)))
+        rows.append(dict(target=tag, reference=ref, variant="gain+ring", stage=sm["stage"], calls=sm["calls"],
+                         wrong_lobes=int(sum(a != b for a, b in zip(sm["calls"], tc))), stage_ok=sm["stage"] == ts, fit=sm["fit"]))
+    return rows
+
+
+def xref(procs=6):
+    from .nullrulers import TARGETS as NT, available
+    refs = ["H6", "H7"] + available()
+    jobs = [(t, g, k, refs) for t, g, k in NT] + [(r, "__blind__", r, refs) for r in available()]
+    with Pool(procs) as pool:
+        rows = sum(pool.map(_xref_job, jobs), [])
+    (OUT / "posthoc" / "xref_gainring.json").write_text(json.dumps(rows, indent=0), encoding="utf-8")
+    by = {}
+    for r in rows:
+        b = by.setdefault(r["reference"], [0, 0, 0])
+        b[0] += r["wrong_lobes"]
+        b[1] += int(not r["stage_ok"])
+        b[2] += 1
+    print("gain+ring cross-reference: runs", len(rows), "wrong lobes", sum(r["wrong_lobes"] for r in rows),
+          "runs with wrong lobe", sum(r["wrong_lobes"] > 0 for r in rows), "wrong stage", sum(not r["stage_ok"] for r in rows),
+          "by ref (wrong lobes / wrong stage / runs)", by)
+    for r in rows:
+        if r["wrong_lobes"] or not r["stage_ok"]:
+            print("  ", r["target"], r["reference"], r["stage"], r["calls"], r["fit"])
+    return rows
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
+    ap.add_argument("cmd", nargs="?", default="drift", choices=["drift", "xref"])
     ap.add_argument("--k", type=int, default=12)
     a = ap.parse_args()
-    main(a.k)
+    if a.cmd == "drift":
+        main(a.k)
+    else:
+        xref()

@@ -1,0 +1,6725 @@
+{
+"label": "POST HOC drift test of every variant (identical draws)",
+"K": 12,
+"sweeps": 300,
+"summary": {
+"standard": {
+"Healthy_p7": {
+"exact": 1.0,
+"stage_ok": 0.9166666666666666,
+"wrong_lobes_per_draw": 0.0
+},
+"Mild_p5": {
+"exact": 0.25,
+"stage_ok": 0.75,
+"wrong_lobes_per_draw": 0.8333333333333334
+},
+"Moderate_p5": {
+"exact": 0.3333333333333333,
+"stage_ok": 0.5833333333333334,
+"wrong_lobes_per_draw": 1.1666666666666667
+},
+"Severe_p5": {
+"exact": 0.5,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.75
+},
+"LeftOnly_p6": {
+"exact": 0.08333333333333333,
+"stage_ok": 0.6666666666666666,
+"wrong_lobes_per_draw": 1.1666666666666667
+},
+"MCI_p6": {
+"exact": 1.0,
+"stage_ok": 0.9166666666666666,
+"wrong_lobes_per_draw": 0.0
+},
+"RightOnly": {
+"exact": 0.3333333333333333,
+"stage_ok": 0.8333333333333334,
+"wrong_lobes_per_draw": 1.0
+},
+"Test_B": {
+"exact": 0.25,
+"stage_ok": 0.9166666666666666,
+"wrong_lobes_per_draw": 0.9166666666666666
+},
+"ALL": {
+"exact": 0.46875,
+"stage_ok": 0.8229166666666666,
+"wrong_lobes_per_draw": 0.7291666666666666
+}
+},
+"gainfree": {
+"Healthy_p7": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"Mild_p5": {
+"exact": 0.5833333333333334,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.4166666666666667
+},
+"Moderate_p5": {
+"exact": 0.8333333333333334,
+"stage_ok": 0.9166666666666666,
+"wrong_lobes_per_draw": 0.16666666666666666
+},
+"Severe_p5": {
+"exact": 0.9166666666666666,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.08333333333333333
+},
+"LeftOnly_p6": {
+"exact": 0.8333333333333334,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.16666666666666666
+},
+"MCI_p6": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"RightOnly": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"Test_B": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"ALL": {
+"exact": 0.8958333333333334,
+"stage_ok": 0.9895833333333334,
+"wrong_lobes_per_draw": 0.10416666666666667
+}
+},
+"ringphase": {
+"Healthy_p7": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"Mild_p5": {
+"exact": 0.25,
+"stage_ok": 0.6666666666666666,
+"wrong_lobes_per_draw": 0.9166666666666666
+},
+"Moderate_p5": {
+"exact": 0.08333333333333333,
+"stage_ok": 0.4166666666666667,
+"wrong_lobes_per_draw": 1.5
+},
+"Severe_p5": {
+"exact": 0.25,
+"stage_ok": 0.9166666666666666,
+"wrong_lobes_per_draw": 1.25
+},
+"LeftOnly_p6": {
+"exact": 0.25,
+"stage_ok": 0.6666666666666666,
+"wrong_lobes_per_draw": 1.0
+},
+"MCI_p6": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"RightOnly": {
+"exact": 0.16666666666666666,
+"stage_ok": 0.5833333333333334,
+"wrong_lobes_per_draw": 1.0833333333333333
+},
+"Test_B": {
+"exact": 0.5,
+"stage_ok": 0.8333333333333334,
+"wrong_lobes_per_draw": 0.6666666666666666
+},
+"ALL": {
+"exact": 0.4375,
+"stage_ok": 0.7604166666666666,
+"wrong_lobes_per_draw": 0.8020833333333334
+}
+},
+"gain+ring": {
+"Healthy_p7": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"Mild_p5": {
+"exact": 0.9166666666666666,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.08333333333333333
+},
+"Moderate_p5": {
+"exact": 0.4166666666666667,
+"stage_ok": 0.6666666666666666,
+"wrong_lobes_per_draw": 0.75
+},
+"Severe_p5": {
+"exact": 0.5,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.5
+},
+"LeftOnly_p6": {
+"exact": 0.9166666666666666,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.08333333333333333
+},
+"MCI_p6": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"RightOnly": {
+"exact": 1.0,
+"stage_ok": 0.8333333333333334,
+"wrong_lobes_per_draw": 0.0
+},
+"Test_B": {
+"exact": 1.0,
+"stage_ok": 1.0,
+"wrong_lobes_per_draw": 0.0
+},
+"ALL": {
+"exact": 0.84375,
+"stage_ok": 0.9375,
+"wrong_lobes_per_draw": 0.17708333333333334
+}
+}
+},
+"rows": [
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "standard",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Healthy_p7",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+1,
+1,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 6,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 7,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+1,
+1,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 9,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "standard",
+"k": 11,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Mild_p5",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Mild_p5",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+1,
+1,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 1,
+"calls": [
+1,
+0,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+1,
+0,
+1,
+0,
+1,
+0
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 4,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 3,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 3,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 5,
+"calls": [
+1,
+0,
+1,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+1,
+0,
+1,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 3,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+1,
+1,
+0,
+0,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 9,
+"calls": [
+1,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+1,
+0,
+0,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 3,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 10,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+1,
+0,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Moderate_p5",
+"variant": "standard",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Moderate_p5",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 0,
+"calls": [
+0,
+0,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 3,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 1,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+1,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+1,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+1,
+1,
+1,
+1,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+1,
+0,
+1,
+0,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+0,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+0,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+0,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+0
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+1,
+0,
+0
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 9,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+1,
+1,
+1,
+1,
+0,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 10,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "standard",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+0
+],
+"stage": "Severe",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Severe_p5",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"stage": "Severe",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 0,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 3,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 5,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 7,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 8,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 9,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 10,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+1,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "standard",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "LeftOnly_p6",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "standard",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "MCI_p6",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+1,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 3,
+"calls": [
+1,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+1,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 4,
+"calls": [
+1,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+1,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 9,
+"calls": [
+0,
+0,
+1,
+1,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+1,
+1,
+1
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 10,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+0,
+0,
+1,
+0,
+0,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "standard",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "RightOnly",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+1,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "RightOnly",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 0,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 0,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 0,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 0,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 1,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 2,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 2,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 2,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 3,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 3,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 3,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 3,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 4,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 4,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 4,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 4,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 5,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 5,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+0
+],
+"stage": "Moderate",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": false
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 5,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 6,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 6,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 6,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 6,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 7,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 7,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 7,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 7,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 8,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 8,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 8,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 8,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 9,
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"stage": "Healthy",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": false
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 9,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 9,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 9,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 10,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 10,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 10,
+"calls": [
+0,
+1,
+0,
+0,
+0,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 10,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "standard",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 1,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gainfree",
+"k": 11,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "ringphase",
+"k": 11,
+"calls": [
+0,
+0,
+0,
+1,
+1,
+0
+],
+"stage": "Mild",
+"exact": false,
+"wrong_lobes": 2,
+"stage_ok": true
+},
+{
+"target": "Test_B",
+"variant": "gain+ring",
+"k": 11,
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"stage": "Mild",
+"exact": true,
+"wrong_lobes": 0,
+"stage_ok": true
+}
+]
+}

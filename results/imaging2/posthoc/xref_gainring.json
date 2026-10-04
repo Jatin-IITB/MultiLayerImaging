@@ -1,0 +1,835 @@
+[
+{
+"target": "Healthy_p7",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.015
+},
+{
+"target": "Healthy_p7",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.4
+},
+{
+"target": "Healthy_p7",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.453
+},
+{
+"target": "Mild_p5",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 2,
+"stage_ok": true,
+"fit": 1.069
+},
+{
+"target": "Mild_p5",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 2,
+"stage_ok": true,
+"fit": 2.206
+},
+{
+"target": "Mild_p5",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 2,
+"stage_ok": true,
+"fit": 1.308
+},
+{
+"target": "Mild_p5",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 2,
+"stage_ok": true,
+"fit": 1.987
+},
+{
+"target": "Mild_p6",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.691
+},
+{
+"target": "Mild_p6",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 0.525
+},
+{
+"target": "Mild_p6",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.916
+},
+{
+"target": "Mild_p6",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.118
+},
+{
+"target": "Moderate_p5",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.301
+},
+{
+"target": "Moderate_p5",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.441
+},
+{
+"target": "Moderate_p5",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.375
+},
+{
+"target": "Moderate_p5",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+0,
+1,
+0,
+0,
+0,
+1
+],
+"wrong_lobes": 3,
+"stage_ok": false,
+"fit": 0.806
+},
+{
+"target": "Moderate_p6",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+0,
+1,
+1,
+0,
+0,
+1
+],
+"wrong_lobes": 2,
+"stage_ok": true,
+"fit": 0.427
+},
+{
+"target": "Moderate_p6",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.271
+},
+{
+"target": "Moderate_p6",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+0,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 1,
+"stage_ok": true,
+"fit": 0.478
+},
+{
+"target": "Moderate_p6",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+1,
+1,
+1,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.86
+},
+{
+"target": "Severe_p5",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.894
+},
+{
+"target": "Severe_p5",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 2.387
+},
+{
+"target": "Severe_p5",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 2.212
+},
+{
+"target": "Severe_p5",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 2.054
+},
+{
+"target": "Severe_p6",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 2.323
+},
+{
+"target": "Severe_p6",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.675
+},
+{
+"target": "Severe_p6",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 2.64
+},
+{
+"target": "Severe_p6",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 2.246
+},
+{
+"target": "LeftOnly_p6",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.722
+},
+{
+"target": "LeftOnly_p6",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+0,
+0,
+1
+],
+"wrong_lobes": 1,
+"stage_ok": true,
+"fit": 0.62
+},
+{
+"target": "LeftOnly_p6",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.005
+},
+{
+"target": "LeftOnly_p6",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Moderate",
+"calls": [
+0,
+1,
+1,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 1.066
+},
+{
+"target": "MCI_p6",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.514
+},
+{
+"target": "MCI_p6",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+0,
+0,
+1,
+0,
+0
+],
+"wrong_lobes": 1,
+"stage_ok": false,
+"fit": 0.659
+},
+{
+"target": "MCI_p6",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.687
+},
+{
+"target": "MCI_p6",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 1.288
+},
+{
+"target": "RightOnly",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 3,
+"stage_ok": true,
+"fit": 0.626
+},
+{
+"target": "RightOnly",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"wrong_lobes": 4,
+"stage_ok": true,
+"fit": 1.062
+},
+{
+"target": "RightOnly",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+0,
+1,
+1,
+1
+],
+"wrong_lobes": 2,
+"stage_ok": true,
+"fit": 0.729
+},
+{
+"target": "RightOnly",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Severe",
+"calls": [
+0,
+0,
+0,
+0,
+1,
+1
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 1.237
+},
+{
+"target": "Test_B",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.697
+},
+{
+"target": "Test_B",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.466
+},
+{
+"target": "Test_B",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.972
+},
+{
+"target": "Test_B",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+1,
+0,
+0,
+1,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.255
+},
+{
+"target": "rot07",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 0.337
+},
+{
+"target": "rot07",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 0.511
+},
+{
+"target": "rot07",
+"reference": "rot19",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 1.275
+},
+{
+"target": "rot19",
+"reference": "H6",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.042
+},
+{
+"target": "rot19",
+"reference": "H7",
+"variant": "gain+ring",
+"stage": "Mild",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": false,
+"fit": 1.247
+},
+{
+"target": "rot19",
+"reference": "rot07",
+"variant": "gain+ring",
+"stage": "Healthy",
+"calls": [
+0,
+0,
+0,
+0,
+0,
+0
+],
+"wrong_lobes": 0,
+"stage_ok": true,
+"fit": 1.342
+}
+]

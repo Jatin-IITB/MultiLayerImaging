@@ -427,6 +427,72 @@ rot07 phase pairs at 3.4 GHz 1.67 / 1.78°; ring spread 1.42° / 0.68°.
   designs. The amplitude ring mean and the frequency shape of the phase pattern still carry it.
 - **Severe p5:** S2/S3/S5 depths become 13–13.5 mm (truth 17.5–18) instead of 2 mm, but S1/S4 stay at 0.5; fit 1.87.
 
+## 11b. POST HOC round 2: the rot19 question, stage vs reference, variant choice (`nullrulers/report.md`)
+- **Pre-registration:** committed before Null_rot31 / Null_rot43 exist as `a295006` (`ROTATED_NULLS_PROTOCOL.md`).
+  - Every ruler = max over all nulls (old 9 + every rotated null), none dropped.
+  - Reported three ways: all; without rot19; rot19 alone.
+  - Readings R1–R12 with their existing bars.
+  - `python -m imaging2.nullrulers all` runs unchanged when the files arrive.
+- **Evaluation:** the numbers below come from that code with the nulls present now (rot07, rot19), commit `d939eec`.
+
+**Section 0, common-mode vs scattered** (reported as found; no conclusion beyond it).
+- **Definitions:** your numbers reproduce with the mean of the dB difference (rot19 second-neighbour, 3.30–3.65 GHz:
+  −0.64 / +0.02 / −0.23 / −0.85 / −0.70 / −0.90 dB). Band power (dB of mean |S|²) gives the same pattern, smaller:
+  −0.47 / +0.12 / −0.16 / −0.42 / −0.38 / −0.54.
+
+| pair | k = 1 power | k = 2 power | k = 3 power | phase |
+|---|---|---|---|---|
+| rot07 vs H6 | scattered | scattered | scattered | scattered in every class, both bands |
+| rot19 vs H6, 3.30–3.65 GHz | mixed (+0.22 ± 0.12 dB) | mixed (−0.31 ± 0.23) | **common-mode (+0.31 ± 0.06, all six +0.26 to +0.40)** | k3 common-mode (−3.1°) |
+| rot19 vs H6, full band | **common-mode (+0.15 ± 0.04)** | scattered | **common-mode (+0.25 ± 0.10)** | mixed / scattered |
+| rot07 vs rot19, 3.30–3.65 GHz | mixed | **common-mode (+0.36)** | **common-mode (−0.28)** | k3 common-mode |
+| Mild, Moderate, Severe 5 vs 6; H6 vs H7; RightOnly vs mirror(LeftOnly) | mostly scattered or mixed; Mild k1 common (+0.07); H6/H7 k3 common (−0.13) | scattered or mixed | scattered or mixed, except H6/H7 | **common-mode in every class, both bands** (the uniform pass-gap lag) |
+
+- Among the twin pairs, a class-wide *power* shift of the opposite class shows only in H6 vs H7 (−0.13 dB, opposite
+  sign). The twins share a class-wide *phase* lag that rot07 does not show and rot19 shows only in k = 3.
+
+**Stage and lobe calls vs every reference** (13 targets × H6, H7, rot07, rot19 × 3 variants; full table in
+`nullrulers/report.md` §1).
+- **Is it only rot19 that moves the stage? Yes.**
+  - Standard variant: 8 of its 9 wrong stages use rot19 as reference. All Mild-material targets become Moderate,
+    Moderate_p5 becomes Severe (with S1/S3/S5 lost), and MCI becomes Mild (no lobes). The ninth is MCI vs H7 (Mild, no
+    lobes).
+  - **rot07 behaves like H6:** 0 wrong stages and 0 wrong lobes in 12 standard runs.
+  - Ring-phase: all 7 wrong stages are rot19.
+  - So the stage fragility is the same rot19 question as Section 0.
+- **Lobe calls with rot19 as reference:** wrong only for Moderate_p5 (3 lobes lost, all variants) and Moderate_p6
+  (ring-phase). Test_B, LeftOnly and RightOnly keep exact lobes with rot19 in the standard and ring-phase variants.
+
+**Rulers three ways (R1c):**
+- **Binding null:** for the model-free ring rulers it is **rot07**, not rot19: front − back floor 1.32°, Test_B spread
+  floor 1.42°. "Without rot19" therefore equals "all".
+- **rot19 alone** would give LR contrast 16x, front − back 33x, Test_B spread 3.1x.
+- **LR_e:** stays not separable (floor 9.25 mm from Severe_p6).
+- **Coverage on affected lobes:** 78% with all nulls; **83% without rot19**; 78% with rot19 alone.
+
+**Variant choice for real hardware: recommendation.**
+
+| variant | clean, every target × reference (49 runs): wrong lobe calls (runs) / wrong stages | noisy 0.5 dB, 5° + per-port drift ±0.5 dB, ±5° (96 draws, identical draws for all variants, `posthoc/variants_drift.md`): exact lobes / stage correct / wrong lobes per draw |
+|---|---|---|
+| standard | 7 (4) / 9 | 47% / 82% / 0.73 |
+| **gain-removing** | 19 (11) / 8 | **90% / 99% / 0.10** |
+| ring-mean-phase | **6 (2), all vs rot19** / 7 | 44% / 76% / 0.80 |
+| gain-removing + ring-mean-phase (post hoc) | 25 (12) / 9 | 84% / 94% / 0.18 |
+
+- **No variant is robust to both error types.**
+  - Per-port drift breaks the variants that keep the per-port gains (standard, ring-phase: 0.73–0.80 wrong lobes per
+    draw).
+  - Non-gain differences between baseline and follow-up (the mesh offsets) break the gain-removing ones most (19–25
+    wrong lobes in 49 runs; P = 1.00 on RightOnly's wrong S2).
+- Requiring two variants to agree did not help on the drift draws. The best rule, gain-removing AND gain + ring, gives
+  83% exact against 90% for gain-removing alone.
+- **Recommendation: gain-removing for real hardware unless per-port drift is calibrated out.**
+  - Drift is certain on hardware and was the larger error: 0.10 against 0.73 wrong lobes per draw.
+  - Its weakness should be stated with every result: it is the least stable to non-gain baseline differences.
+  - Show the standard and ring-phase results alongside it.
+  - If calibration brings drift well below ±0.5 dB / ±5°, ring-phase is the more stable choice across references. The
+    drift level at which that switch pays off has not been tested.
+
 ## 12. What I would do next
 1. **Solve 2–3 designs that turn Severe into interpolation:** e.g. Severe materials in the left lobes only, and Mild
    materials at e = 3 mm and e = 20 mm. Today every Severe-material state is outside the training set.
@@ -434,8 +500,11 @@ rot07 phase pairs at 3.4 GHz 1.67 / 1.78°; ring spread 1.42° / 0.68°.
    correction of the surrogate and a field-based depth-sensitivity check for lossy CSF.
 3. **Vertical information:** a second, lower ring (z ≈ 0–20 mm) or tilted antennas. The vertical extent of the
    lobes is imposed by the model at present, and nothing below z ≈ 30 mm is measured.
-4. **Real-measurement mode:** use the gain-free inversion by default; it is the version that survives per-port drift.
-   Expect depth to be biased low under realistic noise.
+4. **Real-measurement mode** (updated post hoc, §11b):
+   - Use the gain-removing inversion by default, unless per-port drift is calibrated out. It is the only tested
+     variant that survives ±0.5 dB / ±5° drift.
+   - It is also the most sensitive to non-gain differences between baseline and follow-up.
+   - Show the standard and ring-phase results alongside, and expect depth to be biased low under realistic noise.
 5. **Anatomy variation** (head size, skull/scalp thickness, stand-off) is still untested and decisive. Every result
    here is one idealised head.
 
