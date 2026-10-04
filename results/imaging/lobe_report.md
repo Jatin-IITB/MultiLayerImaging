@@ -1071,3 +1071,29 @@ Open limitations:
 - z_ebg geometry meaning (G3): unverified, no imaging result depends on it.
 - Items A14–A28 (data handling, statistics, staging of the frozen rule): main session.
 
+
+## 10. RightOnly_test: replication of the left/right sign (C6)
+
+Scored by the committed scorer (`imaging/score_rightonly.py`, `226f9b1`; rule `0ceb626`) before any other use of the file: **REPLICATED**. Full output: `results/imaging/rightonly_score.md`.
+
+QC (S-parameters only): points 201, f_min_GHz 3.2, f_max_GHz 4.2, same_grid True, max_singular_value 0.9518597901423141, passive True, max_recip_err_dB_re_band -34.82438592767003, max_amp_nonrecip_dB 0.25939749920330574, n_masked 0, masked_at_fit_freq False.
+
+**POST-HOC context** (not part of the committed rule): LR_anti of RightOnly and LeftOnly against the R1c ruler (max(one-pass yardstick, largest |null| of the nine symmetric solves)):
+
+| reference | method | LR_anti_Right | LR_anti_Left | ratio_Right | ratio_Left | mirror_pair_average | average_over_ruler | right_beyond_all_nulls | left_beyond_all_nulls |
+|---|---|---|---|---|---|---|---|---|---|
+| Healthy_sliced | Tikhonov dS | -10.17 | +7.86 | 2.50 | 1.93 | +9.02 | 2.21 | True | True |
+| Healthy_sliced | frozen log | -11.09 | +8.75 | 2.98 | 2.35 | +9.92 | 2.67 | True | True |
+| Healthy_sliced | whitened log | -10.58 | +8.69 | 3.37 | 2.76 | +9.63 | 3.07 | True | True |
+| Healthy_sliced_new | Tikhonov dS | -10.15 | +7.86 | 2.51 | 1.94 | +9.00 | 2.23 | True | True |
+| Healthy_sliced_new | frozen log | -11.20 | +8.82 | 2.98 | 2.35 | +10.01 | 2.67 | True | True |
+| Healthy_sliced_new | whitened log | -10.71 | +8.77 | 3.38 | 2.77 | +9.74 | 3.08 | True | True |
+
+Each design alone is 'sensitive' (2–3×) under R1c. Both lie beyond all nine nulls with the predicted opposite signs, on independently meshed files. If the two meshes' asymmetries are independent, the one-sided rank p of the pair is about 0.1 × 0.1 = 0.01. That assumes what the rotated-mesh null solves (open item) would test.
+
+## 11. Blind design Test_B (estimates; truth held by the user)
+
+Protocol committed in `24aa0c4` before loading. Full output: `results/imaging/testb_report.md`.
+
+Reading (primary method): affected **none**; possible S2 TL; side none; front/back none; ranking S2 TL > S5 PR > S3 PL > S6 TR > S1 Fr > S4 Oc.
+
