@@ -452,6 +452,15 @@ def main():
                                  f"{v['agree']}/{v['n_big']}",
                        "baseline": "decision rule fixed before the first run; derived from cf56de8",
                        "verdict": "holds" if v["holds"] else "fails"})
+    lo_t = dt[(dt.design == LO) & dt.condition.str.startswith("typical")].set_index("rule")
+    m_lo = g(LO, "R31") - tau
+    claims.append({"claim": "descriptive (post hoc): frozen rules on LeftOnly_test (one-sided mild atrophy)",
+                   "number": f"detection {lo_t.loc['binary_R31', 'AD']:.2f} AD, R31 margin to tau {m_lo:+.2f} dB = "
+                             f"{abs(m_lo) / R['yard']['R31']:.1f}x the R31 yardstick; three {lo_t.loc['three', 'Normal']:.2f} "
+                             f"Normal, three_merged {lo_t.loc['three_merged', 'Normal']:.2f} Normal",
+                   "baseline": "frozen rule unchanged (typical, ±0.5 dB gain)",
+                   "verdict": "AD on this mesh, but the margin is " + ("< 2x" if abs(m_lo) / R["yard"]["R31"] < 2 else ">= 2x")
+                              + " the yardstick; both staging rules say Normal (inconsistent with detection)"})
     claims.append({"claim": "MCI_lobe - Healthy_sliced_new exceeds the rulers on any feature (expected: no)",
                    "number": f"{n_c}/{len(mt)} beyond 3x clean ruler, {n_m}/{len(mt)} beyond 3x measured ruler; largest "
                              f"{top.iloc[0].quantity} {top.iloc[0]['MCI - Healthy_sliced_new dB']:+.3f} dB "

@@ -461,7 +461,8 @@ def main():
                                  f"{g(M5, 'R21') - b_nm:+.3f} / {g(M6, 'R21') - b_nm:+.3f} dB from the Normal|Mild "
                                  f"boundary ({b_nm:.2f}) against an R21 yardstick of {yard['R21']:.3f} dB",
                        "baseline": "frozen rule unchanged; one-pass yardstick",
-                       "verdict": "retracted for lobe-Mild in both sets (< 0.95); the difference between sets is mesh"})
+                       "verdict": f"retracted for lobe-Mild (A {fa:.2f}: retracted; B {fb:.2f}: weakened; both < 0.95); "
+                                  "the difference between the sets is mesh"})
     for e in ("Moderate - Mild (A, front lobe added)", "Moderate - Mild (B, front lobe added)"):
         for q in ("index: front-back, neighbour paths", "index: front-back, all paths", "path T1-T2", "path T1-T6"):
             r = yt[yt.quantity == q].iloc[0]
