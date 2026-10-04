@@ -550,10 +550,10 @@ def main():
                  f"LeftOnly side = {off['side']}, LR = {off['LR']:+.1f} (predicted {bpl['LR_mean']:+.1f} ± {bpl['LR_sd']:.1f}, "
                  f"i.e. {(off['LR'] - bpl['LR_mean']) / bpl['LR_sd']:+.1f} SD: correct sign, smaller than predicted), "
                  f"called {off['called']} (S2 {off[chr(100) + chr(949) + chr(39) * 2 + ' S2 TL']:.1f} just below T_abs "
-                 f"{fz['rules'][RL.METHODS[0]]['T_abs']:.1f}; predicted P(S2 called) {bpl['p_called'][1]:.2f}). Against the rulers: LR is {side_p['ratio_sim']:.1f}× the clean ruler "
-                 f"({side_p['verdict_sim']}) and {side_p['ratio_meas']:.1f}× the measured ruler ({side_p['verdict_meas']}); "
-                 f"matched reference {side_m['ratio_sim']:.1f}× / {side_m['ratio_meas']:.1f}×; post-hoc whitened log "
-                 f"{side_w['ratio_sim']:.1f}× / {side_w['ratio_meas']:.1f}× (§6b).")
+                 f"{fz['rules'][RL.METHODS[0]]['T_abs']:.1f}; predicted P(S2 called) {bpl['p_called'][1]:.2f}). Against the rulers: LR is {side_p['ratio_sim']:.2f}× the clean ruler "
+                 f"({side_p['verdict_sim']}) and {side_p['ratio_meas']:.2f}× the measured ruler ({side_p['verdict_meas']}); "
+                 f"matched reference {side_m['ratio_sim']:.2f}× / {side_m['ratio_meas']:.2f}×; post-hoc whitened log "
+                 f"{side_w['ratio_sim']:.2f}× / {side_w['ratio_meas']:.2f}× (§6b).")
     extra = [f"- **MCI_lobe (blind):** pre-registered verdict {offm['verdict']} (called {offm['called']}, side "
              f"{offm['side']}, front/back {offm['frontback']}). Largest reconstruction feature "
              f"{mx_sim['ratio_sim']:.1f}× the clean ruler; data level {mdl['dS']['MCI'] / max(mdl['dS']['one_pass'].values()):.2f}× "
