@@ -97,7 +97,7 @@ def main():
     sc = pd.DataFrame(rows)
     sc.to_csv(OUT / "score.csv", index=False)
     wrong = sc[sc.score == "wrong"]
-    calib = ("errors: " + ", ".join(f"{r.item} ({r['confidence as reported']})" for _, r in wrong.iterrows())
+    calib = ("errors: " + ", ".join(f"{r['item']} ({r['confidence as reported']})" for _, r in wrong.iterrows())
              if len(wrong) else "no errors")
     est_calls = sc[sc["confidence as reported"].astype(str).str.contains("established|determined \\(>= 3x\\)")]
     L = [f"# Test_B: main-session estimates (0f49389) scored against the truth, per protocol §3 (d3a4bbf) (code {git_hash(ROOT)})",
