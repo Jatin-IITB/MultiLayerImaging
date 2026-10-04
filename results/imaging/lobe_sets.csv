@@ -11,5 +11,7 @@ LeftOnly_test_c3,LeftOnly_test,1,6,0.014686,941358,lobe_A (blind),user 2026-10-0
 MCI_lobe_c3,MCI_lobe,1,6,0.013948,981160,lobe_A (blind),user 2026-10-04 (c3),new_with_slices_MCI_lobe_c3.s6p
 RightOnly_test,RightOnly_test,1,5,0.019742,789241,lobe_A (replication; NOT pass-matched: p5),user 2026-10-04 (round 3),new_with_slices_RightOnly_test.s6p
 Test_B,Test_B,1,6,0.012597,903758,"lobe_A (blind, truth released)",user 2026-10-04 (round 3),new_with_slices_Test_B.s6p
-Null_rot07,Healthy_sliced,1,6,0.01465,1045101,"null: healthy, whole model rotated 7 deg (kind = null)",user 2026-10-04 (round 3),new_with_slices_Null_rot07.s6p
-Null_rot19,Healthy_sliced,1,6,0.014495,939082,"null: healthy, whole model rotated 19 deg (kind = null)",user 2026-10-04 (round 3),new_with_slices_Null_rot19.s6p
+Null_rot07,Healthy_sliced,1,6,0.01465,1045101,"lobe_nulls: healthy, whole model rotated 7 deg (kind = null)",user 2026-10-04 (round 3),new_with_slices_Null_rot07.s6p
+Null_rot19,Healthy_sliced,1,6,0.014495,939082,"lobe_nulls: healthy, whole model rotated 19 deg (kind = null)",user 2026-10-04 (round 3),new_with_slices_Null_rot19.s6p
+Null_rot31,Healthy_sliced,1,6,0.016155,1078590,"lobe_nulls: healthy, whole model rotated 31 deg (kind = null)",user 2026-10-04 (round 5),new_with_slices_Null_rot31.s6p
+Null_rot43,Healthy_sliced,1,6,0.014859,976618,"lobe_nulls: healthy, whole model rotated 43 deg (kind = null)",user 2026-10-04 (round 5),new_with_slices_Null_rot43.s6p

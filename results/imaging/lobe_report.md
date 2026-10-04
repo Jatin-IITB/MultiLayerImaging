@@ -1124,3 +1124,21 @@ Full text: `results/imaging/lobe_round4.md`.
 | 3 Born vs raw (fair) | CHANGED | round-3 gap 20 vs 14 exact, 0 vs 6 FA → identical calibration: with threshold readings calibrated on the nulls only, the Born map adds nothing measurable (+1 exact set of 26); with the rank (largest-gap) reading it keeps +4…+6 exact sets and makes 0 false alarms against the raw delay's 5–6. With thresholds tuned out of sample on labelled designs (§4, leave-one-family-out), the Born threshold reaches 21/26 exact with 3 false alarms, the best raw rule 17/26 with 16. So the Born advantage depends on the calibration: absent under null-only thresholds, a few exact sets and many fewer false alarms otherwise |
 | 4 rank rules out of sample | CHANGED (scored out of sample) | in-sample 58/0/20 → leave-one-design-out 58/0/20, leave-one-family-out 58/0/20; Test_B (never selected on): H7: S2 S5; H6: S2 S5 |
 
+## 14. Round 5 (POST-HOC): every rotated null (N = 13), rulers three ways, pair p, reference typicality
+
+Full text: `results/imaging/lobe_round5.md`.
+
+| item | verdict | change |
+|---|---|---|
+| New files (QC) | CONFIRMED | sha256 = delivery; passive; worst non-reciprocal point Null_rot31 masked False, Null_rot43 masked False |
+| Rotated nulls as targets | CONFIRMED | no frozen call (max sector 4.75 < 13.81); LR ≤ 0.74×, FB ≤ 0.73× the protocol rulers |
+| Both mirror designs beyond all 13 nulls | CONFIRMED | rank p 1/14 each; LR_anti ratio LeftOnly 1.93–2.77×, RightOnly 2.50–3.38× (all-null ruler) |
+| Pair p | CHANGED (formula) | product 0.0069 (11 nulls) → exact 0.0095 (N = 13, 2/((N+1)(N+2))); round 3 understated p by 1.85× |
+| Independence of mesh asymmetries | supported (6/6) | q 0.83–0.94; rotation only, mirroring untested |
+| Detection (0.3b) | re-graded | Against both references, every lobe design has an affected sector at least 3.0× its all-null sector ruler (18/18 design × reference established), but as one whole-map number the margin is only 2.4× (largest sector over the largest no-change null; weakest LeftOnly_test_c3, H6; sensitive) and the sector-shaped part of the data separates every target from every null by 2.3× (sensitive). |
+| Staging (B24 bias-corrected FB) | sensitive | lobe_B 2.23–2.80× (11 nulls) → 2.23–2.80× (all), 2.23–2.80× (without rot19) |
+| Round 4 points 1, 3, 4 with every null | re-run | Born gap 24/30 exact, 0 FA; Born rank LOFO 58/0/24; nulls rejected by the fit rule: H7 Null_rot19; H6 MCI_lobe_c3, Null_rot19, Null_rot31, Null_rot43, Null_rot07 |
+| Reference typicality (0.3c) | H6 atypical on some statistics | H6 most extreme in 4/33 rows (chance ≈ 5.5); all others on one side for 3/10 statistics (≈ 0.6 by chance); mean reference: frozen calls 20/0/4/10 vs H6 20/0/3/10; C6 REPLICATED |
+| User's at-a-glance phase columns | signs verified | ring-mean delay sign 4/4; definitions differ, magnitudes not compared |
+| Survival (11 → all nulls) | 1 tier change(s) | LeftOnly S2 TL / sector ruler (H7): established → sensitive |
+
