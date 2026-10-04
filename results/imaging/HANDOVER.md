@@ -1,5 +1,7 @@
 # HANDOVER — imaging session (Track A imaging / lobe localisation)
 
+**documentation baseline: `3bcac07`** (LEDGER.md / LEDGER.csv; generator `imaging/lobe_ledger.py` at `2a0336f`).
+
 Written 2026-10-04. Last imaging code commit before this file: `226f9b1`. A fresh session should be able to
 continue from this file alone. Everything below was checked against the repository on 2026-10-04: commit
 hashes, sha256 prefixes, and a full re-run of the lobe chain (§5.3), which reproduced every committed result
@@ -116,12 +118,37 @@ and round 4 `00be60d`). Round 3 statements corrected:**
   58 hits / 0 false alarms / 20 of 26 exact, the same as in sample. The selected rule is "above midpoint" for 8 of
   9 held-out families (largest gap for RightOnly), gate 8.0–9.25 (8.5 for 7 of 9).
   Test_B is read as S2 + S5 against both references. Not adopted; all from one head.
-- **Next action:** when Null_rot31 and Null_rot43 arrive:
-  1. Add them to `REGISTRY` (`imaging/lobe_c3.py`) and to `ROT` (`imaging/lobe_round3.py`); nothing else needs
-     editing.
-  2. Re-run `python imaging/lobe_round3.py --n 100` and `python imaging/lobe_round4.py`. Round 4 includes points 1
-     (fit statistic) and 3 (Born vs raw).
-  3. Update the survival tables.
+- ~~Next action: when Null_rot31 and Null_rot43 arrive, add them to REGISTRY and ROT; nothing else needs
+  editing.~~ **That statement was wrong** (round-3 code hard-coded the null count and rot07/rot19); fixed in
+  `ef73da6` before the files were loaded. Done in round 5.
+
+**Round 5 (POST-HOC; `lobe_round5.md`, `lobe_report.md` §14). Order of commits: code `ef73da6` (written and
+dry-run before Null_rot31/rot43 were loaded) → registry `472b3dd` (the two REGISTRY rows only) → writer fixes
+`8369fab` (text and QC columns only) → results `ceb473b`.** The pre-registered procedure with all 13 nulls (9 symmetric
++ rot07/19/31/43), rulers three ways (all / without rot19 / rot19 alone, definitions as in main's `5966ee4`):
+- rot31/rot43: sha256 = delivery, passive (σ² 0.906/0.909). As targets: no frozen call (largest sector 4.75 of all
+  four). rot31's 0.47 dB non-reciprocal point (3.85 GHz, T4–T6) is **not** masked: the −30 dB rule tests the
+  absolute error against the path's band level (−55 dB here; the point is in a −88 dB notch). Not a fit frequency.
+- LeftOnly and RightOnly beyond all 13 nulls; LR_anti ratios unchanged (1.93–2.77×, 2.50–3.38×): no rotated null
+  sets that ruler. **Pair p corrected**: the product of two rank p's (rounds 2–3) understates p because both values
+  face the same null maximum; exact 2/((N+1)(N+2)) = 0.0095 with 13 nulls (round 3's 0.007 should have been 0.0128).
+- Independence check (fixed before loading): rotated meshes differ from H6 like independent draws (q 0.83–0.94),
+  both signs; rotation only, mirroring untested.
+- One tier change from 11 to 13 nulls: LeftOnly S2 vs the H7 sector ruler 3.13× → 2.78× (rot31 sets it). Cross-ratio
+  max-rule counts 3 → 2 of 18. B24 (lobe_B 2.23–2.80×) unchanged: rot07 sets it, so no claim of mine rests on rot19.
+- Detection (0.3b): whole-map largest sector ≥ 2.4× the largest null, explained part ≥ 2.3× (H7; 2.94× with 11
+  nulls, lowered by rot31/rot43): **sensitive**. Given the true sectors, every design has one ≥ 3.0× its sector ruler.
+- 0.3(c): H6 is not the most extreme mesh overall (4 of 33 rows, 5.5 by chance), but all five other healthy meshes
+  lie on one side of it for S5, LR and FB (3 of 10, 0.6 by chance): atypical under the criterion fixed before
+  loading. With the mean healthy mesh as reference, C6 still REPLICATES; frozen calls 20/0, 4/10 exact (H6 3/10).
+- Round 4 points 1, 3, 4 with all nulls: rot31/rot43 accepted by the fit rule against H7, rejected against H6; Born
+  rank reading 24 vs best raw 18 exact of 30 (threshold readings 19 vs 18); Born rank rule out of sample 58/0/24 of 30.
+- The ledger re-graded two claims that never had a null ruler: C4 left-path phase delay 2.7× (sensitive); **left
+  reflection-notch depth 1.6× (not determined; was '3–6× one-pass')**: rotated re-meshes alone move the notch by
+  up to 0.67 dB.
+
+**The current claims list is `LEDGER.md` / `LEDGER.csv`** (31 standing, 19 withdrawn, 17 limitations, 15 numbers).
+It supersedes the round-2 table in §4.
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -157,7 +184,7 @@ Frozen numbers, for reference (in `lobe_frozen.json`):
 
 ---------------------------------------------------------------------------------------------------------------
 
-## 4. Current claims table (rebuilt from scratch in round 2; source `results/imaging/lobe_claims.csv`)
+## 4. Claims table of round 2 (superseded by `LEDGER.md`, kept for history; source `results/imaging/lobe_claims.csv`)
 
 Only CONFIRMED / CHANGED items. [POST-HOC] = built after unblinding.
 
@@ -231,6 +258,7 @@ impacts:
 | data/fields/E_Normal_T{1..6}_{3p4,3p6,3p8}GHz.fld (18 files, ≈ 48 MB each) | T1_3p4 bd96f0c01161e60a, T1_3p6 3b0273f41837b613, T1_3p8 985f0edc7d66e838 (others: `sha256sum data/fields/*.fld`) | no (ignored) |
 | data/fields/E_Normal_T1_3p6GHz_wide.fld | 55369dac226a0f00 | no |
 | data/hfss_geometry_audit_Healthy_sliced.txt | (main session's file) | yes |
+| data/raw/new_with_slices_Null_rot07.s6p / _rot19 / _rot31 / _rot43 | cb1176fda2b1e7db / b79f3a884d1dc926 / 7a7a6697c6c389d2 / 551a05d494d6668c | no |
 
 The lobe imaging-side registry (stop rule, passes, final ΔS, elements, sets) is
 `results/imaging/lobe_sets.csv`. Sets:
@@ -308,6 +336,12 @@ python imaging/lobe_round3.py --n 100
 ```bash
 python imaging/lobe_round4.py
 ```
+```bash
+python imaging/lobe_round5.py --n 100
+```
+```bash
+python imaging/lobe_ledger.py
+```
 
 What each writes:
 1. `rebuild_stage1_cache.py` (17 s): cache only.
@@ -326,6 +360,13 @@ What each writes:
     committed.
 11. `lobe_round3.py` (≈ 1 min): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
 12. `lobe_round4.py` (≈ 1 min): POST-HOC round 4, `lobe_round4.md` / `.json`, §13.
+13. `lobe_round5.py` (≈ 1 min): POST-HOC round 5 with every registered rotated null, `lobe_round5.md` / `.json`,
+    §14, and the set files.
+14. `lobe_ledger.py` (≈ 30 s): `LEDGER.md`, `LEDGER.csv`, `lobe_ledger.json`.
+
+Rounds 3 and 4 are pinned to rot07/rot19 (`lobe_round3.ROT3`): they reproduce their committed 11-null record.
+Round 5 takes every `Null_rot*` row of `REGISTRY` (`lobe_round3.ROT_ALL`). **A new rotated null needs only a
+REGISTRY row**; then re-run steps 13–14. Check the new file's sha256 against the delivery first.
 
 The §8 and §9 writers keep later sections. `lobe_c3` (step 5) still truncates everything after §6, which is why
 steps 6–10 must follow it.
@@ -415,9 +456,10 @@ python imaging/score_rightonly.py
 
 ## 6. Open items
 
-1. **Rotated nulls**: Null_rot31 and Null_rot43 are still solving. Add them to `REGISTRY` and `ROT`, then re-run
-   `lobe_round3.py` (§2). Test_B has been scored (MISS) and RightOnly REPLICATED; both are recorded.
-2. **Floor significance**: nine symmetric solves cap the rank p at 0.1. Needs ≥ 19 independent mirror-symmetric
+1. **Rotated nulls**: all four (rot07/19/31/43) are in; round 5 done. Test_B scored (MISS), RightOnly REPLICATED.
+   Still open: independence of mesh asymmetry under **mirroring** (only rotation tested), and which reference is
+   credible (H6 atypical on S5/LR/FB; H7 a different pass).
+2. **Floor significance**: 13 nulls cap a single design's rank p at 1/14 (nine capped it at 0.1). Needs ≥ 19 independent mirror-symmetric
    solves, for example Healthy_sliced re-solved with head and array rotated k × 7°, k = 1…10 (R1, C3).
 3. **Fit frequencies**: field exports exist only at 3.4/3.6/3.8 GHz. Kernel interpolation is invalid (≈ 62°
    phase rotation per 200 MHz). Needs `E_Normal_T{1..6}_{3p3,3p5,3p7,3p9}GHz.fld` (24 files, same ±90 mm
@@ -456,6 +498,8 @@ python imaging/score_rightonly.py
 | `score_testb.py` | Test_B blind scorer implementing `testb_protocol.md` (`--dry-run STEM` on known designs only) |
 | `lobe_round3.py` + `lobe_round3_md.py` | round 3 (POST-HOC): rotated nulls, rulers rebuilt, rank readings, raw delay vs Born, pass gap |
 | `lobe_round4.py` | round 4 (POST-HOC): fit-rejection analysis, identically calibrated Born vs raw, out-of-sample rank rules |
+| `lobe_round5.py` + `lobe_round5_md.py` | round 5 (POST-HOC): every rotated null, rulers three ways, pair p, independence, detection, reference typicality, survival |
+| `lobe_ledger.py` | documentation ledger from committed results (two re-grades: C4, R3) |
 | `run_imaging.py`, `study_i1/i2/i2_hfss/i3/ratios.py`, `beamform.py`, `forward.py`, `mie.py`, `linear.py`, `timedomain.py`, `paths.py`, `stage_snr.py`, `report*.py` | Track A |
 | `tests/` | `test_imaging.py` (Track A), `test_lobe.py` (geometry, rules, one bar, whitened projection) |
 | `hpc/` | SLURM / env scripts for the Praganak cluster |
@@ -467,7 +511,9 @@ Key commits:
 - `237ad47` / `b543b33` round 1; `0ceb626` round-2 predictions; `66c04db` / `e4c33d3` round 2.
 - `226f9b1` safe rebuild + RightOnly scorer; `2a75644` this handover.
 - `b2f1472` / `24aa0c4` Test_B scorer and protocol (before loading); RightOnly REPLICATED.
-- `6efd1db` / `5818235` §10 writer and Test_B estimates; `be15287` / `ad1bacb` round 3 (Test_B scored, rotated nulls); `a6cf6cc` / `79ed048` round 4.
+- `6efd1db` / `5818235` §10 writer and Test_B estimates; `be15287` / `ad1bacb` round 3 (Test_B scored, rotated nulls); `a6cf6cc` / `79ed048` round 4; `562d5be` round-4 fix-ups.
+- Round 5: `ef73da6` code (before loading) → `472b3dd` registry → `8369fab` writer fixes → `ceb473b` results;
+  ledger `2a0336f` / `3bcac07` (**documentation baseline**).
 
 ## 8. Pitfalls seen in this project
 
@@ -479,3 +525,8 @@ Key commits:
   long runs.
 - Hand-typed numbers in report text went stale twice. Compute every number in text from the results objects.
 - "Two analyses agreeing" is not replication; a new blind design is (C6).
+- Hard-coded null names and counts hid in round-3 code (rank-p denominator 12, rot07/rot19 in the FB floor), and the
+  handover claimed "nothing else needs editing". Before new nulls arrive, grep for literal stem names.
+- When a ruler grows, re-grade every claim, including those that never had a null ruler (the reflection-depth claim
+  sat unchecked through round 3 although rot07 already moved the notch 0.58 dB).
+- Multiplying rank p's of values compared with the same nulls is wrong; use 2/((N+1)(N+2)) for two values.
