@@ -1,0 +1,41 @@
+rule,feature,value dB,label,signed margin to label edge (dB),yardstick,boundary SD,meas SD ±0.5 dB,A1 ratio,quadrature ±0.5 dB,verdict (A1),"noisy draws (typical + ±0.5 dB), label fractions",block,index,reference,clean ruler,ratio,tier,statistic,value,R1c clean ruler,LeftOnly,frequencies,ruler,left-like
+binary,R31,-15.444624381132032,AD,0.09400000000103326,0.13512528095086473,0.0536743835117301,0.02745057907393902,0.6956507275290272,0.6352901004261438,not determined (< 2x),{'AD': 1.0},frozen rule,,,,,,,,,,,,
+three,R21,-20.10914200963573,Normal,0.121500000001042,0.10974389982628807,0.06474605232882162,0.047066629615729626,1.1071230400355963,0.8944700918300502,not determined (< 2x),{'Normal': 1.0},frozen rule,,,,,,,,,,,,
+three_merged,R32,4.664517628503697,Normal,-0.025499999999006207,0.16084812284705885,0.038229059825163156,0.05437539890895876,0.15853464465514885,0.14651721456268219,not determined (< 2x),"{'Normal': 0.687, 'Mild+Moderate': 0.26, 'UNCERTAIN': 0.053}",frozen rule,,,,,,,,,,,,
+,,-0.0026288722950411625,,,,,,,,,,front-back index,"front-back, all paths (power)",Healthy_sliced_new,0.12185272293148239,0.021574177677747698,not determined (< 2x),,,,,,,
+,,-0.07213101106444242,,,,,,,,,,front-back index,"front-back, all paths (power)",Healthy_sliced,0.12185272293148239,0.5919523940798729,not determined (< 2x),,,,,,,
+,,-0.05315153527309491,,,,,,,,,,front-back index,"front-back, neighbour paths (power)",Healthy_sliced_new,0.11121095542561299,0.47793434621328307,not determined (< 2x),,,,,,,
+,,-0.12116884053649102,,,,,,,,,,front-back index,"front-back, neighbour paths (power)",Healthy_sliced,0.11121095542561299,1.089540505004821,not determined (< 2x),,,,,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,0.1763170191811747,,"power LR index, all paths",0.01753240868580974,0.09943684828175492,-0.0147749110488462,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,0.2049265632642755,,"power LR index, neighbour paths",-0.024937758304844238,0.1216911946777941,0.0036095256496224,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,0.42503872128075165,,"power LR index, second-neighbour paths",0.08123765917179071,0.19113001970032428,-0.0423515660965563,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,3.839285656430327,,power pair T2 refl. vs T6 refl.,-0.06580553082145757,0.017140045495505518,-0.0604714753477115,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,4.971445456775792,,power pair T3 refl. vs T5 refl.,0.06784858091121393,0.013647656702889144,-0.0682349979849115,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,0.34520582900715263,,phase pair T2 refl. vs T6 refl.,-0.13295586876739596,0.38514954729991285,-0.0020249477457535,,,
+,,,,,,,,,,,,left-right power / reflection pairs,,,,0.010545089234195299,,phase pair T3 refl. vs T5 refl.,0.0013820051841394647,0.13105675575109785,-0.0335529083443277,,,
+,,,,,,,,,,,,mirror test (26),,,,0.24275716404948355,,phase cross-ratio T1T2·T3T4 / T1T3·T2T4,-0.7114702127184868,,-10.26594565776027,band mean 3.2-4.2,2.930789768879739,True
+,,,,,,,,,,,,mirror test (26),,,,1.0145627733017297,,phase cross-ratio T1T2·T3T4 / T1T3·T2T4,-4.208400105403535,,-15.71983366940269,3.30-3.65 GHz,4.147993811864376,True
+,,,,,,,,,,,,mirror test (26),,,,0.23457818465063607,,phase cross-ratio T1T3·T2T4 / T1T4·T2T3,0.588859943008286,,10.114821749472965,band mean 3.2-4.2,2.5102928641266953,True
+,,,,,,,,,,,,mirror test (26),,,,0.6184084154764711,,phase cross-ratio T1T3·T2T4 / T1T4·T2T3,2.311157424732303,,15.12712204589035,3.30-3.65 GHz,3.7372670987208396,True
+,,,,,,,,,,,,mirror test (26),,,,0.8005679181755546,,phase cross-ratio T1T2·T3T5 / T1T3·T2T5,-1.6421410640111143,,-5.108941068144941,band mean 3.2-4.2,2.051220173490656,True
+,,,,,,,,,,,,mirror test (26),,,,1.8827917706182267,,phase cross-ratio T1T2·T3T5 / T1T5·T2T3,-6.472832047514634,,8.500935353151224,3.30-3.65 GHz,3.4378905562080497,False
+,,,,,,,,,,,,mirror test (26),,,,0.3415527553542457,,phase cross-ratio T1T3·T2T5 / T1T5·T2T3,1.3266796633330362,,9.929534237001391,band mean 3.2-4.2,3.8842598765073757,True
+,,,,,,,,,,,,mirror test (26),,,,0.5610465089890259,,phase cross-ratio T1T3·T2T5 / T1T5·T2T3,-3.472236056744322,,15.712805408305815,3.30-3.65 GHz,6.188856005897078,False
+,,,,,,,,,,,,mirror test (26),,,,0.8005679181755544,,phase cross-ratio T1T2·T3T6 / T1T3·T2T6,-1.6421410640111138,,-5.108941068144942,band mean 3.2-4.2,2.051220173490656,True
+,,,,,,,,,,,,mirror test (26),,,,2.6694531786127627,,phase cross-ratio T1T2·T4T6 / T1T4·T2T6,-8.783989472246937,,-6.626186692739129,3.30-3.65 GHz,3.2905576103086855,True
+,,,,,,,,,,,,mirror test (26),,,,2.6694531786127627,,phase cross-ratio T1T2·T4T6 / T1T6·T2T4,-17.567978944493873,,-13.252373385478258,3.30-3.65 GHz,6.581115220617371,True
+,,,,,,,,,,,,mirror test (26),,,,1.8827917706182282,,phase cross-ratio T1T2·T5T6 / T1T5·T2T6,-6.472832047514635,,8.500935353151224,3.30-3.65 GHz,3.4378905562080475,False
+,,,,,,,,,,,,mirror test (26),,,,0.08850929264767313,,phase cross-ratio T1T3·T4T5 / T1T4·T3T5,-0.19285113096787712,,4.971717077143757,band mean 3.2-4.2,2.1788800384560196,False
+,,,,,,,,,,,,mirror test (26),,,,1.8705853382125817,,phase cross-ratio T1T3·T4T5 / T1T4·T3T5,-4.575589366843403,,9.093646976663564,3.30-3.65 GHz,2.4460735756731418,False
+,,,,,,,,,,,,mirror test (26),,,,0.08850929264767327,,phase cross-ratio T1T3·T4T5 / T1T5·T3T4,-0.38570226193575485,,9.943434154287514,band mean 3.2-4.2,4.357760076912039,False
+,,,,,,,,,,,,mirror test (26),,,,1.870585338212581,,phase cross-ratio T1T3·T4T5 / T1T5·T3T4,-9.151178733686805,,18.187293953327128,3.30-3.65 GHz,4.892147151346285,False
+,,,,,,,,,,,,mirror test (26),,,,0.610417354257922,,phase cross-ratio T2T3·T4T5 / T2T4·T3T5,-0.7817110739761637,,-5.143104672329207,band mean 3.2-4.2,1.280617381736274,True
+,,,,,,,,,,,,mirror test (26),,,,3.9319732344964677,,phase cross-ratio T2T3·T4T5 / T2T4·T3T5,-6.886746791575705,,-6.033475069226784,3.30-3.65 GHz,1.751473466593327,True
+,,,,,,,,,,,,mirror test (26),,,,0.5594679146814617,,phase cross-ratio T2T4·T3T5 / T2T5·T3T4,1.2078041146332235,,8.5079636142481,3.30-3.65 GHz,2.1588442928329465,True
+,,,,,,,,,,,,mirror test (26),,,,0.03423912173231115,,phase cross-ratio T2T3·T4T6 / T2T4·T3T6,0.1489597773164644,,-10.300109261944533,band mean 3.2-4.2,4.350572379778434,False
+,,,,,,,,,,,,mirror test (26),,,,2.2052841438689206,,phase cross-ratio T2T3·T4T6 / T2T4·T3T6,-8.094550906208926,,-14.541438683474883,3.30-3.65 GHz,3.670525146935468,True
+,,,,,,,,,,,,mirror test (26),,,,0.6104173542579219,,phase cross-ratio T2T3·T4T6 / T2T6·T3T4,-0.7817110739761635,,-5.143104672329207,band mean 3.2-4.2,1.2806173817362738,True
+,,,,,,,,,,,,mirror test (26),,,,3.931973234496467,,phase cross-ratio T2T3·T4T6 / T2T6·T3T4,-6.886746791575705,,-6.033475069226784,3.30-3.65 GHz,1.7514734665933274,True
+,,,,,,,,,,,,mirror test (26),,,,0.5594679146814611,,phase cross-ratio T2T4·T3T6 / T2T6·T3T4,1.2078041146332228,,8.507963614248098,3.30-3.65 GHz,2.158844292832948,True
+,,,,,,,,,,,,mirror test (26),,,,3.839285656430327,,power pair T2 refl. vs T6 refl.,-0.06580553082145757,,-0.0604714753477115,band mean 3.2-4.2,0.017140045495505518,True
+,,,,,,,,,,,,mirror test (26),,,,4.971445456775792,,power pair T3 refl. vs T5 refl.,0.06784858091121393,,-0.0682349979849115,band mean 3.2-4.2,0.013647656702889144,False
