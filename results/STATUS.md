@@ -9,7 +9,10 @@
 - **The left-right "phase" finding** (post hoc) does not clear the stricter numerical floor both sessions now use.
   - 4 of 22 phase combinations clear it, not 16.
   - The imaging left-right index is 1.9× the floor.
-  - A mirror-image replication design (RightOnly_test) has been specified, with predictions committed.
+  - **Mirror replication (RightOnly_test, 4 Oct): NOT REPLICATED.**
+    - All 26 left-right signs flipped, and the counts matched.
+    - The sizes agreed on only 12 of 26 statistics.
+    - The phase finding is withdrawn (MODEL_CARD 6.6).
 - **Sensitivity** is ≈ 99% in the air around the head. Of the in-brain part, 56–69% lies above z = 40 mm and
   ≤ 4% below z = 0. "Lobes" means wedges of the upper head.
 - **Tissue values** are the 3.24 GHz literature values held constant. Real conductivity is 28–38% higher at
@@ -213,7 +216,14 @@ threshold, main set / second set:
     - the left neighbour paths are delayed by about the amount the CSF gap under T2/T3 predicts;
     - it does not scale with frequency as pure propagation would.
   - The pre-registered power answer stays the primary result.
-  - Replication: `results/05_lobe/rightonly_predictions.md` (mirror design, predictions committed).
+  - **Replication test (4 Oct): NOT REPLICATED; the phase finding is withdrawn.** The mirror-image design
+    (RightOnly_test) was scored against predictions committed before it existed.
+    - Every left-right sign flipped, as a real asymmetry should (26 of 26).
+    - The sizes agreed within the numerical ruler on only 12 of 26 statistics.
+    - The committed rule needs both, so it is not replicated.
+    - The two mirror twins also differ in the staging ratio R21 by 1.2× the mesh yardstick, and get different
+      merged staging labels (Normal vs Mild+Moderate).
+    - Details: `results/05_lobe/rightonly/report.md`.
 - **Detection** calls this design AD, but only 0.09 dB inside the AD zone
   (0.7× the yardstick): not determined. Both staging rules call it Normal.
 - **Frontal lobe:** the earlier "cannot be told" was based on power only and has not yet been

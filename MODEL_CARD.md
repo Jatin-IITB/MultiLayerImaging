@@ -741,11 +741,11 @@ All claims concern one idealised spherical head with one solve per design. The n
 | 12 | Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature | CHANGED | A22 |
 | 13 | Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable | CHANGED | A20 |
 | 14 | Not-returned ("absorbed") power does not separate Normal from AD (0.92x) | CHANGED | A26 |
-| 15 | [POST HOC] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | CHANGED | R1 |
-| 16 | [POST HOC] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | CHANGED | R2, A16, C3, C5 |
-| 17 | [POST HOC] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | CHANGED | R3 |
-| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement | CHANGED | R3 |
-| 19 | [POST HOC] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | CHANGED | C4 |
+| 15 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | WITHDRAWN | R1, C6 |
+| 16 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | WITHDRAWN | R2, A16, C3, C5, C6 |
+| 17 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | WITHDRAWN | R3, C6 |
+| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3) | CHANGED | R3, C6 |
+| 19 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | WITHDRAWN | C4, C6 |
 | 20 | Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file | CHANGED | R1b |
 | 21 | Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it | CONFIRMED | A14, G4 |
 | 22 | Field exports are 3-D volumes; no claim used the cut plane | CONFIRMED | R7, G8 |
@@ -754,6 +754,9 @@ All claims concern one idealised spherical head with one solve per design. The n
 | 25 | Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused | CONFIRMED | G1, G2, G6 |
 | 26 | Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz | CHANGED | G7 |
 | 27 | Sector-level imaging values are not results | CHANGED | R5 |
+| 28 | Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median \|RO + LO\| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED | CHANGED | C6 |
+| 29 | Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation | CHANGED | C6 P4 |
+| 30 | The merged staging label differs between the mirror twins (LeftOnly Normal, RightOnly Mild+Moderate); both lie within 1x of the R32 boundary | CHANGED | C6 |
 
 ### 6.3 Statements that depend on the phase finding (A27, C1; all post hoc)
 - MODEL_CARD 5.5: the rows "Left-right asymmetry present in the LeftOnly data", "Frontal lobe visible front-to-back
@@ -763,7 +766,8 @@ All claims concern one idealised spherical head with one solve per design. The n
 - STATUS §7: "Where the disease is: not in signal power; partly in phase" and its bullets.
 - Imaging: `results/imaging/lobe_report.md` §9 and `lobe_claims.csv` (imaging session's).
 
-The round-1 "16 of 22" used the rms floor; under R1c it is 4/22. The primary answer to the pre-registered test
+The round-1 "16 of 22" used the rms floor; under R1c it is 4/22. **Update 2026-10-04:** C6 was not replicated, so
+every statement listed above is withdrawn (6.6). The primary answer to the pre-registered test
 stays: the power predictions (cf56de8) fail or are not separable.
 
 ### 6.4 Open limitations (every CANNOT TELL / UNVERIFIED)
@@ -773,7 +777,9 @@ stays: the power predictions (cf56de8) fail or are not separable.
     stand-offs, scored with the frozen rule as-is.
 - **Floor significance (R1, C3).** Nine symmetric solves cap the rank p at 0.1. Settling it needs ≥ 19 independent
   mirror-symmetric solves (for example the healthy design re-meshed or rotated).
-- **Replication of the left-right sign (C6).** RightOnly_test is pending.
+- **Replication of the left-right finding (C6).** Done 2026-10-04: NOT REPLICATED (6.6). The signs flipped 26/26; the
+  sizes did not agree. Whether the size disagreement is mesh variation (claim 29) or a real design difference cannot
+  be told from one solve per design.
 - **Effective N (A17).** One design per stage. Whether v1/v2 share a mesh: needs their HFSS mesh statistics.
 - **Noise model (A19).** It was chosen. Settling it needs VNA and antenna measurements.
 - **Antenna position error and frequency-dependent cable flex (C5).** These need ±1 mm displaced-antenna re-solves.
@@ -803,3 +809,31 @@ stays: the power predictions (cf56de8) fail or are not separable.
   equal LeftOnly's within the yardstick. The imaging LR is about −7.9, still < 2x the floor.
 - **Replicated** only if the sign flips on ≥ 80% of the informative statistics within tolerance and the counts
   hold. If the signs do not flip, the phase finding is retracted as numerical.
+
+### 6.6 C6 result: RightOnly_test scored against 0f97bb2 (2026-10-04; `results/05_lobe/rightonly/`)
+- **Scoring.** By `scripts/14_rightonly.py` (code c100803; results 546d804).
+  - The prediction blobs were checked first.
+  - LeftOnly re-derives to 1.8e-15.
+  - Passes, ΔS and element counts were not supplied by the user.
+  - Glitch mask: 0 points masked.
+
+| prediction (0f97bb2) | observed | holds |
+|---|---|---|
+| P1: signs flip within one clean ruler on ≥ 80% of the 26 informative statistics | signs flipped 26/26; within tolerance 12/26 (46%); median \|RO + LO\| / ruler 1.07, max 1.86 | **no** |
+| P2: phase cross-ratio counts within ±2, opposite sign | band mean 4 vs 4; 3.30–3.65 GHz 9 vs 9; all with opposite sign | yes |
+| P3: power LR indices < 2x; reflection pairs flip | LR indices 0.25–0.70x; reflection pairs +0.070 / +0.073 dB | yes |
+| P4: R31 / R21 / R32 equal LeftOnly's within the yardstick | R31 0.013 (vs 0.135), **R21 0.133 (vs 0.110)**, R32 0.146 (vs 0.161) | **no** |
+| P5: imaging LR flips sign, < 2x the max floor | −10.15 (H6) / −10.17 (H7): sign flips, but 2.5x | **no** |
+
+- **Verdict: NOT REPLICATED.** The committed rule requires both P1 and P2.
+- **What happened to the phase finding.**
+  - The user instructed (2026-10-04): "If not replicated, the post-hoc phase finding is retracted as numerical, as
+    committed." Claims 15, 16, 17 and 19 are therefore withdrawn.
+  - Accuracy note: the committed text made retraction "as numerical" conditional on the signs *not* flipping. The
+    signs did flip, on all 26 statistics; a numerical artefact of LeftOnly's mesh would not be expected to do that.
+  - What failed is the size: the mirror twin's values differ from LeftOnly's by more than the clean ruler on 14/26
+    statistics.
+  - So the withdrawal rests on "size not reproducible", not on a demonstrated numerical origin.
+- **Frozen rule on RightOnly.**
+  - Detection: AD by +0.107 dB (0.79x the yardstick): not determined.
+  - Staging: three Normal; merged Mild+Moderate (LeftOnly: Normal).

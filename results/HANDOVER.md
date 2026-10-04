@@ -5,6 +5,9 @@ commit that adds it is 4aabb1d (its parent, 6db98f6, is an `[imaging2]` commit).
 `results/imaging*` in the working tree belong to the imaging sessions: never stage them. Repository: this folder, branch `master`. **There is no git remote**: the
 only copy is this OneDrive folder.
 
+**Updated 2026-10-04 (later):** RightOnly_test scored (C6: NOT REPLICATED, 546d804). The Test_B blind protocol was
+committed (d3a4bbf) and the blind estimates were committed (0f49389). The truth is pending: see §7.1(a).
+
 Read in this order: this file → `MODEL_CARD.md` Part 6 (authoritative claims) → `results/05_lobe/review2/report_stats.md`
 and `report_fields.md` (round-2 numbers) → `results/STATUS.md` (plain-language status for the user).
 
@@ -19,7 +22,7 @@ and `report_fields.md` (round-2 numbers) → `results/STATUS.md` (plain-language
   S1..S6, one under each antenna, and disease applied per sector.
 
 **This session (main analysis) owns:**
-- `scripts/` (00–13, `run_all.py`);
+- `scripts/` (00–15, `run_all.py`);
 - `src/adstage/`, `tests/`;
 - `config*.yaml`;
 - `data/sims*.csv`, `data/sim_plan.csv`;
@@ -44,7 +47,12 @@ Its jobs:
 **Not ours / leave alone:**
 - `prompts/` and `docs/context_packs/` (untracked; the user's).
 - `blind_validation_presentation.pptx` (untracked; the deck is on hold).
-- `references/`, `cluster/`.
+- `references/`, `cluster/` (incl. the untracked `cluster/hfss.pbs`).
+- `share_lobe_phantom_data/` and `share_lobe_phantom_data.zip`: an external share copy. Never commit, move or edit
+  them (user, 2026-10-04).
+- `Microwave AD Detection — Progress Review.pptx` (untracked).
+- The uncommitted `.gitattributes` line `*.pbs text eol=lf` is not ours. It makes `git_hash()` report `-dirty`;
+  that is the only reason the runs since c100803 carry the `-dirty` suffix.
 
 ## 2. Standing user instructions (binding)
 - **Touchstone headers are unreliable.** "please don't rely on touchstone headers for information, that's completly
@@ -109,7 +117,9 @@ Its jobs:
 | data/raw/new_with_slices_MCI_lobe_c3.s6p | **no** | 98940e10a50c7944 |
 | data/raw/new_with_slices_Moderate_lobe_new.s6p (duplicate) | **no** | 64095b253010aa7a |
 | data/raw/new_with_slices_Severe_lobe_new.s6p (duplicate) | **no** | 9bd72760e5f58212 |
-| results/imaging/cache/lobe_v1-masked/born_table.pkl (imaging cache; read by 10, 11) | **no** | 998ff933b8869718 |
+| data/raw/new_with_slices_RightOnly_test.s6p (C6 replication; in the manifest) | **no** | bc26c50a0b57af5e |
+| data/raw/new_with_slices_Test_B.s6p (**blind**; not in the manifest; loaded only by `15_test_b.py --blind`) | **no** | 0e0e83feaa12e041 |
+| results/imaging/cache/lobe_v1-masked/born_table.pkl (imaging cache; read by 10, 11, 14) | **no** | 998ff933b8869718 |
 
 - **HFSS field exports** (`data/fields/`, git-ignored, 920.6 MB). The v2 Normal design, one export per
   excitation:
@@ -145,17 +155,22 @@ Both checks passed at e7794fd.
 | `scripts/09_lobe_tests.py` (added 08a9a53, 2026-10-04 09:40) | main | Gain-invariant left-right cross-ratio test, with predictions derived from cf56de8 and a decision rule fixed in the code before the first run | 08a9a53 | (code) | scored at 522e579: 0/22 beyond 3× the measured ruler (fails) |
 | `results/05_lobe/review2/predictions_R3_C4.md` | main | Round-2 predictions: R3 detuning, C4 phase sign/size/band | 2a222ff (2026-10-04 12:10), with the code, before any run | 6d619b95d65cbedaec6308f6dac29e307d1db6f3 | scored: R3 rejected (wrong sign; separable share 0.11); C4 sign right, neighbour sizes right, long paths and the ∝ f band prediction wrong |
 | `scripts/11_review2.py` docstring, "FLOOR RULE (R1c)" | main | Floor rule for left-right statistics (§5) | 2a222ff | (code) | fixed; used by both sessions |
-| `results/05_lobe/rightonly_predictions.md` | main | **C6:** RightOnly_test design, predictions 1–5, scoring rule | 0f97bb2 (2026-10-04 12:16), code b61c5d8 | a0150e76aadafc1170f666b982d03d626f37277f | **pending**: design not yet delivered |
-| `results/05_lobe/rightonly_predictions.csv` | main | the 91-row prediction table (statistic, LeftOnly value, predicted value, tolerance, informative flag) | 0f97bb2 | c03834e756300d21ad378acbae24ba0f915b901b | pending |
+| `results/05_lobe/rightonly_predictions.md` | main | **C6:** RightOnly_test design, predictions 1–5, scoring rule | 0f97bb2 (2026-10-04 12:16), code b61c5d8 | a0150e76aadafc1170f666b982d03d626f37277f | **scored** by 14_rightonly (c100803 → 546d804): NOT REPLICATED (P1 12/26 within tolerance, signs 26/26; P2 holds) |
+| `results/05_lobe/rightonly_predictions.csv` | main | the 91-row prediction table (statistic, LeftOnly value, predicted value, tolerance, informative flag) | 0f97bb2 | c03834e756300d21ad378acbae24ba0f915b901b | scored (546d804) |
+| `results/05_lobe/test_b/protocol.md` | main | **Test_B blind protocol.** Reported items, decision rules (sector-pattern fit with fit-rejection rule, mirror side test), references (Healthy_sliced_new), scoring against the truth, validation on the known designs. Code `scripts/15_test_b.py` 89af4b3 | d3a4bbf (2026-10-04), before Test_B was loaded | 37a5bc4ebced50a223e9c6b179a4f9f9632d3af1 | **frozen; truth pending** |
+| `results/05_lobe/test_b/estimates.csv` (+ report.md, statistics.csv) | main | Blind estimates under d3a4bbf | 0f49389 (2026-10-04) | fa4a6bcf80a5ac52261d54f3e811476d5e911958 | **truth pending; never edit; keep out of MODEL_CARD/STATUS until the truth is returned** |
 | `results/imaging/lobe_frozen.json` | imaging (read-only) | Frozen imaging inversion (κ, λ, thresholds); used read-only by 10 and 11 to rebuild the imaging LR | 62709e0 (2026-10-03 22:37), code fb5b775 | 0b42ece21b4990ac99271e3cf5c9cb7f5df0c1cd | frozen |
 | `results/imaging/lobe_predictions.md` | imaging | Imaging blind predictions for LeftOnly / MCI | 62709e0 | b13103691aad1b2d2142020c98d295841105e314 | scored by imaging: LeftOnly PARTIAL (7-pass reference) / FAIL (matched), MCI success |
-| `results/imaging/round2_predictions.md` | imaging | Imaging R3, C4 and C6 predictions (RightOnly LR −6.9 ± 3.9) | 0ceb626 (2026-10-04 11:52) | 1b941d759d7f35e585c94df8dc06a3627e333e95 | pending (C6) |
+| `results/imaging/round2_predictions.md` | imaging | Imaging R3, C4 and C6 predictions (RightOnly LR −6.9 ± 3.9) | 0ceb626 (2026-10-04 11:52) | 1b941d759d7f35e585c94df8dc06a3627e333e95 | scored by the imaging session with its own rule (its commit 24aa0c4); not used by the main session |
 
 **Overwrite guards** (e7794fd):
 - `05_audit.py` refuses to freeze when `frozen_rule.json` exists (run it with `--no-freeze`).
 - `07_lobe.py --write-predictions` refuses when `predictions.md` exists.
 - `13_review2_misc.py` writes the C6 files only with `--write-predictions` and only if they are absent. By default it
   checks that the committed CSV reproduces (max diff 1.8e-15 at e7794fd).
+- `14_rightonly.py` checks the git blobs of the C6 predictions before scoring and never writes them.
+- `15_test_b.py --blind` refuses to run unless `protocol.md` is committed unchanged. Test_B is not in the manifest,
+  so no other script loads it.
 
 ## 5. Rulers and definitions used by every claim
 
@@ -209,11 +224,11 @@ detection row of §1.
 | 12 | Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature | CHANGED | A22 |
 | 13 | Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable | CHANGED | A20 |
 | 14 | Not-returned ("absorbed") power does not separate Normal from AD (0.92x) | CHANGED | A26 |
-| 15 | [POST HOC] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | CHANGED | R1 |
-| 16 | [POST HOC] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | CHANGED | R2, A16, C3, C5 |
-| 17 | [POST HOC] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | CHANGED | R3 |
-| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement | CHANGED | R3 |
-| 19 | [POST HOC] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | CHANGED | C4 |
+| 15 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | WITHDRAWN | R1, C6 |
+| 16 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | WITHDRAWN | R2, A16, C3, C5, C6 |
+| 17 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | WITHDRAWN | R3, C6 |
+| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3) | CHANGED | R3, C6 |
+| 19 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | WITHDRAWN | C4, C6 |
 | 20 | Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file | CHANGED | R1b |
 | 21 | Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it | CONFIRMED | A14, G4 |
 | 22 | Field exports are 3-D volumes; no claim used the cut plane | CONFIRMED | R7, G8 |
@@ -222,43 +237,40 @@ detection row of §1.
 | 25 | Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused | CONFIRMED | G1, G2, G6 |
 | 26 | Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz | CHANGED | G7 |
 | 27 | Sector-level imaging values are not results | CHANGED | R5 |
+| 28 | Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median \|RO + LO\| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED | CHANGED | C6 |
+| 29 | Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation | CHANGED | C6 P4 |
+| 30 | The merged staging label differs between the mirror twins (LeftOnly Normal, RightOnly Mild+Moderate); both lie within 1x of the R32 boundary | CHANGED | C6 |
 
 **The pre-registered answer stays primary:** the cf56de8 power predictions for LeftOnly fail or are not separable.
-The phase finding (rows 15–19) is post hoc. The statements that depend on it are listed in MODEL_CARD 6.3.
+The phase finding (rows 15, 16, 17, 19) was post hoc. It was **withdrawn** after C6 was not replicated, on the user's
+instruction. Note that the committed retraction clause was conditional on the signs *not* flipping; they flipped
+26/26, and it was the sizes that failed (MODEL_CARD 6.6).
 
 ## 7. Open items
 
 ### 7.1 Waiting on the user (do nothing until the files arrive)
 
-**(a) RightOnly_test (C6).** Design and predictions are in `results/05_lobe/rightonly_predictions.md` (0f97bb2).
-Expected file: `data/raw/new_with_slices_RightOnly_test.s6p`.
+**(a) Test_B truth (blind design; protocol d3a4bbf, estimates 0f49389).** Done so far:
+- RightOnly_test was scored (546d804): NOT REPLICATED.
+- The Test_B protocol was committed before Test_B was loaded, and the estimates were committed.
 
-When it arrives:
-1. Get the passes, final ΔS and element count from the user, not from the file header.
-2. Add a manifest row to `data/sims_lobe.csv` modelled on LeftOnly's:
-   - class `Mild` (the loader needs a stage label);
-   - set `lobe_A lobe_tests`, kind `test`;
-   - sectors `S5 S6 core`, stop_rule 1;
-   - notes: "RightOnly_test: e = 0/0/0/0/11.5/7.5 mm, r_hip 17.5; CSF_Mild everywhere (0.5 mm layer on the left)".
-3. Commit the manifest.
-4. Run QC: `MLI_CONFIG=config_lobe_tests.yaml python scripts/00_qc.py --include-moderate`.
-5. Write `scripts/14_rightonly.py`. It reads `rightonly_predictions.csv`, **never writes it**, and must:
-   - recompute every statistic for RightOnly exactly as `13_review2_misc.py` does (`R11.lr_cr_phase`,
-     `R10.mirror_stats`, `ring_features.features`, the same frequency masks);
-   - apply the committed scoring:
-     - **P1 holds** if, for ≥ 80% of the rows with `sign test informative = True`, the sign flips and
-       |T(RO) + T(LO)| ≤ the row's tolerance;
-     - **P2 holds** if the phase cross-ratio counts ≥ 3x R1c (LeftOnly: 4 band mean, 9 at 3.30–3.65 GHz) are
-       within ±2 with the opposite sign;
-     - **P3:** no power LR index beyond 2x, and the reflection pairs flip;
-     - **P4:** R31/R21/R32 equal LeftOnly's within the one-pass yardstick;
-     - **P5:** imaging LR ≈ −7.9 and < 2x the floor (use the `R10.Imaging` operator);
-   - give the verdict: **replicated only if P1 and P2 both hold. If the signs do not flip, retract the phase finding
-     as numerical**;
-   - also report the frozen-rule labels with margins.
-6. Commit the script, run it, commit the results.
-7. Update MODEL_CARD Part 6 (claims 15–19) and STATUS §7.
-8. The imaging session scores its own prediction separately.
+Until the user returns the truth:
+- Do not read other sessions' Test_B files.
+- Do not put Test_B estimates into MODEL_CARD or STATUS.
+- Do not edit `results/05_lobe/test_b/`.
+
+When the truth arrives:
+1. Record it: add a `data/sims_lobe.csv` row for Test_B with its sectors_affected, e values and r_hip in notes, and the
+   passes / ΔS / elements if the user gives them. Commit.
+2. Write `scripts/16_test_b_score.py`. It reads `estimates.csv` and `protocol.md` (check their blobs as `14_rightonly.py`
+   does) and **never writes them**. It scores exactly per protocol §3:
+   - detection label;
+   - staging, only if Test_B uses one stage's materials;
+   - side, by the sign of (e_S2 + e_S3) − (e_S5 + e_S6);
+   - per sector: hits, misses, false alarms, correct rejections, uncertain;
+   - confidence calibration.
+3. Commit the code, run it, commit the results.
+4. Update MODEL_CARD Part 6, STATUS §7 and this file.
 
 **(b) Uniform equal-settings re-solves** (`data/sim_plan.csv`): `new_Healthy_meshrep`, `new_MCI_rep`,
 `new_MildAD_eq`, `new_ModerateAD_eq`, `new_SevereAD_eq`. Status: running or planned since 2026-10-02, not
@@ -404,6 +416,22 @@ python scripts/13_review2_misc.py
 ```
 Writes `review2/G7_dispersion.csv` and checks that the C6 predictions reproduce. G7 committed at b61c5d8.
 
+```bash
+python scripts/14_rightonly.py
+```
+Writes `results/05_lobe/rightonly/` (C6 scoring). Committed at 546d804 (code c100803). Needs the imaging Born cache.
+
+```bash
+python scripts/15_test_b.py --validate
+```
+Writes `results/05_lobe/test_b/validation*` (known designs only). Committed at d3a4bbf (code 89af4b3).
+
+```bash
+python scripts/15_test_b.py --blind
+```
+Writes `results/05_lobe/test_b/{report.md, estimates.csv, statistics.csv}`. Committed at 0f49389. **Do not rerun and
+commit over these files**: they are the blind record. A rerun is only a reproducibility check (`git diff`).
+
 - **Imports.** Scripts 10–12 import `imaging/` read-only (`imaging.fields.read_fld`, the Born table
   `results/imaging/cache/lobe_v1-masked/born_table.pkl`, `results/imaging/lobe_frozen.json`). Script 10 checks that the
   rebuilt operator reproduces. If the cache is missing, ask the imaging session or the user; do not rebuild it inside
@@ -448,3 +476,6 @@ Writes `review2/G7_dispersion.csv` and checks that the C6 predictions reproduce.
 | b61c5d8 / 0f97bb2 | 10-04 | G7 + **RightOnly predictions** |
 | d03c077 / ae2a7cb / 5b7909d | 10-04 | G3 fix, round-2 results, docs (MODEL_CARD Part 6) |
 | e7794fd | 10-04 | overwrite guards |
+| c100803 / 546d804 | 10-04 | C6 scoring: RightOnly NOT REPLICATED |
+| 89af4b3 / d3a4bbf | 10-04 | **Test_B blind protocol** (code, validation) |
+| 0f49389 | 10-04 | Test_B blind estimates (truth pending) |

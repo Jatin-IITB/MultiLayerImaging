@@ -13,11 +13,11 @@
 12,Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature,CHANGED,A22,False
 13,Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable,CHANGED,A20,False
 14,"Not-returned (""absorbed"") power does not separate Normal from AD (0.92x)",CHANGED,A26,False
-15,[POST HOC] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1,CHANGED,R1,True
-16,"[POST HOC] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22",CHANGED,"R2, A16, C3, C5",True
-17,[POST HOC] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null),CHANGED,R3,True
-18,[POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement,CHANGED,R3,True
-19,"[POST HOC] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence",CHANGED,C4,True
+15,[POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1,WITHDRAWN,"R1, C6",True
+16,"[POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22",WITHDRAWN,"R2, A16, C3, C5, C6",True
+17,[POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null),WITHDRAWN,"R3, C6",True
+18,"[POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3)",CHANGED,"R3, C6",True
+19,"[POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence",WITHDRAWN,"C4, C6",True
 20,Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file,CHANGED,R1b,False
 21,"Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it",CONFIRMED,"A14, G4",False
 22,Field exports are 3-D volumes; no claim used the cut plane,CONFIRMED,"R7, G8",False
@@ -26,3 +26,6 @@
 25,Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused,CONFIRMED,"G1, G2, G6",False
 26,Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz,CHANGED,G7,False
 27,Sector-level imaging values are not results,CHANGED,R5,False
+28,"Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median |RO + LO| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED",CHANGED,C6,False
+29,Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation,CHANGED,C6 P4,False
+30,"The merged staging label differs between the mirror twins (LeftOnly Normal, RightOnly Mild+Moderate); both lie within 1x of the R32 boundary",CHANGED,C6,False
