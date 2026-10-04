@@ -685,7 +685,7 @@ Left/right (LR = mean(S2, S3) − mean(S5, S6); all designs are mirror-symmetric
 
 ## 6. Blind test outcome (pre-registered)
 
-Frozen at code `fb5b775`; predictions in `lobe_predictions.md`. Scored now at code `f3306b7` with the unchanged frozen κ, λ and thresholds.
+Frozen at code `fb5b775`; predictions in `lobe_predictions.md`. Scored now at code `aad54d8` with the unchanged frozen κ, λ and thresholds.
 
 Two references (decision of 4 Oct): the frozen 7-pass Healthy_sliced is primary and decides the verdict; the stop-rule-matched Healthy_sliced_new is shown alongside. Each prediction against the error rulers: §6b.
 
@@ -772,7 +772,7 @@ Masked points:
 
 ## 6b. Blind predictions against the error rulers
 
-Every pre-registered prediction (`lobe_predictions.md`, frozen at `fb5b775`; the main session's predictions are `cf56de8`) is scored on the clean simulation by the frozen pipeline, against both references. Columns: effect = the clean recovered quantity (dε'' of the sector, LR or FB of the map); over_noise = effect / SD under the typical noise profile alone (both designs); over_yard = / one-pass mesh yardstick (largest of Healthy 7−6, Mild 6−5, Moderate 6−5, Severe 6−5, both signs, added to the reference); over_floor = / numerical symmetry floor (quadrature of the two designs' floors; LeftOnly is not mirror-symmetric, so its floor is the largest floor of the lobe_A symmetric designs); over_meas = / SD under the Prompt 07 measurement model (±0.5 dB gain, and ±2 dB/±10°). verdict_sim uses the clean ruler max(yardstick, floor); verdict_meas uses max(noise SD, yardstick, floor, ±0.5 dB spread). **hit** = the pre-registered call is made and (for a positive prediction) the effect is ≥ 2× the ruler; **not separable** = right call but < 2× the ruler, or a wrong call within 2× the ruler; **miss** = wrong call ≥ 2× the ruler, or a positive prediction not called. The whitened-projection log method has no frozen thresholds: its 'call' is the sign of the contrast when it is ≥ 2× the clean ruler, it makes no sector calls, and it is **post-hoc**.
+Every pre-registered prediction (`lobe_predictions.md`, frozen at `fb5b775`; the main session's predictions are `cf56de8`) is scored on the clean simulation by the frozen pipeline, against both references. Columns: effect = the clean recovered quantity (dε'' of the sector, LR or FB of the map); over_noise = effect / SD under the typical noise profile alone (both designs); over_yard = / one-pass mesh yardstick (largest of Healthy 7−6, Mild 6−5, Moderate 6−5, Severe 6−5, both signs, added to the reference); over_floor = / numerical symmetry floor (quadrature of the two designs' floors; LeftOnly is not mirror-symmetric, so its floor is the largest floor of the lobe_A symmetric designs); over_meas = / SD under the Prompt 07 measurement model (±0.5 dB gain, and ±2 dB/±10°). verdict_sim uses the clean ruler max(yardstick, floor); verdict_meas uses max(yardstick, floor ⊕ ±0.5 dB spread) (quadrature). One bar for every quantity (revised 5 Oct, §8): **hit** = the pre-registered call holds and, for a positive prediction, the effect is ≥ 3× the ruler; **sensitive** = call holds, 2–3×; **miss** = the call fails by ≥ 3× the ruler (distance of the effect from the frozen decision boundary); **not separable** = otherwise. The whitened-projection log method has no frozen thresholds: its 'call' is the sign of the contrast when it is ≥ 3× the clean ruler, it makes no sector calls, and it is **post-hoc**.
 
 **Caveats recorded before scoring:** (1) the predictions, κ, λ and thresholds were all derived from lobe_v1 (Mild_lobe p5 against Healthy_sliced p7: stop rules not matched), so mesh is part of the frozen 'Mild change'; (2) LeftOnly carries CSF_Mild also as the 0.5 mm layer on the right (one CSF object). The imaging forward model includes it (true sensitivity-weighted dε'' of LeftOnly: S1 Fr +0.3, S2 TL +13.2, S3 PL +12.9, S4 Oc +0.3, S5 PR +0.3, S6 TR +0.3), so the Born-simulated predictions contain it; the main session's path-level predictions do not; (3) the frozen 'gain-invariant' log method is not gain-invariant (§5d erratum); (4) one simulation per design, one head. Predicted for LeftOnly (primary method, Born-simulated with noise): LR +14.7 ± 2.2, P(called) S1 Fr 0.00, S2 TL 0.62, S3 PL 1.00, S4 Oc 0.00, S5 PR 0.00, S6 TR 0.00.
 
@@ -780,23 +780,23 @@ Every pre-registered prediction (`lobe_predictions.md`, frozen at `fb5b775`; the
 
 | reference | method | prediction | effect | call | over_noise | over_yard | over_floor | over_meas_05 | over_meas_2 | verdict_sim | verdict_meas |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | side = left | +8.5 | left | 3.7 | 3.9 | 2.0 | 0.3 | 0.2 | hit | not separable |
-| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S2 affected | +13.1 | False | 5.2 | 3.1 | 5.4 | 0.6 | 0.5 | miss | miss |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | side = left | +8.5 | left | 3.7 | 3.9 | 2.0 | 0.3 | 0.2 | sensitive | not separable |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S2 affected | +13.1 | False | 5.2 | 3.1 | 5.4 | 0.6 | 0.5 | not separable | not separable |
 | Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S3 affected | +15.0 | True | 5.9 | 5.6 | 6.4 | 0.8 | 0.5 | hit | not separable |
 | Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S1 healthy | +5.2 | False | 2.0 | 1.6 | 2.2 | 0.2 | 0.2 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S4 healthy | +5.6 | False | 2.1 | 2.3 | 2.5 | 0.3 | 0.3 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S5 healthy | +5.0 | False | 2.1 | 1.0 | 2.1 | 0.3 | 0.2 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S6 healthy | +6.2 | False | 2.6 | 1.2 | 2.4 | 0.3 | 0.2 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | Tikhonov dS | front/back none | -0.4 | none | 0.1 | 0.7 | 0.1 | 0.0 | 0.0 | hit | hit |
-| Healthy_sliced (p7, frozen, primary) | frozen log | side = left | +9.2 | left | 3.6 | 4.1 | 2.5 | 0.9 | 0.7 | hit | not separable |
-| Healthy_sliced (p7, frozen, primary) | frozen log | S2 affected | +12.6 | False | 4.0 | 4.5 | 5.9 | 1.5 | 1.3 | miss | miss |
+| Healthy_sliced (p7, frozen, primary) | frozen log | side = left | +9.2 | left | 3.6 | 4.1 | 2.5 | 0.9 | 0.7 | sensitive | not separable |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S2 affected | +12.6 | False | 4.0 | 4.5 | 5.9 | 1.5 | 1.3 | not separable | not separable |
 | Healthy_sliced (p7, frozen, primary) | frozen log | S3 affected | +15.5 | True | 5.3 | 7.8 | 7.7 | 1.8 | 1.4 | hit | not separable |
 | Healthy_sliced (p7, frozen, primary) | frozen log | S1 healthy | +5.3 | False | 1.7 | 2.2 | 2.6 | 0.5 | 0.5 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | frozen log | S4 healthy | +4.8 | False | 1.6 | 3.0 | 2.4 | 0.6 | 0.5 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | frozen log | S5 healthy | +4.5 | False | 1.6 | 1.1 | 2.1 | 0.6 | 0.4 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | frozen log | S6 healthy | +5.1 | False | 1.7 | 1.4 | 2.3 | 0.5 | 0.4 | hit | hit |
 | Healthy_sliced (p7, frozen, primary) | frozen log | front/back none | +0.5 | none | 0.1 | 0.5 | 0.1 | 0.0 | 0.0 | hit | hit |
-| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | side = left | +9.3 | left | 3.6 | 5.5 | 3.0 | 3.4 | 3.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | side = left | +9.3 | none | 3.6 | 5.5 | 3.0 | 3.4 | 3.2 | not separable | not separable |
 | Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S2 affected | +12.2 | n/a | 3.7 | 4.7 | 6.6 | 4.2 | 3.8 | n/a | n/a |
 | Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S3 affected | +15.0 | n/a | 5.1 | 8.1 | 8.8 | 4.8 | 4.6 | n/a | n/a |
 | Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S1 healthy | +4.7 | n/a | 1.6 | 3.0 | 2.8 | 1.5 | 1.4 | n/a | n/a |
@@ -804,23 +804,23 @@ Every pre-registered prediction (`lobe_predictions.md`, frozen at `fb5b775`; the
 | Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S5 healthy | +4.2 | n/a | 1.6 | 1.4 | 2.4 | 1.4 | 1.5 | n/a | n/a |
 | Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S6 healthy | +4.4 | n/a | 1.4 | 1.5 | 2.3 | 1.4 | 1.3 | n/a | n/a |
 | Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | front/back none | +0.3 | none | 0.1 | 0.2 | 0.1 | 0.1 | 0.1 | hit | hit |
-| Healthy_sliced_new (p6, matched) | Tikhonov dS | side = left | +8.8 | left | 3.6 | 4.1 | 2.1 | 0.3 | 0.3 | hit | not separable |
-| Healthy_sliced_new (p6, matched) | Tikhonov dS | S2 affected | +11.1 | False | 4.5 | 2.7 | 4.6 | 0.5 | 0.4 | miss | miss |
-| Healthy_sliced_new (p6, matched) | Tikhonov dS | S3 affected | +12.3 | False | 4.9 | 4.5 | 5.2 | 0.6 | 0.5 | miss | miss |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | side = left | +8.8 | left | 3.6 | 4.1 | 2.1 | 0.3 | 0.3 | sensitive | not separable |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S2 affected | +11.1 | False | 4.5 | 2.7 | 4.6 | 0.5 | 0.4 | not separable | not separable |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S3 affected | +12.3 | False | 4.9 | 4.5 | 5.2 | 0.6 | 0.5 | not separable | not separable |
 | Healthy_sliced_new (p6, matched) | Tikhonov dS | S1 healthy | +3.0 | False | 1.3 | 1.0 | 1.3 | 0.1 | 0.1 | hit | hit |
 | Healthy_sliced_new (p6, matched) | Tikhonov dS | S4 healthy | +3.4 | False | 1.3 | 1.4 | 1.5 | 0.2 | 0.1 | hit | hit |
 | Healthy_sliced_new (p6, matched) | Tikhonov dS | S5 healthy | +2.6 | False | 1.0 | 0.5 | 1.1 | 0.1 | 0.1 | hit | hit |
 | Healthy_sliced_new (p6, matched) | Tikhonov dS | S6 healthy | +3.2 | False | 1.2 | 0.6 | 1.2 | 0.1 | 0.1 | hit | hit |
 | Healthy_sliced_new (p6, matched) | Tikhonov dS | front/back none | -0.4 | none | 0.1 | 0.6 | 0.1 | 0.0 | 0.0 | hit | hit |
-| Healthy_sliced_new (p6, matched) | frozen log | side = left | +9.7 | left | 3.4 | 4.3 | 2.6 | 0.9 | 0.8 | hit | not separable |
-| Healthy_sliced_new (p6, matched) | frozen log | S2 affected | +11.5 | False | 4.3 | 4.0 | 5.3 | 1.3 | 1.2 | miss | miss |
+| Healthy_sliced_new (p6, matched) | frozen log | side = left | +9.7 | left | 3.4 | 4.3 | 2.6 | 0.9 | 0.8 | sensitive | not separable |
+| Healthy_sliced_new (p6, matched) | frozen log | S2 affected | +11.5 | False | 4.3 | 4.0 | 5.3 | 1.3 | 1.2 | not separable | not separable |
 | Healthy_sliced_new (p6, matched) | frozen log | S3 affected | +13.6 | True | 4.5 | 7.1 | 6.7 | 1.7 | 1.3 | hit | not separable |
 | Healthy_sliced_new (p6, matched) | frozen log | S1 healthy | +3.6 | False | 1.2 | 1.5 | 1.8 | 0.4 | 0.3 | hit | hit |
 | Healthy_sliced_new (p6, matched) | frozen log | S4 healthy | +3.3 | False | 1.1 | 2.1 | 1.6 | 0.4 | 0.3 | hit | hit |
 | Healthy_sliced_new (p6, matched) | frozen log | S5 healthy | +2.8 | False | 1.0 | 0.7 | 1.3 | 0.3 | 0.3 | hit | hit |
 | Healthy_sliced_new (p6, matched) | frozen log | S6 healthy | +3.0 | False | 0.9 | 0.8 | 1.3 | 0.3 | 0.2 | hit | hit |
 | Healthy_sliced_new (p6, matched) | frozen log | front/back none | +0.3 | none | 0.1 | 0.4 | 0.1 | 0.0 | 0.0 | hit | hit |
-| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | side = left | +9.4 | left | 3.2 | 5.7 | 3.0 | 3.1 | 3.4 | hit | hit |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | side = left | +9.4 | none | 3.2 | 5.7 | 3.0 | 3.1 | 3.4 | not separable | not separable |
 | Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S2 affected | +11.2 | n/a | 4.2 | 4.2 | 6.0 | 3.3 | 3.8 | n/a | n/a |
 | Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S3 affected | +13.3 | n/a | 4.6 | 7.2 | 7.8 | 3.9 | 4.3 | n/a | n/a |
 | Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S1 healthy | +3.4 | n/a | 1.2 | 2.2 | 2.0 | 1.1 | 1.0 | n/a | n/a |
@@ -935,19 +935,19 @@ Front/back and left/right of lobe_B against the rulers (yardstick of all four on
 | frozen log | Mild (B) − Healthy (p7) | LR | -0.1 | 2.25 | 0.90 | 2.78 | 10.53 | 0.05 | 0.01 |
 | frozen log | Mild (B) − Healthy (p7) | FB | +3.8 | 1.00 | 1.04 | 5.24 | 12.96 | 3.68 | 0.29 |
 | frozen log | Moderate (B) − Healthy (p7) | LR | -1.5 | 2.25 | 1.67 | 2.81 | 10.56 | 0.67 | 0.14 |
-| frozen log | Moderate (B) − Healthy (p7) | FB | +10.9 | 1.00 | 1.80 | 4.78 | 13.58 | 6.04 | 0.80 |
+| frozen log | Moderate (B) − Healthy (p7) | FB | +10.9 | 1.00 | 1.80 | 4.78 | 13.58 | 6.04 | 0.79 |
 | frozen log | Severe (B) − Healthy (p7) | LR | +0.0 | 2.25 | 1.01 | 2.64 | 10.86 | 0.00 | 0.00 |
 | frozen log | Severe (B) − Healthy (p7) | FB | +3.6 | 1.00 | 1.19 | 4.80 | 12.71 | 3.03 | 0.28 |
-| frozen log | Moderate (B) − Mild (B) | LR | -1.9 | 2.50 | 1.52 | 2.71 | 10.86 | 0.76 | 0.18 |
+| frozen log | Moderate (B) − Mild (B) | LR | -1.9 | 2.50 | 1.52 | 2.71 | 10.86 | 0.76 | 0.17 |
 | frozen log | Moderate (B) − Mild (B) | FB | +7.5 | 1.16 | 1.59 | 4.71 | 13.87 | 4.71 | 0.54 |
 | whitened log | Mild (B) − Healthy (p7) | LR | +0.1 | 1.68 | 0.87 | 2.88 | 2.54 | 0.08 | 0.05 |
-| whitened log | Mild (B) − Healthy (p7) | FB | +2.7 | 1.23 | 1.03 | 5.07 | 4.37 | 2.20 | 0.53 |
-| whitened log | Moderate (B) − Healthy (p7) | LR | -1.2 | 1.68 | 1.51 | 2.85 | 2.96 | 0.73 | 0.42 |
-| whitened log | Moderate (B) − Healthy (p7) | FB | +10.3 | 1.23 | 1.63 | 4.34 | 4.57 | 6.28 | 2.24 |
+| whitened log | Mild (B) − Healthy (p7) | FB | +2.7 | 1.23 | 1.03 | 5.07 | 4.37 | 2.20 | 0.60 |
+| whitened log | Moderate (B) − Healthy (p7) | LR | -1.2 | 1.68 | 1.51 | 2.85 | 2.96 | 0.73 | 0.37 |
+| whitened log | Moderate (B) − Healthy (p7) | FB | +10.3 | 1.23 | 1.63 | 4.34 | 4.57 | 6.28 | 2.11 |
 | whitened log | Severe (B) − Healthy (p7) | LR | -0.1 | 1.68 | 0.98 | 2.74 | 2.59 | 0.05 | 0.03 |
-| whitened log | Severe (B) − Healthy (p7) | FB | +3.9 | 1.23 | 1.17 | 4.48 | 4.45 | 3.21 | 0.88 |
-| whitened log | Moderate (B) − Mild (B) | LR | -1.9 | 1.87 | 1.36 | 2.82 | 2.72 | 0.99 | 0.66 |
-| whitened log | Moderate (B) − Mild (B) | FB | +8.7 | 1.22 | 1.43 | 4.45 | 4.29 | 6.07 | 1.96 |
+| whitened log | Severe (B) − Healthy (p7) | FB | +3.9 | 1.23 | 1.17 | 4.48 | 4.45 | 3.21 | 0.86 |
+| whitened log | Moderate (B) − Mild (B) | LR | -1.9 | 1.87 | 1.36 | 2.82 | 2.72 | 0.99 | 0.61 |
+| whitened log | Moderate (B) − Mild (B) | FB | +8.7 | 1.22 | 1.43 | 4.45 | 4.29 | 6.07 | 1.92 |
 
 One-pass yardstick for all four stages (each difference added to Healthy_sliced_new and inverted; recovered dε'' per sector and the contrasts):
 
@@ -1006,12 +1006,30 @@ Within these simulations (one head, one solve per design, typical noise, Born ke
 
 - **Which lobes (pattern):** yes, as a ranking. On the mesh-matched set lobe_A (§5c) the recovered sector conductivity correlates 0.89–0.96 with the truth for Mild and Moderate (all four methods, with and without the opposite paths) and the affected lobes are the most changed. Absolute 'affected' calls depend on a threshold calibrated on Mild and are fragile: a one-pass change of the reference mesh shifts every sector by about 2–3, enough to move sectors near T_abs = 13.8 across it (primary, all paths: 5/6, 5/6, 6/6 correct for Mild/Moderate/Severe; without opposite paths: 6/6, 6/6, 6/6). Healthy lobes are biased upward by about 5–10, more than a one-pass mesh change; Born model error and leakage are the likely cause.
 - **Front/back: not established.** Moderate − Healthy FB on lobe_A = +10.2 (primary; truth +14.6). Against the simulation-level ruler max(one-pass mesh, symmetry floor): Tikhonov dS 2.2×, frozen log 2.6×, whitened log 3.1× (≥ 3× exceeds, 2–3× sensitive). With the Prompt 07 measurement errors: Tikhonov dS 0.3×, frozen log 0.7×, whitened log 2.5× (±0.5 dB) and Tikhonov dS 0.2×, frozen log 0.6×, whitened log 2.4× (±2 dB/±10°). Mild and Severe carry a front-positive bias of about +4 that is itself 2.0–4.2× the clean ruler, and Moderate − Mild (not a pure frontal contrast) is Tikhonov dS 1.4×, frozen log 1.7×, whitened log 2.6× the clean ruler. This agrees with the main session: localisation is not separable from error once symmetry floor and gain/phase errors are included (§5d).
-- **Left/right:** **pre-registered blind test: PARTIAL** (primary method, frozen 7-pass reference): LeftOnly side = left, LR = +8.5 (predicted +14.7 ± 2.2, i.e. -2.8 SD: correct sign, smaller than predicted), called S3 (S2 13.1 just below T_abs 13.8; predicted P(S2 called) 0.62). Against the rulers: LR is 2.0× the clean ruler (hit) and 0.3× the measured ruler (not separable); matched reference 2.1× / 0.3×; post-hoc whitened log 3.0× / 3.0× (§6b).
+- **Left/right:** **pre-registered blind test: PARTIAL** (primary method, frozen 7-pass reference): LeftOnly side = left, LR = +8.5 (predicted +14.7 ± 2.2, i.e. -2.8 SD: correct sign, smaller than predicted), called S3 (S2 13.1 just below T_abs 13.8; predicted P(S2 called) 0.62). Against the rulers: LR is 2.04× the clean ruler (sensitive) and 0.32× the measured ruler (not separable); matched reference 2.10× / 0.33×; post-hoc whitened log 2.95× / 2.24× (§6b). **Revised in §8:** sign confirmed by the mirror test; LR_anti (the asymmetry-free estimate) is 1.8–2.6× the clean ruler with the conservative floor and 2.6–3.3× with the pass-matched floor; LR itself 2.0–3.0× / 3.9–5.5× (conservative floor decides: sensitive at best); carried by phase; frequency-, reference- and calibration-dependent; not established.
 - **Depth:** no, beyond the outermost cortex. The under-skull gap (76–83.5 mm) is determined where it changes; the deeper cortex (60–76 mm) has a 2–3× larger CRLB and is not determined in any sector at any stage (§2); the core (hippocampus) is not determined at all.
 - **Radar imaging:** no — it still peaks at the centre and its energy direction does not track the lobes.
 - **Opposite paths:** they carry 9%–14% of the information per sector; removing them shifts sector values by +0.5 to +5.5 and flips only near-threshold calls. No conclusion depends on them (both versions in §5c).
 - **MCI_lobe (blind):** pre-registered verdict SUCCESS (called none, side none, front/back none). Largest reconstruction feature 0.8× the clean ruler; data level 0.42× the largest one-pass mesh difference (§6c).
 - **lobe_B:** frozen pipeline, primary method: Mild S2 S3 S6 (5/6), FB +3.1; Moderate S1 S3 S6 (4/6), FB +10.8; Severe S1 S2 S3 S4 S5 S6 (6/6), FB +3.6. Severe_lobe_c3 R31 -15.58 dB → AD (read-only cross-check, §6d).
-- **Front/back on lobe_B** (better converged, smaller symmetry floor): Tikhonov dS Mild (B) − Healthy (p7) FB +3.1 = 3.1× clean / 0.1× measured ruler; Tikhonov dS Moderate (B) − Healthy (p7) FB +10.8 = 4.7× clean / 0.3× measured ruler; Tikhonov dS Severe (B) − Healthy (p7) FB +3.6 = 3.5× clean / 0.1× measured ruler; Tikhonov dS Moderate (B) − Mild (B) FB +7.6 = 3.6× clean / 0.2× measured ruler; whitened log Mild (B) − Healthy (p7) FB +2.7 = 2.2× clean / 0.5× measured ruler; whitened log Moderate (B) − Healthy (p7) FB +10.3 = 6.3× clean / 2.2× measured ruler; whitened log Severe (B) − Healthy (p7) FB +3.9 = 3.2× clean / 0.9× measured ruler; whitened log Moderate (B) − Mild (B) FB +8.7 = 6.1× clean / 2.0× measured ruler. The front-positive bias of Mild and Severe (truth 0) also exceeds the clean ruler, so Moderate's FB above Healthy is not by itself a frontal signal; Moderate − Mild (not a pure frontal contrast) is the closer test.
+- **Front/back on lobe_B** (better converged, smaller symmetry floor): Tikhonov dS Mild (B) − Healthy (p7) FB +3.1 = 3.1× clean / 0.1× measured ruler; Tikhonov dS Moderate (B) − Healthy (p7) FB +10.8 = 4.7× clean / 0.3× measured ruler; Tikhonov dS Severe (B) − Healthy (p7) FB +3.6 = 3.5× clean / 0.1× measured ruler; Tikhonov dS Moderate (B) − Mild (B) FB +7.6 = 3.6× clean / 0.2× measured ruler; whitened log Mild (B) − Healthy (p7) FB +2.7 = 2.2× clean / 0.6× measured ruler; whitened log Moderate (B) − Healthy (p7) FB +10.3 = 6.3× clean / 2.1× measured ruler; whitened log Severe (B) − Healthy (p7) FB +3.9 = 3.2× clean / 0.9× measured ruler; whitened log Moderate (B) − Mild (B) FB +8.7 = 6.1× clean / 1.9× measured ruler. The front-positive bias of Mild and Severe (truth 0) also exceeds the clean ruler, so Moderate's FB above Healthy is not by itself a frontal signal; Moderate − Mild (not a pure frontal contrast) is the closer test.
 - **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at the ring height); everything is within one simulated head; lobe_A matches the stop rule, not the pass count (reference 6 passes, stages 5), and the yardstick is a single extra pass, so mesh error relative to a converged solution is not bounded by it (§5c). **Erratum (§5d):** the frozen 'gain-invariant' log method projects out the port gains before noise whitening, so it is not gain-invariant (the Prompt 07 per-port amplitude/phase perturbation alone moves its FB by SD 12); a post-hoc whitened projection is exactly gain-invariant (SD 0.00) and is limited by the measurement noise instead.
+
+## 8. Adversarial review (5 Oct)
+
+Full text, commands and every number: `results/imaging/lobe_review.md` (`lobe_review.json`).
+
+| question | verdict | change | evidence |
+|---|---|---|---|
+| B1 one bar | CHANGED | LeftOnly LR 'hit' (≥ 2×) → sensitive (2.04×, Tikhonov dS); 2.95× whitened; measured ≤ 2.24× | lobe_review.json: b1, b1_floors |
+| B2 bias + leakage | CONFIRMED | kernel asymmetry -0.32; symmetric designs -3.9…+1.0, no consistent sign; LR_anti 7.86 | lobe_review.json: b2a, b2b, b3 |
+| B3 mirror test | CONFIRMED (sign); size not established | LR_mirror -7.24; sum +1.24; LR_anti 7.86 = 1.81× clean (conservative floor) | lobe_review.json: b3, b3_rulers |
+| B4 matched reference | CHANGED | primary method: PARTIAL (H7) → FAIL (H6); sector calls move by one mesh pass | lobe_review.json: b4, b4_mech |
+| B5 whitened log | CHANGED | 3.0× / 3.0× → 2.95× / 2.24× (max → quadrature); 10 looks, measured p_bonf 0.13 | lobe_review.json: b1, b5, b5_meta |
+| B6 Born validity | CHANGED | rel. error 0.56–0.67 (all paths); LeftOnly LR pred +15.0 vs obs +8.5: comparable | lobe_review.json: b6, b6_size |
+| B7 fit frequencies | CHANGED; CANNOT TELL (3.3/3.5/3.7) | side left for subsets with 3.4 or 3.6, none at 3.8 alone; S3 needs 3.4; interpolation invalid | lobe_review.json: b7, b7_val, b7_band |
+| B8 lobe_A calibration | CHANGED | 14/28 calls flip (all sector calls; side and front/back unchanged; MCI unchanged) | lobe_review.json: b8, b8_meta |
+| B9 source of +8.5 | CONFIRMED (mechanism) | 85% phase, T2–T3 largest; main's amplitude-only tests cannot see it; phase asymmetry 2.7× one-pass, 0.9× conservative floor | lobe_review.json: b9_sum, b9_top, b9_anti |
+
+**What survives.** The left/right sign of LeftOnly is in the data (mirror test) and is stable over the true-field frequency subsets that include 3.4 or 3.6 GHz and over both references. Its size: LR_anti (the asymmetry-free estimate) is 1.8–2.6× the clean ruler with the conservative floor and 2.6–3.3× with the pass-matched floor; LR itself 2.0–3.0× / 3.9–5.5×. LeftOnly's own floor cannot be measured, so the conservative floor decides: sensitive at best, not established. It is not separable once measurement errors are included, except marginally for the post-hoc whitened log (2.2×, not significant after 10 looks). It is carried by phase, which the amplitude-based analysis of the main session does not use. The sector calls (S2, S3) and the pre-registered PARTIAL depend on the reference (B4) and on the calibration (B8) by one mesh pass or 9%–22% in κ. The Born model error is as large as the signal (B6).
 
