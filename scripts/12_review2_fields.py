@@ -130,19 +130,26 @@ def main():
 
     # ------------------------------------------------------------------ G3 polarisation near each antenna
     g3 = []
+    G3REG = {"air gap r 89-93, +-15 deg, 40 < z < 80": lambda d: (r >= 89) & (r <= 93) & (d < 15) & (z > 40) & (z < 80),
+             "air gap r 89-93, boresight +-5 deg, 45 < z < 58": lambda d: (r >= 89) & (r <= 93) & (d < 5) & (z > 45) & (z < 58),
+             "in head r 80-87, boresight +-5 deg, 45 < z < 58": lambda d: (r >= 80) & (r <= 87) & (d < 5) & (z > 45) & (z < 58),
+             "in head r 80-87, +-15 deg, 40 < z < 80": lambda d: (r >= 80) & (r <= 87) & (d < 15) & (z > 40) & (z < 80)}
     for t in range(1, 7):
         phi0 = np.radians(-90 + 60 * (t - 1))
-        sel = shell & (np.abs(((az - np.degrees(phi0) + 180) % 360) - 180) < 15) & (z > 40) & (z < 80)
-        P_, Ev = pts[sel], E[(t, "3p6")][sel]
-        rh = P_ / np.linalg.norm(P_, axis=1, keepdims=True)
-        th = np.arccos(np.clip(rh[:, 2], -1, 1))
-        ph = np.arctan2(P_[:, 1], P_[:, 0])
-        eth = np.stack([np.cos(th) * np.cos(ph), np.cos(th) * np.sin(ph), -np.sin(th)], 1)
-        eph = np.stack([-np.sin(ph), np.cos(ph), np.zeros_like(ph)], 1)
-        comp = {k: np.sqrt(np.sum(np.abs(np.einsum("ij,ij->i", Ev, u)) ** 2)) for k, u in (("r", rh), ("theta", eth), ("phi", eph))}
-        tot = np.sqrt(sum(v ** 2 for v in comp.values()))
-        g3.append({"antenna": f"T{t}", **{f"|E_{k}| share": v / tot for k, v in comp.items()},
-                   "theta / (theta+phi) amplitude": comp["theta"] / (comp["theta"] + comp["phi"])})
+        daz = np.abs(((az - np.degrees(phi0) + 180) % 360) - 180)
+        for reg, fn in G3REG.items():
+            sel = fn(daz) & ok
+            P_, Ev = pts[sel], E[(t, "3p6")][sel]
+            rh = P_ / np.linalg.norm(P_, axis=1, keepdims=True)
+            th = np.arccos(np.clip(rh[:, 2], -1, 1))
+            ph = np.arctan2(P_[:, 1], P_[:, 0])
+            eth = np.stack([np.cos(th) * np.cos(ph), np.cos(th) * np.sin(ph), -np.sin(th)], 1)
+            eph = np.stack([-np.sin(ph), np.cos(ph), np.zeros_like(ph)], 1)
+            comp = {k: np.sqrt(np.sum(np.abs(np.einsum("ij,ij->i", Ev, u)) ** 2)) for k, u in (("r", rh), ("theta", eth), ("phi", eph))}
+            tot = np.sqrt(sum(v ** 2 for v in comp.values()))
+            g3.append({"antenna": f"T{t}", "region": reg, "nodes": int(sel.sum()),
+                       **{f"|E_{k}| share": v / tot for k, v in comp.items()},
+                       "theta / (theta+phi) amplitude": comp["theta"] / (comp["theta"] + comp["phi"])})
     g3t = pd.DataFrame(g3)
     g3t.to_csv(OUT / "F_G3_polarisation.csv", index=False)
 
@@ -167,8 +174,10 @@ def main():
 
     L += ["## A14 / G3. Antennas located from their own fields (3.6 GHz; |E|-weighted centroid of the strongest 1% of nodes "
           "at r = 89-93 mm)", md(a14t, ".1f"), "",
-          "Polarisation near each antenna (r 89-93 mm, within 15 deg of its azimuth, 40 < z < 80 mm; field components in "
-          "the local spherical frame):", md(g3t, ".2f"), "",
+          "Polarisation near each antenna (field components in the local spherical frame, amplitude shares; the "
+          "air gap lies between skin (r 88) and antenna ground (r 97.65); 'in head' is skin to outer gray matter):",
+          md(g3t.groupby("region", sort=False).agg(**{c: (c, "mean") for c in g3t.columns if c not in ("antenna", "region")})
+             .reset_index(), ".2f"), "(mean over the six antennas; per antenna in F_G3_polarisation.csv)", "",
           "## G5 and the depth claims. Share of each path's sensitivity |E_a.E_b| (3.6 GHz) by region and by height, "
           "mean per path type:", md(g5c, ".3f"), ""]
     opp = g5c.set_index("type").loc["opposite"]
@@ -176,10 +185,15 @@ def main():
                  "old -> new": "T# positions from fields: " + ", ".join(f"T{i + 1} {v:+.0f}" for i, v in
                                                                       enumerate(a14t['centroid azimuth (deg)'])) + " deg",
                  "evidence": "review2/F_A14_antenna_positions.csv"})
-    summ.append({"item": "G3 polarisation", "verdict": "CHANGED (near field mostly radial; tangential part theta-dominant)",
-                 "old -> new": f"65% theta / 35% phi -> between patch and head |E_r| share {g3t['|E_r| share'].mean():.2f}; tangential theta/(theta+phi) amplitude "
-                               f"{g3t['theta / (theta+phi) amplitude'].min():.2f}-{g3t['theta / (theta+phi) amplitude'].max():.2f}; "
-                               "E-plane mainly along the meridian (theta)",
+    g3m = g3t.groupby("region", sort=False).mean(numeric_only=True)
+    gap_, hb_ = g3m.loc["air gap r 89-93, +-15 deg, 40 < z < 80"], g3m.loc["in head r 80-87, boresight +-5 deg, 45 < z < 58"]
+    summ.append({"item": "G3 polarisation",
+                 "verdict": ("CHANGED (inside the head the field is meridional; the 65/35 figure is an air-gap window average)"
+                             if hb_["theta / (theta+phi) amplitude"] > 0.8 else "CANNOT TELL"),
+                 "old -> new": f"65% theta / 35% phi -> in head at boresight: |E_theta| {hb_['|E_theta| share']:.2f}, |E_phi| "
+                               f"{hb_['|E_phi| share']:.2f}, |E_r| {hb_['|E_r| share']:.2f} (theta/(theta+phi) "
+                               f"{hb_['theta / (theta+phi) amplitude']:.2f}); air gap +-15 deg window: |E_r| {gap_['|E_r| share']:.2f}, "
+                               f"theta/(theta+phi) {gap_['theta / (theta+phi) amplitude']:.2f}",
                  "evidence": "review2/F_G3_polarisation.csv"})
     summ.append({"item": "G5 sensitivity by height; depth claims", "verdict": "CHANGED (quantified)",
                  "old -> new": f"'99% in air' (opposite) -> air {opp['share air (r > 88, inside the cube)']:.3f}, brain "
