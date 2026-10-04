@@ -555,6 +555,8 @@ Findings:
   staging rules leave Moderate out or merge it with Mild.
 
 ### 5.5 Claims (lobe_A primary; full table `results/05_lobe/mesh/claims.csv`)
+**Superseded by Part 6.2 (round-2 review, 2026-10-04).** Kept for history; entries not re-derived there are unconfirmed.
+
 | claim | verdict |
 |---|---|
 | The user's convergence table reproduces (frozen recipe) | holds |
@@ -564,13 +566,13 @@ Findings:
 | Frozen merged staging (three_merged, R32) labels all designs of lobe_A and lobe_B correctly | holds for healthy, Moderate and Mild_lobe_new (3.4–7.8x); Mild_lobe 2.99x (sensitive); **Severe 1.9x (A, not determined) / 2.9x (B, sensitive)** (review A1) |
 | R31 orders the AD stages | retracted: R31 is a detection feature only (Severe above Moderate in the lobe and uniform sets); staging uses R21 (and R32 for the merged rule) |
 | Frozen three-class (R21) labels lobe-Mild as Mild | **retracted in both sets**: label not determined (0.06x / 0.26x the larger of R21 yardstick and boundary SD; lobe_A's clean label is UNCERTAIN). The earlier 'weakened' for lobe_B is reverted (review A8) |
-| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x A, 2.4x B); measured with ±0.5 dB gain: not detectable (0.3x). **Power statistics only: unverified in phase** (the LeftOnly review found the side information in phase) |
-| Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh in power (best 2.4x / 2.5x the clean ruler); **phase not checked** |
+| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | [POST HOC phase caveat] clean: mesh-sensitive (2.3x A, 2.4x B); measured with ±0.5 dB gain: not detectable (0.3x). **Power statistics only: unverified in phase** (the LeftOnly review found the side information in phase) |
+| Frontal lobe visible in gain-invariant asymmetry cross-ratios | [POST HOC phase caveat] not separable from mesh in power (best 2.4x / 2.5x the clean ruler); **phase not checked** |
 | Raw cross-ratios separate Moderate from Mild | holds as severity; not a location claim |
 | Healthy_sliced(_new) reproduces the v2 healthy head | holds (both files within 1.7 v2 solve SD on R31/R21/R32) |
 | Left-right checks on the mirror-symmetric designs (A, B) | pass (≤ 1.3x floor) |
 | Lobe set had identical mesh settings, so detection is independent of mesh | **retracted** |
-| Left-right asymmetry present in the LeftOnly data | **corrected (review A3/A4)**: none in band power; **present in phase**. In a reference-free mirror test against the nine mirror-symmetric designs, 16 of 22 gain-invariant phase cross-ratios exceed 3x the clean ruler (2 of 22 with measurement errors), and the imaging LR (85% phase) is 3.7x its clean ruler (post-hoc whitened log 4.4x with errors). Post hoc: it does not rescue the power-based predictions |
+| Left-right asymmetry present in the LeftOnly data | **[POST HOC]** **corrected (review A3/A4)**; round 2 (6.2 #15–16): 4/22 under the R1c floor, imaging LR 1.94x, not established: none in band power; **present in phase**. In a reference-free mirror test against the nine mirror-symmetric designs, 16 of 22 gain-invariant phase cross-ratios exceed 3x the clean ruler (2 of 22 with measurement errors), and the imaging LR (85% phase) is 3.7x its clean ruler (post-hoc whitened log 4.4x with errors). Post hoc: it does not rescue the power-based predictions |
 | The pre-registered left-right predictions (cf56de8) hold | fail; the registration was under-powered by design: P(prediction 1 passes if the model is right) = 0.58, predicted power cross-ratios ≤ 2.7x a floor computable before cf56de8 (review A2) |
 | Locality model beats the no-locality baseline (LeftOnly paths) | **no preference**: rms difference +0.031 [−0.029, +0.087] / +0.045 [−0.017, +0.095] dB under the rulers; the earlier 'miss' is withdrawn (review A5) |
 | Frozen τ is fixed to within the lobe margins | τ re-derived exactly (−15.2728 dB); solve-bootstrap SD 0.055 dB, 95% −15.37 to −15.17 dB. LeftOnly's label would change in 6% of bootstraps, Severe's in 0% (review A9) |
@@ -602,7 +604,7 @@ Findings:
 | 6. Frozen detection mostly UNCERTAIN | 0% UNCERTAIN, 100% AD | fails | miss |
 | Gain-invariant left-right cross-ratios (primary test as agreed; predictions derived from cf56de8; decision rule fixed before the first run) | 0 of 22 beyond 3x the measured ruler (best 1.5x / 2.0x); locality rms 0.68 vs 0.47 / 0.93 vs 0.62 dB | fails | — |
 
-- **What LeftOnly shows (corrected by the review, `results/05_lobe/review/report.md`).**
+- **[POST HOC] What LeftOnly shows (corrected by the review, `results/05_lobe/review/report.md`; round 2 changes the counts: 16/22 → 4/22 under R1c, 2/22 → 0–2/22 measured; Part 6).**
   - In band power there is no left-right difference beyond the rulers. The only exception is the reflections (T2/T3
     against T6/T5: −0.06 / −0.07 dB = 6–7x on clean data), which per-port gain errors swamp.
   - In phase there is one. In a reference-free mirror test against the nine mirror-symmetric designs:
@@ -635,14 +637,169 @@ Findings:
   required rulers.
 
 ### 5.8 Adversarial review (2026-10-04; `results/05_lobe/review/`, code 2f143e4)
+Round 2 (Part 6) supersedes the round-1 counts below.
+
 - **Re-derived from the raw files:** the user's questions A1–A9, all evaluated against one 3x bar.
 - **Corrections, as recorded in 5.5:**
   - detection and merged-staging labels of Severe and LeftOnly are not determined at 3x;
   - lobe-Mild three-stage is retracted in both sets;
   - the registered left-right tests were under-powered;
-  - LeftOnly is left-right asymmetric in phase (not in power);
+  - [POST HOC] LeftOnly is left-right asymmetric in phase (not in power); round 2: not established under R1c (Part 6);
   - locality vs no-locality is "no preference";
   - the wrap-round mechanism claim is withdrawn;
   - τ uncertainty is quantified;
   - the MCI 4x cross-ratios are shown to be numerical.
 - **Summary table:** `results/05_lobe/review/summary.csv`.
+
+## Part 6 — Round-2 adversarial review (2026-10-04; main session; `results/05_lobe/review2/`)
+
+**Status.** Part 6 is the only authoritative claims list for the lobe set and for the uniform-set items it
+covers. Every statement in Parts 1–5 and in `results/STATUS.md` that is not re-derived here counts as
+**unconfirmed**. Imaging items (B14–B25, imaging LR internals) are in `results/imaging/lobe_round2.md`.
+
+**Code and runs.**
+- `scripts/11_review2.py`: code 2a222ff, run `python scripts/11_review2.py --n 300` → `review2/report_stats.md`.
+- `scripts/12_review2_fields.py`: code d03c077, run `python scripts/12_review2_fields.py` → `review2/report_fields.md`.
+- `scripts/13_review2_misc.py`: code b61c5d8 → `review2/G7_dispersion.csv`, `results/05_lobe/rightonly_predictions.*` (0f97bb2).
+- Predictions written before the first round-2 number: `review2/predictions_R3_C4.md` (committed with the code, 2a222ff).
+- Results: ae2a7cb. Predictions (cf56de8) and frozen files (`results/04/frozen_rule.json`, imaging `lobe_frozen.json`) untouched.
+
+**Floor rule R1c** (fixed in the 11_review2 docstring before any round-2 number; the imaging session uses the same
+rule and gets the same numbers).
+- The null is the nine mirror-symmetric designs: H6, H7, Mild_lobe, Mild_lobe_new, Moderate_lobe,
+  Moderate_lobe_c3, Severe_lobe, Severe_lobe_c3, MCI_lobe_c3.
+- Floor = the largest |value| among them (leave-one-out when a null file is itself scored).
+- Clean ruler = max(floor, one-pass yardstick).
+- Bar: ≥ 3x established; 2–3x sensitive; < 2x not separable. The rank p is reported alongside.
+- Justification, without LeftOnly:
+  - nine samples cannot support a tail model;
+  - the null is not Gaussian (Shapiro–Wilk p 0.024–0.055);
+  - every new solve has its own mesh, so the worst numerical asymmetry seen so far is a realistic outcome.
+- Honest caveat: the rule was chosen after round 1 had shown LeftOnly's numbers under the rms rule. It is the more
+  conservative of the two.
+
+### 6.1 Final table
+
+| item | verdict | old → new | evidence |
+|---|---|---|---|
+| R1a empirical null | CHANGED; CANNOT TELL at p < 0.1 | imaging LR 3.7x (null rms) → **1.94x** under R1c (Tikhonov dS; T 7.86, floor 4.04, yardstick 2.12): not separable. Frozen log 2.35x, whitened log 2.77x: sensitive. 4.9x the null rms. Shapiro–Wilk p 0.055 (0.46 without Moderate_lobe). One-sided rank p 0.10 (LeftOnly beyond all nine) | review2/R1a_imaging_null*.csv |
+| R1b why Moderate_lobe | CHANGED (mechanism measured) | unexplained → Moderate_lobe T −4.04 = T2-T3 −1.31 + T5-T6 −1.28 + small terms. Its T2-T3 vs T5-T6 phase mirror residual at 3.4 GHz is 2.05° (the other eight: ≤ 0.58°). One pass later (Moderate_lobe_c3, 950k vs 796k elements): T −1.92, residual 0.57°. Mesh asymmetry of the 5-pass file. Excluding it, the ruler becomes the yardstick (2.12) and the ratio 3.7x: that one file decides the verdict | review2/R1b_*.csv |
+| R1c one floor rule | CHANGED (fixed in writing) | rms (main) vs max (imaging) → max for both sessions (above) | scripts/11_review2.py docstring |
+| R2 16/22 vs b9_anti | CHANGED (one answer) | 16/22 (rms) vs pair 0.9x (max). Same quantity, same rule (band-mean cross-ratio phase, R1c): **4/22 ≥ 3x (3 of 18 distinct)**, 6 more at 2–3x. Per frequency: 3.4 GHz 5/22, 3.6 GHz 0, 3.8 GHz 0. Pair phase (imaging's quantity): band mean 0/8; 3.4 GHz 3/8 (both reflection pairs, T3-T4/T4-T5). Mechanism of the difference: the per-antenna (separable) part, which cancels in cross-ratios but not in pairs, is 0.33 of the null's asymmetry (median) and 0.09 of LeftOnly's | review2/R2_*.csv |
+| R3 detuning | CHANGED (tested; rejected for transmissions) | Predicted: T2/T3 resonance down ≤ 5 MHz; separable share < 50%. Observed: left − right resonance +1.91 MHz (wrong sign; null −0.68 to +2.86); separable share 0.11 (3.30–3.65 GHz) / 0.20 (band); corr(per-antenna term, reflection phase change) −0.51 / −0.23. The left reflections do differ from their mirrors: band-mean level −0.060 / −0.068 dB (3.5x / 5.0x R1c); phase at 3.4 GHz 4.8° / 4.9°. Depth: T2 +1.05, T3 +0.83, T5 +0.24, T6 +0.03 dB vs H6; reference-free left − right 0.58 dB, inside the null (max 0.70) | review2/R3_*.csv, R1c_main_statistics_floor_rule.csv |
+| R4 why R31 | CONFIRMED (defensible on training data; fragile) | Lobe designs ≥ 3x: R31 7/10; R21 alone 7/10 (fails Mild 0.09x, Mild_new 0.40x, LeftOnly → Normal 0.38x); (R31, R21) LDA 9/10 (LeftOnly Normal 0.23x). R31 had the widest Normal–AD gap on the training solves; chosen 2026-09-28 (6eca5d7), before any lobe file. Not adopted; any new rule needs pre-registration and a new blind design | review2/R4_feature_choice.csv |
+| R5 report sector values? | CHANGED | Sector values / per-sector calls → not reported. Main-session evidence: LR 1.94x (R1). Born error, λ flips and per-port share are the imaging session's (lobe_round2.json b14, b17, b21, b25); not re-derived here. Ranking in 6.4 | R1; results/imaging/lobe_round2.md |
+| R6 A1 ruler: measurement spread, effective N | CHANGED | A1 = max(yardstick, boundary SD), no measurement term → with the ±0.5 dB measurement spread in quadrature, detection: H6 3.04x, Mild 3.18x, Moderate 4.44x, Severe 1.23x, H7 3.96x, Mild_new 3.42x, Moderate_c3 4.46x, Severe_c3 1.58x, MCI 2.85x, LeftOnly 0.64x. Labels ≥ 3x: 20/30 → 19/30. Boundary SD resamples 8 solves = 4 designs, so it is a lower bound | review2/R6_A28_rulers.csv |
+| R7 / G8 field-export geometry | CONFIRMED | All 19 exports are volumes: 18 × (−90..90 mm)³ on a 3 mm grid, plus one (−120..120)³ on 4 mm. None is the z = −9.09 mm cut plane, and no claim used it | review2/F_R7_exports.csv |
+| A14 port map | CONFIRMED (by geometry, not by the search) | The symmetry search is mirror-blind (0.149969 for both assignments). Fixed by three independent sources: the audit excitation order (FEED_3_T4, T3, T2, T1, T6, T5), the port-sheet azimuths, and the field centroids (T1 −91, T2 −31, T3 +30, T4 +89, T5 +149, T6 −150°). A mirrored map would flip every left-right sign | review2/A14_symmetry_search.csv, F_A14_antenna_positions.csv; data/hfss_geometry_audit_Healthy_sliced.txt |
+| A15 masking | CHANGED (one dependency) | Masked points (−30 dB): 0–1 per file, except Severe_lobe_c3 16. Mask off: Mild_lobe_new R31 −15.856 → −15.537 dB (2.36x yardstick); its detection margin drops 3.7x → 1.4x (not determined). Mask 2x stricter (−36 dB): ≤ 0.29x. Threshold set 2026-09-27 (89d4f23), before the lobe files (7ccec7f, 2026-10-03) | review2/A15_*.csv |
+| A16 three disjoint sub-bands | CHANGED (frequency dependence) | Full band only → R31 gap (uniform / lobe_A / lobe_B, ÷ sub-band yardstick): 3.2–3.5 GHz 3.4x / 10.7x / 12.4x; 3.5–3.8 GHz 5.7x / 5.0x / 6.2x; **3.8–4.2 GHz −7.3x / 0.1x / 0.4x (uniform Normal and AD overlap by 3.46 dB)**. Phase cross-ratios ≥ 3x (R1c): 16/22, 0/22, 0/22 | review2/A16_subbands.csv |
+| A17 effective sample size | CHANGED | "Two solves per stage" → the v1/v2 solves differ only in sweep settings, so they are not independent designs. Effective N per stage = 1 for τ (1 Normal + 3 AD designs) and for both staging rules (Normal/Mild/Severe; merged Normal / Mild+Moderate / Severe = 1/2/1). Every lobe number is one solve per design | review2/report_stats.md R6/A28 text; data/sims_lobe.csv |
+| A18 train/test separation | CONFIRMED (dates) / CHANGED (post-hoc list) | Fitted on uniform solves before any lobe file (manifest 7ccec7f, 2026-10-03 21:24): glitch mask (89d4f23, 09-27), R31 and τ (6eca5d7 09-28; frozen 5192287 10-02), staging boundaries (2baddee / 5192287, 10-02). Chosen after seeing lobe or LeftOnly data, so post hoc: one-pass yardstick (aff9d56, 10-04), the 3x bar and clean rulers (round 1, 2f143e4), the mirror test and cross-ratio phase statistic (after unblinding), R1c (after round 1), the 3.30–3.65 GHz window | git log |
+| A19 noise model | CHANGED (conditional) | Unstated → the noise profiles and calibration errors were chosen (89d4f23, 6eca5d7), not measured. At 2x noise with ±4 dB / ±20°, detection fraction is 1.00 on every lobe design except LeftOnly (0.94; not determined anyway). Phase cross-ratios ≥ 3x the measured ruler: 2/22 at 1x → 0/22 at 2x | review2/A19_noise_2x.csv |
+| A20 between-solve covariance ×0.1 / ×10 | CHANGED | One shrunk estimate → Σ_b comes from 4 repeat pairs (rank ≤ 4). J changes 6–74x between ×0.1 and ×10 (R31 Normal\|AD 435 / 72 / 10). Feature ranking is stable for Normal\|AD and MCI\|Normal; R31 and C2 swap for Mild\|Severe. Absolute J is not meaningful | review2/A20_between_cov.csv |
+| A21 LOSO per fold | CONFIRMED (numbers) / CHANGED (meaning) | 0 of 22 folds below 0.95. The held-out solve's sweep twin stays in training, so this tests robustness to sweep settings, not new designs | review2/A21_loso_folds.csv |
+| A22 Fisher / Bhattacharyya / KL | CHANGED (intervals) | Top feature on all three metrics: R32 for Normal\|AD (Fisher 33.6 [26–193]; R31 27.8 [18–55]) and Normal\|Mild; R21 for Mild\|Severe (29.9 [24–37]) and Mild\|Moderate (1.19 [0.05–3.9]: not separable). Rank agreement 0.89–1.00 | review2/A22_separability.csv |
+| A23 R31 non-monotonic | CHANGED (mechanism measured) | Severe vs healthy: neighbour C1 −0.84 dB (Moderate −0.20); opposite C3 −1.63 (Moderate −1.47). R31 = C3 − C1 therefore turns back. Severe stays AD at 1.35x / 1.73x the yardstick (not determined); reaching the label edge needs a further +0.18 / +0.23 dB | review2/A23_R31_components.csv |
+| A24 R21 on one axis | CHANGED | Lobe stage gaps are 6–15x the sum of one-pass yardsticks. Uniform Mild\|Moderate is not ordered: v1 reversed (−0.46 dB), v2 0.11x. Boundaries fitted 10-02 on uniform solves, before the lobe files | review2/A24_*.csv, figures/A24_R21_axis.png |
+| A25 generalisation | CHANGED (sentence) | See 6.4. First experiment: anatomy variation | — |
+| A26 absorbed power | CHANGED | "0.89x" (not found anywhere in the repo) → AD − Normal +0.050 dB = 0.92x the solve SD (95% 0.07–2.12x): not separable. Not-returned power = 1 − reflection to within 4e-4 | review2/A26_absorbed.csv |
+| A27 phase finding vs power answer | CHANGED (ordering) | The pre-registered power answer stays primary: the cf56de8 left-right predictions fail / are not separable, and the registration was under-powered. Phase is post hoc. Statements depending on phase are listed in 6.3 | 6.3 |
+| A28 τ and boundary intervals | CHANGED (count) | τ 95% −15.368 to −15.165 dB (re-derived exactly, −15.2728). Of 30 lobe labels: 20 ≥ 3x, 2 sensitive, 8 not separable. 3 change inside the boundary bootstrap: Mild_lobe three-class, Mild_lobe_new three-class, LeftOnly binary | review2/R6_A28_rulers.csv |
+| G1 layers | CONFIRMED (Healthy_sliced radii); UNVERIFIED (source); CANNOT TELL (realistic thickness) | Audit: skin 88, fat 87.5, skull 86.5, CSF outer 83.5, GM 83 − e, WM 76 − e, hippocampus 25 mm = Part 1. Shehab Table 6 is not in the repo | data/hfss_geometry_audit_Healthy_sliced.txt |
+| G2 leftover variables | CONFIRMED (unused in Healthy_sliced); CANNOT TELL (v1/v2) | r_brain, r_csf, r_gray, r_white, r_brain_ad, r_csf_inner, r_csf_expanded, ant_dist are defined but not used by the sliced objects | audit |
+| G3 polarisation | CHANGED | 65% θ / 35% φ → inside the head at boresight: \|E_θ\| 0.95, \|E_φ\| 0.08, \|E_r\| 0.30 (meridional). In the air gap the field is radial (0.85). The 65/35 figure is a ±15° air-gap window average (θ/(θ+φ) 0.61), not the polarisation | review2/F_G3_polarisation.csv |
+| G4 port ↔ position | CONFIRMED | as A14 | as A14 |
+| G5 body axes, z-band sensitivity | CHANGED (quantified) | "99% in air" → air 0.987–0.994; opposite paths 0.45% in brain (STATUS said 0.3%). In-brain share z > 40 / 0–40 / ≤ 0 mm: neighbour 0.57 / 0.40 / 0.03; opposite 0.69 / 0.27 / 0.04; second-neighbour 0.61 / 0.34 / 0.04. "Lobes" are azimuthal wedges of the upper cap | review2/F_G5_sensitivity_regions.csv |
+| G6 inner structure | CONFIRMED (Healthy_sliced); UNVERIFIED (MCI ventricle, v2 skull hole) | audit | audit |
+| G7 materials, dispersion | CHANGED | Healthy GM / WM / CSF = Gabriel 1996 at 3.241 GHz (εr ≤ 0.06%, σ ≤ 0.2%), held constant. At 4.2 GHz real σ is 28–38% higher and εr 2.5–3% lower. Skin/fat/skull values unknown; AD values unverified | review2/G7_dispersion.csv |
+| G8 cut plane | CONFIRMED | as R7 | as R7 |
+| C1 post-hoc label | CHANGED | unlabelled → "[POST HOC]" first wherever the phase finding appears (5.5, 5.7, 5.8, STATUS §7, 6.2) | this file |
+| C2 phase convergence per combination and frequency | CHANGED (per frequency) | Band-mean yardstick → median one-pass yardstick 1.60° vs median \|LeftOnly\| 4.72°. 704 of 4422 cells ≥ 3x max(yardstick, null max); 429 of them (61%) lie in 3.30–3.65 GHz, which is 35% of the band | review2/C2_phase_convergence.csv, figures/C2_phase_ratio_heatmap.png |
+| C3 null per file | CHANGED | 16/22 → LeftOnly 16/22 (rms rule) and 4/22 (R1c); every symmetric file 0 and 0 (leave-one-out). Rank p ≥ 0.1 | review2/C3_null_counts.csv |
+| C4 physical sign, band | CHANGED (sign and neighbour size explained; long paths and band not) | Predicted (2a222ff, before computing): left paths negative, size = field share × (−k0Δn·d), Δφ ∝ f. Neighbour left − right, predicted vs observed (3.30–3.65 GHz): T2-T3/T5-T6 −5.2 vs −5.6°; T3-T4/T4-T5 −3.0 vs −3.8°; T1-T2/T1-T6 −2.0 vs −2.8°. Long paths: signs agree 1/9; r = 0.25 over 15 paths. Right-side neighbour paths move −2.1° unexplained. Not ∝ f: LeftOnly ÷ largest symmetric design is 3.2–5.7x at 3.2–3.5 GHz, 1.9–2.5x at 3.5–3.65, and 0.3–1.1x above 3.65 GHz. That is above the common resonance (3.657–3.659 GHz), and second-neighbour notches sit at 3.855 GHz | review2/F_C4_*.csv, figures/F_C4_band_dependence.png |
+| C5 measurement level | CHANGED; CANNOT TELL (position, cable) | Round 1: 2/22 → R1c ⊕ noise spread (max-combined): 2/22 at 1x, 0/22 at 2x. The imaging session (quadrature): 0/18. Antenna position error and frequency-dependent cable flex are not modelled | review2/A19_noise_2x.csv |
+| C6 replication | proposed; predictions committed | RightOnly_test (mirror of LeftOnly); see 6.5 | results/05_lobe/rightonly_predictions.md (0f97bb2) |
+
+### 6.2 Claims (rebuilt from scratch; CONFIRMED / CHANGED items only; also `review2/claims_round2.csv`)
+
+All claims concern one idealised spherical head with one solve per design. The noise model was chosen, not measured.
+
+| # | claim | verdict | items |
+|---|---|---|---|
+| 1 | The frozen τ = −15.2728 dB re-derives exactly (95% −15.368 to −15.165). It and the staging boundaries were fitted on uniform solves before any lobe file existed | CONFIRMED | A18, A28 |
+| 2 | Frozen detection labels ≥ 3x every ruler, incl. the ±0.5 dB spread: healthy (3.0x / 4.0x), lobe-Mild (3.2x / 3.4x), lobe-Moderate (4.4x / 4.5x) in both matched sets | CHANGED | R6 |
+| 3 | Severe (1.2x / 1.6x) and LeftOnly (0.6x) are labelled AD but are not determined. MCI_lobe Normal is sensitive (2.85x) | CHANGED | R6, A23 |
+| 4 | R31 is non-monotonic because the neighbour coupling falls at Severe while the opposite coupling saturates | CHANGED | A23 |
+| 5 | Detection depends on 3.2–3.8 GHz; in 3.8–4.2 GHz the uniform Normal and AD solves overlap | CHANGED | A16 |
+| 6 | Without the frozen glitch mask, Mild_lobe_new's detection is not determined (1.4x); a 2x stricter mask changes nothing (≤ 0.29x) | CHANGED | A15 |
+| 7 | At 2x the chosen noise and ±4 dB / ±20° calibration errors, detection fractions stay 1.00 (LeftOnly 0.94) | CHANGED | A19 |
+| 8 | Leave-one-solve-out passes on all 22 folds, but it tests sweep-setting robustness: effective N = 1 design per stage | CHANGED | A17, A21 |
+| 9 | R31 was a defensible choice on the training solves. On the lobe set R31, R21 and the pair each leave designs undetermined (7/10, 7/10, 9/10 ≥ 3x). None is adopted | CONFIRMED | R4 |
+| 10 | R21 orders the four lobe stages (6–15x the summed yardsticks); uniform Mild and Moderate are not ordered on R21 | CHANGED | A24 |
+| 11 | Lobe-Mild's three-class label is not determined (0.06x / 0.26x). 10 of 30 lobe labels are below 3x | CHANGED | A28, R6 |
+| 12 | Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature | CHANGED | A22 |
+| 13 | Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable | CHANGED | A20 |
+| 14 | Not-returned ("absorbed") power does not separate Normal from AD (0.92x) | CHANGED | A26 |
+| 15 | [POST HOC] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | CHANGED | R1 |
+| 16 | [POST HOC] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | CHANGED | R2, A16, C3, C5 |
+| 17 | [POST HOC] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | CHANGED | R3 |
+| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement | CHANGED | R3 |
+| 19 | [POST HOC] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | CHANGED | C4 |
+| 20 | Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file | CHANGED | R1b |
+| 21 | Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it | CONFIRMED | A14, G4 |
+| 22 | Field exports are 3-D volumes; no claim used the cut plane | CONFIRMED | R7, G8 |
+| 23 | Inside the head, in front of each antenna, the field is meridional (θ 0.95, φ 0.08) | CHANGED | G3 |
+| 24 | 98.7–99.4% of path sensitivity is in air; ≤ 4% of the in-brain part lies below z = 0. Lobe statements refer to wedges of the upper cap | CHANGED | G5 |
+| 25 | Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused | CONFIRMED | G1, G2, G6 |
+| 26 | Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz | CHANGED | G7 |
+| 27 | Sector-level imaging values are not results | CHANGED | R5 |
+
+### 6.3 Statements that depend on the phase finding (A27, C1; all post hoc)
+- MODEL_CARD 5.5: the rows "Left-right asymmetry present in the LeftOnly data", "Frontal lobe visible front-to-back
+  … unverified in phase" and "… asymmetry cross-ratios … phase not checked".
+- MODEL_CARD 5.7: "What LeftOnly shows" (16 of 22; 2 of 22 with errors; neighbour phase shifts).
+- MODEL_CARD 5.8: "LeftOnly is left-right asymmetric in phase".
+- STATUS §7: "Where the disease is: not in signal power; partly in phase" and its bullets.
+- Imaging: `results/imaging/lobe_report.md` §9 and `lobe_claims.csv` (imaging session's).
+
+The round-1 "16 of 22" used the rms floor; under R1c it is 4/22. The primary answer to the pre-registered test
+stays: the power predictions (cf56de8) fail or are not separable.
+
+### 6.4 Open limitations (every CANNOT TELL / UNVERIFIED)
+- **Generalisation (A25).** All of this concerns one idealised spherical head: one anatomy, one antenna stand-off,
+  tissue values held at their 3.24 GHz level, and one mesh per design. Nothing here says the method works on people.
+  - First experiment: the same Normal and lobe-Mild designs at ≥ 3 head radii, skull/scalp thicknesses and antenna
+    stand-offs, scored with the frozen rule as-is.
+- **Floor significance (R1, C3).** Nine symmetric solves cap the rank p at 0.1. Settling it needs ≥ 19 independent
+  mirror-symmetric solves (for example the healthy design re-meshed or rotated).
+- **Replication of the left-right sign (C6).** RightOnly_test is pending.
+- **Effective N (A17).** One design per stage. Whether v1/v2 share a mesh: needs their HFSS mesh statistics.
+- **Noise model (A19).** It was chosen. Settling it needs VNA and antenna measurements.
+- **Antenna position error and frequency-dependent cable flex (C5).** These need ±1 mm displaced-antenna re-solves.
+- **Layers (G1).** The Shehab Table 6 source is not in the repo. Realistic 2 mm CSF / 6 mm skull needs re-simulation.
+- **Other geometry (G2, G6).** The v1/v2 geometry variables, the v2 skull hole and the MCI_lobe ventricle need
+  geometry audits of those designs.
+- **Materials (G7).** Skin/fat/skull values in HFSS are unknown, and the AD values' provenance is unverified.
+- **Frequency choices (A16, A18).** The 3.30–3.65 GHz window and the sub-band split are post hoc.
+- **Frontal lobe in phase.** The frontal-lobe (Moderate − Mild) result is still power-only and was not checked in
+  phase in round 2.
+- **R5 improvement ranking (benefit per cost):**
+  1. ≥ 19 symmetric solves;
+  2. RightOnly_test;
+  3. anatomy variation;
+  4. empirical kernels from 6–12 single-sector designs;
+  5. a second, lower antenna ring (≤ 4% sensitivity below z = 0);
+  6. Gauss–Newton/DBIM, or a wider band.
+
+### 6.5 Replication design (C6; predictions committed at 0f97bb2 before the design exists)
+- **RightOnly_test** is the exact mirror of LeftOnly_test:
+  - e_S1..S6 = 0 / 0 / 0 / 0 / 11.5 / 7.5 mm, r_hip 17.5 mm;
+  - GM/WM_Mild in S5 and S6, HIP_Mild, CSF_Mild;
+  - Setup1 as LeftOnly_test_c3, stop rule 1;
+  - file `data/raw/new_with_slices_RightOnly_test.s6p`.
+- **Main-session predictions:** every informative left-right statistic flips sign within one clean ruler (26
+  statistics). The phase cross-ratio counts (4 band mean, 9 at 3.30–3.65 GHz) stay within ±2. R31 / R21 / R32
+  equal LeftOnly's within the yardstick. The imaging LR is about −7.9, still < 2x the floor.
+- **Replicated** only if the sign flips on ≥ 80% of the informative statistics within tolerance and the counts
+  hold. If the signs do not flip, the phase finding is retracted as numerical.

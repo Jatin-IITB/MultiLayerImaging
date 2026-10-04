@@ -1,4 +1,19 @@
-# Microwave AD staging, Track A: status (4 Oct 2026; §7 updated 4 Oct, §6 3 Oct, §1–5 as of 2 Oct)
+# Microwave AD staging, Track A: status (4 Oct 2026; round-2 review 4 Oct; §6 3 Oct, §1–5 as of 2 Oct)
+
+**Round-2 review (4 Oct).** Every conclusion was re-derived from the raw files. The claims that survive are in
+`MODEL_CARD.md` Part 6.2. Anything below that is not listed there is unconfirmed. Main changes:
+- **Detection** holds for healthy, Mild and Moderate lobe designs by every ruler.
+  - Severe and the left-only design are labelled AD, but not robustly.
+  - It relies on 3.2–3.8 GHz; in 3.8–4.2 GHz Normal and AD overlap.
+- **Effective sample size** is one design per stage: the two solves of a stage differ only in sweep settings.
+- **The left-right "phase" finding** (post hoc) does not clear the stricter numerical floor both sessions now use.
+  - 4 of 22 phase combinations clear it, not 16.
+  - The imaging left-right index is 1.9× the floor.
+  - A mirror-image replication design (RightOnly_test) has been specified, with predictions committed.
+- **Sensitivity** is ≈ 99% in the air around the head. Of the in-brain part, 56–69% lies above z = 40 mm and
+  ≤ 4% below z = 0. "Lobes" means wedges of the upper head.
+- **Tissue values** are the 3.24 GHz literature values held constant. Real conductivity is 28–38% higher at
+  4.2 GHz.
 
 **Setup.** A 7-layer spherical head phantom with six patch antennas on one ring, simulated in
 HFSS over 2.8–4.2 GHz. The stages simulated are Normal, MCI, Mild, Moderate and Severe.
@@ -27,6 +42,11 @@ within a margin m of τ.
 - **Requirement:** the instrument noise floor must be at least 8 dB below τ (about −61 dB);
   otherwise the measurement is INVALID. These numbers use 3.2–4.2 GHz, the band common to
   both solves.
+- **Round 2.**
+  - The two solves of a stage share the design and differ only in sweep settings, so "unseen solve" means
+    robustness to sweep settings, not to a new head. The effective sample size is one design per stage.
+  - The detection information sits in 3.2–3.8 GHz. In the 3.8–4.2 GHz sub-band, the Normal and AD solves
+    overlap (MODEL_CARD 6.1, A16, A17).
 
 ## 2. Why it works
 
@@ -34,8 +54,9 @@ The opposite-antenna (k = 3) signal **travels around the head, not through it**.
 
 - **Delay.** It arrives after 3.61 ns. A path around the surface predicts 3.69 ns; a straight
   path through the head predicts 6.03 ns.
-- **HFSS fields.** 99% of this path's sensitivity is in the air around the head and only 0.3%
-  in the brain. Half-way between the antennas, the field around the head is 23 dB stronger
+- **HFSS fields.** 99% of this path's sensitivity is in the air around the head and only 0.45%
+  in the brain (round 2; 0.3% before). Of the in-brain part, 69% lies above z = 40 mm and 4% below
+  z = 0. Half-way between the antennas, the field around the head is 23 dB stronger
   than the field through the head.
 
 So the feature responds to the **outer layers**: the CSF/cortex just under the skull, where
@@ -144,7 +165,8 @@ error, measured on all four stages.
 - **Staging ratios:** move by at most 0.11 and 0.16 dB.
 
 **Detection holds in both matched sets.** The unchanged rule labels every design correctly in
-100% of noisy measurements, including with ±2 dB / ±10° antenna errors. Distance from the
+100% of noisy measurements, including with ±2 dB / ±10° antenna errors. That stays true at twice the assumed
+noise with ±4 dB / ±20° errors (round 2). The noise model itself was chosen, not measured. Distance from the
 threshold, main set / second set:
 - Healthy: 0.53 / 0.66 dB;
 - Mild: 0.55 / 0.58 dB;
@@ -155,6 +177,11 @@ threshold, main set / second set:
   - Severe is AD on both meshes, but by the same 3× bar used everywhere else, that label is not
     robust to the mesh.
   - The threshold itself is known to ±0.10 dB (95%, re-derived from the training solves).
+- **Round 2:**
+  - Healthy, Mild and Moderate stay ≥ 3× when a ±0.5 dB measurement spread is added (3.0–4.5×).
+  - Without the frozen glitch mask (one masked frequency point), Mild in the second set drops to 1.4×.
+  - Why Severe turns back: at Severe the neighbour signal falls (−0.84 dB) while the opposite-antenna
+    signal barely moves.
 
 **Staging.**
 - **Merged staging** (Normal / Mild+Moderate / Severe) labels every lobe design correctly in
@@ -164,7 +191,7 @@ threshold, main set / second set:
   uncertainty.
 - Lobe-Mild lies between healthy and uniform Mild on both staging ratios.
 
-**Where the disease is: not in signal power; partly in phase.**
+**Where the disease is: not in signal power. The phase result is post hoc and not established (round 2).**
 - **Frontal lobe added (Mild → Moderate).** The front-to-back difference is −0.26 dB: 3.8× the
   one-pass change, but only 2.3× the simulations' own numerical asymmetry. It is invisible with
   ±0.5 dB antenna gain errors.
@@ -172,16 +199,30 @@ threshold, main set / second set:
   existed were all about signal power, and they failed. The observed left-right power difference
   is 0.02–0.03 dB, essentially zero, and the predictions could not have passed easily: the test
   was under-powered by design.
-- **The left-right signal is in the phase of the antenna-to-antenna signals.** An adversarial
-  review compared the design with its own mirror image, against nine mirror-symmetric designs:
-  - in clean simulation, 16 of 22 gain-proof phase combinations exceed 3× the numerical noise;
-  - with realistic measurement noise, 2 of 22 survive;
-  - the imaging session's reconstruction reaches the same conclusion.
-  So the earlier "no left-right difference" was wrong. It held only for signal power.
+- **[POST HOC] A left-right signal in the phase of the antenna-to-antenna signals.** It was found after
+  unblinding, with a statistic built after unblinding. The design is compared with its own mirror image,
+  against nine mirror-symmetric designs.
+  - Round 1 used the rms of those nine as the floor: 16 of 22 gain-proof phase combinations exceeded 3×.
+  - Round 2 uses the largest of the nine, the rule both sessions now apply: **4 of 22** (3 distinct).
+    - Split by sub-band (each with its own rulers): 16/22 in 3.2–3.5 GHz, none in 3.5–3.8 or 3.8–4.2 GHz.
+    - With measurement noise: 0–2 of 22.
+  - The imaging session's left-right index is **1.9×** that floor: not established.
+  - LeftOnly lies beyond all nine symmetric designs, but nine designs cannot give p < 0.1.
+  - Mechanism checks:
+    - it is not per-antenna detuning (per-antenna terms explain 11%);
+    - the left neighbour paths are delayed by about the amount the CSF gap under T2/T3 predicts;
+    - it does not scale with frequency as pure propagation would.
+  - The pre-registered power answer stays the primary result.
+  - Replication: `results/05_lobe/rightonly_predictions.md` (mirror design, predictions committed).
 - **Detection** calls this design AD, but only 0.09 dB inside the AD zone
   (0.7× the yardstick): not determined. Both staging rules call it Normal.
 - **Frontal lobe:** the earlier "cannot be told" was based on power only and has not yet been
   checked in phase.
+- **Where the array looks (round 2, HFSS fields).**
+  - ≈ 99% of every path's sensitivity is in the air around the head.
+  - Of the in-brain part, 56–69% lies above z = 40 mm and ≤ 4% below z = 0.
+  - "Left temporal" therefore means the wedge of the upper head above the left temporal lobe, not the
+    temporal lobe itself.
 
 **MCI (hippocampus only).** It differs from the healthy head beyond the mesh and numerical
 rulers on none of 228 features. Every frozen rule labels it Normal. That was expected: the
@@ -190,7 +231,7 @@ hippocampus is deeper than the array senses.
 **Not addressed by any of this:** variation between people (head size, skull and scalp
 thickness, antenna stand-off). All of the above concerns one idealised head.
 
-Details: `results/05_lobe/mesh/report.md` (convergence study), `results/05_lobe/tests/report.md`
+Details: `results/05_lobe/review2/` (round-2 review), `results/05_lobe/mesh/report.md` (convergence study), `results/05_lobe/tests/report.md`
 (left-only and MCI tests), `results/05_lobe/lobe_A/` and `lobe_B/` (the two matched sets),
 `MODEL_CARD.md` Part 5.
 

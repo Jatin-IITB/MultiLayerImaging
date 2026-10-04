@@ -1,0 +1,28 @@
+#,claim,verdict,items,post_hoc
+1,The frozen τ = −15.2728 dB re-derives exactly (95% −15.368 to −15.165). It and the staging boundaries were fitted on uniform solves before any lobe file existed,CONFIRMED,"A18, A28",False
+2,"Frozen detection labels ≥ 3x every ruler, incl. the ±0.5 dB spread: healthy (3.0x / 4.0x), lobe-Mild (3.2x / 3.4x), lobe-Moderate (4.4x / 4.5x) in both matched sets",CHANGED,R6,False
+3,Severe (1.2x / 1.6x) and LeftOnly (0.6x) are labelled AD but are not determined. MCI_lobe Normal is sensitive (2.85x),CHANGED,"R6, A23",False
+4,R31 is non-monotonic because the neighbour coupling falls at Severe while the opposite coupling saturates,CHANGED,A23,False
+5,Detection depends on 3.2–3.8 GHz; in 3.8–4.2 GHz the uniform Normal and AD solves overlap,CHANGED,A16,False
+6,"Without the frozen glitch mask, Mild_lobe_new's detection is not determined (1.4x); a 2x stricter mask changes nothing (≤ 0.29x)",CHANGED,A15,False
+7,"At 2x the chosen noise and ±4 dB / ±20° calibration errors, detection fractions stay 1.00 (LeftOnly 0.94)",CHANGED,A19,False
+8,"Leave-one-solve-out passes on all 22 folds, but it tests sweep-setting robustness: effective N = 1 design per stage",CHANGED,"A17, A21",False
+9,"R31 was a defensible choice on the training solves. On the lobe set R31, R21 and the pair each leave designs undetermined (7/10, 7/10, 9/10 ≥ 3x). None is adopted",CONFIRMED,R4,False
+10,R21 orders the four lobe stages (6–15x the summed yardsticks); uniform Mild and Moderate are not ordered on R21,CHANGED,A24,False
+11,Lobe-Mild's three-class label is not determined (0.06x / 0.26x). 10 of 30 lobe labels are below 3x,CHANGED,"A28, R6",False
+12,Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature,CHANGED,A22,False
+13,Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable,CHANGED,A20,False
+14,"Not-returned (""absorbed"") power does not separate Normal from AD (0.92x)",CHANGED,A26,False
+15,[POST HOC] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1,CHANGED,R1,True
+16,"[POST HOC] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22",CHANGED,"R2, A16, C3, C5",True
+17,[POST HOC] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null),CHANGED,R3,True
+18,[POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement,CHANGED,R3,True
+19,"[POST HOC] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence",CHANGED,C4,True
+20,Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file,CHANGED,R1b,False
+21,"Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it",CONFIRMED,"A14, G4",False
+22,Field exports are 3-D volumes; no claim used the cut plane,CONFIRMED,"R7, G8",False
+23,"Inside the head, in front of each antenna, the field is meridional (θ 0.95, φ 0.08)",CHANGED,G3,False
+24,98.7–99.4% of path sensitivity is in air; ≤ 4% of the in-brain part lies below z = 0. Lobe statements refer to wedges of the upper cap,CHANGED,G5,False
+25,Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused,CONFIRMED,"G1, G2, G6",False
+26,Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz,CHANGED,G7,False
+27,Sector-level imaging values are not results,CHANGED,R5,False
