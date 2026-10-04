@@ -156,8 +156,7 @@ def blind_figures(tag, rep, S, out):
     cax = fig.add_axes([0.93, 0.4, 0.012, 0.35])
     fig.colorbar(plt.cm.ScalarMappable(cmap=FG.DIV, norm=plt.Normalize(-FG.LIM["sig"], FG.LIM["sig"])), cax=cax,
                  label="change in conductivity σ (S/m)")
-    fig.suptitle(f"BLIND {tag}: reconstructed conductivity change (no truth used).
-Front at top, subject's left on "
+    fig.suptitle(f"BLIND {tag}: reconstructed conductivity change (no truth used).\nFront at top, subject's left on "
                  f"the right; hatched = not measured", fontsize=10.5)
     fig.subplots_adjust(left=0.08, right=0.92, top=0.9, bottom=0.05, wspace=0.08, hspace=0.18)
     made.append(out / f"blind_overview_{tag}.png")
