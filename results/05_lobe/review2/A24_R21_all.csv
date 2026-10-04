@@ -1,0 +1,24 @@
+set,design,stage,R21
+uniform v1,brain_sevem_layer_Healthy.s6p,Normal,-20.394579869557436
+uniform v2,new_Healthy.s6p,Normal,-20.72153413396174
+uniform v2,new_MCI.s6p,MCI,-20.684804326332483
+uniform v1,Brain_sevem_layer_MildAD.s6p,Mild,-19.308245322463186
+uniform v2,new_MildAD.s6p,Mild,-19.478934192573163
+uniform v1,Brain_sevem_layer_ModerateAD.s6p,Moderate,-19.767940370843604
+uniform v2,new_ModerateAD.s6p,Moderate,-19.525639324813554
+uniform v1,brain_sevem_layer_SevereAD.s6p,Severe,-18.164382144915383
+uniform v2,new_SevereAD.s6p,Severe,-18.05832461660606
+lobe_v1,Healthy_sliced,Normal,-20.506874526002257
+lobe_v1,Mild_lobe,Mild,-19.97406578804604
+lobe_v1,Moderate_lobe,Moderate,-19.451031209623363
+lobe_v1,Severe_lobe,Severe,-18.001839195504537
+lobe_A,Healthy_sliced_new,Normal,-20.566934770231928
+lobe_A,Mild_lobe,Mild,-19.97406578804604
+lobe_A,Moderate_lobe,Moderate,-19.451031209623363
+lobe_A,Severe_lobe,Severe,-18.001839195504537
+lobe_B,Healthy_sliced,Normal,-20.506874526002257
+lobe_B,Mild_lobe_new,Mild,-19.94038690251027
+lobe_B,Moderate_lobe_c3,Moderate,-19.45121380837744
+lobe_B,Severe_lobe_c3,Severe,-17.89209529567825
+tests,LeftOnly_test_c3,LeftOnly,-20.199685092134057
+tests,MCI_lobe_c3,MCI,-20.555488518581168

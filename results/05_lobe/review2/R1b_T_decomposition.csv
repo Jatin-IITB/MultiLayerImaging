@@ -1,0 +1,221 @@
+design,path,contribution to T
+Healthy_sliced,T1 refl.,0.0
+Healthy_sliced,T1-T2,-0.08731730744438021
+Healthy_sliced,T1-T3,-0.05690526962148209
+Healthy_sliced,T1-T4,0.0
+Healthy_sliced,T1-T5,-0.07327740556522758
+Healthy_sliced,T1-T6,-0.08659561507109137
+Healthy_sliced,T2 refl.,0.032998525365469836
+Healthy_sliced,T2-T3,-0.1358878403079157
+Healthy_sliced,T2-T4,-0.03660590602639316
+Healthy_sliced,T2-T5,0.004461431234419425
+Healthy_sliced,T2-T6,0.0
+Healthy_sliced,T3 refl.,-0.01725707018068053
+Healthy_sliced,T3-T4,-0.15722047360434122
+Healthy_sliced,T3-T5,0.0
+Healthy_sliced,T3-T6,0.006885400090082913
+Healthy_sliced,T4 refl.,0.0
+Healthy_sliced,T4-T5,-0.14409674128188465
+Healthy_sliced,T4-T6,-0.036283321171203475
+Healthy_sliced,T5 refl.,-0.015364140099816702
+Healthy_sliced,T5-T6,-0.08385607102154062
+Healthy_sliced,T6 refl.,0.035797398538838225
+Healthy_sliced,SUM (= T),-0.8505244061671469
+Healthy_sliced_new,T1 refl.,0.0
+Healthy_sliced_new,T1-T2,-0.16157325896058805
+Healthy_sliced_new,T1-T3,-0.012106942422485676
+Healthy_sliced_new,T1-T4,0.0
+Healthy_sliced_new,T1-T5,-0.019809295459696424
+Healthy_sliced_new,T1-T6,-0.1794852115322491
+Healthy_sliced_new,T2 refl.,0.026974696121867963
+Healthy_sliced_new,T2-T3,-0.44194107158505497
+Healthy_sliced_new,T2-T4,0.06089663156003519
+Healthy_sliced_new,T2-T5,0.0017376751156393342
+Healthy_sliced_new,T2-T6,0.0
+Healthy_sliced_new,T3 refl.,-0.024038957879882528
+Healthy_sliced_new,T3-T4,-0.055390279253772656
+Healthy_sliced_new,T3-T5,0.0
+Healthy_sliced_new,T3-T6,0.005366188276814119
+Healthy_sliced_new,T4 refl.,0.0
+Healthy_sliced_new,T4-T5,-0.05877648462721344
+Healthy_sliced_new,T4-T6,0.06714789081174204
+Healthy_sliced_new,T5 refl.,-0.02106657807347678
+Healthy_sliced_new,T5-T6,-0.36013513032316896
+Healthy_sliced_new,T6 refl.,0.036445494282710836
+Healthy_sliced_new,SUM (= T),-1.135754633948779
+Mild_lobe,T1 refl.,0.0
+Mild_lobe,T1-T2,-0.14069644436838585
+Mild_lobe,T1-T3,0.1676059616808389
+Mild_lobe,T1-T4,0.0
+Mild_lobe,T1-T5,0.14259207860119377
+Mild_lobe,T1-T6,-0.12656996029420892
+Mild_lobe,T2 refl.,-0.006893805841797545
+Mild_lobe,T2-T3,-0.26699697145978774
+Mild_lobe,T2-T4,0.20941548046406372
+Mild_lobe,T2-T5,-0.011601903968079516
+Mild_lobe,T2-T6,8.321949923886557e-19
+Mild_lobe,T3 refl.,0.04761692133512426
+Mild_lobe,T3-T4,-0.17216488862795837
+Mild_lobe,T3-T5,0.0
+Mild_lobe,T3-T6,0.0005734860712472006
+Mild_lobe,T4 refl.,0.0
+Mild_lobe,T4-T5,-0.18200444910988617
+Mild_lobe,T4-T6,0.17584156177929577
+Mild_lobe,T5 refl.,0.0567072721799659
+Mild_lobe,T5-T6,-0.2623675624615232
+Mild_lobe,T6 refl.,0.011799813521732616
+Mild_lobe,SUM (= T),-0.35714341049816517
+Mild_lobe_new,T1 refl.,0.0
+Mild_lobe_new,T1-T2,-0.056651541909946375
+Mild_lobe_new,T1-T3,0.08933271795078872
+Mild_lobe_new,T1-T4,0.0
+Mild_lobe_new,T1-T5,0.05169805774038844
+Mild_lobe_new,T1-T6,-0.015967977211817856
+Mild_lobe_new,T2 refl.,0.005900111669231878
+Mild_lobe_new,T2-T3,-0.04071782081341183
+Mild_lobe_new,T2-T4,0.058731706655764465
+Mild_lobe_new,T2-T5,-0.020292275470698663
+Mild_lobe_new,T2-T6,0.0
+Mild_lobe_new,T3 refl.,0.032686322716879455
+Mild_lobe_new,T3-T4,-0.04151128280543326
+Mild_lobe_new,T3-T5,0.0
+Mild_lobe_new,T3-T6,-0.004706404037533786
+Mild_lobe_new,T4 refl.,0.0
+Mild_lobe_new,T4-T5,-0.045125711749483224
+Mild_lobe_new,T4-T6,0.03487756627141597
+Mild_lobe_new,T5 refl.,0.03958462709290722
+Mild_lobe_new,T5-T6,-0.05253761409292298
+Mild_lobe_new,T6 refl.,0.01794066556584542
+Mild_lobe_new,SUM (= T),0.053241147571973575
+Moderate_lobe,T1 refl.,0.0
+Moderate_lobe,T1-T2,-0.36677658015489
+Moderate_lobe,T1-T3,-0.05848531630918341
+Moderate_lobe,T1-T4,0.0
+Moderate_lobe,T1-T5,-0.0643753242146524
+Moderate_lobe,T1-T6,-0.4460393567364052
+Moderate_lobe,T2 refl.,0.054275175734976915
+Moderate_lobe,T2-T3,-1.313251422961812
+Moderate_lobe,T2-T4,0.051517587318514454
+Moderate_lobe,T2-T5,0.010004951839302265
+Moderate_lobe,T2-T6,0.0
+Moderate_lobe,T3 refl.,-0.014772305676288228
+Moderate_lobe,T3-T4,-0.34157460214499846
+Moderate_lobe,T3-T5,0.0
+Moderate_lobe,T3-T6,0.0020603382461496164
+Moderate_lobe,T4 refl.,0.0
+Moderate_lobe,T4-T5,-0.3793385949507354
+Moderate_lobe,T4-T6,0.030813841923808045
+Moderate_lobe,T5 refl.,-0.013392705020677072
+Moderate_lobe,T5-T6,-1.2808555852337578
+Moderate_lobe,T6 refl.,0.08807590389652532
+Moderate_lobe,SUM (= T),-4.042113994444122
+Moderate_lobe_c3,T1 refl.,0.0
+Moderate_lobe_c3,T1-T2,-0.2640843172246301
+Moderate_lobe_c3,T1-T3,-0.07937078656347485
+Moderate_lobe_c3,T1-T4,0.0
+Moderate_lobe_c3,T1-T5,-0.07484458138025733
+Moderate_lobe_c3,T1-T6,-0.3200327769993869
+Moderate_lobe_c3,T2 refl.,0.04016328803195441
+Moderate_lobe_c3,T2-T3,-0.6694960207188502
+Moderate_lobe_c3,T2-T4,0.01113293508510323
+Moderate_lobe_c3,T2-T5,0.017714962528122498
+Moderate_lobe_c3,T2-T6,1.1936849374117088e-18
+Moderate_lobe_c3,T3 refl.,0.003908826110048083
+Moderate_lobe_c3,T3-T4,-0.029627635701499275
+Moderate_lobe_c3,T3-T5,0.0
+Moderate_lobe_c3,T3-T6,0.0022442264157322006
+Moderate_lobe_c3,T4 refl.,0.0
+Moderate_lobe_c3,T4-T5,-0.02450095980355988
+Moderate_lobe_c3,T4-T6,0.006344129872380751
+Moderate_lobe_c3,T5 refl.,0.0017366639505817182
+Moderate_lobe_c3,T5-T6,-0.6023613433094435
+Moderate_lobe_c3,T6 refl.,0.06204005574297636
+Moderate_lobe_c3,SUM (= T),-1.9190333339642025
+Severe_lobe,T1 refl.,0.0
+Severe_lobe,T1-T2,-0.0649074746916977
+Severe_lobe,T1-T3,0.0574421831882231
+Severe_lobe,T1-T4,0.0
+Severe_lobe,T1-T5,0.07774901990225558
+Severe_lobe,T1-T6,-0.07276386328599815
+Severe_lobe,T2 refl.,0.021079544101740833
+Severe_lobe,T2-T3,-0.14656524418038067
+Severe_lobe,T2-T4,-0.061639707819586595
+Severe_lobe,T2-T5,0.01439252892350796
+Severe_lobe,T2-T6,1.6117310980478678e-18
+Severe_lobe,T3 refl.,0.012819208612661179
+Severe_lobe,T3-T4,-0.3284067545267616
+Severe_lobe,T3-T5,0.0
+Severe_lobe,T3-T6,0.003423582424606752
+Severe_lobe,T4 refl.,0.0
+Severe_lobe,T4-T5,-0.3925856835687713
+Severe_lobe,T4-T6,-0.07056445061621838
+Severe_lobe,T5 refl.,0.0194558061454885
+Severe_lobe,T5-T6,-0.04298098989084376
+Severe_lobe,T6 refl.,0.02613642382679806
+Severe_lobe,SUM (= T),-0.9479158714549764
+Severe_lobe_c3,T1 refl.,0.0
+Severe_lobe_c3,T1-T2,-0.06870353515673891
+Severe_lobe_c3,T1-T3,0.18077254559944672
+Severe_lobe_c3,T1-T4,0.0
+Severe_lobe_c3,T1-T5,0.21318776261603303
+Severe_lobe_c3,T1-T6,-0.0448228924897766
+Severe_lobe_c3,T2 refl.,0.022661370060892902
+Severe_lobe_c3,T2-T3,0.19545270107217877
+Severe_lobe_c3,T2-T4,-0.026423772047326717
+Severe_lobe_c3,T2-T5,0.023042478204670244
+Severe_lobe_c3,T2-T6,0.0
+Severe_lobe_c3,T3 refl.,0.00246315138779117
+Severe_lobe_c3,T3-T4,-0.24621555994175065
+Severe_lobe_c3,T3-T5,0.0
+Severe_lobe_c3,T3-T6,0.013785140717751457
+Severe_lobe_c3,T4 refl.,0.0
+Severe_lobe_c3,T4-T5,-0.2841931623535278
+Severe_lobe_c3,T4-T6,-0.02861717473245356
+Severe_lobe_c3,T5 refl.,-0.0007671622597841122
+Severe_lobe_c3,T5-T6,0.2699194080739285
+Severe_lobe_c3,T6 refl.,0.0237730793417544
+Severe_lobe_c3,SUM (= T),0.24531437809308887
+MCI_lobe_c3,T1 refl.,0.0
+MCI_lobe_c3,T1-T2,0.09885081321762644
+MCI_lobe_c3,T1-T3,0.12873718122140515
+MCI_lobe_c3,T1-T4,0.0
+MCI_lobe_c3,T1-T5,0.14650813533848828
+MCI_lobe_c3,T1-T6,0.1612466376086078
+MCI_lobe_c3,T2 refl.,0.036828956083478186
+MCI_lobe_c3,T2-T3,0.003997635071717712
+MCI_lobe_c3,T2-T4,-0.025439829802386956
+MCI_lobe_c3,T2-T5,-0.005545432462172539
+MCI_lobe_c3,T2-T6,0.0
+MCI_lobe_c3,T3 refl.,-0.014006664142815248
+MCI_lobe_c3,T3-T4,-0.16774596238362405
+MCI_lobe_c3,T3-T5,0.0
+MCI_lobe_c3,T3-T6,-0.0006871829471559732
+MCI_lobe_c3,T4 refl.,0.0
+MCI_lobe_c3,T4-T5,-0.17549349316022428
+MCI_lobe_c3,T4-T6,-0.032404609685808744
+MCI_lobe_c3,T5 refl.,-0.01254550914753559
+MCI_lobe_c3,T5-T6,0.03039444035163071
+MCI_lobe_c3,T6 refl.,0.0487835965123883
+MCI_lobe_c3,SUM (= T),0.22147871167361927
+LeftOnly_test_c3,T1 refl.,0.0
+LeftOnly_test_c3,T1-T2,0.4523249207418483
+LeftOnly_test_c3,T1-T3,0.22136599694594317
+LeftOnly_test_c3,T1-T4,0.0
+LeftOnly_test_c3,T1-T5,0.2387257132115751
+LeftOnly_test_c3,T1-T6,0.4797992342690748
+LeftOnly_test_c3,T2 refl.,0.390558812991622
+LeftOnly_test_c3,T2-T3,1.7519139087361377
+LeftOnly_test_c3,T2-T4,0.1873592460895913
+LeftOnly_test_c3,T2-T5,0.025721136242097882
+LeftOnly_test_c3,T2-T6,0.0
+LeftOnly_test_c3,T3 refl.,0.37938399584080823
+LeftOnly_test_c3,T3-T4,0.5235950315332228
+LeftOnly_test_c3,T3-T5,0.0
+LeftOnly_test_c3,T3-T6,0.008632748502621725
+LeftOnly_test_c3,T4 refl.,0.0
+LeftOnly_test_c3,T4-T5,0.4518338942111928
+LeftOnly_test_c3,T4-T6,0.1698386789350637
+LeftOnly_test_c3,T5 refl.,0.4079495178896525
+LeftOnly_test_c3,T5-T6,1.739323978575118
+LeftOnly_test_c3,T6 refl.,0.42880318882597906
+LeftOnly_test_c3,SUM (= T),7.857130003541549

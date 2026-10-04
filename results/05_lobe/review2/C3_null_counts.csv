@@ -1,0 +1,11 @@
+file,">= 3x (round-1 rule: max(null rms, yard))",">= 3x (R1c: max(null max, yard))"
+Healthy_sliced,0,0
+Healthy_sliced_new,0,0
+Mild_lobe,0,0
+Mild_lobe_new,0,0
+Moderate_lobe,0,0
+Moderate_lobe_c3,0,0
+Severe_lobe,0,0
+Severe_lobe_c3,0,0
+MCI_lobe_c3,0,0
+LeftOnly_test_c3,16,4

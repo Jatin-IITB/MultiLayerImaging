@@ -1,0 +1,21 @@
+threshold,file,masked points,per port pair
+mask -30 dB (frozen),Healthy_sliced_new,0,
+mask -30 dB (frozen),Mild_lobe,0,
+mask -30 dB (frozen),Moderate_lobe,0,
+mask -30 dB (frozen),Severe_lobe,1,2-5: 1
+mask -30 dB (frozen),Healthy_sliced,1,1-4: 1
+mask -30 dB (frozen),Mild_lobe_new,1,3-6: 1
+mask -30 dB (frozen),Moderate_lobe_c3,1,1-4: 1
+mask -30 dB (frozen),Severe_lobe_c3,16,"2-6: 13, 3-6: 3"
+mask -30 dB (frozen),LeftOnly_test_c3,1,2-5: 1
+mask -30 dB (frozen),MCI_lobe_c3,0,
+mask -36 dB (2x stricter),Healthy_sliced_new,0,
+mask -36 dB (2x stricter),Mild_lobe,4,2-4: 4
+mask -36 dB (2x stricter),Moderate_lobe,1,2-5: 1
+mask -36 dB (2x stricter),Severe_lobe,1,2-5: 1
+mask -36 dB (2x stricter),Healthy_sliced,2,1-4: 2
+mask -36 dB (2x stricter),Mild_lobe_new,2,3-6: 2
+mask -36 dB (2x stricter),Moderate_lobe_c3,3,"1-4: 1, 2-5: 1, 3-6: 1"
+mask -36 dB (2x stricter),Severe_lobe_c3,35,"2-6: 29, 3-6: 6"
+mask -36 dB (2x stricter),LeftOnly_test_c3,1,2-5: 1
+mask -36 dB (2x stricter),MCI_lobe_c3,0,

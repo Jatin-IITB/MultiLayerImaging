@@ -1,0 +1,34 @@
+condition,design,expected,fraction expected,UNCERTAIN,INVALID
+"1x: typical, ±0.5 dB",Healthy_sliced_new,Normal,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Mild_lobe,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Moderate_lobe,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Severe_lobe,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Healthy_sliced,Normal,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Mild_lobe_new,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Moderate_lobe_c3,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",Severe_lobe_c3,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",LeftOnly_test_c3,AD,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",MCI_lobe_c3,Normal,1.0,0.0,0.0
+"1x: typical, ±0.5 dB",LeftOnly phase cross-ratios >= 3x measured (R1c),,2.0,,
+"2x: noise, ±1 dB",Healthy_sliced_new,Normal,1.0,0.0,0.0
+"2x: noise, ±1 dB",Mild_lobe,AD,1.0,0.0,0.0
+"2x: noise, ±1 dB",Moderate_lobe,AD,1.0,0.0,0.0
+"2x: noise, ±1 dB",Severe_lobe,AD,1.0,0.0,0.0
+"2x: noise, ±1 dB",Healthy_sliced,Normal,1.0,0.0,0.0
+"2x: noise, ±1 dB",Mild_lobe_new,AD,1.0,0.0,0.0
+"2x: noise, ±1 dB",Moderate_lobe_c3,AD,1.0,0.0,0.0
+"2x: noise, ±1 dB",Severe_lobe_c3,AD,1.0,0.0,0.0
+"2x: noise, ±1 dB",LeftOnly_test_c3,AD,0.9533333333333334,0.04666666666666667,0.0
+"2x: noise, ±1 dB",MCI_lobe_c3,Normal,1.0,0.0,0.0
+"2x: noise, ±1 dB",LeftOnly phase cross-ratios >= 3x measured (R1c),,0.0,,
+"2x: noise, ±4 dB ±20°",Healthy_sliced_new,Normal,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Mild_lobe,AD,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Moderate_lobe,AD,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Severe_lobe,AD,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Healthy_sliced,Normal,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Mild_lobe_new,AD,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Moderate_lobe_c3,AD,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",Severe_lobe_c3,AD,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",LeftOnly_test_c3,AD,0.94,0.056666666666666664,0.0
+"2x: noise, ±4 dB ±20°",MCI_lobe_c3,Normal,1.0,0.0,0.0
+"2x: noise, ±4 dB ±20°",LeftOnly phase cross-ratios >= 3x measured (R1c),,0.0,,
