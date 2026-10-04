@@ -106,9 +106,14 @@ def compute():
         S[nm], _ = SL.load_design(nm, f)
     H6, H7 = S["Healthy_sliced_new"], S["Healthy_sliced"]
     same = {nm: float(np.nanmax(np.abs(S[nm] - S[nm.replace("_new", "")]))) for nm in names[1:]}
-    yard_in = {"Healthy 7 - 6 passes": H7 - H6, "Mild 6 - 5 passes": S["Mild_lobe_new"] - S["Mild_lobe"]}
-    path_db = {k: path_change_db(H7 if k.startswith("Healthy") else S["Mild_lobe_new"],
-                                 H6 if k.startswith("Healthy") else S["Mild_lobe"]) for k in yard_in}
+    pairs = {"Healthy 7 - 6 passes": ("Healthy_sliced", "Healthy_sliced_new"),
+             "Mild 6 - 5 passes": ("Mild_lobe_new", "Mild_lobe")}
+    for d in ("Moderate", "Severe"):                    # stop-rule-2 re-solves (c3 delivery, 4 Oct), if present
+        if (ROOT / "data" / "raw" / f"new_with_slices_{d}_lobe_c3.s6p").exists():
+            S[f"{d}_lobe_c3"], _ = SL.load_design(f"{d}_lobe_c3", f)
+            pairs[f"{d} 6 - 5 passes"] = (f"{d}_lobe_c3", f"{d}_lobe")
+    yard_in = {k: S[a] - S[b] for k, (a, b) in pairs.items()}
+    path_db = {k: path_change_db(S[a], S[b]) for k, (a, b) in pairs.items()}
     masks = SL.region_masks()
     K6 = SL.region_kernels(P, masks)[..., :6]
     truth = {d: SL.truth_regions(d, fh, P, masks) for d in STAGES}
@@ -171,9 +176,10 @@ def section(res):
          + "). Frozen κ, λ and thresholds from `lobe_frozen.json` (code "
          f"`{res['frozen_code']}`) are applied unchanged; only the reference (its noise weights and the "
          "log-ratio reference) is now Healthy_sliced_new. The pre-registered predictions are unchanged.", "",
-         "**Mesh yardstick = one extra adaptive pass.** Two pass-to-pass differences, each passed through the "
-         "pipeline as if it were a stage: Healthy 7 − 6 passes (`Healthy_sliced` − `Healthy_sliced_new`) and "
-         "Mild 6 − 5 passes (`Mild_lobe_new` − `Mild_lobe`). The sign of a mesh error is not known, so each "
+         "**Mesh yardstick = one extra adaptive pass.** Pass-to-pass differences, each passed through the "
+         "pipeline as if it were a stage: Healthy 7 − 6 passes (`Healthy_sliced` − `Healthy_sliced_new`), "
+         "Mild 6 − 5 passes (`Mild_lobe_new` − `Mild_lobe`) and, from the c3 delivery (4 Oct), Moderate 6 − 5 "
+         "(`Moderate_lobe_c3` − `Moderate_lobe`) and Severe 6 − 5 (`Severe_lobe_c3` − `Severe_lobe`). The sign of a mesh error is not known, so each "
          "difference is passed with both signs (+ and −); for the linear Tikhonov fits the two give the same |dε''|, "
          "for the bounded fits only one sign survives the bound dε'' ≥ 0.", "",
          "Amplitude change per path class (dB, largest path of the class, 3.2–4.2 GHz, 201 points, glitch-masked): "

@@ -119,7 +119,7 @@ def compute(n_draws=200):
     kappa = np.array(fz["kappa_re"]) + 1j * np.array(fz["kappa_im"])
     lam = {"dS": fz["lambda_dS"], "log": fz["lambda_log"]}
     S, f, fh, fi, P = RL.build(reuse=True)
-    for nm in ("Healthy_sliced_new", "Mild_lobe_new"):
+    for nm in ("Healthy_sliced_new", "Mild_lobe_new", "Moderate_lobe_c3", "Severe_lobe_c3"):
         S[nm], _ = SL.load_design(nm, f)
     H6 = S["Healthy_sliced_new"]
     K6 = SL.region_kernels(P, SL.region_masks())[..., :6]
@@ -128,7 +128,9 @@ def compute(n_draws=200):
     idx = np.arange(SL.N_ANT)
     maps = [np.roll(idx, r) for r in range(SL.N_ANT)] + [np.roll(idx[::-1], r) for r in range(SL.N_ANT)]
     mp = SL.mirror_perm()
-    yard = {"Healthy 7 − 6": S["Healthy_sliced"] - H6, "Mild 6 − 5": S["Mild_lobe_new"] - S["Mild_lobe"]}
+    yard = {"Healthy 7 − 6": S["Healthy_sliced"] - H6, "Mild 6 − 5": S["Mild_lobe_new"] - S["Mild_lobe"],
+            "Moderate 6 − 5": S["Moderate_lobe_c3"] - S["Moderate_lobe"],
+            "Severe 6 − 5": S["Severe_lobe_c3"] - S["Severe_lobe"]}
     designs = ("Healthy_sliced_new", "Mild_lobe", "Moderate_lobe", "Severe_lobe")
     E = {d: np.sqrt(2) * 0.5 * (S[d] - SL.permute(S[d], mp)) for d in designs}   # per-design numerical error pattern
 
@@ -234,7 +236,8 @@ def section(res):
          "separable from error once the numerical symmetry floor and antenna gain/phase errors are included. The "
          "same rulers are applied here to the contrasts of the recovered conductivity map, each propagated "
          "through the frozen inversions (κ, λ unchanged):", "",
-         "1. **Mesh yardstick**: one extra adaptive pass (Healthy 7 − 6, Mild 6 − 5), both signs, largest |contrast|.",
+         "1. **Mesh yardstick**: one extra adaptive pass (Healthy 7 − 6, Mild 6 − 5, Moderate 6 − 5, Severe 6 − 5; the "
+         "last two from the c3 delivery of 4 Oct), both signs, largest |contrast|.",
          "2. **Numerical symmetry floor**: as in Prompt 07, per-design numerical SD = √2 × the mirror-antisymmetric "
          "part of the design's S-matrix. That pattern is placed in the 6 rotations × 2 reflections of the ring "
          "(both signs) and passed through the pipeline; the rms contrast is the design's floor; a difference of two "
