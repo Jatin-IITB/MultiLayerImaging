@@ -1,0 +1,3 @@
+mode,designs,exact,hits,false_alarms,misses,correct_rejections,uncertain,side_correct
+in-sample (w on all designs),10,7,26,0,0,24,10,10
+leave group out,10,7,24,0,2,24,10,10
