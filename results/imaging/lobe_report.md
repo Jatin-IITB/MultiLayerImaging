@@ -1097,3 +1097,19 @@ Protocol committed in `24aa0c4` before loading. Full output: `results/imaging/te
 
 Reading (primary method): affected **none**; possible S2 TL; side none; front/back none; ranking S2 TL > S5 PR > S3 PL > S6 TR > S1 Fr > S4 Oc.
 
+## 12. Round 3 (POST-HOC): Test_B truth, rotated nulls, rank readings, raw delay, pass gap
+
+Full text: `results/imaging/lobe_round3.md`. Test_B scored against protocol 24aa0c4: committed reading **MISS** (affected none / possible S2; truth S2 + S5). The ranking S2 > S5 ≫ rest was the correct pair in the correct order. Side 'none' was scored a miss.
+
+| item | verdict | change |
+|---|---|---|
+| Test_B (committed reading) | MISS (as scored) | affected none / possible S2 vs truth S2+S5; ranking S2 > S5 correct |
+| Nulls as targets | CONFIRMED | no sector ≥ T_abs (max 4.75); LR ≤ 0.73×, FB ≤ 0.73× rulers |
+| 'Beyond all nulls, p ≈ 0.01' | CONFIRMED (this statistic) | rotated nulls +1.41/-0.96 inside the old envelope 4.07; pair p ≈ 0.007 (11 nulls) |
+| User's 0.3(b) numbers | CONFIRMED (verified) | rotated nulls exceed the old floor on 2nd-neighbour power and single-path phase; not on reflections or LR_anti |
+| Rulers rebuilt (11 nulls) | CHANGED (one claim falls) | bias-corrected FB in lobe_B 3.2–4.0× → 2.61×, 2.23×, 2.80×; others survive; phase counts at 3.30–3.65 weakened |
+| Rank reading vs threshold | reported, not adopted | frozen 51 hits / 0 FA / 15/26 exact; largest-gap 58 / 0 / 20/26 |
+| Born ranking vs raw delay | CHANGED | ranking credited to the Born map → raw delay ranks as well (oracle 0.96 vs 1.00; Spearman 0.79 vs 0.71); Born adds only the gated level |
+| Pass gap, LR and phase share | consistent with the pass gap | abs Δ ≤ 1.08× the twins; phase share equal |
+| Pass gap, absolute level | not explained by the pass gap | common-mode delay -4.33° vs twins ≤ 3.30°; sectors -38% |
+
