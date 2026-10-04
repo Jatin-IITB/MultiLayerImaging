@@ -8,6 +8,13 @@ only copy is this OneDrive folder.
 **Updated 2026-10-04 (later):** RightOnly_test scored (C6: NOT REPLICATED, 546d804). The Test_B blind protocol was
 committed (d3a4bbf) and the blind estimates were committed (0f49389). The truth is pending: see §7.1(a).
 
+**Updated 2026-10-04 (latest):**
+- The Test_B truth came back, and Test_B was scored against the protocol as committed (ef3b2fb; §4b).
+- The rotated healthy nulls Null_rot07 / Null_rot19 were added (kind = null).
+- The post-hoc analysis with them is committed (efc61d5; MODEL_CARD 6.7).
+- Claims 15–17 and 19 were reinstated after the user corrected their misstated retraction instruction.
+- Null_rot31 / Null_rot43 are still solving (§7.1a).
+
 Read in this order: this file → `MODEL_CARD.md` Part 6 (authoritative claims) → `results/05_lobe/review2/report_stats.md`
 and `report_fields.md` (round-2 numbers) → `results/STATUS.md` (plain-language status for the user).
 
@@ -22,7 +29,7 @@ and `report_fields.md` (round-2 numbers) → `results/STATUS.md` (plain-language
   S1..S6, one under each antenna, and disease applied per sector.
 
 **This session (main analysis) owns:**
-- `scripts/` (00–15, `run_all.py`);
+- `scripts/` (00–17, `run_all.py`);
 - `src/adstage/`, `tests/`;
 - `config*.yaml`;
 - `data/sims*.csv`, `data/sim_plan.csv`;
@@ -71,6 +78,14 @@ Its jobs:
   defend without numbers. Every "why" gets a mechanism or a measurement.
 - **Style.** The user wants blunt, honest, accurate answers, verdict first, no sugar-coating, numbers exact.
   Also stored in auto-memory: `blunt-honest-assessments.md`, `ad-staging-priorities.md`.
+- **Post hoc after a truth (user, 2026-10-04).**
+  - Everything computed after a truth or new nulls arrive is post hoc and labelled so.
+  - Committed verdicts stand as scored.
+  - Frozen rules, thresholds, protocols, predictions and submitted estimates stay unchanged.
+  - Nobody asks for re-solves: the data set is what it is.
+- **Blind designs (user, 2026-10-04).** Learn a blind design's geometry from its S-parameters only:
+  - no HFSS project, no other session's files about it, no file metadata, no asking the user;
+  - commit the protocol before loading the file.
 - **The user's priority view** (memory): anatomy variation is untested and decisive; the disease model is
   exaggerated; more mesh or lobe work is low value.
 
@@ -118,7 +133,9 @@ Its jobs:
 | data/raw/new_with_slices_Moderate_lobe_new.s6p (duplicate) | **no** | 64095b253010aa7a |
 | data/raw/new_with_slices_Severe_lobe_new.s6p (duplicate) | **no** | 9bd72760e5f58212 |
 | data/raw/new_with_slices_RightOnly_test.s6p (C6 replication; in the manifest) | **no** | bc26c50a0b57af5e |
-| data/raw/new_with_slices_Test_B.s6p (**blind**; not in the manifest; loaded only by `15_test_b.py --blind`) | **no** | 0e0e83feaa12e041 |
+| data/raw/new_with_slices_Test_B.s6p (blind until 2026-10-04; truth now in the manifest, kind test) | **no** | 0e0e83feaa12e041 |
+| data/raw/new_with_slices_Null_rot07.s6p (healthy, whole model rotated 7°; kind null, set lobe_nulls) | **no** | cb1176fda2b1e7db |
+| data/raw/new_with_slices_Null_rot19.s6p (healthy, rotated 19°; kind null, set lobe_nulls) | **no** | b79f3a884d1dc926 |
 | results/imaging/cache/lobe_v1-masked/born_table.pkl (imaging cache; read by 10, 11, 14) | **no** | 998ff933b8869718 |
 
 - **HFSS field exports** (`data/fields/`, git-ignored, 920.6 MB). The v2 Normal design, one export per
@@ -132,6 +149,8 @@ Its jobs:
   - Excitation order Port1..6 = FEED_3_T4, T3, T2, T1, T6, T5.
   - Port sheets at azimuths +89.6, +29.6, −30.4, −90.4, −150.4, +149.6°.
   - So T1 is at −90° and +x is the subject's left; T2/T3 are left, T5/T6 right.
+- **Manifest note.** pandas reads the literal kind `null` as missing, so select the rotated nulls by set
+  `lobe_nulls`. The nulls are in no training, frozen or stage set. `L8.load_all` still loads them (every manifest file).
 - **Integrity check:** `sha256sum data/raw/new_with_slices_*.s6p | cut -c1-16`. If an untracked file is missing or
   differs, ask the user for it. Do not regenerate it and do not edit it.
 
@@ -157,11 +176,27 @@ Both checks passed at e7794fd.
 | `scripts/11_review2.py` docstring, "FLOOR RULE (R1c)" | main | Floor rule for left-right statistics (§5) | 2a222ff | (code) | fixed; used by both sessions |
 | `results/05_lobe/rightonly_predictions.md` | main | **C6:** RightOnly_test design, predictions 1–5, scoring rule | 0f97bb2 (2026-10-04 12:16), code b61c5d8 | a0150e76aadafc1170f666b982d03d626f37277f | **scored** by 14_rightonly (c100803 → 546d804): NOT REPLICATED (P1 12/26 within tolerance, signs 26/26; P2 holds) |
 | `results/05_lobe/rightonly_predictions.csv` | main | the 91-row prediction table (statistic, LeftOnly value, predicted value, tolerance, informative flag) | 0f97bb2 | c03834e756300d21ad378acbae24ba0f915b901b | scored (546d804) |
-| `results/05_lobe/test_b/protocol.md` | main | **Test_B blind protocol.** Reported items, decision rules (sector-pattern fit with fit-rejection rule, mirror side test), references (Healthy_sliced_new), scoring against the truth, validation on the known designs. Code `scripts/15_test_b.py` 89af4b3 | d3a4bbf (2026-10-04), before Test_B was loaded | 37a5bc4ebced50a223e9c6b179a4f9f9632d3af1 | **frozen; truth pending** |
-| `results/05_lobe/test_b/estimates.csv` (+ report.md, statistics.csv) | main | Blind estimates under d3a4bbf | 0f49389 (2026-10-04) | fa4a6bcf80a5ac52261d54f3e811476d5e911958 | **truth pending; never edit; keep out of MODEL_CARD/STATUS until the truth is returned** |
+| `results/05_lobe/test_b/protocol.md` | main | **Test_B blind protocol.** Reported items, decision rules (sector-pattern fit with fit-rejection rule, mirror side test), references (Healthy_sliced_new), scoring against the truth, validation on the known designs. Code `scripts/15_test_b.py` 89af4b3 | d3a4bbf (2026-10-04), before Test_B was loaded | 37a5bc4ebced50a223e9c6b179a4f9f9632d3af1 | **frozen; scored (ef3b2fb)** |
+| `results/05_lobe/test_b/estimates.csv` (+ report.md, statistics.csv) | main | Blind estimates under d3a4bbf | 0f49389 (2026-10-04) | fa4a6bcf80a5ac52261d54f3e811476d5e911958 | **blind record; never edit; scored by 16_test_b_score (code 4b5eaa2/6d60b2a, results ef3b2fb)** |
 | `results/imaging/lobe_frozen.json` | imaging (read-only) | Frozen imaging inversion (κ, λ, thresholds); used read-only by 10 and 11 to rebuild the imaging LR | 62709e0 (2026-10-03 22:37), code fb5b775 | 0b42ece21b4990ac99271e3cf5c9cb7f5df0c1cd | frozen |
 | `results/imaging/lobe_predictions.md` | imaging | Imaging blind predictions for LeftOnly / MCI | 62709e0 | b13103691aad1b2d2142020c98d295841105e314 | scored by imaging: LeftOnly PARTIAL (7-pass reference) / FAIL (matched), MCI success |
 | `results/imaging/round2_predictions.md` | imaging | Imaging R3, C4 and C6 predictions (RightOnly LR −6.9 ± 3.9) | 0ceb626 (2026-10-04 11:52) | 1b941d759d7f35e585c94df8dc06a3627e333e95 | scored by the imaging session with its own rule (its commit 24aa0c4); not used by the main session |
+
+### 4b. Test_B score against protocol d3a4bbf as committed (`results/05_lobe/test_b_score/score.md`)
+**Truth** (user, after all three sessions had committed their estimates): e = 0 / 11.5 / 0 / 0 / 7.5 / 0 mm,
+r_hip 17.5; GM/WM_Mild in S2 and S5; HIP_Mild; CSF_Mild everywhere.
+
+| item | estimate (0f49389) | truth | score under §3 |
+|---|---|---|---|
+| detection | AD (+0.094 dB, 0.70x, not determined) | AD | correct |
+| staging three (R21) | Normal (1.11x, not determined) | Mild | wrong |
+| staging merged (R32) | Normal (0.16x, not determined) | Mild+Moderate | wrong |
+| side | left (sensitive, mirror test only) | left by §3's net-sign definition (+4.0 mm); both sides affected | correct |
+| sectors S1–S6 | all uncertain (1.0–1.9x) | S2, S5 affected | 6 abstentions, 0 errors |
+| best-fit pattern | 25 | 25 | equals the truth; not exact under §3 (uncertain sectors) |
+
+Calibration: both errors fall on labels whose margin was "not determined". No call was marked established.
+Post-hoc analysis of the score: MODEL_CARD 6.7, claims 31–34.
 
 **Overwrite guards** (e7794fd):
 - `05_audit.py` refuses to freeze when `frozen_rule.json` exists (run it with `--no-freeze`).
@@ -198,6 +233,13 @@ Both checks passed at e7794fd.
   - The rank p is reported; nine nulls cannot give p < 0.1.
 - **Complex cross-ratios.** S_ab·S_cd / (S_ac·S_bd) cancel any per-port complex gain. Their left-right
   antisymmetric phase gives 22 combinations, of which 18 are distinct.
+- **Post hoc (2026-10-04): rulers with the rotated nulls** (`scripts/17_posthoc_nulls.py`; not used by any committed
+  verdict).
+  - R1c floor over 11 nulls: the 9 + Null_rot07 + Null_rot19.
+  - Re-mesh yardstick = max(one-pass yardstick, |Q(rotated) − Q(Healthy_sliced_new)|): R31 0.135 (unchanged),
+    R21 0.364, R32 0.469 dB.
+  - Pattern-fit null contrast 0.212 → 0.419°.
+  - Rebuild all of these when Null_rot31 / Null_rot43 arrive.
 - **Effective sample size.** The two uniform solves of a stage differ only in sweep settings, so N = 1 design per
   stage. Every lobe number is one solve per design: within-simulation noise robustness, not generalisation.
 
@@ -211,24 +253,24 @@ detection row of §1.
 | # | claim | verdict | items |
 |---|---|---|---|
 | 1 | The frozen τ = −15.2728 dB re-derives exactly (95% −15.368 to −15.165). It and the staging boundaries were fitted on uniform solves before any lobe file existed | CONFIRMED | A18, A28 |
-| 2 | Frozen detection labels ≥ 3x every ruler, incl. the ±0.5 dB spread: healthy (3.0x / 4.0x), lobe-Mild (3.2x / 3.4x), lobe-Moderate (4.4x / 4.5x) in both matched sets | CHANGED | R6 |
-| 3 | Severe (1.2x / 1.6x) and LeftOnly (0.6x) are labelled AD but are not determined. MCI_lobe Normal is sensitive (2.85x) | CHANGED | R6, A23 |
+| 2 | Frozen detection labels ≥ 3x every ruler, incl. the ±0.5 dB spread: healthy (3.0x / 4.0x), lobe-Mild (3.2x / 3.4x), lobe-Moderate (4.4x / 4.5x) in both matched sets [POST HOC rotated nulls: survives; the R31 re-mesh difference 0.105 dB is inside the 0.135 dB yardstick] | CHANGED | R6 |
+| 3 | Severe (1.2x / 1.6x) and LeftOnly (0.6x) are labelled AD but are not determined. MCI_lobe Normal is sensitive (2.85x) [POST HOC rotated nulls: unchanged] | CHANGED | R6, A23 |
 | 4 | R31 is non-monotonic because the neighbour coupling falls at Severe while the opposite coupling saturates | CHANGED | A23 |
 | 5 | Detection depends on 3.2–3.8 GHz; in 3.8–4.2 GHz the uniform Normal and AD solves overlap | CHANGED | A16 |
 | 6 | Without the frozen glitch mask, Mild_lobe_new's detection is not determined (1.4x); a 2x stricter mask changes nothing (≤ 0.29x) | CHANGED | A15 |
 | 7 | At 2x the chosen noise and ±4 dB / ±20° calibration errors, detection fractions stay 1.00 (LeftOnly 0.94) | CHANGED | A19 |
 | 8 | Leave-one-solve-out passes on all 22 folds, but it tests sweep-setting robustness: effective N = 1 design per stage | CHANGED | A17, A21 |
-| 9 | R31 was a defensible choice on the training solves. On the lobe set R31, R21 and the pair each leave designs undetermined (7/10, 7/10, 9/10 ≥ 3x). None is adopted | CONFIRMED | R4 |
-| 10 | R21 orders the four lobe stages (6–15x the summed yardsticks); uniform Mild and Moderate are not ordered on R21 | CHANGED | A24 |
-| 11 | Lobe-Mild's three-class label is not determined (0.06x / 0.26x). 10 of 30 lobe labels are below 3x | CHANGED | A28, R6 |
+| 9 | R31 was a defensible choice on the training solves. On the lobe set R31, R21 and the pair each leave designs undetermined (7/10, 7/10, 9/10 ≥ 3x). None is adopted [POST HOC: the R21-based counts were not recomputed; the R21 re-mesh yardstick is 0.364 dB (3.3x the one-pass one), so they are optimistic] | CONFIRMED | R4 |
+| 10 | R21 orders the four lobe stages (6–15x the summed yardsticks); uniform Mild and Moderate are not ordered on R21 [POST HOC rotated nulls: does NOT survive; the smallest lobe gap (0.489 dB) is 0.67x twice the R21 re-mesh yardstick 0.364 dB] | CHANGED; fails the rotated nulls | A24 |
+| 11 | Lobe-Mild's three-class label is not determined (0.06x / 0.26x). 10 of 30 lobe labels are below 3x [POST HOC rotated nulls: 23 of 30 labels below 3x; only the 7 detection labels of healthy, Mild, Moderate and MCI stay >= 3x; every staging label falls below 3x] | CHANGED; weakened by the rotated nulls | A28, R6 |
 | 12 | Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature | CHANGED | A22 |
 | 13 | Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable | CHANGED | A20 |
 | 14 | Not-returned ("absorbed") power does not separate Normal from AD (0.92x) | CHANGED | A26 |
-| 15 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | WITHDRAWN | R1, C6 |
-| 16 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | WITHDRAWN | R2, A16, C3, C5, C6 |
-| 17 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | WITHDRAWN | R3, C6 |
-| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3) | CHANGED | R3, C6 |
-| 19 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | WITHDRAWN | C4, C6 |
+| 15 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 [POST HOC rotated nulls: unchanged 1.94x; the rotated nulls (+1.39, -0.93) stay below Moderate_lobe's -4.04] | REINSTATED (sign replicated, size not); not established | R1, C6 |
+| 16 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 [POST HOC rotated nulls: band mean 4 -> 4; 3.30-3.65 GHz 9 -> 4] | REINSTATED (sign replicated, size not) | R2, A16, C3, C5, C6 |
+| 17 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) [POST HOC rotated nulls: unchanged (resonance shift +1.91 MHz vs null max 2.86 MHz)] | REINSTATED (sign replicated, size not) | R3, C6 |
+| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3) [POST HOC rotated nulls: survives; nulls <= 0.012 dB; LeftOnly 3.5x/5.0x, RightOnly 4.1x/5.3x, Test_B 3.8x/5.0x] | CHANGED | R3, C6 |
+| 19 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence [POST HOC rotated nulls: neighbour pairs T2-T3/T5-T6 2.8x, T3-T4/T4-T5 2.7x (was 5.4x), T1-T2/T1-T6 1.6x the null max: sensitive at best] | REINSTATED (sign replicated, size not); sensitive | C4, C6 |
 | 20 | Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file | CHANGED | R1b |
 | 21 | Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it | CONFIRMED | A14, G4 |
 | 22 | Field exports are 3-D volumes; no claim used the cut plane | CONFIRMED | R7, G8 |
@@ -237,40 +279,34 @@ detection row of §1.
 | 25 | Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused | CONFIRMED | G1, G2, G6 |
 | 26 | Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz | CHANGED | G7 |
 | 27 | Sector-level imaging values are not results | CHANGED | R5 |
-| 28 | Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median \|RO + LO\| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED | CHANGED | C6 |
-| 29 | Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation | CHANGED | C6 P4 |
+| 28 | Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median \|RO + LO\| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED [POST HOC: the pass gap does not explain the size failure (0 of the 14 failures within the three pass-5/6 twin differences); with the rotated nulls in the floors 21/26 are within tolerance (verdict stands)] | CHANGED | C6 |
+| 29 | Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation [POST HOC rotated nulls: strengthened; re-meshing the healthy head alone moves R21 by up to 0.364 dB and R32 by 0.469 dB (2.9-3.3x the one-pass yardstick), the front-back indices by 2.4x, R31 by 0.105 dB (inside)] | CHANGED | C6 P4 |
 | 30 | The merged staging label differs between the mirror twins (LeftOnly Normal, RightOnly Mild+Moderate); both lie within 1x of the R32 boundary | CHANGED | C6 |
+| 31 | Test_B (blind; protocol d3a4bbf, estimates 0f49389, scored by 16_test_b_score against the truth): detection AD correct (margin not determined, 0.70x); staging Normal / Normal wrong (both not determined); side 'left' correct by the protocol's net-sign definition ((e_S2+e_S3)-(e_S5+e_S6) = +4 mm) although both sides are affected; six sectors 'uncertain' (abstentions, no errors); best-fit pattern 25 equals the truth but is not exact under protocol section 3 | CHANGED | Test_B |
+| 32 | [POST HOC] R21 and R32 are ring averages and grade total cortical retreat, not the stage of the affected lobes: for Mild materials R21 rises 0.131 dB per 10 mm of summed retreat; the frozen Normal\|Mild edge corresponds to about 33 mm, so two-lobe Mild designs (19 mm) read Normal by construction; with the R21 re-mesh yardstick (0.364 dB) their rise over healthy (0.37-0.50 dB) is only 1.0-1.4x | CHANGED | Q2 |
+| 33 | [POST HOC] The aggregated mirror vote cannot tell 'left only' from 'both sides, left larger'; the per-sector-pair reflection statistics can (Test_B: T2 vs T6 left 3.8x, T3 vs T5 right 5.0x = S2 and S5; LeftOnly both left, RightOnly both right); they survive the rotated nulls. Simulation only: about 0.07 dB | CHANGED | Q3 |
+| 34 | [POST HOC] The pattern-fit contrast is a weak detector: a rotated healthy head reaches 1.97x the protocol null contrast (acceptance 2x) against Test_B's 3.24x; with the rotated nulls in the null contrast (0.212 -> 0.419 deg) Test_B's fit is rejected (1.64x) and the protocol would call 'diffuse' | CHANGED | Q4 |
+| 35 | [POST HOC] The rotated nulls raise the R1c floors of 23/44 phase cross-ratio rows (up to 2.5x), 14/22 power cross-ratios (up to 3.3x) and 2/8 power pairs (up to 2.5x); the imaging LR floor is unchanged | CHANGED | 0.3(b) |
 
 **The pre-registered answer stays primary:** the cf56de8 power predictions for LeftOnly fail or are not separable.
-The phase finding (rows 15, 16, 17, 19) was post hoc. It was **withdrawn** after C6 was not replicated, on the user's
-instruction. Note that the committed retraction clause was conditional on the signs *not* flipping; they flipped
-26/26, and it was the sizes that failed (MODEL_CARD 6.6).
+The phase finding (rows 15, 16, 17, 19) is post hoc. After C6 it carries the status "sign replicated in a mirrored
+design (26/26), size not (12/26 within tolerance)". A withdrawal on a misstated instruction was reversed on the
+user's correction (MODEL_CARD 6.6). With the rotated nulls, 15 is not established and 19 is sensitive at best (6.7).
 
 ## 7. Open items
 
 ### 7.1 Waiting on the user (do nothing until the files arrive)
 
-**(a) Test_B truth (blind design; protocol d3a4bbf, estimates 0f49389).** Done so far:
-- RightOnly_test was scored (546d804): NOT REPLICATED.
-- The Test_B protocol was committed before Test_B was loaded, and the estimates were committed.
+**(a) Null_rot31 and Null_rot43** (healthy design rotated 31° / 43° about z; still solving on 2026-10-04).
+When they arrive:
+1. Get the passes / ΔS / elements from the user.
+2. Add manifest rows like Null_rot07 (class Normal, set `lobe_nulls`, kind `null`, sectors none, stop rule 1).
+   Commit.
+3. Extend `ROT` in `scripts/17_posthoc_nulls.py` to the four rotated nulls. Commit, run, commit the results.
+4. Report again, post hoc, which claims and readings survive (MODEL_CARD 6.7, C_survival.csv).
+5. Do not change any committed verdict.
 
-Until the user returns the truth:
-- Do not read other sessions' Test_B files.
-- Do not put Test_B estimates into MODEL_CARD or STATUS.
-- Do not edit `results/05_lobe/test_b/`.
-
-When the truth arrives:
-1. Record it: add a `data/sims_lobe.csv` row for Test_B with its sectors_affected, e values and r_hip in notes, and the
-   passes / ΔS / elements if the user gives them. Commit.
-2. Write `scripts/16_test_b_score.py`. It reads `estimates.csv` and `protocol.md` (check their blobs as `14_rightonly.py`
-   does) and **never writes them**. It scores exactly per protocol §3:
-   - detection label;
-   - staging, only if Test_B uses one stage's materials;
-   - side, by the sign of (e_S2 + e_S3) − (e_S5 + e_S6);
-   - per sector: hits, misses, false alarms, correct rejections, uncertain;
-   - confidence calibration.
-3. Commit the code, run it, commit the results.
-4. Update MODEL_CARD Part 6, STATUS §7 and this file.
+Test_B is done: truth recorded (1a93a51), scored (ef3b2fb), post hoc (efc61d5).
 
 **(b) Uniform equal-settings re-solves** (`data/sim_plan.csv`): `new_Healthy_meshrep`, `new_MCI_rep`,
 `new_MildAD_eq`, `new_ModerateAD_eq`, `new_SevereAD_eq`. Status: running or planned since 2026-10-02, not
@@ -297,6 +333,8 @@ When they arrive:
 - **Post-hoc frequency choices.** The 3.30–3.65 GHz window and the sub-band split.
 - **Frontal lobe.** The frontal-lobe (Moderate − Mild) result is power-only; it was never checked in phase.
 - **Imaging-side items** (B14–B25, R5 evidence): `results/imaging/lobe_round2.md`.
+- **Mesh variation.** Two rotated nulls are the only independent re-mesh samples. They already show the one-pass
+  yardstick underestimates R21 / R32 mesh variation by about 3x. Every staging label is below 3x with them.
 
 ### 7.3 On hold
 - The report and the deck (`blind_validation_presentation.pptx`, untracked): do not touch until the user asks.
@@ -432,6 +470,23 @@ python scripts/15_test_b.py --blind
 Writes `results/05_lobe/test_b/{report.md, estimates.csv, statistics.csv}`. Committed at 0f49389. **Do not rerun and
 commit over these files**: they are the blind record. A rerun is only a reproducibility check (`git diff`).
 
+- **Rerunning `15_test_b.py` at HEAD.**
+  - `--blind` now refuses, because Test_B is in the manifest.
+  - `--validate` now also treats the nulls and Test_B as known designs.
+  - To reproduce the committed validation, use the manifest of d3a4bbf
+    (`git show d3a4bbf:data/sims_lobe.csv > data/sims_lobe.csv`) and restore it afterwards.
+
+```bash
+python scripts/16_test_b_score.py
+```
+Writes `results/05_lobe/test_b_score/` (Test_B vs truth, protocol §3). Committed at ef3b2fb.
+
+```bash
+python scripts/17_posthoc_nulls.py --n 300
+```
+Writes `results/05_lobe/posthoc_nulls/`. POST HOC: rulers with the rotated nulls, pass gap, Q2–Q4. Committed at
+efc61d5 (code 29fef32).
+
 - **Imports.** Scripts 10–12 import `imaging/` read-only (`imaging.fields.read_fld`, the Born table
   `results/imaging/cache/lobe_v1-masked/born_table.pkl`, `results/imaging/lobe_frozen.json`). Script 10 checks that the
   rebuilt operator reproduces. If the cache is missing, ask the imaging session or the user; do not rebuild it inside
@@ -478,4 +533,7 @@ commit over these files**: they are the blind record. A rerun is only a reproduc
 | e7794fd | 10-04 | overwrite guards |
 | c100803 / 546d804 | 10-04 | C6 scoring: RightOnly NOT REPLICATED |
 | 89af4b3 / d3a4bbf | 10-04 | **Test_B blind protocol** (code, validation) |
-| 0f49389 | 10-04 | Test_B blind estimates (truth pending) |
+| 0f49389 | 10-04 | Test_B blind estimates |
+| 1a93a51 | 10-04 | manifest: RightOnly mesh data, Test_B truth, rotated nulls |
+| 4b5eaa2 / ef3b2fb | 10-04 | Test_B scored against protocol d3a4bbf |
+| 29fef32 / efc61d5 | 10-04 | POST HOC: rotated nulls, pass gap, staging, mirror votes, pattern fit |

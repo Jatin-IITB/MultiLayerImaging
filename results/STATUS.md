@@ -12,7 +12,20 @@
   - **Mirror replication (RightOnly_test, 4 Oct): NOT REPLICATED.**
     - All 26 left-right signs flipped, and the counts matched.
     - The sizes agreed on only 12 of 26 statistics.
-    - The phase finding is withdrawn (MODEL_CARD 6.6).
+    - Status: the sign replicated, the size did not. It was briefly withdrawn on a misstated instruction and is
+      reinstated with exactly that status.
+- **Blind Test_B (4 Oct, truth returned)**, scored against the protocol as committed:
+  - detection: AD, correct (but not robust);
+  - staging: Normal, wrong;
+  - side: 'left', correct by the protocol's definition, although both sides are affected;
+  - lobes: the best-fit pattern was exactly right (left temporal + right parietal), but every single lobe was
+    marked uncertain.
+- **Rotated healthy heads (post hoc).** Re-meshing the same healthy head moves the staging ratios R21 / R32 by
+  up to 0.36 / 0.47 dB, about 3× the mesh yardstick used so far.
+  - Detection (R31) is unaffected.
+  - Every staging label is now below the 3× bar.
+  - The Test_B lobe pattern no longer clears the healthy-head contrast.
+  - Details: MODEL_CARD 6.7.
 - **Sensitivity** is ≈ 99% in the air around the head. Of the in-brain part, 56–69% lies above z = 40 mm and
   ≤ 4% below z = 0. "Lobes" means wedges of the upper head.
 - **Tissue values** are the 3.24 GHz literature values held constant. Real conductivity is 28–38% higher at
@@ -216,7 +229,7 @@ threshold, main set / second set:
     - the left neighbour paths are delayed by about the amount the CSF gap under T2/T3 predicts;
     - it does not scale with frequency as pure propagation would.
   - The pre-registered power answer stays the primary result.
-  - **Replication test (4 Oct): NOT REPLICATED; the phase finding is withdrawn.** The mirror-image design
+  - **Replication test (4 Oct): NOT REPLICATED (size); the sign replicated.** The mirror-image design
     (RightOnly_test) was scored against predictions committed before it existed.
     - Every left-right sign flipped, as a real asymmetry should (26 of 26).
     - The sizes agreed within the numerical ruler on only 12 of 26 statistics.
@@ -224,6 +237,32 @@ threshold, main set / second set:
     - The two mirror twins also differ in the staging ratio R21 by 1.2× the mesh yardstick, and get different
       merged staging labels (Normal vs Mild+Moderate).
     - Details: `results/05_lobe/rightonly/report.md`.
+    - **Correction.** A withdrawal of the phase finding came from a misstated instruction; the committed rule
+      retracts only if the signs do not flip. The finding is reinstated as "sign replicated, size not".
+    - **Post hoc: the size mismatch is not explained by the pass gap.** RightOnly stopped one refinement pass
+      earlier, but its differences from LeftOnly exceed the one-pass changes of the stage designs on every
+      failing statistic. Independent re-meshing (the rotated healthy heads) does explain most of it.
+- **Blind Test_B (left temporal + right parietal; truth returned after scoring).**
+  - **Scored as committed:**
+    - detection AD: correct, margin not robust;
+    - both staging labels Normal: wrong;
+    - side 'left': correct by the protocol's definition (left deeper), but it hides that both sides are
+      affected;
+    - the six lobes: all 'uncertain';
+    - the best-fit pattern: exactly the truth.
+  - **Post hoc reasons:**
+    - **Staging cannot grade partial disease.** The staging ratios average over the whole ring, so they
+      measure total cortical retreat (two Mild lobes ≈ 19 mm, below the ~33 mm the Normal|Mild edge
+      corresponds to).
+    - **The pooled left-right vote cannot tell "left only" from "both, left larger".** The per-antenna
+      reflection pairs can: they showed left temporal and right parietal.
+    - **The pattern-fit contrast is too weak.** A rotated healthy head reaches 1.97× against the 2×
+      acceptance threshold. With it in the null, the Test_B pattern is rejected.
+- **Rotated healthy heads (7° and 19°, same physics, different mesh).**
+  - They move R21 / R32 by up to 0.36 / 0.47 dB and the front-back index by 2.4× the old yardstick, but R31
+    only by 0.10 dB.
+  - Detection stands. Every staging label and the lobe-stage ordering on R21 fall below the 3× bar.
+  - Two more rotated heads (31°, 43°) are solving; all rulers will be rebuilt when they arrive.
 - **Detection** calls this design AD, but only 0.09 dB inside the AD zone
   (0.7× the yardstick): not determined. Both staging rules call it Normal.
 - **Frontal lobe:** the earlier "cannot be told" was based on power only and has not yet been

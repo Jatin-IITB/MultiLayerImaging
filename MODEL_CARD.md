@@ -728,24 +728,24 @@ All claims concern one idealised spherical head with one solve per design. The n
 | # | claim | verdict | items |
 |---|---|---|---|
 | 1 | The frozen τ = −15.2728 dB re-derives exactly (95% −15.368 to −15.165). It and the staging boundaries were fitted on uniform solves before any lobe file existed | CONFIRMED | A18, A28 |
-| 2 | Frozen detection labels ≥ 3x every ruler, incl. the ±0.5 dB spread: healthy (3.0x / 4.0x), lobe-Mild (3.2x / 3.4x), lobe-Moderate (4.4x / 4.5x) in both matched sets | CHANGED | R6 |
-| 3 | Severe (1.2x / 1.6x) and LeftOnly (0.6x) are labelled AD but are not determined. MCI_lobe Normal is sensitive (2.85x) | CHANGED | R6, A23 |
+| 2 | Frozen detection labels ≥ 3x every ruler, incl. the ±0.5 dB spread: healthy (3.0x / 4.0x), lobe-Mild (3.2x / 3.4x), lobe-Moderate (4.4x / 4.5x) in both matched sets [POST HOC rotated nulls: survives; the R31 re-mesh difference 0.105 dB is inside the 0.135 dB yardstick] | CHANGED | R6 |
+| 3 | Severe (1.2x / 1.6x) and LeftOnly (0.6x) are labelled AD but are not determined. MCI_lobe Normal is sensitive (2.85x) [POST HOC rotated nulls: unchanged] | CHANGED | R6, A23 |
 | 4 | R31 is non-monotonic because the neighbour coupling falls at Severe while the opposite coupling saturates | CHANGED | A23 |
 | 5 | Detection depends on 3.2–3.8 GHz; in 3.8–4.2 GHz the uniform Normal and AD solves overlap | CHANGED | A16 |
 | 6 | Without the frozen glitch mask, Mild_lobe_new's detection is not determined (1.4x); a 2x stricter mask changes nothing (≤ 0.29x) | CHANGED | A15 |
 | 7 | At 2x the chosen noise and ±4 dB / ±20° calibration errors, detection fractions stay 1.00 (LeftOnly 0.94) | CHANGED | A19 |
 | 8 | Leave-one-solve-out passes on all 22 folds, but it tests sweep-setting robustness: effective N = 1 design per stage | CHANGED | A17, A21 |
-| 9 | R31 was a defensible choice on the training solves. On the lobe set R31, R21 and the pair each leave designs undetermined (7/10, 7/10, 9/10 ≥ 3x). None is adopted | CONFIRMED | R4 |
-| 10 | R21 orders the four lobe stages (6–15x the summed yardsticks); uniform Mild and Moderate are not ordered on R21 | CHANGED | A24 |
-| 11 | Lobe-Mild's three-class label is not determined (0.06x / 0.26x). 10 of 30 lobe labels are below 3x | CHANGED | A28, R6 |
+| 9 | R31 was a defensible choice on the training solves. On the lobe set R31, R21 and the pair each leave designs undetermined (7/10, 7/10, 9/10 ≥ 3x). None is adopted [POST HOC: the R21-based counts were not recomputed; the R21 re-mesh yardstick is 0.364 dB (3.3x the one-pass one), so they are optimistic] | CONFIRMED | R4 |
+| 10 | R21 orders the four lobe stages (6–15x the summed yardsticks); uniform Mild and Moderate are not ordered on R21 [POST HOC rotated nulls: does NOT survive; the smallest lobe gap (0.489 dB) is 0.67x twice the R21 re-mesh yardstick 0.364 dB] | CHANGED; fails the rotated nulls | A24 |
+| 11 | Lobe-Mild's three-class label is not determined (0.06x / 0.26x). 10 of 30 lobe labels are below 3x [POST HOC rotated nulls: 23 of 30 labels below 3x; only the 7 detection labels of healthy, Mild, Moderate and MCI stay >= 3x; every staging label falls below 3x] | CHANGED; weakened by the rotated nulls | A28, R6 |
 | 12 | Best single features: R32 for Normal vs AD/Mild; R21 for Mild vs Severe. Mild vs Moderate is not separable on any feature | CHANGED | A22 |
 | 13 | Divergence values move 6–74x with the between-solve covariance scaling; only rankings are reportable | CHANGED | A20 |
 | 14 | Not-returned ("absorbed") power does not separate Normal from AD (0.92x) | CHANGED | A26 |
-| 15 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 | WITHDRAWN | R1, C6 |
-| 16 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 | WITHDRAWN | R2, A16, C3, C5, C6 |
-| 17 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) | WITHDRAWN | R3, C6 |
-| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3) | CHANGED | R3, C6 |
-| 19 | [POST HOC] [WITHDRAWN 2026-10-04 (C6 not replicated)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence | WITHDRAWN | C4, C6 |
+| 15 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] The imaging mirror-test LR for LeftOnly is 1.94x (Tikhonov dS) to 2.77x (whitened log) the R1c ruler: not established. Rank p 0.1 [POST HOC rotated nulls: unchanged 1.94x; the rotated nulls (+1.39, -0.93) stay below Moderate_lobe's -4.04] | REINSTATED (sign replicated, size not); not established | R1, C6 |
+| 16 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] LeftOnly phase cross-ratios beyond R1c: 4/22 (3 distinct) at band mean. 16/22 in 3.2–3.5 GHz, 0 above 3.5 GHz. No symmetric file has any. At measurement level 0–2/22 [POST HOC rotated nulls: band mean 4 -> 4; 3.30-3.65 GHz 9 -> 4] | REINSTATED (sign replicated, size not) | R2, A16, C3, C5, C6 |
+| 17 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] The LeftOnly transmission phase asymmetry is not per-antenna detuning (separable share 0.11; no resonance shift beyond the null) [POST HOC rotated nulls: unchanged (resonance shift +1.91 MHz vs null max 2.86 MHz)] | REINSTATED (sign replicated, size not) | R3, C6 |
+| 18 | [POST HOC] LeftOnly's left reflections differ from their mirrors by −0.06 / −0.07 dB (3.5x / 5.0x); per-port gain errors swamp this in measurement. Replicated in the mirror: RightOnly +0.070 / +0.073 dB, within one clean ruler (C6 P3) [POST HOC rotated nulls: survives; nulls <= 0.012 dB; LeftOnly 3.5x/5.0x, RightOnly 4.1x/5.3x, Test_B 3.8x/5.0x] | CHANGED | R3, C6 |
+| 19 | [POST HOC] [REINSTATED 2026-10-04: sign replicated in a mirrored design (26/26), size not (12/26 within tolerance)] The left neighbour-path phase is delayed, as CSF-gap propagation predicts; the field-share model gives the neighbour sizes, but not the long paths or the band dependence [POST HOC rotated nulls: neighbour pairs T2-T3/T5-T6 2.8x, T3-T4/T4-T5 2.7x (was 5.4x), T1-T2/T1-T6 1.6x the null max: sensitive at best] | REINSTATED (sign replicated, size not); sensitive | C4, C6 |
 | 20 | Moderate_lobe's large mirror residual is mesh asymmetry of that 5-pass file | CHANGED | R1b |
 | 21 | Port map Port1..6 = T4, T3, T2, T1, T6, T5 (T1 at −90°, +x = subject's left) is fixed by the HFSS geometry and the fields; the symmetry search cannot fix it | CONFIRMED | A14, G4 |
 | 22 | Field exports are 3-D volumes; no claim used the cut plane | CONFIRMED | R7, G8 |
@@ -754,11 +754,19 @@ All claims concern one idealised spherical head with one solve per design. The n
 | 25 | Healthy_sliced layer radii and inner structure match Part 1; leftover variables are unused | CONFIRMED | G1, G2, G6 |
 | 26 | Healthy tissue values are Gabriel 1996 at 3.241 GHz held constant; real σ is 28–38% higher at 4.2 GHz | CHANGED | G7 |
 | 27 | Sector-level imaging values are not results | CHANGED | R5 |
-| 28 | Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median \|RO + LO\| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED | CHANGED | C6 |
-| 29 | Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation | CHANGED | C6 P4 |
+| 28 | Mirror replication (C6, RightOnly_test vs LeftOnly_test): all 26 informative left-right statistics flip sign and the phase cross-ratio counts match (4/4 band mean, 9/9 at 3.30–3.65 GHz, all with opposite sign), but only 12/26 sizes agree within one clean ruler (median \|RO + LO\| 1.07x the ruler, max 1.86x). Verdict under the committed rule: NOT REPLICATED [POST HOC: the pass gap does not explain the size failure (0 of the 14 failures within the three pass-5/6 twin differences); with the rotated nulls in the floors 21/26 are within tolerance (verdict stands)] | CHANGED | C6 |
+| 29 | Solves of two mirror-equivalent designs (stop rule 1) differ by 0.133 dB in R21 (1.2x the one-pass yardstick) and 0.146 dB in R32 (0.9x): the one-pass yardstick does not bound design-to-design mesh variation [POST HOC rotated nulls: strengthened; re-meshing the healthy head alone moves R21 by up to 0.364 dB and R32 by 0.469 dB (2.9-3.3x the one-pass yardstick), the front-back indices by 2.4x, R31 by 0.105 dB (inside)] | CHANGED | C6 P4 |
 | 30 | The merged staging label differs between the mirror twins (LeftOnly Normal, RightOnly Mild+Moderate); both lie within 1x of the R32 boundary | CHANGED | C6 |
+| 31 | Test_B (blind; protocol d3a4bbf, estimates 0f49389, scored by 16_test_b_score against the truth): detection AD correct (margin not determined, 0.70x); staging Normal / Normal wrong (both not determined); side 'left' correct by the protocol's net-sign definition ((e_S2+e_S3)-(e_S5+e_S6) = +4 mm) although both sides are affected; six sectors 'uncertain' (abstentions, no errors); best-fit pattern 25 equals the truth but is not exact under protocol section 3 | CHANGED | Test_B |
+| 32 | [POST HOC] R21 and R32 are ring averages and grade total cortical retreat, not the stage of the affected lobes: for Mild materials R21 rises 0.131 dB per 10 mm of summed retreat; the frozen Normal\|Mild edge corresponds to about 33 mm, so two-lobe Mild designs (19 mm) read Normal by construction; with the R21 re-mesh yardstick (0.364 dB) their rise over healthy (0.37-0.50 dB) is only 1.0-1.4x | CHANGED | Q2 |
+| 33 | [POST HOC] The aggregated mirror vote cannot tell 'left only' from 'both sides, left larger'; the per-sector-pair reflection statistics can (Test_B: T2 vs T6 left 3.8x, T3 vs T5 right 5.0x = S2 and S5; LeftOnly both left, RightOnly both right); they survive the rotated nulls. Simulation only: about 0.07 dB | CHANGED | Q3 |
+| 34 | [POST HOC] The pattern-fit contrast is a weak detector: a rotated healthy head reaches 1.97x the protocol null contrast (acceptance 2x) against Test_B's 3.24x; with the rotated nulls in the null contrast (0.212 -> 0.419 deg) Test_B's fit is rejected (1.64x) and the protocol would call 'diffuse' | CHANGED | Q4 |
+| 35 | [POST HOC] The rotated nulls raise the R1c floors of 23/44 phase cross-ratio rows (up to 2.5x), 14/22 power cross-ratios (up to 3.3x) and 2/8 power pairs (up to 2.5x); the imaging LR floor is unchanged | CHANGED | 0.3(b) |
 
 ### 6.3 Statements that depend on the phase finding (A27, C1; all post hoc)
+**Update (user correction, 2026-10-04):** the withdrawal recorded in 6.6 came from a misstated instruction. The
+statements below are reinstated with the status 'sign replicated in a mirrored design (26/26), size not (12/26
+within tolerance)', and are no stronger than before. 6.7 gives their status with the rotated nulls.
 - MODEL_CARD 5.5: the rows "Left-right asymmetry present in the LeftOnly data", "Frontal lobe visible front-to-back
   … unverified in phase" and "… asymmetry cross-ratios … phase not checked".
 - MODEL_CARD 5.7: "What LeftOnly shows" (16 of 22; 2 of 22 with errors; neighbour phase shifts).
@@ -767,7 +775,7 @@ All claims concern one idealised spherical head with one solve per design. The n
 - Imaging: `results/imaging/lobe_report.md` §9 and `lobe_claims.csv` (imaging session's).
 
 The round-1 "16 of 22" used the rms floor; under R1c it is 4/22. **Update 2026-10-04:** C6 was not replicated, so
-every statement listed above is withdrawn (6.6). The primary answer to the pre-registered test
+every statement listed above was withdrawn (6.6); that withdrawal was reversed on the user's correction (see the update at the top of 6.3). The primary answer to the pre-registered test
 stays: the power predictions (cf56de8) fail or are not separable.
 
 ### 6.4 Open limitations (every CANNOT TELL / UNVERIFIED)
@@ -777,6 +785,8 @@ stays: the power predictions (cf56de8) fail or are not separable.
     stand-offs, scored with the frozen rule as-is.
 - **Floor significance (R1, C3).** Nine symmetric solves cap the rank p at 0.1. Settling it needs ≥ 19 independent
   mirror-symmetric solves (for example the healthy design re-meshed or rotated).
+- **Rotated nulls (6.7).** Two of four delivered (rot31, rot43 still solving). Every null floor and the re-mesh yardstick
+  rest on 2 rotated samples; rebuild them when the others arrive.
 - **Replication of the left-right finding (C6).** Done 2026-10-04: NOT REPLICATED (6.6). The signs flipped 26/26; the
   sizes did not agree. Whether the size disagreement is mesh variation (claim 29) or a real design difference cannot
   be told from one solve per design.
@@ -837,3 +847,88 @@ stays: the power predictions (cf56de8) fail or are not separable.
 - **Frozen rule on RightOnly.**
   - Detection: AD by +0.107 dB (0.79x the yardstick): not determined.
   - Staging: three Normal; merged Mild+Moderate (LeftOnly: Normal).
+- **Correction (user, 2026-10-04, later).** The instruction to retract was misstated. 0f97bb2
+  (rightonly_predictions.md) retracts only if the signs do not flip. The signs flipped on 26/26 and P2 held; P1
+  failed on size.
+  - The C6 verdict stays NOT REPLICATED.
+  - The retraction does not apply. Claims 15–17 and 19 are reinstated with the status "sign replicated in a mirrored
+    design (26/26), size not (12/26 within tolerance)".
+
+### 6.7 POST HOC: rotated healthy nulls, Test_B truth, pass gap (2026-10-04; `results/05_lobe/posthoc_nulls/`, code 29fef32)
+Everything in this section was computed after the Test_B truth and the rotated nulls arrived. Committed verdicts stand
+as scored.
+
+**New data.** Null_rot07 and Null_rot19 are Healthy_sliced_new with the whole model rotated 7° / 19° about z: the same
+physics with a differently aligned mesh. Both have 6 passes. They are kind = null, set `lobe_nulls`, and are not in
+any training, frozen or stage set.
+- QC: passive (max σ² 0.906 / 0.909).
+- Null_rot07's 0.49 dB non-reciprocal point (3.86 GHz, ports 1–4) is masked by the frozen rule (2 points masked);
+  Null_rot19 has 1 point masked.
+
+**Test_B scored against protocol d3a4bbf as committed** (`results/05_lobe/test_b_score/`): see claim 31.
+
+**0.3(a) Pass gap.** RightOnly stopped at pass 5 (ΔS 0.0197); LeftOnly at pass 6. LeftOnly minus mirrored RightOnly
+was compared with the three pass-5 vs pass-6 twins (Mild, Moderate, Severe), same statistics and frequencies.
+- **26 informative statistics:** 7/26 are within the largest twin difference. Of the 14 that failed the C6
+  tolerance, **0** are.
+- **R31 / R21 / R32:** 0.013 / 0.133 / 0.146 dB, against twin maxima 0.051 / 0.110 / 0.161 dB.
+- **Verdict: the pass gap does not explain the size failure.**
+- What does absorb most of it is independent re-meshing: with the rotated nulls in the floors, 21/26 fall within
+  tolerance. The twins are one-pass refinements of the same initial mesh, which understates what two independent
+  meshes can differ by.
+
+**0.3(b) Rulers with the rotated nulls** (max over the 9 old + 2 rotated; rebuild again when rot31/rot43 arrive).
+- **Re-mesh yardstick** (|rotated − Healthy_sliced_new|, same pass count) vs the one-pass yardstick:
+
+  | quantity | re-mesh yardstick | ratio to one-pass |
+  |---|---|---|
+  | R31 | 0.105 dB | 0.78x |
+  | R21 | 0.364 dB | 3.3x |
+  | R32 | 0.469 dB | 2.9x |
+  | front-back indices | — | 2.4x |
+- **Consequences for the frozen rule:**
+  - Detection margins are unchanged.
+  - Every staging label falls below 3x; labels ≥ 3x go from 20/30 to 7/30.
+  - The lobe stage ordering on R21 no longer separates.
+- **Mirror statistics:** see claim 35.
+  - Your quoted null numbers re-derive: T1-T3 vs T1-T5 −0.444 dB and T2-T4 vs T4-T6 +0.743 dB (rot19).
+  - Reflection pairs in the nulls stay ≤ 0.012 dB.
+  - 3.4 GHz phase pairs reach 1.67–1.78°.
+  - Per-antenna neighbour-phase range is 1.42° / 0.68° over 3.30–3.65 GHz; it is 1.07° / 0.82° over the protocol's
+    3.2–3.5 GHz band, where Test_B's is 1.99°.
+- **Survival:** `posthoc_nulls/C_survival.csv`, summarised in the 6.2 annotations.
+- **Test_B readings:**
+  - detection 0.70x (unchanged);
+  - staging 0.33x / 0.05x;
+  - reflection pairs 3.8x / 5.0x (survive);
+  - phase cross-ratio counts 0 / 4 → 0 / 2;
+  - mirror side "left" → "mixed";
+  - pattern fit rejected.
+- **RightOnly readings (post hoc; verdict stands):**
+  - P1 12/26 → 21/26 within tolerance;
+  - P2 counts 4 / 9 → 2 / 4;
+  - P4 now within the re-mesh yardstick on all three ratios;
+  - P5 2.5x unchanged.
+
+**Q2 (staging).** See claim 32. It is not the rule malfunctioning: R21 and R32 are ring averages, so they cannot
+grade partial disease.
+
+**Q3 (mirror side).** See claim 33.
+- For a one-sided design, every antisymmetric statistic carries LeftOnly's sign.
+- For a diagonal pair (S2 + S5), the mirror maps S5 onto S3. A statistic then reads (S2 part) − (S3 part), so:
+  - T2-dominated statistics vote left;
+  - T3/T5-dominated statistics vote right;
+  - statistics that see both cancel.
+- Observed for Test_B (9-null rulers): 6 left votes, all on T2-containing statistics (two pairs are duplicates), and
+  1 right vote (the T3/T5 reflection pair, 5.0x).
+- The aggregated net-sign vote therefore cannot be the side statement.
+
+**Q4 (pattern vs sectors).**
+- In the validation at 89af4b3, the best pattern equalled the truth in 6/6 accepted-fit designs, while all-certain
+  per-sector verdicts occurred in 3/6.
+- Best-to-runner-up gaps ranged 0.37–2.16x the null contrast, and the best pattern was right even at 0.37x. Test_B's
+  gap (0.209°, 0.98x) sits inside that range.
+- On that evidence the pattern output was the better-calibrated one. But the rotated nulls show the null contrast was
+  underestimated by about 2x (claim 34): a healthy rotated head came out "none" only because 1.97x < 2x.
+- The Test_B localisation is therefore not established. The committed, scored result is pattern 25 reported, with six
+  sector abstentions.
