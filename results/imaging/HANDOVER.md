@@ -83,15 +83,18 @@ A replication design (RightOnly_test) was proposed and its prediction committed.
   - every other claim is unchanged.
 - **Raw neighbour-path delay per antenna ranks the affected sectors as well as the Born map** (top-k with the
   true k 0.96 vs 1.00; Spearman 0.79 vs 0.71). The ranking is not evidence for the Born pipeline. The Born map
-  adds only a gated level (fewer false alarms with stated rules).
+  adds only a gated level (fewer false alarms with stated rules). *Superseded by round 4: under identical
+  calibration the Born advantage depends on the calibration.*
 - **Rank reading (largest gap, gate T_null)**: 58 hits / 0 false / 20 of 26 exact, vs the frozen threshold's 51 /
   0 / 15. Reported, **not adopted**.
 - **Pass gap** (RightOnly p5 vs LeftOnly p6, against the three p5/p6 twins): LR, LR_anti, amplitude and phase parts,
-  and phase share are within the twins (≤ 1.08×). RightOnly's absolute level is not: common-mode delay +4.3° vs
-  twins ≤ 3.3°, affected sectors 23–45 % higher.
+  and phase share are within the twins (≤ 1.08×). RightOnly's absolute level is above them: common-mode delay +4.3°
+  vs twins ≤ 3.3°, affected sectors 23–45 % higher. *Superseded by round 4: that is 1.31× and 1.86–2.06× the
+  largest of n = 3, so undetermined.*
 
-**Round 4 (POST-HOC; `lobe_round4.md`, `lobe_report.md` §13; code `a6cf6cc`, results `79ed048`). Round 3
-statements corrected:**
+**Round 4 (POST-HOC; `lobe_round4.md`, `lobe_report.md` §13; code `a6cf6cc`, results `79ed048`; re-run from
+the committed code with identical numbers, stamped round 3 `97efdd4-dirty` (only another session's `.gitattributes`)
+and round 4 `00be60d`). Round 3 statements corrected:**
 - **Fit rejection**: "rot19 correctly rejected" is withdrawn.
   - The rule is a gate on the *sector-shaped* part of the data (explained norm: nulls 1.3–4.3, targets 9.8–35.7)
     against mesh structure. It is neither a model-validity check nor a total-size gate: rot19's total norm is
@@ -107,10 +110,12 @@ statements corrected:**
   - Threshold readings: Born adds **nothing measurable** (+1 exact set of 26).
   - Rank (largest-gap) reading: Born keeps +4…+6 exact sets and 0 false alarms against raw's 5–6.
   - Label-tuned thresholds (leave-one-family-out): Born 21/26 exact with 3 false alarms, raw 17/26 with 16.
-  - The round-3 raw rule's mid-run redefinition is documented with its before/after numbers: 0/72/0/8 → 43/29/6/14.
+  - The round-3 raw rule's mid-run redefinition is documented with its before/after numbers
+    (hits/misses/false alarms/exact of 26): 0/72/0/8 → 43/29/6/14; Born 58/14/0/20.
 - **Rank rules out of sample** (leave-one-design-out and leave-one-family-out, Test_B never in selection): Born
-  58 hits / 0 false alarms / 20 of 26 exact, the same as in sample. The selected rule is stable ("above midpoint",
-  gate ≈ 8.5). Test_B is read as S2 + S5 against both references. Not adopted; all from one head.
+  58 hits / 0 false alarms / 20 of 26 exact, the same as in sample. The selected rule is "above midpoint" for 8 of
+  9 held-out families (largest gap for RightOnly), gate 8.0–9.25 (8.5 for 7 of 9).
+  Test_B is read as S2 + S5 against both references. Not adopted; all from one head.
 - **Next action:** when Null_rot31 and Null_rot43 arrive:
   1. Add them to `REGISTRY` (`imaging/lobe_c3.py`) and to `ROT` (`imaging/lobe_round3.py`); nothing else needs
      editing.
@@ -319,8 +324,8 @@ What each writes:
 9. `report_rightonly.py` (≈ 40 s): §10 (QC, verdict, post-hoc mirror-pair table).
 10. `score_testb.py` (≈ 40 s): `testb_report.md`, `testb.json`, §11. It refuses to run if the protocol is not
     committed.
-11. `lobe_round3.py` (≈ 40 s): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
-12. `lobe_round4.py` (≈ 30 s): POST-HOC round 4, `lobe_round4.md` / `.json`, §13.
+11. `lobe_round3.py` (≈ 1 min): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
+12. `lobe_round4.py` (≈ 1 min): POST-HOC round 4, `lobe_round4.md` / `.json`, §13.
 
 The §8 and §9 writers keep later sections. `lobe_c3` (step 5) still truncates everything after §6, which is why
 steps 6–10 must follow it.

@@ -1,6 +1,6 @@
 # Round 3 (imaging session): rotated nulls, Test_B truth, rank readings, raw delay, pass gap
 
-**POST-HOC throughout.** Everything here was computed after the Test_B truth and the rotated nulls were released, by `python imaging/lobe_round3.py --n 100` at code `a6cf6cc-dirty` (numbers in `results/imaging/lobe_round3.json`). Frozen rules, thresholds, protocols, predictions and submitted estimates are unchanged. Committed verdicts stand as scored.
+**POST-HOC throughout.** Everything here was computed after the Test_B truth and the rotated nulls were released, by `python imaging/lobe_round3.py --n 100` at code `97efdd4-dirty` (numbers in `results/imaging/lobe_round3.json`). Frozen rules, thresholds, protocols, predictions and submitted estimates are unchanged. Committed verdicts stand as scored.
 
 ## 1. Test_B: the user's score against my committed protocol (24aa0c4)
 

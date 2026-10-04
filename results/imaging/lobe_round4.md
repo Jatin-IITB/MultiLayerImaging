@@ -1,6 +1,6 @@
 # Round 4 (imaging session, POST-HOC): fit rejection, fair Born-vs-raw comparison, leave-one-out
 
-Computed by `python imaging/lobe_round4.py` at code `f4707ea-dirty`; numbers in `results/imaging/lobe_round4.json`. Everything here is post hoc. Frozen files, protocols, predictions and the committed scorers are unchanged.
+Computed by `python imaging/lobe_round4.py` at code `00be60d`; numbers in `results/imaging/lobe_round4.json`. Everything here is post hoc. Frozen files, protocols, predictions and the committed scorers are unchanged.
 
 ## 1. What the fit-rejection rule separates
 
