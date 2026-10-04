@@ -1,0 +1,296 @@
+{
+ "tag": "Test_B",
+ "code": "3697bef",
+ "truth": {
+  "e": [
+   0,
+   11.5,
+   0,
+   0,
+   7.5,
+   0
+  ],
+  "tissue_stage": "Mild",
+  "csf_stage": "Mild",
+  "hip_stage": "Mild",
+  "r_hip": 17.5,
+  "source": "user message after all three sessions committed estimates: e_S1..e_S6 = 0/11.5/0/0/7.5/0 mm, r_hip 17.5, GM/WM_Mild in S2 and S5 only, HIP_Mild, CSF_Mild"
+ },
+ "primary": "standard_H6",
+ "variants": {
+  "standard_H6": {
+   "lobe_calls_correct": 6,
+   "C1_lobes": "PASS",
+   "C2_stage": true,
+   "stage_true": "Mild",
+   "C3_coverage": 6,
+   "C3_met": true,
+   "fit": "OK",
+   "overall": "PASS",
+   "mae_affected_mm": 1.0,
+   "per_sector": [
+    {
+     "sector": "S1 Fr",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S2 TL",
+     "e_true": 11.5,
+     "affected_true": true,
+     "P_affected": 0.9999999999999999,
+     "call": true,
+     "e_median": 13.0,
+     "interval": [
+      7.0,
+      21.5
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S3 PL",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S4 Oc",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S5 PR",
+     "e_true": 7.5,
+     "affected_true": true,
+     "P_affected": 1.0,
+     "call": true,
+     "e_median": 7.0,
+     "interval": [
+      6.5,
+      12.5
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S6 TR",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    }
+   ]
+  },
+  "gainfree_H6": {
+   "lobe_calls_correct": 6,
+   "C1_lobes": "PASS",
+   "C2_stage": true,
+   "stage_true": "Mild",
+   "C3_coverage": 5,
+   "C3_met": true,
+   "fit": "OK",
+   "overall": "PASS",
+   "mae_affected_mm": 3.25,
+   "per_sector": [
+    {
+     "sector": "S1 Fr",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S2 TL",
+     "e_true": 11.5,
+     "affected_true": true,
+     "P_affected": 0.9999999999999999,
+     "call": true,
+     "e_median": 6.5,
+     "interval": [
+      6.0,
+      11.5
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S3 PL",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S4 Oc",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S5 PR",
+     "e_true": 7.5,
+     "affected_true": true,
+     "P_affected": 1.0,
+     "call": true,
+     "e_median": 6.0,
+     "interval": [
+      6.0,
+      6.5
+     ],
+     "covered": false
+    },
+    {
+     "sector": "S6 TR",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    }
+   ]
+  },
+  "standard_H7": {
+   "lobe_calls_correct": 6,
+   "C1_lobes": "PASS",
+   "C2_stage": true,
+   "stage_true": "Mild",
+   "C3_coverage": 5,
+   "C3_met": true,
+   "fit": "OK",
+   "overall": "PASS",
+   "mae_affected_mm": 4.0,
+   "per_sector": [
+    {
+     "sector": "S1 Fr",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S2 TL",
+     "e_true": 11.5,
+     "affected_true": true,
+     "P_affected": 1.0,
+     "call": true,
+     "e_median": 3.5,
+     "interval": [
+      3.0,
+      9.0
+     ],
+     "covered": false
+    },
+    {
+     "sector": "S3 PL",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S4 Oc",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S5 PR",
+     "e_true": 7.5,
+     "affected_true": true,
+     "P_affected": 1.0,
+     "call": true,
+     "e_median": 7.5,
+     "interval": [
+      7.0,
+      17.5
+     ],
+     "covered": true
+    },
+    {
+     "sector": "S6 TR",
+     "e_true": 0.0,
+     "affected_true": false,
+     "P_affected": 0.0,
+     "call": false,
+     "e_median": 0.0,
+     "interval": [
+      0.0,
+      0.0
+     ],
+     "covered": true
+    }
+   ]
+  }
+ },
+ "verdict": "PASS"
+}
