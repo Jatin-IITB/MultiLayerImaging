@@ -1,0 +1,12 @@
+H7 vs H6     FB (T1 - T4) +0.04 deg
+H6 vs H7     FB (T1 - T4) -0.04 deg
+MCI vs H6    FB (T1 - T4) +0.02 deg
+Mild5 vs H6  FB (T1 - T4) +0.53 deg
+Mild6 vs H7  FB (T1 - T4) +0.45 deg
+rot07 vs H6  FB (T1 - T4) +1.32 deg
+rot19 vs H6  FB (T1 - T4) +0.13 deg
+Mod5 vs H6   FB (T1 - T4) +4.24 deg
+Mod6 vs H7   FB (T1 - T4) +4.13 deg
+Mod5 vs H6 ratio old 7.99 new 3.21
+Mod6 vs H7 ratio old 7.77 new 3.12
+floor old 0.53 new 1.32

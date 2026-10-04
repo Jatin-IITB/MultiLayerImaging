@@ -1,0 +1,16 @@
+design,file,imaging2 role,stop_rule,passes,final_dS,elements,in_training
+Healthy_sliced_new,new_with_slices_Healthy_sliced_new.s6p,reference (H6); zero-change pair with H7 in training,1,6,0.0155,1081728,ref
+Healthy_sliced,new_with_slices_Healthy_sliced.s6p,train + target (H7 vs H6); secondary reference,2,7,0.0092,1349491,yes
+Mild_lobe,new_with_slices_Mild_lobe.s6p,train + LODO target,1,5,0.0186,739774,yes
+Mild_lobe,new_with_slices_Mild_lobe_new.s6p,train + LODO target,2,6,0.015,878656,yes
+Moderate_lobe,new_with_slices_Moderate_lobe.s6p,train + LODO target,1,5,0.0194,796281,yes
+Moderate_lobe,new_with_slices_Moderate_lobe_c3.s6p,train + LODO target,2,6,0.014593,949865,yes
+Severe_lobe,new_with_slices_Severe_lobe.s6p,train + LODO target,1,5,0.019999,690077,yes
+Severe_lobe,new_with_slices_Severe_lobe_c3.s6p,train + LODO target,2,6,0.011567,819294,yes
+LeftOnly_test,new_with_slices_LeftOnly_test_c3.s6p,train + LODO target,1,6,0.014686,941358,yes
+MCI_lobe,new_with_slices_MCI_lobe_c3.s6p,train + LODO target,1,6,0.013948,981160,yes
+RightOnly_test,new_with_slices_RightOnly_test.s6p,replication target (LeftOnly fold); never trained on,1,5,0.019742,789241,no
+Test_B,new_with_slices_Test_B.s6p,blind target (scored); never trained on,1,6,0.012597,903758,no
+Null_rot07,new_with_slices_Null_rot07.s6p,null target / alternative reference (post hoc); never trained on,1,6,0.01465,1045101,no
+Null_rot19,new_with_slices_Null_rot19.s6p,null target / alternative reference (post hoc); never trained on,1,6,0.014495,939082,no
+Uniform v2 (new_*.s6p),new_Healthy/MCI/MildAD/ModerateAD/SevereAD.s6p,not used (own-project mesh noise),,,,,no

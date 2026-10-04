@@ -23,8 +23,19 @@ very lossy Severe CSF screens tissue more than about 5 mm below the skull.
   inversion calls both sides.
 - So the side call is solid only in the primary configuration, and the depth uncertainty is under-stated.
 
-**Blind Test_B (§8, estimates only; truth withheld):** Mild, temporal L (S2) and parietal R (S5) affected, all other
-lobes not; fit 0.46 (accepted).
+**Blind Test_B (§8): PASS under the protocol committed before the file existed.**
+- **Estimate committed before the truth:** Mild; temporal L (S2) and parietal R (S5) affected, all other lobes not; fit 0.46.
+- **Truth:** S2 11.5 mm, S5 7.5 mm, Mild.
+- **Primary result:** lobes exact, stage correct, both depths inside their intervals in the right order: a blind hit.
+- **Secondary variants:** each misses one interval. Gain-removing: S5 interval 6.0–6.5 excludes 7.5. Against H7: S2
+  interval 3.0–9.0 excludes 11.5, and the depth order is reversed.
+
+**Post hoc, after the truth (§11):**
+- Rotated-mesh nulls come out empty.
+- The lobe calls survive every null reference and an inflated noise model.
+- Interval coverage on affected lobes is 69% → 78% with every solve-to-solve offset added. That is above 70% but
+  below the nominal 90%: depth intervals remain the open problem.
+- One model-free reading (Test_B's ring spread) does not survive the rotated nulls.
 
 Everything below z ≈ 30 mm and deeper than ≈ 1.5–2 cm is not measured by this array. The images fade/hatch it.
 
@@ -244,7 +255,7 @@ projected out) restores the lobe pattern.
 - `scores_designs.csv`, `scores_sectors.csv`: the scores.
 - `noise_study.json`, `noise_summary.csv`: the noise study.
 
-## 8. Blind design Test_B (estimates only; the truth is held by the user)
+## 8. Blind design Test_B (estimates committed before the truth; scored after)
 - **Commits:**
   - protocol `595e9cb` (`BLIND_PROTOCOL.md`, before the file existed);
   - fix of a syntax error in a figure title, found before Test_B was read: `d83d1d5` (`blind/DEVIATIONS.md` item 1);
@@ -269,6 +280,25 @@ projected out) restores the lobe pattern.
 - **Figures** (`blind/Test_B/`): `overview_sig_z50_Test_B.png` (standard style, no truth row), `blind_stack_Test_B.png`,
   `blind_overview_Test_B.png` (z 60/50/40), `blind_slices_{sig,eps}_Test_B.png` (baseline | change | head | posterior
   SD), `blind_views_Test_B.png`, `blind_detuning_Test_B.png`.
+
+**Score (truth revealed after all three sessions had committed; scored with the committed scorer, `f88236c`):**
+- **Truth:** e = 0 / 11.5 / 0 / 0 / 7.5 / 0 mm; Mild gray/white in S2 and S5; HIP_Mild; CSF_Mild; r_hip 17.5.
+- **Files:** `blind/Test_B/truth.json` (the user's values in the protocol's format), `score.md`, `score.json`,
+  `blind_scored_Test_B.png`.
+
+| variant | stage | lobe calls (C1) | stage (C2) | truth inside 90% (C3) | fit | protocol verdict |
+|---|---|---|---|---|---|---|
+| standard vs H6 (**PRIMARY**) | Mild | 6/6 PASS | correct | 6/6 | 0.46 OK | **PASS** |
+| gain-removing vs H6 | Mild | 6/6 PASS | correct | 5/6 (S5 6.0–6.5 excludes 7.5) | 0.77 OK | PASS (C3 needs ≥ 4/6) |
+| standard vs H7 | Mild | 6/6 PASS | correct | 5/6 (S2 3.0–9.0 excludes 11.5; order reversed) | 0.42 OK | PASS (C3 needs ≥ 4/6) |
+
+- **User's scoring:** a blind hit (lobes exact, stage correct, primary depths inside their intervals in the right
+  order).
+- **Across sessions:** imaging2 is the only one with stage Mild correct and "both sides". Main staged it Normal and
+  read the side as left; the Born imaging read "none".
+- **Open problem:** together with RightOnly, interval coverage. The secondary variants' intervals miss.
+- **Presentation figures:** `figures/TestB_vs_truth_pres.png` (z = 50 overview with truth, estimate and error rows),
+  `figures/TestB_stack_truth_pres.png` (slice stack, true affected region outlined at Δσ = 1 S/m).
 
 ## 9. RightOnly_test: replication of the left/right result (geometry known; `rightonly/rightonly.md`)
 - **Setup:**
@@ -306,7 +336,97 @@ projected out) restores the lobe pattern.
 `figures/{overview_sig_z50,overview_eps_z50,controls_sig_z50,detuning_ring_raw_data}_pres.png`: same content, "other
 mesh" wording replaced by "repeat simulation".
 
-## 11. What I would do next
+## 11. POST HOC, after the Test_B truth (`posthoc/posthoc.md`, `imaging2/posthoc.py`; everything here is post hoc)
+- **Unchanged:** committed estimates, the protocol, verdicts, thresholds.
+- **New files:** recorded in imaging2's own set file `sets.csv`; never in any training set.
+  - Null_rot07 (6 passes, ΔS 0.01465, 1,045,101 elements) and Null_rot19 (6, 0.014495, 939,082);
+  - RightOnly (5, 0.019742, 789,241) and Test_B (6, 0.012597, 903,758).
+- **Masking:** the −30 dB rule masks the reported rot07 point (3.86 GHz, T4–T1). It also masks 3.565 GHz T2–T1 in
+  rot07, 3.87 GHz T4–T1 in rot19, and 3.84–3.85 GHz T1–T5 in Test_B.
+
+**A. Rotated nulls as targets** (training = every lobe design; nulls never trained on): **empty**.
+- 0 lobes called in all 8 runs (rot07, rot19 × H6, H7 reference × standard, gain-removing).
+- Stage Healthy in 7/8. rot07 vs H7, gain-removing, says Mild with no lobe: a whole-head CSF reading from a mesh offset.
+- Fits 0.30–2.01; rot19 vs H7 reaches the "poor fit" band.
+
+**B. Each rotated null as the healthy reference.**
+- **Standard variant, lobe calls hold in 6/6 runs:** Test_B S2 + S5; LeftOnly S2 + S3; RightOnly S5 + S6.
+- **Gain-removing variant:** Test_B 2/2 and LeftOnly 2/2 hold; RightOnly fails 2/2 (adds S2 against rot07; only S6
+  against rot19).
+- **Stage is reference-sensitive:** with rot19 as reference the standard variant says Moderate for Test_B, LeftOnly
+  and RightOnly.
+
+**C. Pass gap (5 vs 6 passes).** RightOnly − mirror(LeftOnly), against the three pass-5 vs pass-6 twins (Mild, Moderate,
+Severe), same statistics and frequencies:
+- **Same signature:** a uniform phase lag. Band-mean neighbour phase is 3.05° against 2.37–2.53°; the model-free ring
+  mean is +2.81° against +2.15 to +2.33°.
+- **Larger than all three twins** on 12/16 statistics over 3.2–4.2 GHz and 11/16 over 3.30–3.65 GHz, by 5–39%.
+- **Signal-size ratio** RightOnly / mirrored LeftOnly: 1.76 (reflection amplitude) and 1.74 (neighbour phase), against
+  1.15–1.50 and 1.15–1.43 for the twins.
+- **At reconstruction level** the change of ê (max 8.5 mm) equals the Severe twin's (8.5) and exceeds Mild's (5.5) and
+  Moderate's (6.5).
+- **Verdict by the stated rule:** the difference is larger than the pass-5/6 twins, so **the pass gap does not explain
+  it fully**. It has the pass gap's form, a uniform lag, but is 1.05–1.39× its size. The mirrored mesh orientation is a
+  candidate for the rest: the rotated null rot19 vs H6 is as large on second-neighbour and opposite paths (0.96 dB,
+  8.0°). That is an interpretation, not a test.
+
+**D. Rulers rebuilt with the rotated nulls** (R1c: floor = max |null| over the 9 old + 2 rotated; 3x bar). Each current
+claim and reading:
+
+| claim / reading | old | with rotated nulls | survives? |
+|---|---|---|---|
+| Healthy, MCI and both rotated nulls reconstruct empty | 0 lobes | 0 lobes (8/8 runs) | yes |
+| LeftOnly / RightOnly one-sided lobe calls | 0/9 nulls one-sided | 0/11 | yes (the ratio is not applicable: floor 0; rank p 1/12) |
+| ê left − right (LR_e) | 1.24x (not separable) | 1.24x | not separable (unchanged) |
+| model-free ring left − right contrast, LeftOnly / RightOnly | 4.87x / 5.05x | 4.87x / 5.05x (rotated 0.69, 0.28 < floor 0.91) | yes |
+| model-free ring front − back, Moderate (`posthoc/ring_front_back_check.txt`) | 8.0x / 7.8x | **3.2x / 3.1x** (rot07 1.32°) | yes, barely |
+| Test_B ring spread | 5.12x | **1.49x** (rot07 1.42°) | **no** (not separable) |
+| Test_B diagonal-pair elevation (largest of 3 pairs; defined after seeing Test_B) | 12.8x | 3.73x | yes, but post hoc statistic |
+| Test_B T2/T5 elevation (Test_B's own pair) | 20.9x | 5.79x | post hoc pair, not a test |
+| "healthy meshes differ by 1.3–1.6° uniform" (detuning figure ruler) | — | non-uniform spread up to 1.42°, front − back up to 1.32° | ruler text was optimistic |
+
+Your listed null numbers reproduce: rot19 second-neighbour power pairs 0.44 / 0.74 dB; reflection pairs ≤ 0.011 dB;
+rot07 phase pairs at 3.4 GHz 1.67 / 1.78°; ring spread 1.42° / 0.68°.
+
+**E. Noise model with every solve-to-solve offset.**
+- **Samples added in quadrature** to the fold noise; each twin is taken as one observation's error, and the target's
+  own twin is excluded:
+  - H7/H6;
+  - rot07/H6 and rot19/H6;
+  - Mild/Moderate/Severe 5/6;
+  - RightOnly/mirror(LeftOnly).
+- **Empirical 90% coverage of ê** over the 9 leave-one-out targets + RightOnly + Test_B (primary):
+
+| | all 66 sectors | 36 affected sectors | lobe calls correct |
+|---|---|---|---|
+| before (committed noise model) | 83% | **69%** | 98% |
+| after | 88% | **78%** | 100% (Mild p5's false S1 call disappears) |
+
+- **78% is above the 70% threshold** but below the nominal 90%. So depth intervals are reportable with the warning that
+  they under-cover.
+- **The 8 remaining misses:**
+  - 3 near-misses on Mild's 7.5 mm lobes (intervals start at 8.0);
+  - Severe S1/S2 on both meshes (depth undetermined);
+  - RightOnly S6 (3.0–4.0 vs 7.5).
+
+**Challenge: is P = 1.00 believable?** Not as a calibrated probability.
+- **With the augmented noise:**
+  - Test_B P(S2) = P(S5) = 1.00 and P = 0.00 elsewhere, in all three variants.
+  - RightOnly's wrong lobes stay: gain-removing P(S2) = **1.00**, P(S3) = 0.67; against H7, P(S1) = 0.69.
+- **Calibration:** confident calls (P ≥ 0.99 or ≤ 0.01) were wrong 1 of 84 times before and 1 of 82 after. It is the
+  same call each time, RightOnly gain-removing S2.
+- **Reading:** P = 1.00 means "these data strongly prefer this lobe *under this model*". The model does not represent
+  solve-to-solve offsets well enough for the number to be a probability.
+
+**F. Ring-mean-phase variant** (the phase ring mean of every path class removed at every frequency):
+- **RightOnly:** S5 + S6, ê 13.5 [4.5–21.0] (truth 11.5, now covered) and 3.5 [3.5–4.0] (7.5, still missed).
+- **Test_B:** S2 + S5, ê 8.0 [7.5–20.5] and 7.0 [7.0–16.5], both covered.
+- **Controls:** Healthy, MCI and both rotated nulls are empty.
+- **Stage did not weaken:** Mild 1.00 for RightOnly and Test_B; Mild, Moderate and Severe correct on the leave-one-out
+  designs. The amplitude ring mean and the frequency shape of the phase pattern still carry it.
+- **Severe p5:** S2/S3/S5 depths become 13–13.5 mm (truth 17.5–18) instead of 2 mm, but S1/S4 stay at 0.5; fit 1.87.
+
+## 12. What I would do next
 1. **Solve 2–3 designs that turn Severe into interpolation:** e.g. Severe materials in the left lobes only, and Mild
    materials at e = 3 mm and e = 20 mm. Today every Severe-material state is outside the training set.
 2. **Export fields of one diseased design** (Moderate_lobe, same 3-D grid). That enables a distorted-Born / DBIM
@@ -318,7 +438,7 @@ mesh" wording replaced by "repeat simulation".
 5. **Anatomy variation** (head size, skull/scalp thickness, stand-off) is still untested and decisive. Every result
    here is one idealised head.
 
-## 12. Reproduce
+## 13. Reproduce
 ```
 python -m imaging2.run_lobe2 --sweeps 600     # all leave-one-design-out inversions + controls (≈ 3 min)
 python -m imaging2.run_loso                   # leave-one-stage-out variant (≈ 1 min)
@@ -328,6 +448,8 @@ python -m imaging2.blind run --file new_with_slices_Test_B.s6p --tag Test_B   # 
 python -m imaging2.extras rightonly           # RightOnly replication check (≈ 3 min)
 python -m imaging2.extras testb               # Test_B z = 50 overview (standard style)
 python -m imaging2.extras pres                # *_pres.png copies
+python -m imaging2.posthoc all                # POST HOC analyses after the Test_B truth (≈ 12 min)
+python -m imaging2.posthoc figs               # TestB_vs_truth_pres.png, TestB_stack_truth_pres.png
 ```
 Code hash in `posteriors.json` (`code`). The field cache `cache/fields_head.npz` is rebuilt from `data/fields` on
 first use (≈ 30 s). Nothing outside `imaging2/` and `results/imaging2/` is written.
