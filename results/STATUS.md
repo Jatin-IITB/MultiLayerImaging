@@ -2,7 +2,13 @@
 
 **Round-2 review (4 Oct).** Every conclusion was re-derived from the raw files. The claims that survive are in
 `MODEL_CARD.md` Part 6.2. Anything below that is not listed there is unconfirmed. Main changes:
-- **Detection** holds for healthy, Mild and Moderate lobe designs by every ruler.
+- **Detection** gives the correct label for every lobe design.
+  - Since the four rotated healthy heads (4 Oct), only the Moderate designs clear the 3× bar against the
+    re-mesh ruler.
+  - Healthy, MCI and Mild are 2.1–2.9×; Severe and the partial designs are below 2×.
+  - This downgrade depends on Healthy_sliced_new being the base of that ruler: it is the lowest-R31 healthy
+    mesh.
+  - Current claim list: `results/LEDGER_main.md`.
   - Severe and the left-only design are labelled AD, but not robustly.
   - It relies on 3.2–3.8 GHz; in 3.8–4.2 GHz Normal and AD overlap.
 - **Effective sample size** is one design per stage: the two solves of a stage differ only in sweep settings.
@@ -25,10 +31,11 @@
   - Detection (R31) is unaffected.
   - Every staging label is now below the 3× bar.
   - The Test_B lobe pattern no longer clears the healthy-head contrast.
-  - **The staging collapse rests on one rotated head (19°).** The 7° head barely moves the staging ratios;
-    without the 19° head every staging result is back where it was.
-  - Two more rotated heads (31°, 43°) decide. How they will be evaluated is fixed in advance (pre-registered,
-    5966ee4).
+  - **Four rotated heads (pre-registered evaluation).**
+    - The 43° head also moves the staging ratios. With all four, no staging label reaches 3×; without the 19°
+      head, 10 of 20 do.
+    - The 43° head moves the detection ratio by 0.20 dB, which leaves only Moderate at ≥ 3× (every label is
+      still correct).
   - The uniform (unsectored) head was never re-meshed, so uniform staging is not tested against re-meshing.
   - Details: MODEL_CARD 6.7.
 - **Sensitivity** is ≈ 99% in the air around the head. Of the in-brain part, 56–69% lies above z = 40 mm and

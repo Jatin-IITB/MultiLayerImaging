@@ -8,7 +8,15 @@ only copy is this OneDrive folder.
 **Updated 2026-10-04 (later):** RightOnly_test scored (C6: NOT REPLICATED, 546d804). The Test_B blind protocol was
 committed (d3a4bbf) and the blind estimates were committed (0f49389). The truth is pending: see §7.1(a).
 
-**Updated 2026-10-04 (latest):**
+**Updated 2026-10-04 (final):**
+- All four rotated nulls are in.
+- The pre-registered evaluation was run unchanged: d5110bd.
+- Post-hoc reference and focal analysis: 607397d.
+- **Current claim list: `results/LEDGER_main.md` / `.csv`.**
+- The user committed the lobe `.s6p` files and presentations themselves in 00be60d. rot31/rot43 raw files are
+  untracked, and the main session does not commit raw data.
+
+**Updated 2026-10-04 (earlier):**
 - The Test_B truth came back, and Test_B was scored against the protocol as committed (ef3b2fb; §4b).
 - The rotated healthy nulls Null_rot07 / Null_rot19 were added (kind = null).
 - The post-hoc analysis with them is committed (efc61d5; MODEL_CARD 6.7).
@@ -70,7 +78,7 @@ Its jobs:
 - **Predictions and frozen files are never edited.** Committed predictions are scored as written.
 - **Commit code before every logged run.** Report headers record the git hash; `-dirty` means the run was not clean.
   Results are committed after the code.
-- **Never commit raw data or the CRLF-only diffs, and never "fix" raw data.** "Do not commit them; do not 'fix' raw
+- **Never commit raw data or the CRLF-only diffs, and never "fix" raw data** (the user may, as in 00be60d). "Do not commit them; do not 'fix' raw
   data." The lobe `.s6p` files are untracked on purpose. `git config core.autocrlf` is `true`.
 - **Never enter passwords** or log in on the user's behalf.
 - **The report and the deck are on hold** until the user says otherwise.
@@ -136,7 +144,9 @@ Its jobs:
 | data/raw/new_with_slices_RightOnly_test.s6p (C6 replication; in the manifest) | **no** | bc26c50a0b57af5e |
 | data/raw/new_with_slices_Test_B.s6p (blind until 2026-10-04; truth now in the manifest, kind test) | **no** | 0e0e83feaa12e041 |
 | data/raw/new_with_slices_Null_rot07.s6p (healthy, whole model rotated 7°; kind null, set lobe_nulls) | **no** | cb1176fda2b1e7db |
-| data/raw/new_with_slices_Null_rot19.s6p (healthy, rotated 19°; kind null, set lobe_nulls) | **no** | b79f3a884d1dc926 |
+| data/raw/new_with_slices_Null_rot19.s6p (healthy, rotated 19°; kind null, set lobe_nulls) | yes (00be60d, user) | b79f3a884d1dc926 |
+| data/raw/new_with_slices_Null_rot31.s6p (healthy, rotated 31°; kind null, set lobe_nulls) | **no** | 7a7a6697c6c389d2 |
+| data/raw/new_with_slices_Null_rot43.s6p (healthy, rotated 43°; kind null, set lobe_nulls) | **no** | 551a05d494d6668c |
 | results/imaging/cache/lobe_v1-masked/born_table.pkl (imaging cache; read by 10, 11, 14) | **no** | 998ff933b8869718 |
 
 - **HFSS field exports** (`data/fields/`, git-ignored, 920.6 MB). The v2 Normal design, one export per
@@ -247,6 +257,8 @@ Post-hoc analysis of the score: MODEL_CARD 6.7, claims 31–34.
 
 ## 6. Current claims table (copy of MODEL_CARD 6.2; also `results/05_lobe/review2/claims_round2.csv`)
 
+**Superseded as the current claim list by `results/LEDGER_main.md` (all 13 nulls).** The table below is history.
+
 All claims concern one idealised spherical head, with one solve per design. The noise model was chosen, not measured.
 Anything in MODEL_CARD Parts 1–5 or STATUS that is not listed here is **unconfirmed**. This includes STATUS §2's
 delay numbers, §3 (MCI, reflection metrics, spectral-shape, imaging), §4 (the M5.C2 staging lead) and the M5.C3
@@ -299,20 +311,12 @@ user's correction (MODEL_CARD 6.6). With the rotated nulls, 15 is not establishe
 
 ### 7.1 Waiting on the user (do nothing until the files arrive)
 
-**(a) Null_rot31 and Null_rot43** (healthy design rotated 31° / 43° about z; still solving). The evaluation is
-**pre-registered** (`results/05_lobe/null_rulers/preregistration.md`, `scripts/18_null_rulers.py`, 5966ee4).
-Write nothing new when they arrive:
-1. Get the passes / ΔS / elements from the user.
-2. Add manifest rows like Null_rot07 (class Normal, set `lobe_nulls`, kind `null`, sectors none, stop rule 1).
-   Commit.
-3. Run `python scripts/18_null_rulers.py --n 300` unchanged; it reads every `lobe_nulls` row. Commit the results.
-4. Report every item of the pre-registration three ways.
-   - Only "all nulls" is the ruler.
-   - No null may be dropped unless the user documents an HFSS build defect.
-5. If the code fails on the new files, a fix must be minimal and recorded as a deviation.
-6. Do not change any committed verdict.
-
-`scripts/17_posthoc_nulls.py` (hard-coded to rot07/rot19) is superseded for this purpose; leave it as committed.
+**(a) Rotated nulls: done.** All four were evaluated by the pre-registered `18_null_rulers.py` (5966ee4)
+unchanged; results are in d5110bd. If more nulls arrive, the same procedure applies:
+- add manifest rows (set `lobe_nulls`, kind `null`);
+- run `python scripts/18_null_rulers.py --n 300` unchanged;
+- commit;
+- report three ways.
 
 Test_B is done: truth recorded (1a93a51), scored (ef3b2fb), post hoc (efc61d5).
 
@@ -499,7 +503,13 @@ efc61d5 (code 29fef32).
 python scripts/18_null_rulers.py --n 300
 ```
 Writes `results/05_lobe/null_rulers/`. Pre-registered (5966ee4): path classes, rulers three ways, survival of the
-18 items. First run with two rotated nulls: f4707ea.
+18 items. Runs: f4707ea (2 rotated nulls), d5110bd (all 4).
+
+```bash
+python scripts/19_posthoc_reference_focal.py
+```
+Writes `results/05_lobe/reference_focal/`. POST HOC: typicality of Healthy_sliced_new, mean-of-healthy reference
+(not adopted), focal-disease table. Committed at 607397d (code f5c8143).
 
 - **Imports.** Scripts 10–12 import `imaging/` read-only (`imaging.fields.read_fld`, the Born table
   `results/imaging/cache/lobe_v1-masked/born_table.pkl`, `results/imaging/lobe_frozen.json`). Script 10 checks that the
@@ -553,3 +563,5 @@ Writes `results/05_lobe/null_rulers/`. Pre-registered (5966ee4): path classes, r
 | 29fef32 / efc61d5 | 10-04 | POST HOC: rotated nulls, pass gap, staging, mirror votes, pattern fit |
 | 5966ee4 | 10-04 | **PRE-REGISTRATION** for Null_rot31 / Null_rot43 (18_null_rulers) |
 | f4707ea | 10-04 | 18_null_rulers with 2 rotated nulls: staging collapse rests on rot19 alone |
+| 15d17bb / d5110bd | 10-04 | rot31/rot43 recorded; pre-registered run with all 13 nulls |
+| f5c8143 / 607397d | 10-04 | POST HOC: reference typicality, focal-disease table |

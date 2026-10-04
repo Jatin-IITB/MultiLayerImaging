@@ -722,6 +722,7 @@ rule and gets the same numbers).
 | C6 replication | proposed; predictions committed | RightOnly_test (mirror of LeftOnly); see 6.5 | results/05_lobe/rightonly_predictions.md (0f97bb2) |
 
 ### 6.2 Claims (rebuilt from scratch; CONFIRMED / CHANGED items only; also `review2/claims_round2.csv`)
+**Superseded as the current claim list by `results/LEDGER_main.md` (6.9, all 13 nulls).** Kept with its annotations as history.
 
 All claims concern one idealised spherical head with one solve per design. The noise model was chosen, not measured.
 
@@ -999,3 +1000,87 @@ geometry solved twice:
 **A17 caveat.** "The v1/v2 solves differ only in sweep settings" holds at most for Normal and Severe. For Mild and
 Moderate, the v1 solves come from another project. The effective-N conclusion (one design per stage) is not changed
 by this.
+
+### 6.9 Pre-registered run with all four rotated nulls (code 5966ee4, results d5110bd) and post-hoc follow-ups (607397d)
+**The current list of standing claims is `results/LEDGER_main.md` (documentation baseline).** Part 6.2 is kept with
+its annotations as history.
+
+**Data.** Null_rot31 (6 passes, ΔS 0.016155, 1,078,590 elements) and Null_rot43 (6 passes, ΔS 0.014859, 976,618
+elements) are recorded like rot07/rot19 (kind null, set `lobe_nulls`). Both are passive.
+- rot31's 0.47 dB non-reciprocal point (3.85 GHz, ports 1–5 = T4–T6) is **not** masked by the frozen −30 dB rule.
+  It lies at −88 dB in a transmission notch, 30 dB below the path's band-rms level.
+- Interpolating it out changes R31/R21/R32 by < 1e-5 dB and the phase cross-ratios by ≤ 0.14°.
+- rot43 has no masked points.
+
+**Rulers, three ways** (`null_rulers/rulers_three_ways.csv`):
+
+| ruler | all 13 nulls | without rot19 | rot19 alone |
+|---|---|---|---|
+| R31 re-mesh yardstick | **0.204 dB** (Null_rot43) | 0.204 | 0.135 |
+| R21 re-mesh yardstick | **0.364 dB** (Null_rot19) | 0.172 (Null_rot43) | 0.364 |
+| R32 re-mesh yardstick | **0.469 dB** (Null_rot19) | 0.376 (Null_rot43) | 0.469 |
+| pattern-fit null contrast | 0.431° | 0.431° | 0.272° |
+
+**Detection** (A1, all 13 nulls; the same without rot19, because the R31 ruler is set by rot43). Every label is still
+correct.
+
+| designs | A1 | tier |
+|---|---|---|
+| Moderate | 3.22 / 3.24x | established |
+| healthy | 2.21 / 2.87x | sensitive |
+| Mild | 2.31 / 2.48x | sensitive |
+| MCI | 2.07x (1.98x with the ±0.5 dB spread) | sensitive |
+| Severe | 0.89 / 1.14x | not determined |
+| LeftOnly / RightOnly / Test_B | 0.46 / 0.52 / 0.46x | not determined |
+
+**The surviving detection claim:** the fixed R31 rule gives the correct label for every lobe design, but only the two
+Moderate designs clear 3x against the re-mesh ruler. Healthy, MCI and Mild are sensitive; Severe and the partial
+designs are not determined. "Detection holds for healthy, Mild and Moderate" no longer stands as written.
+
+**Staging** (20 labels, ≥ 3x / 2–3x / < 2x):
+- **All nulls: 0 / 5 / 15.** The sensitive ones are Severe three-class 2.04 / 2.34x and healthy/MCI merged 2.44–2.69x.
+- **Without rot19: 10 / 0 / 10.** The three-class labels of healthy, MCI, Moderate and Severe are ≥ 3x. Every
+  Mild-stage label and every merged Moderate/Severe label is < 2x.
+- **rot19 alone:** as all nulls.
+- **Interpretation:** the merged-staging collapse no longer rests on rot19 alone (rot43 sets the R32 ruler at 0.376 dB
+  by itself); the three-class collapse still does.
+- **Lobe stage ordering on R21:** 0.67x with all nulls, 1.42x without rot19.
+- **R21 rise of the 19 mm designs:** 1.01–1.38x with all nulls, 2.14–2.92x without rot19.
+
+**Other pre-registered items** (all nulls / without rot19):
+- mask dependency 1.56x / 1.56x;
+- LeftOnly phase cross-ratios ≥ 3x: 2 (band mean) and 2 (3.30–3.65 GHz), the same without rot19;
+- RightOnly 2 / 4; Test_B 0 / 2;
+- reflection pairs 3.53–5.32x, and the Test_B per-pair reading (S2 left, S5 right) holds in every variant;
+- neighbour phase pairs 2.83x / 2.66x / 1.61x;
+- C6 P1 21/26 (post hoc);
+- Test_B pattern fit rejected (1.60x); every rotated null as a target comes out "none" (0.63–1.02x);
+- mirror-twin R21 0.37x / 0.77x (within).
+
+**Path classes (4 rotated nulls).** The opposite class is common-mode positive in rot19, rot31 (3.30–3.65 GHz) and
+rot43 against Healthy_sliced_new (+0.21 to +0.40 dB). The neighbour class is common-mode in rot19 (full band) and
+rot43 (3.30–3.65 GHz). The second-neighbour class is scattered in every pair. These are facts, not a conclusion.
+
+**0.3(c) Is the reference typical?** (post hoc, `reference_focal/`; the alternative reference is not adopted)
+- Healthy_sliced_new has the lowest R31 of the six healthy meshes: −0.119 dB against the mean of the other five, 1.9
+  SD. That is extreme but under the 2 SD outlier bar.
+- It is not extreme in R21, R32 or the ring-mean phase. Null_rot43 is the R31 outlier (+2.1 SD); Null_rot19 is the
+  R21 (−3.6 SD) and R32 (+2.3 SD) outlier.
+- The frozen labels and the mirror statistics are reference-free. Only the re-mesh ruler, the Test_B pattern fit, the
+  R21 rise (claim 32) and the front-back index use H6.
+- With the mean of the five 6-pass healthy meshes as base, the re-mesh rulers would be R31 0.113 (inside the one-pass
+  0.135), R21 0.281 and R32 0.295 dB.
+  - Detection would return to ≥ 3x for healthy (3.33–4.34x), Mild (3.49–3.74x), Moderate (4.9x) and MCI (3.12x).
+  - The Test_B pattern fit would be accepted at 2.04x with pattern 25.
+  - So the detection downgrade depends on H6 being the base of the re-mesh ruler.
+
+**Focal-disease table** (post hoc, `reference_focal/F_*.csv`):
+- **Per-antenna R31:** every opposite path joins left to right or lies on the midline, so a half-ring R31 cannot be
+  built. Per-antenna R31 left−right is −0.08 dB (LeftOnly) and −0.02 dB (RightOnly); healthy meshes go up to 0.13 dB.
+  Gain error of ±0.5 dB gives an SD of 0.44 dB.
+- **Half-ring R21 left−right:** −0.23 dB (LeftOnly) and −0.28 dB (RightOnly), the same sign, with healthy meshes up to
+  0.26 dB. Gain error gives an SD of 0.10 dB.
+- **Neighbour-phase left−right:** −4.4° (LeftOnly), +4.6° (RightOnly), −0.4° (Test_B), with healthy meshes up to 1.2°
+  (3.30–3.65 GHz). Gain error has no effect; ±10° per-port phase error gives an SD of 8.6°.
+
+**Uniform staging:** not tested against re-meshing (6.8).
