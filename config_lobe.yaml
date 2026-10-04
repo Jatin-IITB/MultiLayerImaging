@@ -5,6 +5,7 @@ extends: config.yaml
 data:
   manifest: data/sims_lobe.csv
   set: lobe_v1
+  kind: stage                   # staging designs only (test designs: config_lobe_tests.yaml)
 
 metrics:
   sim_set: lobe_v1-masked

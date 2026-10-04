@@ -1,4 +1,4 @@
-# Lobe-sector phantom, set lobe_B: stop-rule matched, stop rule 2 (two consecutive passes): Healthy_sliced (p7), Mild_lobe_new (p6) only.
+# Lobe-sector phantom, set lobe_B: stop-rule matched, stop rule 2 (two consecutive passes): Healthy_sliced (p7), Mild_lobe_new, Moderate_lobe_c3, Severe_lobe_c3 (p6).
 extends: config_lobe.yaml
 
 data:

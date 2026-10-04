@@ -220,11 +220,16 @@ def test_manifest_set_filter_selects_rows_listing_the_set():
     from adstage.io.dataset import load_dataset
     root = pathlib.Path(__file__).resolve().parents[1]
     sets = {}
-    for name in ("config_lobe.yaml", "config_lobe_A.yaml", "config_lobe_B.yaml"):
+    n = {}
+    for name in ("config_lobe.yaml", "config_lobe_A.yaml", "config_lobe_B.yaml", "config_lobe_tests.yaml"):
         ds = load_dataset(load_config(root, name), root)
         sets[name] = dict(zip(ds.classes, ds.files))
-    assert sets["config_lobe.yaml"]["Normal"].endswith("Healthy_sliced.s6p") and len(sets["config_lobe.yaml"]) == 4
+        n[name] = len(ds.files)
+    assert sets["config_lobe.yaml"]["Normal"].endswith("Healthy_sliced.s6p") and n["config_lobe.yaml"] == 4
     assert sets["config_lobe_A.yaml"]["Normal"].endswith("Healthy_sliced_new.s6p")
-    assert sets["config_lobe_A.yaml"]["Mild"].endswith("Mild_lobe.s6p") and len(sets["config_lobe_A.yaml"]) == 4
-    assert set(sets["config_lobe_B.yaml"]) == {"Normal", "Mild"}
-    assert sets["config_lobe_B.yaml"]["Mild"].endswith("Mild_lobe_new.s6p")
+    # kind: stage keeps the test designs (LeftOnly_test_c3 is class Mild) out of the staging set
+    assert sets["config_lobe_A.yaml"]["Mild"].endswith("Mild_lobe.s6p") and n["config_lobe_A.yaml"] == 4
+    assert n["config_lobe_B.yaml"] == 4 and sets["config_lobe_B.yaml"]["Mild"].endswith("Mild_lobe_new.s6p")
+    assert sets["config_lobe_B.yaml"]["Severe"].endswith("Severe_lobe_c3.s6p")
+    assert set(sets["config_lobe_tests.yaml"]) == {"Normal", "Mild", "MCI"} and n["config_lobe_tests.yaml"] == 3
+    assert sets["config_lobe_tests.yaml"]["Mild"].endswith("LeftOnly_test_c3.s6p")

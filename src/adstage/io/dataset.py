@@ -131,6 +131,8 @@ def load_dataset(cfg: dict, root: str | Path = ".", classes: list[str] | None = 
         man = man[man["set"].astype(str).str.split().apply(lambda v: dcfg["set"] in v)].reset_index(drop=True)
         if man.empty:
             raise ValueError(f"{man_path}: no rows in set {dcfg['set']}")
+    if dcfg.get("kind") is not None and "kind" in man:   # e.g. stage designs only, test designs excluded
+        man = man[man["kind"].astype(str) == dcfg["kind"]].reset_index(drop=True)
     if classes is not None:
         man = man[man["class"].isin(classes)].reset_index(drop=True)
     man = man.assign(_o=man["class"].map(STAGES.index)).sort_values(["_o", "file"])

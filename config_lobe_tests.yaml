@@ -1,0 +1,13 @@
+# Lobe-sector phantom, set lobe_tests: Healthy_sliced_new + the pre-registered test designs LeftOnly_test_c3 and
+# MCI_lobe_c3 (stop rule 1, 6 passes each). Used for QC (scripts/00_qc.py); scoring is scripts/09_lobe_tests.py.
+extends: config_lobe.yaml
+
+data:
+  set: lobe_tests
+  kind: null
+
+metrics:
+  sim_set: lobe_tests-masked
+
+results:
+  out_root: results/05_lobe/tests
