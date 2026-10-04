@@ -33,9 +33,11 @@ from imaging.report_lobe import SHORT, _t  # noqa: E402
 
 H7, H6 = "Healthy_sliced", "Healthy_sliced_new"
 REFS = {"H7": H7, "H6": H6}
-ROT = ("Null_rot07", "Null_rot19")
+ROT3 = ("Null_rot07", "Null_rot19")                     # the rotated nulls of round 3 (its committed record)
+ROT_ALL = tuple(r[0] for r in C3.REGISTRY if r[0].startswith("Null_rot"))   # every registered rotated null
 NULL9 = tuple(C3.SYMMETRIC)
-NULL11 = NULL9 + ROT
+ROT = ROT3                                               # current rotated nulls; set with use_nulls()
+NULL11 = NULL9 + ROT                                     # all current nulls (the name is from round 3: 9 + 2)
 PRIMARY = RL.METHODS[0]
 METH = (RL.METHODS[0], RL.METHODS[2], LR.WNAME)
 SH = LR.SHORTM
@@ -43,12 +45,27 @@ MP = SL.mirror_perm()
 # truth (released): affected sectors (indices) and the design name used for the true sector map
 SL.DESIGNS.setdefault("RightOnly_test", ((0, 0, 0, 0, 11.5, 7.5), 17.5, "Mild"))
 SL.DESIGNS.setdefault("Test_B", ((0, 11.5, 0, 0, 7.5, 0), 17.5, "Mild"))
-TRUTH = {"Mild_lobe": "Mild_lobe", "Mild_lobe_new": "Mild_lobe", "Moderate_lobe": "Moderate_lobe",
-         "Moderate_lobe_c3": "Moderate_lobe", "Severe_lobe": "Severe_lobe", "Severe_lobe_c3": "Severe_lobe",
-         "LeftOnly_test_c3": "LeftOnly_test", "RightOnly_test": "RightOnly_test", "Test_B": "Test_B",
-         "MCI_lobe_c3": "MCI_lobe", "Null_rot07": "Healthy_sliced", "Null_rot19": "Healthy_sliced",
-         "Healthy_sliced": "Healthy_sliced", "Healthy_sliced_new": "Healthy_sliced"}
-TRUTH.update({r: "Healthy_sliced" for r in ROT})          # every rotated null (add new ones to ROT and REGISTRY only)
+_TRUTH_A = {"Mild_lobe": "Mild_lobe", "Mild_lobe_new": "Mild_lobe", "Moderate_lobe": "Moderate_lobe",
+            "Moderate_lobe_c3": "Moderate_lobe", "Severe_lobe": "Severe_lobe", "Severe_lobe_c3": "Severe_lobe",
+            "LeftOnly_test_c3": "LeftOnly_test", "RightOnly_test": "RightOnly_test", "Test_B": "Test_B",
+            "MCI_lobe_c3": "MCI_lobe"}
+_TRUTH_B = {"Healthy_sliced": "Healthy_sliced", "Healthy_sliced_new": "Healthy_sliced"}
+TRUTH = {}
+
+
+def use_nulls(rot):
+    """Select the rotated nulls used by every function here and in lobe_round4 (row order as in round 3).
+    Round 3's and round 4's own outputs use ROT3; lobe_round5 uses ROT_ALL."""
+    global ROT, NULL11
+    ROT = tuple(rot)
+    NULL11 = NULL9 + ROT
+    TRUTH.clear()
+    TRUTH.update(_TRUTH_A)
+    TRUTH.update({r: "Healthy_sliced" for r in ROT})
+    TRUTH.update(_TRUTH_B)
+
+
+use_nulls(ROT3)
 
 
 def mir(S):
@@ -92,37 +109,40 @@ def anti_section(ctx):
             yard = max(abs(T(ctx.S[a]) - T(ctx.S[b])) for a, b in C3.ONE_PASS.values())
             n9 = np.array([v[d] for d in NULL9])
             n11 = np.array([v[d] for d in NULL11])
+            N = len(NULL11)
             for d, x in v.items():
                 per.append(dict(reference=rlab, method=SH[m], design=d, LR_anti=x))
             r9, r11 = max(yard, np.abs(n9).max()), max(yard, np.abs(n11).max())
             row = dict(reference=rlab, method=SH[m], yardstick=float(yard), null9_max=float(np.abs(n9).max()),
-                       null9_rms=float(np.sqrt(np.mean(n9 ** 2))), rot07=v["Null_rot07"], rot19=v["Null_rot19"],
-                       null11_max=float(np.abs(n11).max()), null11_rms=float(np.sqrt(np.mean(n11 ** 2))))
+                       null9_rms=float(np.sqrt(np.mean(n9 ** 2))), **{r.replace("Null_", ""): v[r] for r in ROT},
+                       **{f"null{N}_max": float(np.abs(n11).max()), f"null{N}_rms": float(np.sqrt(np.mean(n11 ** 2)))})
             for d in ("LeftOnly_test_c3", "RightOnly_test", "Test_B"):
                 x = abs(v[d])
                 row[f"{d.split('_')[0]} ratio (9)"] = x / r9
-                row[f"{d.split('_')[0]} ratio (11)"] = x / r11
-                row[f"{d.split('_')[0]} rank p (11)"] = float((1 + np.sum(np.abs(n11) >= x)) / 12)
-            row["both mirror designs beyond all 11"] = bool(abs(v["LeftOnly_test_c3"]) > np.abs(n11).max()
-                                                           and abs(v["RightOnly_test"]) > np.abs(n11).max())
-            row["rotated nulls within old 9-null envelope"] = bool(max(abs(v["Null_rot07"]), abs(v["Null_rot19"]))
-                                                                  <= np.abs(n9).max())
+                row[f"{d.split('_')[0]} ratio ({N})"] = x / r11
+                row[f"{d.split('_')[0]} rank p ({N})"] = float((1 + np.sum(np.abs(n11) >= x)) / (N + 1))
+            row[f"both mirror designs beyond all {N}"] = bool(abs(v["LeftOnly_test_c3"]) > np.abs(n11).max()
+                                                             and abs(v["RightOnly_test"]) > np.abs(n11).max())
+            row["rotated nulls within old 9-null envelope"] = bool(max(abs(v[r]) for r in ROT) <= np.abs(n9).max())
             rows.append(row)
     return rows, per
 
 
 # ----------------------------------------------------------------------------------------------- cross-ratio phases
-def cr_section(ctx):
+def cr_section(ctx, nsets=None):
     keep18, _, _ = R2.independent_cr(ctx)
+    if nsets is None:
+        nsets = (("9 nulls", NULL9), (f"{len(NULL11)} nulls", NULL11))
     band = np.flatnonzero((ctx.f >= 3.2e9 - 1) & (ctx.f <= 4.2e9 + 1))
     out = []
     for vname, fsel in (("band mean 3.2-4.2 GHz", band), ("3.4 GHz", ctx.fi[:1]),
                         ("band mean 3.30-3.65 GHz", np.flatnonzero((ctx.f >= 3.3e9 - 1) & (ctx.f <= 3.65e9 + 1)))):
         def st(X):
             return R2.phase_cr_stats(X, fsel)[0][keep18]
-        vals = {d: st(ctx.S[d]) for d in NULL11 + ("LeftOnly_test_c3", "RightOnly_test", "Test_B")}
+        need = set(NULL11).union(*(set(n) for _, n in nsets)) | {"LeftOnly_test_c3", "RightOnly_test", "Test_B"}
+        vals = {d: st(ctx.S[d]) for d in need}
         yard = np.max([np.abs(st(ctx.S[a]) - st(ctx.S[b])) for a, b in C3.ONE_PASS.values()], 0)
-        for nset, names in (("9 nulls", NULL9), ("11 nulls", NULL11)):
+        for nset, names in nsets:
             N = np.array([vals[d] for d in names])
             rms, mx = np.sqrt(np.mean(N ** 2, 0)), np.abs(N).max(0)
             row = dict(view=vname, nulls=nset)
@@ -131,10 +151,10 @@ def cr_section(ctx):
                 row[f"{d.split('_')[0]} ≥3× rms"] = int(np.sum(x >= 3 * np.maximum(yard, rms)))
                 row[f"{d.split('_')[0]} ≥3× max"] = int(np.sum(x >= 3 * np.maximum(yard, mx)))
             loo = []
-            for k, d in enumerate(names):
+            for k, d in enumerate(names if len(names) > 1 else ()):
                 oth = np.delete(N, k, 0)
                 loo.append(int(np.sum(np.abs(N[k]) >= 3 * np.maximum(yard, np.sqrt(np.mean(oth ** 2, 0))))))
-            row["null files ≥3× rms (leave-one-out), max over files"] = int(max(loo))
+            row["null files ≥3× rms (leave-one-out), max over files"] = int(max(loo)) if loo else None
             row["per null file"] = ", ".join(f"{d.replace('Healthy_sliced', 'H').replace('_lobe', '')} {c}" for d, c in zip(names, loo))
             out.append(row)
     return out
@@ -145,7 +165,7 @@ def pair_checks(ctx):
     band = (ctx.f >= 3.2e9 - 1) & (ctx.f <= 4.2e9 + 1)
     k34 = ctx.fi[0]
     rows = []
-    designs = ("Healthy_sliced_new", "Healthy_sliced", "Null_rot07", "Null_rot19", "LeftOnly_test_c3", "Test_B")
+    designs = ("Healthy_sliced_new", "Healthy_sliced") + ROT + ("LeftOnly_test_c3", "Test_B")
     for i in [i for i in range(len(SL.PAIRS)) if R2.PM[i] > i]:
         j = R2.PM[i]
         row = dict(pair=f"{R2.RV.plabel(*SL.PAIRS[i])} vs {R2.RV.plabel(*SL.PAIRS[j])}",
@@ -163,7 +183,7 @@ def pair_checks(ctx):
                                                             for d in NULL9))
         rows.append(row)
     ring = []
-    for d in ("Null_rot07", "Null_rot19", "Healthy_sliced", "LeftOnly_test_c3", "RightOnly_test", "Test_B", "MCI_lobe_c3"):
+    for d in ROT + ("Healthy_sliced", "LeftOnly_test_c3", "RightOnly_test", "Test_B", "MCI_lobe_c3"):
         for vname, sel in (("band 3.2-4.2", np.flatnonzero(band)), ("fit 3.4/3.6/3.8", ctx.fi)):
             pa = per_antenna_delay(ctx.S[d], ctx.S[H6], sel)
             ring.append(dict(design=d, view=vname, **{f"T{t + 1} delay deg": float(pa[t]) for t in range(6)},
@@ -188,7 +208,11 @@ def per_antenna_delay(X, R, sel):
 
 
 # ----------------------------------------------------------------------------------------------- rebuilt rulers
-def ruler_rebuild(ctx):
+def ruler_rebuild(ctx, variants=None, keep=None):
+    """Sector, LR and FB rulers. variants: (name, include the old null sets, extra nulls). A variant (name, False,
+    (stem,)) sets the floor from that null alone (ruler = max(one-pass yardstick, |null|))."""
+    if variants is None:
+        variants = (("old", True, ()), ("with rotated nulls", True, ROT))
     rows = []
     sect0 = ("Healthy_sliced", "Healthy_sliced_new", "MCI_lobe_c3")
     for rlab, ref in REFS.items():
@@ -198,27 +222,30 @@ def ruler_rebuild(ctx):
         def q(X):
             return C3.qvec(fx(X[ctx.fi], R[ctx.fi]))
         yard = np.max([np.abs(q(R + sg * (ctx.S[a] - ctx.S[b]))) for a, b in C3.ONE_PASS.values() for sg in (1, -1)], 0)
-        Q = {d: q(ctx.S[d]) for d in set(NULL11) | set(TB.FB_ZERO) | {"LeftOnly_test_c3", "RightOnly_test", "Test_B",
+        Q = {d: q(ctx.S[d]) for d in set(NULL11) | set(TB.FB_ZERO) | set(TRUTH) | {"LeftOnly_test_c3", "RightOnly_test", "Test_B",
                                                                        "Moderate_lobe", "Moderate_lobe_c3", "Mild_lobe",
                                                                        "Severe_lobe", "Mild_lobe_new", "Severe_lobe_c3"}}
-        for nset, extra in (("old", ()), ("with rotated nulls", ROT)):
-            sec_fl = np.max([np.abs(Q[d][:6]) for d in sect0 + extra if d != ref], 0)
-            lr_fl = max(abs(Q[d][6]) for d in NULL9 + extra if d != ref)
-            fb_fl = max(abs(Q[d][7]) for d in tuple(TB.FB_ZERO) + extra if d != ref)
+        for nset, base, extra in variants:
+            extra = tuple(extra)
+            sec_fl = np.max([np.abs(Q[d][:6]) for d in (sect0 if base else ()) + extra if d != ref], 0)
+            lr_fl = max(abs(Q[d][6]) for d in (NULL9 if base else ()) + extra if d != ref)
+            fb_fl = max(abs(Q[d][7]) for d in (tuple(TB.FB_ZERO) if base else ()) + extra if d != ref)
             rul = np.r_[np.maximum(yard[:6], sec_fl), max(yard[6], lr_fl), max(yard[7], fb_fl)]
+            if keep is not None:
+                keep[(rlab, nset)] = (rul, Q, yard)
             row = dict(reference=rlab, rulers=nset, **{f"ruler {s}": float(rul[k]) for k, s in enumerate(SHORT)},
                        ruler_LR=float(rul[6]), ruler_FB=float(rul[7]))
             for d, ks in (("Test_B", (1, 4)), ("RightOnly_test", (4, 5)), ("LeftOnly_test_c3", (1, 2))):
                 for k in ks:
                     row[f"{d.split('_')[0]} {SHORT[k]} ratio"] = float(abs(Q[d][k]) / rul[k])
                 row[f"{d.split('_')[0]} LR ratio"] = float(abs(Q[d][6]) / rul[6])
-            row["rot07 max sector"] = float(Q["Null_rot07"][:6].max())
-            row["rot19 max sector"] = float(Q["Null_rot19"][:6].max())
+            for r in ROT:
+                row[f"{r.replace('Null_', '')} max sector"] = float(Q[r][:6].max())
             rows.append(row)
     return rows
 
 
-def b24_rebuild(ctx):
+def b24_rebuild(ctx, variants=None):
     rows = []
     for setn, ref, mild, mod, sev in (("lobe_A", H6, "Mild_lobe", "Moderate_lobe", "Severe_lobe"),
                                       ("lobe_B", H7, "Mild_lobe_new", "Moderate_lobe_c3", "Severe_lobe_c3")):
@@ -230,11 +257,15 @@ def b24_rebuild(ctx):
             bu = 0.5 * abs(fb[mild] - fb[sev])
             r = ctx.rulers(mod, ref, m)
             clean_old = max(r["yard"][7], r["floor"][7])
-            clean_new = max(clean_old, abs(fb["Null_rot07"]), abs(fb["Null_rot19"]))
+            clean_new = max([clean_old] + [abs(fb[x]) for x in ROT])
             corr = fb[mod] - bias
-            rows.append(dict(set=setn, method=SH[m], FB_rot07=fb["Null_rot07"], FB_rot19=fb["Null_rot19"],
-                             corrected=corr, ratio_old=abs(corr) / np.hypot(bu, clean_old),
-                             ratio_new=abs(corr) / np.hypot(bu, clean_new)))
+            row = dict(set=setn, method=SH[m], **{f"FB_{x.replace('Null_', '')}": fb[x] for x in ROT},
+                       corrected=corr, ratio_old=abs(corr) / np.hypot(bu, clean_old),
+                       ratio_new=abs(corr) / np.hypot(bu, clean_new))
+            for name, base, extra in (variants or ()):
+                clean = max([clean_old if base else r["yard"][7]] + [abs(fb[x]) for x in extra])
+                row[f"ratio ({name})"] = abs(corr) / np.hypot(bu, clean)
+            rows.append(row)
     return rows
 
 

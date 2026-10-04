@@ -28,12 +28,19 @@ from imaging.report_lobe import SHORT, _t  # noqa: E402
 
 REFS = R3.REFS
 PRIMARY = RL.METHODS[0]
-NULLSET = ("Healthy_sliced", "Healthy_sliced_new", "MCI_lobe_c3") + R3.ROT   # no cortical change
 GATES = np.round(np.arange(0.0, 20.0001, 0.25), 2)
-FAMILY = {"Mild_lobe": "Mild", "Mild_lobe_new": "Mild", "Moderate_lobe": "Moderate", "Moderate_lobe_c3": "Moderate",
-          "Severe_lobe": "Severe", "Severe_lobe_c3": "Severe",
-          "Healthy_sliced": "healthy cross-reference", "Healthy_sliced_new": "healthy cross-reference",
-          **{r: "rotated nulls" for r in R3.ROT}}
+
+
+def nullset():
+    """No cortical change; the rotated nulls are the ones currently selected in lobe_round3 (R3.use_nulls)."""
+    return ("Healthy_sliced", "Healthy_sliced_new", "MCI_lobe_c3") + R3.ROT
+
+
+def family():
+    return {"Mild_lobe": "Mild", "Mild_lobe_new": "Mild", "Moderate_lobe": "Moderate", "Moderate_lobe_c3": "Moderate",
+            "Severe_lobe": "Severe", "Severe_lobe_c3": "Severe",
+            "Healthy_sliced": "healthy cross-reference", "Healthy_sliced_new": "healthy cross-reference",
+            **{r: "rotated nulls" for r in R3.ROT}}
 
 
 def kind_of(d):
@@ -92,7 +99,7 @@ def row_values(ctx):
             if d == ref:
                 continue
             raw = R3.per_antenna_delay(ctx.S[d], R, ctx.fi)
-            rows.append(dict(reference=rlab, ref=ref, design=d, truth=R3.affected(d), is_null=d in NULLSET,
+            rows.append(dict(reference=rlab, ref=ref, design=d, truth=R3.affected(d), is_null=d in nullset(),
                              vals={"Born": fx(ctx.S[d][ctx.fi], R[ctx.fi])[6:12], "raw uncentred": raw,
                                    "raw centred": R3.centred(raw)}))
     return rows
@@ -156,7 +163,8 @@ def fair(ctx, rows):
 
 # ----------------------------------------------------------------------------------------------- 4. leave-one-out
 def loo(rows, stat, kinds, by_family=False):
-    key = (lambda d: FAMILY.get(d, d)) if by_family else (lambda d: d)
+    fam = family()
+    key = (lambda d: fam.get(d, d)) if by_family else (lambda d: d)
     groups = sorted({key(r["design"]) for r in rows})
     chosen, sets_by_row = [], {}
     for h in groups:
@@ -275,7 +283,7 @@ def write_md(res):
           "The first version was wrong: its 'null' set contained diseased stages, which set the gate at 14–16°. The "
           "second fixed that and also removed the common mode, while the results were visible. Below, both raw variants "
           "and the Born values are calibrated **the same way**. Thresholds are computed from the null rows only ("
-          f"{', '.join(NULLSET)}, each against each reference, rotated nulls included) **before any hit is counted**. "
+          f"{', '.join(nullset())}, each against each reference, rotated nulls included) **before any hit is counted**. "
           "'T_null_set' gives zero false alarms on the nulls by construction. 'T_recipe' = max(T_null_set, T_mild) adds "
           "the frozen recipe's Mild-tuned midpoint (Mild_lobe against Healthy_sliced; n/a where Mild's affected and "
           "healthy sectors overlap):", "",
