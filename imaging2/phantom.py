@@ -45,7 +45,8 @@ def radii(t: Truth, k: int):
 
 
 def sector_materials(t: Truth, k: int):
-    tis = t.tissue_stage if t.affected[k] else "Healthy"
+    per = getattr(t, "sector_stage", None)             # optional per-sector stages (blind truth only)
+    tis = (per[k] if per is not None else t.tissue_stage) if t.affected[k] else "Healthy"
     return (MAT[tis]["gm"], MAT[tis]["wm"], MAT[t.csf_stage]["csf"],
             MAT[t.hip_stage]["hip"] if t.hip_stage in MAT and "hip" in MAT[t.hip_stage] else MAT["Healthy"]["hip"])
 

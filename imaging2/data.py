@@ -229,6 +229,31 @@ def load_file(fname: str):
     return _CACHE[fname]
 
 
+def load_external(fname: str):
+    """Loader for a NEW file (the blind design), fixed before it exists (BLIND_PROTOCOL.md):
+    6-port Touchstone; comments/header never read or printed; glitch mask on the NATIVE grid with the
+    same rule; then the 3.2-4.2 GHz 5 MHz grid of every other design: taken exactly if the file's nodes
+    contain it, else cubic spline on Re/Im (no extrapolation: the file must cover 3.2-4.2 GHz).
+    -> (f (201,), S (201, 6, 6) antenna order, reciprocal-symmetrised, mask log, note)."""
+    from scipy.interpolate import CubicSpline
+    ts = read_touchstone(RAW / fname, n_ports=6)
+    f0, s0 = ts.f_hz, ts.s
+    if f0.min() > F_LO + 1 or f0.max() < F_HI - 1:
+        raise ValueError(f"{fname}: band {f0.min() / 1e9:.3f}-{f0.max() / 1e9:.3f} GHz does not cover 3.2-4.2 GHz")
+    s0, log = mask_glitches(f0, s0, GLITCH_THR_DB)
+    f = freq()
+    idx = np.searchsorted(np.round(f0), np.round(f))
+    exact = np.all(idx < len(f0)) and np.allclose(np.round(f0[np.minimum(idx, len(f0) - 1)]), np.round(f))
+    if exact:
+        s, note = s0[idx], "native grid contains the common grid (no resampling)"
+    else:
+        s = CubicSpline(f0, s0.real, axis=0)(f) + 1j * CubicSpline(f0, s0.imag, axis=0)(f)
+        note = f"resampled by cubic spline from {len(f0)} native points"
+    s = s[:, ANT_TO_PORT][:, :, ANT_TO_PORT]
+    s = 0.5 * (s + s.transpose(0, 2, 1))
+    return f, s, log, note
+
+
 def paths_of(S):
     """(F, 6, 6) -> (21, F) reciprocal path data."""
     return S[:, PI, PJ].T
