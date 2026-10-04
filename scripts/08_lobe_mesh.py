@@ -251,6 +251,18 @@ def main():
     gl.to_csv(LOBE / "qc" / "masked_points.csv", index=False)
     wt = pd.DataFrame(worst)
     wt.to_csv(OUT / "0_largest_nonreciprocity.csv", index=False)
+    meff = []                                           # what the mask does to the frozen-recipe features
+    for d, t in raw.items():
+        ms, log = mask_glitches(t.f_hz, t.s, thr)
+        if not log:
+            continue
+        x0, nm0, _, _ = features(t.f_hz, to_ring_order(t.s[None], p2a))
+        x1, _, _, _ = features(t.f_hz, to_ring_order(ms[None], p2a))
+        meff.append({"file": f"{PRE}{d}.s6p", "masked points": len(log),
+                     **{f"{lab} masked - unmasked dB": float(x1[0][nm0.index(k)] - x0[0][nm0.index(k)])
+                        for lab, k in RING}})
+    me = pd.DataFrame(meff)
+    me.to_csv(OUT / "0_mask_effect.csv", index=False)
     L += ["## 0. Duplicates, glitch log, largest non-reciprocity per file",
           "Re-solves with an unchanged stop rule reproduce the file (deterministic meshing); only one of each is in the "
           "manifest:", md(dup, ".2e"), "",
@@ -259,7 +271,9 @@ def main():
           "(The QC reports' own glitch count uses a different, local detector, |Sij - Sji|/|Sij| > -20 dB.)",
           md(gl, ".2f"), "",
           "Largest magnitude non-reciprocity of each file and whether the frozen mask caught it (the mask threshold is "
-          "part of the frozen recipe and is not changed):", md(wt, ".2f"), ""]
+          "part of the frozen recipe and is not changed):", md(wt, ".2f"), "",
+          "Effect of the mask on the frozen-recipe features (masked minus unmasked), files with masked points:",
+          md(me, ".3f"), ""]
 
     # ------------------------------------------------------------------ 1. reproduction of the user's tables
     plain = []
