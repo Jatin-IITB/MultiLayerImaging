@@ -51,8 +51,17 @@ and each sector is ≈ 80 % its own antenna. What remains is **[POST-HOC]**: the
 the data (mirror test passes) and is carried ≈ 85 % by phase. Its size is 1.93× (Tikhonov dS) to 2.77×
 (whitened log) the clean ruler under the agreed floor rule. That is not established, and the rank p is 0.1
 with nine null solves. Bias-corrected front/back is established only on the better-converged set (lobe_B).
-A replication design (RightOnly_test) was proposed and its prediction committed. **The next action is to
-score RightOnly_test when it arrives (§5.5).**
+A replication design (RightOnly_test) was proposed and its prediction committed.
+
+**Update, 2026-10-04 (later):**
+- **RightOnly_test was scored by the committed scorer: REPLICATED** (`rightonly_score.md`; `lobe_report.md` §10).
+  LR −9.44 vs H6 and −9.83 vs H7 (predicted −6.9 ± 3.9, bar |LR| ≥ 7.8). The phase sign check is negative at 3.4
+  and 3.6 GHz, and 83 % of LR comes from phase.
+- [POST-HOC] Each mirror design alone is 2–3.4× the R1c ruler. Both lie beyond all nine nulls with the predicted
+  opposite signs, so if the two meshes' asymmetries are independent the pair's rank p is about 0.01.
+- **Test_B (blind) estimates were submitted** under protocol `24aa0c4`: affected none; possible S2; side none;
+  front/back none; ranking S2 > S5 ≫ S3, S6, S1, S4 (`testb_report.md`; `lobe_report.md` §11). The user holds the
+  truth and will score it. **Next action: record the user's score of Test_B (§5.6).**
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -63,6 +72,15 @@ score RightOnly_test when it arrives (§5.5).**
 | `results/imaging/lobe_predictions.md` | pre-registered blind predictions (LeftOnly_test, MCI_lobe) | `62709e0` (2026-10-03 22:37) | `fb5b775` (2026-10-03 22:36) | `f11ba5a50264b07e` |
 | `results/imaging/lobe_frozen.json` | frozen pipeline: κ(f) at 3.4/3.6/3.8 GHz, λ_dS 0.1585, λ_log 0.1259, calling rules T_abs / T_LR / T_FB per method | `62709e0` | `fb5b775` | `9f3e9bb147f9a188` |
 | `results/imaging/round2_predictions.md` | round-2 predictions: R3 detuning, C4 phase sign, **C6 RightOnly_test design + decision rule** | `0ceb626` (2026-10-04 11:52) | — | `8d7487e0e2277855` |
+| `results/imaging/testb_protocol.md` | **blind protocol for Test_B** (references, methods, R1c rulers, fit rejection, reading rule, suggested scoring) | `24aa0c4` (2026-10-04 16:42), before Test_B was loaded | scorer `imaging/score_testb.py` at `b2f1472` | `b8922f0c0c7aedc2` |
+
+Results scored against these (not to be edited either): `rightonly_score.md` (`6aed0b5aa9c55a4a`, written by the
+unchanged `score_rightonly.py` of `226f9b1`), and `testb_report.md` / `testb.json` (commit `5818235`).
+
+Known defect, recorded rather than fixed (the protocol forbids editing the scorer after loading): the reading
+line in `testb_report.md` says "every reference that passed the gate". There is no gate in the committed
+protocol (data-level size is context only). The references listed are simply the non-rejected ones, which here
+are both.
 
 Main-session frozen files I read but do not own: `results/05_lobe/predictions.md` (`cf56de8`, sha256
 `e3e4cb45f95567f4`) and `results/04/frozen_rule.json` (`5192287`, `886911157b424a1b`; read via
@@ -103,6 +121,7 @@ Only CONFIRMED / CHANGED items. [POST-HOC] = built after unblinding.
 | MCI_lobe shows nothing beyond the rulers in any variant (never flips with λ, reference or calibration) | CONFIRMED | B17, round 1 |
 | R31 detection is defensible on the uniform training data and fragile on lobe Severe/LeftOnly; no single feature determines every lobe design | CONFIRMED | R4 |
 | Thresholds were frozen before LeftOnly/MCI existed but tuned on Mild of the same head; Mild calls are in-sample | CHANGED | B19 |
+| **Added after round 2:** RightOnly_test (mirror of LeftOnly, independent mesh) is REPLICATED under the committed C6 rule: LR −9.44 (H6) / −9.83 (H7), phase sign at 3.4 and 3.6 GHz, 83 % phase. [POST-HOC] LR_anti −10.15 = 2.5× (Tikhonov dS) to 3.4× (whitened log) the R1c ruler; both mirror designs beyond all nine nulls with opposite signs | CONFIRMED (prediction held) | C6, `rightonly_score.md`, report §10 |
 
 **Agreement with the main session (round 2).** Both sessions independently fixed the same floor rule R1c:
 clean ruler = max(one-pass yardstick, largest |value| over the nine mirror-symmetric solves, none excluded).
@@ -212,6 +231,15 @@ python imaging/lobe_review.py --n 200
 ```bash
 python imaging/lobe_round2.py --n 200
 ```
+```bash
+python imaging/score_rightonly.py
+```
+```bash
+python imaging/report_rightonly.py
+```
+```bash
+python imaging/score_testb.py --n 200
+```
 
 What each writes:
 1. `rebuild_stage1_cache.py` (17 s): cache only.
@@ -224,6 +252,13 @@ What each writes:
 6. `lobe_review.py` (51 s): round 1 (B1–B9) in `lobe_review.md` / `lobe_review.json`; §8; amends the §7
    left/right bullet.
 7. `lobe_round2.py` (61 s): round 2 in `lobe_round2.md` / `lobe_round2.json`, `lobe_claims.csv`, §9.
+8. `score_rightonly.py` (≈ 30 s): `rightonly_score.md`, the committed C6 verdict.
+9. `report_rightonly.py` (≈ 40 s): §10 (QC, verdict, post-hoc mirror-pair table).
+10. `score_testb.py` (≈ 40 s): `testb_report.md`, `testb.json`, §11. It refuses to run if the protocol is not
+    committed.
+
+The §8 and §9 writers keep later sections. `lobe_c3` (step 5) still truncates everything after §6, which is why
+steps 6–10 must follow it.
 
 §0–§5 and the figures `figures/lobe_*.png` were written by stage 1 (`report_lobe.write_stage1`) at `62709e0`.
 **Do not regenerate them**, because that function also rewrites the predictions file. They are final in git.
@@ -246,7 +281,24 @@ python imaging/run_imaging.py --reuse
 - I3 checkpoints in the cache resume after interruption. Laptop sleep stops runs; ask the user to keep it awake
   and plugged in.
 
-### 5.5 NEXT: score RightOnly_test when it is delivered
+### 5.6 NEXT: Test_B score from the user
+
+The user holds Test_B's truth and scores it against `testb_protocol.md` (`24aa0c4`).
+- **Blind rules (still in force until the user releases the truth):**
+  - Test_B's geometry may be learned only from its S-parameters: no HFSS project, no other session's files about
+    it (for example `results/imaging2/`, or main-session Test_B outputs such as commit `d3a4bbf`), no file
+    metadata, and no asking the user.
+- **When the truth arrives:**
+  1. Write `results/imaging/testb_score.md`: the user's truth, and the per-sector "affected" and
+     "affected ∪ possible" agreement as in the protocol's §5.
+  2. Do not re-run with changed rules. Any post-hoc analysis goes in a separate, labelled section.
+  3. Add a claims row.
+- Do not touch `share_lobe_phantom_data/` (an external share copy; never commit, move or edit it).
+- Data checksums: `new_with_slices_RightOnly_test.s6p` `bc26c50a0b57af5e`, `new_with_slices_Test_B.s6p`
+  `0e0e83feaa12e041` (untracked). Their passes, ΔS and elements were not supplied by the user (blanks in the
+  delivery message).
+
+### 5.5 DONE: RightOnly_test (scored 2026-10-04: REPLICATED)
 
 ```bash
 python imaging/score_rightonly.py
@@ -293,8 +345,7 @@ python imaging/score_rightonly.py
 
 ## 6. Open items
 
-1. **RightOnly_test**: deliver (user), score (§5.5). This is the replication of the left/right sign on an
-   independent mesh.
+1. **Test_B**: the user's score is pending (§5.6). RightOnly_test is done: REPLICATED.
 2. **Floor significance**: nine symmetric solves cap the rank p at 0.1. Needs ≥ 19 independent mirror-symmetric
    solves, for example Healthy_sliced re-solved with head and array rotated k × 7°, k = 1…10 (R1, C3).
 3. **Fit frequencies**: field exports exist only at 3.4/3.6/3.8 GHz. Kernel interpolation is invalid (≈ 62°
@@ -330,6 +381,8 @@ python imaging/score_rightonly.py
 | `lobe_review.py` + `lobe_review_md.py` | round 1 (B1–B9) |
 | `lobe_round2.py` + `lobe_round2_md.py` | round 2 (R, B14–B25, G, C), claims |
 | `score_rightonly.py` | C6 replication scorer (§5.5) |
+| `report_rightonly.py` | §10: RightOnly QC, verdict, post-hoc mirror-pair table |
+| `score_testb.py` | Test_B blind scorer implementing `testb_protocol.md` (`--dry-run STEM` on known designs only) |
 | `run_imaging.py`, `study_i1/i2/i2_hfss/i3/ratios.py`, `beamform.py`, `forward.py`, `mie.py`, `linear.py`, `timedomain.py`, `paths.py`, `stage_snr.py`, `report*.py` | Track A |
 | `tests/` | `test_imaging.py` (Track A), `test_lobe.py` (geometry, rules, one bar, whitened projection) |
 | `hpc/` | SLURM / env scripts for the Praganak cluster |
@@ -339,7 +392,9 @@ Key commits:
 - `fb5b775` lobe code frozen; `62709e0` stage 1 + predictions.
 - `2df90a8` / `bf83290` lobe_A; `9182afd` / `2ce6d97` rulers + erratum; `92a8998` / `7944508` blind scoring (c3).
 - `237ad47` / `b543b33` round 1; `0ceb626` round-2 predictions; `66c04db` / `e4c33d3` round 2.
-- `226f9b1` safe rebuild + RightOnly scorer.
+- `226f9b1` safe rebuild + RightOnly scorer; `2a75644` this handover.
+- `b2f1472` / `24aa0c4` Test_B scorer and protocol (before loading); RightOnly REPLICATED.
+- `6efd1db` / `5818235` §10 writer and Test_B estimates.
 
 ## 8. Pitfalls seen in this project
 
