@@ -1,0 +1,264 @@
+item,bar,variant,value,verdict
+"frozen labels >= 3x (A1), 30 lobe labels",>= 3x,all nulls,7,7/30
+staging labels (20): >= 3x / 2-3x / < 2x,tiers,all nulls,0 / 5 / 15,"sensitive: Healthy_sliced_new three_merged 2.53x, Severe_lobe three 2.04x, Healthy_sliced three_merged 2.69x, Severe_lobe_c3 three 2.34x, MCI_lobe_c3 three_merged 2.44x"
+label Healthy_sliced_new binary (Normal),A1 >= 3x,all nulls,3.333943114338191,robust (>= 3x)
+label Healthy_sliced_new three (Normal),A1 >= 3x,all nulls,1.5935879262651025,not determined (< 2x)
+label Healthy_sliced_new three_merged (Normal),A1 >= 3x,all nulls,2.5268205236249845,sensitive (2-3x)
+label Mild_lobe binary (AD),A1 >= 3x,all nulls,3.4856541772699705,robust (>= 3x)
+label Mild_lobe three (UNCERTAIN),A1 >= 3x,all nulls,0.017874584162730807,not determined (< 2x)
+label Mild_lobe three_merged (Mild+Moderate),A1 >= 3x,all nulls,1.0254537682477727,not determined (< 2x)
+label Moderate_lobe binary (AD),A1 >= 3x,all nulls,4.862154553004226,robust (>= 3x)
+label Moderate_lobe three (Mild),A1 >= 3x,all nulls,1.4217169247213746,not determined (< 2x)
+label Moderate_lobe three_merged (Mild+Moderate),A1 >= 3x,all nulls,1.4085317108035216,not determined (< 2x)
+label Severe_lobe binary (AD),A1 >= 3x,all nulls,1.3505984869509746,not determined (< 2x)
+label Severe_lobe three (Severe),A1 >= 3x,all nulls,2.0432024662835606,sensitive (2-3x)
+label Severe_lobe three_merged (Severe),A1 >= 3x,all nulls,0.6359734088204511,not determined (< 2x)
+label Healthy_sliced binary (Normal),A1 >= 3x,all nulls,4.336716237520938,robust (>= 3x)
+label Healthy_sliced three (Normal),A1 >= 3x,all nulls,1.4285917647884148,not determined (< 2x)
+label Healthy_sliced three_merged (Normal),A1 >= 3x,all nulls,2.686880945307446,sensitive (2-3x)
+label Mild_lobe_new binary (AD),A1 >= 3x,all nulls,3.740972795349702,robust (>= 3x)
+label Mild_lobe_new three (Mild),A1 >= 3x,all nulls,0.07699820868636595,not determined (< 2x)
+label Mild_lobe_new three_merged (Mild+Moderate),A1 >= 3x,all nulls,1.170575217239871,not determined (< 2x)
+label Moderate_lobe_c3 binary (AD),A1 >= 3x,all nulls,4.888056441794921,robust (>= 3x)
+label Moderate_lobe_c3 three (Mild),A1 >= 3x,all nulls,1.4217169247213746,not determined (< 2x)
+label Moderate_lobe_c3 three_merged (Mild+Moderate),A1 >= 3x,all nulls,1.3999951549804568,not determined (< 2x)
+label Severe_lobe_c3 binary (AD),A1 >= 3x,all nulls,1.7280260093297155,not determined (< 2x)
+label Severe_lobe_c3 three (Severe),A1 >= 3x,all nulls,2.344320460978515,sensitive (2-3x)
+label Severe_lobe_c3 three_merged (Severe),A1 >= 3x,all nulls,0.9795697806988014,not determined (< 2x)
+label LeftOnly_test_c3 binary (AD),A1 >= 3x,all nulls,0.6956507275290272,not determined (< 2x)
+label LeftOnly_test_c3 three (Normal),A1 >= 3x,all nulls,0.5829864372203856,not determined (< 2x)
+label LeftOnly_test_c3 three_merged (Normal),A1 >= 3x,all nulls,0.24756011886673537,not determined (< 2x)
+label MCI_lobe_c3 binary (Normal),A1 >= 3x,all nulls,3.1230277341853583,robust (>= 3x)
+label MCI_lobe_c3 three (Normal),A1 >= 3x,all nulls,1.5619636619820672,not determined (< 2x)
+label MCI_lobe_c3 three_merged (Normal),A1 >= 3x,all nulls,2.4414549653943385,sensitive (2-3x)
+label RightOnly_test binary (AD),A1 >= 3x,all nulls,0.7918577430373288,not determined (< 2x)
+label RightOnly_test three (Normal),A1 >= 3x,all nulls,0.21724494594705834,not determined (< 2x)
+label RightOnly_test three_merged (Mild+Moderate),A1 >= 3x,all nulls,0.05121933494052574,not determined (< 2x)
+label Test_B binary (AD),A1 >= 3x,all nulls,0.6956507275290272,not determined (< 2x)
+label Test_B three (Normal),A1 >= 3x,all nulls,0.3341172269930468,not determined (< 2x)
+label Test_B three_merged (Normal),A1 >= 3x,all nulls,0.05442054336989778,not determined (< 2x)
+claim 6: mask shift 0.319 dB / R31 yardstick,>= 2x,all nulls,2.3607721497800043,sensitive (2-3x)
+claim 10: smallest lobe R21 stage gap / (2 x R21 yardstick),>= 1,all nulls,0.6723593580172785,does not separate
+claim 32: R21 rise of LeftOnly / R21 yardstick,tiers,all nulls,1.0099131198279607,not determined (< 2x)
+claim 32: R21 rise of Test_B / R21 yardstick,tiers,all nulls,1.2589008041693988,not determined (< 2x)
+claim 32: R21 rise of RightOnly / R21 yardstick,tiers,all nulls,1.3759758562831776,not determined (< 2x)
+claim 29: R21 mirror-twin difference 0.133 dB / R21 yardstick,> 1 = exceeds,all nulls,0.3657414912732027,within
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced]",tiers,all nulls,1.9304750768022454,not determined (< 2x)
+"claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced]",tiers,all nulls,2.498190157104169,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced]",tiers,all nulls,0.04337797373670447,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced_new]",tiers,all nulls,1.9438170260267662,not determined (< 2x)
+"claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced_new]",tiers,all nulls,2.511382590468107,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced_new]",tiers,all nulls,0.04974079320859304,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,all nulls,2.351188440115735,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,all nulls,2.979571107840807,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,all nulls,0.11560191051596302,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,all nulls,2.3481609062670126,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,all nulls,2.98224663624733,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,all nulls,0.10530704210709227,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced]",tiers,all nulls,2.764914841346926,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced]",tiers,all nulls,3.365735441213159,robust (>= 3x)
+"claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced]",tiers,all nulls,0.04355803422139553,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced_new]",tiers,all nulls,2.76939153960084,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced_new]",tiers,all nulls,3.3810244977285064,robust (>= 3x)
+"claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced_new]",tiers,all nulls,0.02897837083746033,not determined (< 2x)
+claim 16 LeftOnly phase cross-ratios >= 3x [band mean 3.2-4.2],count,all nulls,4,4
+C6 P2 RightOnly phase cross-ratios >= 3x [band mean 3.2-4.2],count,all nulls,2,2
+Test_B phase cross-ratios >= 3x [band mean 3.2-4.2],count,all nulls,0,0
+claim 16 LeftOnly phase cross-ratios >= 3x [3.30-3.65 GHz],count,all nulls,4,4
+C6 P2 RightOnly phase cross-ratios >= 3x [3.30-3.65 GHz],count,all nulls,4,4
+Test_B phase cross-ratios >= 3x [3.30-3.65 GHz],count,all nulls,2,2
+claim 17: LeftOnly LR resonance shift vs null max (MHz),beyond null?,all nulls,1.9081202990992097,+1.91 vs 2.86: not beyond
+claim 18/33 T2 refl. vs T6 refl. LeftOnly_test_c3,tiers,all nulls,3.528081378988666,robust (>= 3x)
+claim 18/33 T2 refl. vs T6 refl. RightOnly_test,tiers,all nulls,4.0919836431854275,robust (>= 3x)
+claim 18/33 T2 refl. vs T6 refl. Test_B,tiers,all nulls,3.839285656430327,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. LeftOnly_test_c3,tiers,all nulls,4.999759260537854,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. RightOnly_test,tiers,all nulls,5.317835794002057,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. Test_B,tiers,all nulls,4.971445456775792,robust (>= 3x)
+"claim 33: Test_B per-pair reading S2 left and S5 right, both >= 3x","both >= 3x, signs as stated",all nulls,1.0,holds
+claim 19 LeftOnly phase pair T2-T3 vs T5-T6 (3.30-3.65) / null max,tiers,all nulls,2.829654436453836,sensitive (2-3x)
+claim 19 LeftOnly phase pair T3-T4 vs T4-T5 (3.30-3.65) / null max,tiers,all nulls,2.6565913081657535,sensitive (2-3x)
+claim 19 LeftOnly phase pair T1-T2 vs T1-T6 (3.30-3.65) / null max,tiers,all nulls,1.610112699987899,not determined (< 2x)
+claim 28 / C6 P1 within tolerance (post hoc only),count of 26,all nulls,21,21/26
+C6 P4 within yardstick (post hoc only),all True,all nulls,,"R31 True, R21 True, R32 True"
+"claim 35: mirror rulers raised above the 9-null rulers, by family",count,all nulls,42,"{'phase cross-ratio': 23, 'power LR index': 2, 'power pair': 2, 'power cross-ratio': 14, 'phase pair': 1}"
+"Test_B front-back, all paths",tiers,all nulls,0.01549806906795328,not determined (< 2x)
+"Test_B front-back, neighbour paths",tiers,all nulls,0.32197576746109136,not determined (< 2x)
+Test_B mirror side (protocol rule),as protocol,all nulls,4,"mixed (3 left, 1 right)"
+claim 34: Test_B pattern fit (contrast / call),>= 2x and residual <= 0.5 r0,all nulls,1.644869357698479,"rejected; call 123456 (diffuse); sectors S1 a3.5, S2 a3.5, S3 a3.5, S4 a3.5, S5 a3.5, S6 a3.5"
+claim 34: Null_rot07 as target (leave-one-out rulers) must give 'none',call = none,all nulls,1.5414265388981354,none (contrast 1.54x)
+claim 34: Null_rot19 as target (leave-one-out rulers) must give 'none',call = none,all nulls,0.6487496969624217,none (contrast 0.65x)
+"frozen labels >= 3x (A1), 30 lobe labels",>= 3x,all nulls w/o rot19,20,20/30
+staging labels (20): >= 3x / 2-3x / < 2x,tiers,all nulls w/o rot19,13 / 2 / 5,"sensitive: Mild_lobe three_merged 2.99x, Severe_lobe_c3 three_merged 2.85x"
+label Healthy_sliced_new binary (Normal),A1 >= 3x,all nulls w/o rot19,3.333943114338191,robust (>= 3x)
+label Healthy_sliced_new three (Normal),A1 >= 3x,all nulls w/o rot19,5.280475734127166,robust (>= 3x)
+label Healthy_sliced_new three_merged (Normal),A1 >= 3x,all nulls w/o rot19,7.360981148192761,robust (>= 3x)
+label Mild_lobe binary (AD),A1 >= 3x,all nulls w/o rot19,3.4856541772699705,robust (>= 3x)
+label Mild_lobe three (UNCERTAIN),A1 >= 3x,all nulls w/o rot19,0.05922880461960282,not determined (< 2x)
+label Mild_lobe three_merged (Mild+Moderate),A1 >= 3x,all nulls w/o rot19,2.9872900690177246,sensitive (2-3x)
+label Moderate_lobe binary (AD),A1 >= 3x,all nulls w/o rot19,4.862154553004226,robust (>= 3x)
+label Moderate_lobe three (Mild),A1 >= 3x,all nulls w/o rot19,4.710967997469773,robust (>= 3x)
+label Moderate_lobe three_merged (Mild+Moderate),A1 >= 3x,all nulls w/o rot19,4.103249626523613,robust (>= 3x)
+label Severe_lobe binary (AD),A1 >= 3x,all nulls w/o rot19,1.3505984869509746,not determined (< 2x)
+label Severe_lobe three (Severe),A1 >= 3x,all nulls w/o rot19,6.770307973156855,robust (>= 3x)
+label Severe_lobe three_merged (Severe),A1 >= 3x,all nulls w/o rot19,1.8526793768333392,not determined (< 2x)
+label Healthy_sliced binary (Normal),A1 >= 3x,all nulls w/o rot19,4.336716237520938,robust (>= 3x)
+label Healthy_sliced three (Normal),A1 >= 3x,all nulls w/o rot19,4.733748306953601,robust (>= 3x)
+label Healthy_sliced three_merged (Normal),A1 >= 3x,all nulls w/o rot19,7.827259514843879,robust (>= 3x)
+label Mild_lobe_new binary (AD),A1 >= 3x,all nulls w/o rot19,3.740972795349702,robust (>= 3x)
+label Mild_lobe_new three (Mild),A1 >= 3x,all nulls w/o rot19,0.2551394660052017,not determined (< 2x)
+label Mild_lobe_new three_merged (Mild+Moderate),A1 >= 3x,all nulls w/o rot19,3.410049121448072,robust (>= 3x)
+label Moderate_lobe_c3 binary (AD),A1 >= 3x,all nulls w/o rot19,4.888056441794921,robust (>= 3x)
+label Moderate_lobe_c3 three (Mild),A1 >= 3x,all nulls w/o rot19,4.710967997469773,robust (>= 3x)
+label Moderate_lobe_c3 three_merged (Mild+Moderate),A1 >= 3x,all nulls w/o rot19,4.078381446968887,robust (>= 3x)
+label Severe_lobe_c3 binary (AD),A1 >= 3x,all nulls w/o rot19,1.7280260093297155,not determined (< 2x)
+label Severe_lobe_c3 three (Severe),A1 >= 3x,all nulls w/o rot19,7.768085527748609,robust (>= 3x)
+label Severe_lobe_c3 three_merged (Severe),A1 >= 3x,all nulls w/o rot19,2.8536236039110734,sensitive (2-3x)
+label LeftOnly_test_c3 binary (AD),A1 >= 3x,all nulls w/o rot19,0.6956507275290272,not determined (< 2x)
+label LeftOnly_test_c3 three (Normal),A1 >= 3x,all nulls w/o rot19,1.9317702426890624,not determined (< 2x)
+label LeftOnly_test_c3 three_merged (Normal),A1 >= 3x,all nulls w/o rot19,0.7211772070808345,not determined (< 2x)
+label MCI_lobe_c3 binary (Normal),A1 >= 3x,all nulls w/o rot19,3.1230277341853583,robust (>= 3x)
+label MCI_lobe_c3 three (Normal),A1 >= 3x,all nulls w/o rot19,5.175686310585554,robust (>= 3x)
+label MCI_lobe_c3 three_merged (Normal),A1 >= 3x,all nulls w/o rot19,7.112299352645498,robust (>= 3x)
+label RightOnly_test binary (AD),A1 >= 3x,all nulls w/o rot19,0.7918577430373288,not determined (< 2x)
+label RightOnly_test three (Normal),A1 >= 3x,all nulls w/o rot19,0.7198577791209829,not determined (< 2x)
+label RightOnly_test three_merged (Mild+Moderate),A1 >= 3x,all nulls w/o rot19,0.14920907733458655,not determined (< 2x)
+label Test_B binary (AD),A1 >= 3x,all nulls w/o rot19,0.6956507275290272,not determined (< 2x)
+label Test_B three (Normal),A1 >= 3x,all nulls w/o rot19,1.1071230400355963,not determined (< 2x)
+label Test_B three_merged (Normal),A1 >= 3x,all nulls w/o rot19,0.15853464465514885,not determined (< 2x)
+claim 6: mask shift 0.319 dB / R31 yardstick,>= 2x,all nulls w/o rot19,2.3607721497800043,sensitive (2-3x)
+claim 10: smallest lobe R21 stage gap / (2 x R21 yardstick),>= 1,all nulls w/o rot19,2.2279142657315374,separates
+claim 32: R21 rise of LeftOnly / R21 yardstick,tiers,all nulls w/o rot19,3.3464245272783666,robust (>= 3x)
+claim 32: R21 rise of Test_B / R21 yardstick,tiers,all nulls w/o rot19,4.1714643029893415,robust (>= 3x)
+claim 32: R21 rise of RightOnly / R21 yardstick,tiers,all nulls w/o rot19,4.559401461378455,robust (>= 3x)
+claim 29: R21 mirror-twin difference 0.133 dB / R21 yardstick,> 1 = exceeds,all nulls w/o rot19,1.2119124635676668,exceeds
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced]",tiers,all nulls w/o rot19,1.9304750768022454,not determined (< 2x)
+"claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced]",tiers,all nulls w/o rot19,2.498190157104169,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced]",tiers,all nulls w/o rot19,0.04337797373670447,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced_new]",tiers,all nulls w/o rot19,1.9438170260267662,not determined (< 2x)
+"claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced_new]",tiers,all nulls w/o rot19,2.511382590468107,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced_new]",tiers,all nulls w/o rot19,0.04974079320859304,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,all nulls w/o rot19,2.351188440115735,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,all nulls w/o rot19,2.979571107840807,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,all nulls w/o rot19,0.11560191051596302,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,all nulls w/o rot19,2.3481609062670126,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,all nulls w/o rot19,2.98224663624733,sensitive (2-3x)
+"claim 15 imaging LR Test_B [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,all nulls w/o rot19,0.10530704210709227,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced]",tiers,all nulls w/o rot19,2.764914841346926,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced]",tiers,all nulls w/o rot19,3.365735441213159,robust (>= 3x)
+"claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced]",tiers,all nulls w/o rot19,0.04355803422139553,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced_new]",tiers,all nulls w/o rot19,2.76939153960084,sensitive (2-3x)
+"claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced_new]",tiers,all nulls w/o rot19,3.3810244977285064,robust (>= 3x)
+"claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced_new]",tiers,all nulls w/o rot19,0.02897837083746033,not determined (< 2x)
+claim 16 LeftOnly phase cross-ratios >= 3x [band mean 3.2-4.2],count,all nulls w/o rot19,4,4
+C6 P2 RightOnly phase cross-ratios >= 3x [band mean 3.2-4.2],count,all nulls w/o rot19,2,2
+Test_B phase cross-ratios >= 3x [band mean 3.2-4.2],count,all nulls w/o rot19,0,0
+claim 16 LeftOnly phase cross-ratios >= 3x [3.30-3.65 GHz],count,all nulls w/o rot19,4,4
+C6 P2 RightOnly phase cross-ratios >= 3x [3.30-3.65 GHz],count,all nulls w/o rot19,4,4
+Test_B phase cross-ratios >= 3x [3.30-3.65 GHz],count,all nulls w/o rot19,2,2
+claim 17: LeftOnly LR resonance shift vs null max (MHz),beyond null?,all nulls w/o rot19,1.9081202990992097,+1.91 vs 2.86: not beyond
+claim 18/33 T2 refl. vs T6 refl. LeftOnly_test_c3,tiers,all nulls w/o rot19,3.528081378988666,robust (>= 3x)
+claim 18/33 T2 refl. vs T6 refl. RightOnly_test,tiers,all nulls w/o rot19,4.0919836431854275,robust (>= 3x)
+claim 18/33 T2 refl. vs T6 refl. Test_B,tiers,all nulls w/o rot19,3.839285656430327,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. LeftOnly_test_c3,tiers,all nulls w/o rot19,4.999759260537854,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. RightOnly_test,tiers,all nulls w/o rot19,5.317835794002057,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. Test_B,tiers,all nulls w/o rot19,4.971445456775792,robust (>= 3x)
+"claim 33: Test_B per-pair reading S2 left and S5 right, both >= 3x","both >= 3x, signs as stated",all nulls w/o rot19,1.0,holds
+claim 19 LeftOnly phase pair T2-T3 vs T5-T6 (3.30-3.65) / null max,tiers,all nulls w/o rot19,2.829654436453836,sensitive (2-3x)
+claim 19 LeftOnly phase pair T3-T4 vs T4-T5 (3.30-3.65) / null max,tiers,all nulls w/o rot19,2.672473199665713,sensitive (2-3x)
+claim 19 LeftOnly phase pair T1-T2 vs T1-T6 (3.30-3.65) / null max,tiers,all nulls w/o rot19,1.610112699987899,not determined (< 2x)
+claim 28 / C6 P1 within tolerance (post hoc only),count of 26,all nulls w/o rot19,21,21/26
+C6 P4 within yardstick (post hoc only),all True,all nulls w/o rot19,,"R31 True, R21 False, R32 True"
+"claim 35: mirror rulers raised above the 9-null rulers, by family",count,all nulls w/o rot19,26,"{'phase cross-ratio': 23, 'power LR index': 2, 'power pair': 1}"
+"Test_B front-back, all paths",tiers,all nulls w/o rot19,0.021574177677747698,not determined (< 2x)
+"Test_B front-back, neighbour paths",tiers,all nulls w/o rot19,0.32197576746109136,not determined (< 2x)
+Test_B mirror side (protocol rule),as protocol,all nulls w/o rot19,4,"mixed (3 left, 1 right)"
+claim 34: Test_B pattern fit (contrast / call),>= 2x and residual <= 0.5 r0,all nulls w/o rot19,1.644869357698479,"rejected; call 123456 (diffuse); sectors S1 a3.5, S2 a3.5, S3 a3.5, S4 a3.5, S5 a3.5, S6 a3.5"
+claim 34: Null_rot07 as target (leave-one-out rulers) must give 'none',call = none,all nulls w/o rot19,1.971386574677332,none (contrast 1.97x)
+claim 34: Null_rot19 as target (leave-one-out rulers) must give 'none',call = none,all nulls w/o rot19,0.6487496969624217,none (contrast 0.65x)
+"frozen labels >= 3x (A1), 30 lobe labels",>= 3x,rot19 alone,7,7/30
+staging labels (20): >= 3x / 2-3x / < 2x,tiers,rot19 alone,0 / 5 / 15,"sensitive: Healthy_sliced_new three_merged 2.53x, Severe_lobe three 2.04x, Healthy_sliced three_merged 2.69x, Severe_lobe_c3 three 2.34x, MCI_lobe_c3 three_merged 2.44x"
+label Healthy_sliced_new binary (Normal),A1 >= 3x,rot19 alone,3.333943114338191,robust (>= 3x)
+label Healthy_sliced_new three (Normal),A1 >= 3x,rot19 alone,1.5935879262651025,not determined (< 2x)
+label Healthy_sliced_new three_merged (Normal),A1 >= 3x,rot19 alone,2.5268205236249845,sensitive (2-3x)
+label Mild_lobe binary (AD),A1 >= 3x,rot19 alone,3.4856541772699705,robust (>= 3x)
+label Mild_lobe three (UNCERTAIN),A1 >= 3x,rot19 alone,0.017874584162730807,not determined (< 2x)
+label Mild_lobe three_merged (Mild+Moderate),A1 >= 3x,rot19 alone,1.0254537682477727,not determined (< 2x)
+label Moderate_lobe binary (AD),A1 >= 3x,rot19 alone,4.862154553004226,robust (>= 3x)
+label Moderate_lobe three (Mild),A1 >= 3x,rot19 alone,1.4217169247213746,not determined (< 2x)
+label Moderate_lobe three_merged (Mild+Moderate),A1 >= 3x,rot19 alone,1.4085317108035216,not determined (< 2x)
+label Severe_lobe binary (AD),A1 >= 3x,rot19 alone,1.3505984869509746,not determined (< 2x)
+label Severe_lobe three (Severe),A1 >= 3x,rot19 alone,2.0432024662835606,sensitive (2-3x)
+label Severe_lobe three_merged (Severe),A1 >= 3x,rot19 alone,0.6359734088204511,not determined (< 2x)
+label Healthy_sliced binary (Normal),A1 >= 3x,rot19 alone,4.336716237520938,robust (>= 3x)
+label Healthy_sliced three (Normal),A1 >= 3x,rot19 alone,1.4285917647884148,not determined (< 2x)
+label Healthy_sliced three_merged (Normal),A1 >= 3x,rot19 alone,2.686880945307446,sensitive (2-3x)
+label Mild_lobe_new binary (AD),A1 >= 3x,rot19 alone,3.740972795349702,robust (>= 3x)
+label Mild_lobe_new three (Mild),A1 >= 3x,rot19 alone,0.07699820868636595,not determined (< 2x)
+label Mild_lobe_new three_merged (Mild+Moderate),A1 >= 3x,rot19 alone,1.170575217239871,not determined (< 2x)
+label Moderate_lobe_c3 binary (AD),A1 >= 3x,rot19 alone,4.888056441794921,robust (>= 3x)
+label Moderate_lobe_c3 three (Mild),A1 >= 3x,rot19 alone,1.4217169247213746,not determined (< 2x)
+label Moderate_lobe_c3 three_merged (Mild+Moderate),A1 >= 3x,rot19 alone,1.3999951549804568,not determined (< 2x)
+label Severe_lobe_c3 binary (AD),A1 >= 3x,rot19 alone,1.7280260093297155,not determined (< 2x)
+label Severe_lobe_c3 three (Severe),A1 >= 3x,rot19 alone,2.344320460978515,sensitive (2-3x)
+label Severe_lobe_c3 three_merged (Severe),A1 >= 3x,rot19 alone,0.9795697806988014,not determined (< 2x)
+label LeftOnly_test_c3 binary (AD),A1 >= 3x,rot19 alone,0.6956507275290272,not determined (< 2x)
+label LeftOnly_test_c3 three (Normal),A1 >= 3x,rot19 alone,0.5829864372203856,not determined (< 2x)
+label LeftOnly_test_c3 three_merged (Normal),A1 >= 3x,rot19 alone,0.24756011886673537,not determined (< 2x)
+label MCI_lobe_c3 binary (Normal),A1 >= 3x,rot19 alone,3.1230277341853583,robust (>= 3x)
+label MCI_lobe_c3 three (Normal),A1 >= 3x,rot19 alone,1.5619636619820672,not determined (< 2x)
+label MCI_lobe_c3 three_merged (Normal),A1 >= 3x,rot19 alone,2.4414549653943385,sensitive (2-3x)
+label RightOnly_test binary (AD),A1 >= 3x,rot19 alone,0.7918577430373288,not determined (< 2x)
+label RightOnly_test three (Normal),A1 >= 3x,rot19 alone,0.21724494594705834,not determined (< 2x)
+label RightOnly_test three_merged (Mild+Moderate),A1 >= 3x,rot19 alone,0.05121933494052574,not determined (< 2x)
+label Test_B binary (AD),A1 >= 3x,rot19 alone,0.6956507275290272,not determined (< 2x)
+label Test_B three (Normal),A1 >= 3x,rot19 alone,0.3341172269930468,not determined (< 2x)
+label Test_B three_merged (Normal),A1 >= 3x,rot19 alone,0.05442054336989778,not determined (< 2x)
+claim 6: mask shift 0.319 dB / R31 yardstick,>= 2x,rot19 alone,2.3607721497800043,sensitive (2-3x)
+claim 10: smallest lobe R21 stage gap / (2 x R21 yardstick),>= 1,rot19 alone,0.6723593580172785,does not separate
+claim 32: R21 rise of LeftOnly / R21 yardstick,tiers,rot19 alone,1.0099131198279607,not determined (< 2x)
+claim 32: R21 rise of Test_B / R21 yardstick,tiers,rot19 alone,1.2589008041693988,not determined (< 2x)
+claim 32: R21 rise of RightOnly / R21 yardstick,tiers,rot19 alone,1.3759758562831776,not determined (< 2x)
+claim 29: R21 mirror-twin difference 0.133 dB / R21 yardstick,> 1 = exceeds,rot19 alone,0.3657414912732027,within
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced]",tiers,rot19 alone,3.667781556037644,robust (>= 3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced]",tiers,rot19 alone,4.746404598436614,robust (>= 3x)
+"claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced]",tiers,rot19 alone,0.08241542919751871,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced_new]",tiers,rot19 alone,3.7008155883090397,robust (>= 3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced_new]",tiers,rot19 alone,4.781398513629609,robust (>= 3x)
+"claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced_new]",tiers,rot19 alone,0.0947010446026841,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,rot19 alone,3.684261392487973,robust (>= 3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,rot19 alone,4.66892343101608,robust (>= 3x)
+"claim 15 imaging LR Test_B [Tikhonov log (gain-inv.), Healthy_sliced]",tiers,rot19 alone,0.18114569149159612,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,rot19 alone,3.71453892093043,robust (>= 3x)
+"claim 15 imaging LR RightOnly_test [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,rot19 alone,4.71759459608979,robust (>= 3x)
+"claim 15 imaging LR Test_B [Tikhonov log (gain-inv.), Healthy_sliced_new]",tiers,rot19 alone,0.166584455737623,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced]",tiers,rot19 alone,4.393388259886664,robust (>= 3x)
+"claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced]",tiers,rot19 alone,5.348078845750956,robust (>= 3x)
+"claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced]",tiers,rot19 alone,0.0692127487292868,not determined (< 2x)
+"claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced_new]",tiers,rot19 alone,4.444148288821034,robust (>= 3x)
+"claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced_new]",tiers,rot19 alone,5.425659037799994,robust (>= 3x)
+"claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced_new]",tiers,rot19 alone,0.04650269755235935,not determined (< 2x)
+claim 16 LeftOnly phase cross-ratios >= 3x [band mean 3.2-4.2],count,rot19 alone,16,16
+C6 P2 RightOnly phase cross-ratios >= 3x [band mean 3.2-4.2],count,rot19 alone,11,11
+Test_B phase cross-ratios >= 3x [band mean 3.2-4.2],count,rot19 alone,0,0
+claim 16 LeftOnly phase cross-ratios >= 3x [3.30-3.65 GHz],count,rot19 alone,6,6
+C6 P2 RightOnly phase cross-ratios >= 3x [3.30-3.65 GHz],count,rot19 alone,7,7
+Test_B phase cross-ratios >= 3x [3.30-3.65 GHz],count,rot19 alone,5,5
+claim 17: LeftOnly LR resonance shift vs null max (MHz),beyond null?,rot19 alone,1.9081202990992097,+1.91 vs 0.80: beyond
+claim 18/33 T2 refl. vs T6 refl. LeftOnly_test_c3,tiers,rot19 alone,6.915157653210119,robust (>= 3x)
+claim 18/33 T2 refl. vs T6 refl. RightOnly_test,tiers,rot19 alone,8.020424975314958,robust (>= 3x)
+claim 18/33 T2 refl. vs T6 refl. Test_B,tiers,rot19 alone,7.525128458781308,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. LeftOnly_test_c3,tiers,rot19 alone,5.769125796224775,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. RightOnly_test,tiers,rot19 alone,6.136148174455179,robust (>= 3x)
+claim 18/33 T3 refl. vs T5 refl. Test_B,tiers,rot19 alone,5.736455044062324,robust (>= 3x)
+"claim 33: Test_B per-pair reading S2 left and S5 right, both >= 3x","both >= 3x, signs as stated",rot19 alone,1.0,holds
+claim 19 LeftOnly phase pair T2-T3 vs T5-T6 (3.30-3.65) / null max,tiers,rot19 alone,6.146703415247143,robust (>= 3x)
+claim 19 LeftOnly phase pair T3-T4 vs T4-T5 (3.30-3.65) / null max,tiers,rot19 alone,2.6565913081657535,sensitive (2-3x)
+claim 19 LeftOnly phase pair T1-T2 vs T1-T6 (3.30-3.65) / null max,tiers,rot19 alone,4.739907221267665,robust (>= 3x)
+claim 28 / C6 P1 within tolerance (post hoc only),count of 26,rot19 alone,12,12/26
+C6 P4 within yardstick (post hoc only),all True,rot19 alone,,"R31 True, R21 True, R32 True"
+"claim 35: mirror rulers raised above the 9-null rulers, by family",count,rot19 alone,31,"{'phase cross-ratio': 14, 'power pair': 2, 'power cross-ratio': 14, 'phase pair': 1}"
+"Test_B front-back, all paths",tiers,rot19 alone,0.01549806906795328,not determined (< 2x)
+"Test_B front-back, neighbour paths",tiers,rot19 alone,0.47793434621328307,not determined (< 2x)
+Test_B mirror side (protocol rule),as protocol,rot19 alone,4,"mixed (3 left, 1 right)"
+claim 34: Test_B pattern fit (contrast / call),>= 2x and residual <= 0.5 r0,rot19 alone,2.5354452809767656,"accepted; call 25; sectors S1 u1.2, S2 u1.5, S3 u0.8, S4 u1.4, S5 u0.9, S6 u1.3"
+claim 34: Null_rot07 as target (leave-one-out rulers) must give 'none',call = none,rot19 alone,1.5414265388981354,none (contrast 1.54x)
