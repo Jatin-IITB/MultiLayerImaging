@@ -217,6 +217,8 @@ def main():
     ap.add_argument("--jobs", type=int, default=10)
     ap.add_argument("--no-freeze", action="store_true")
     args = ap.parse_args()
+    if not args.no_freeze and (ROOT / "results" / "04" / "frozen_rule.json").exists():
+        raise SystemExit("results/04/frozen_rule.json exists and is frozen (5192287); rerun with --no-freeze")
     sys.stdout.reconfigure(encoding="utf-8")
     warnings.filterwarnings("ignore")
     np.seterr(all="ignore")

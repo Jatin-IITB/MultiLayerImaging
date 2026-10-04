@@ -1,15 +1,18 @@
 """Adversarial review, round 2 (main session): G7 material dispersion and C6 replication design + predictions.
 
-    python scripts/13_review2_misc.py
+    python scripts/13_review2_misc.py [--write-predictions]
 
 G7: Gabriel et al. (1996) 4-Cole-Cole parameters (as tabulated on the IFAC/webnir reference page) evaluated at
 3.2 / 3.241 / 3.7 / 4.2 GHz against the model's constant healthy values.
 C6: proposed blind design RightOnly_test = exact mirror image of LeftOnly_test, and the main session's predictions,
 derived only from LeftOnly_test_c3, the nine mirror-symmetric designs and the round-2 floor rule (R1c). Written to
-results/05_lobe/rightonly_predictions.{md,csv}; committed before the design exists; never edited afterwards.
+results/05_lobe/rightonly_predictions.{md,csv}; committed before the design exists (0f97bb2); never edited afterwards.
+Default run: G7 is rewritten; the C6 table is recomputed and compared with the committed CSV (nothing is written).
+--write-predictions only works while the prediction files do not exist.
 """
 from __future__ import annotations
 
+import argparse
 import importlib.util
 import sys
 import warnings
@@ -58,6 +61,11 @@ def gabriel(t, f):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--write-predictions", action="store_true")
+    args = ap.parse_args()
+    if args.write_predictions and (OUT / "rightonly_predictions.md").exists():
+        raise SystemExit("results/05_lobe/rightonly_predictions.md exists (committed at 0f97bb2); never rewrite it")
     sys.stdout.reconfigure(encoding="utf-8")
     warnings.filterwarnings("ignore")
     np.seterr(all="ignore")
@@ -106,6 +114,14 @@ def main():
                      "LeftOnly": float(X[0][nm.index(ft)]), "predicted RightOnly": float(X[0][nm.index(ft)]),
                      "tolerance (clean ruler)": R["yard"][ft], "LeftOnly / ruler": np.nan, "sign test informative": False})
     pt = pd.DataFrame(pred)
+    if not args.write_predictions:
+        old = pd.read_csv(OUT / "rightonly_predictions.csv")
+        num = ["LeftOnly", "predicted RightOnly", "tolerance (clean ruler)"]
+        same = list(old["statistic"]) == list(pt["statistic"])
+        dmax = float(np.nanmax(np.abs(old[num].to_numpy(float) - pt[num].to_numpy(float)))) if same else float("nan")
+        print(f"C6 check against the committed rightonly_predictions.csv: same rows {same}, max |difference| {dmax:.2e}")
+        print(md(g7, ".3f"))
+        return
     pt.to_csv(OUT / "rightonly_predictions.csv", index=False)
     inf = pt[pt["sign test informative"]]
     n_est = {bn: int(((pt.frequencies == bn) & pt.statistic.str.startswith("phase cross-ratio") & (pt["LeftOnly / ruler"] >= 3)).sum())

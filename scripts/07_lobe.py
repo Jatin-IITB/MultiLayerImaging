@@ -142,6 +142,8 @@ def main():
     FIG.mkdir(parents=True, exist_ok=True)
     if args.write_predictions and SET != "lobe_v1":
         raise SystemExit("predictions are pre-registered from lobe_v1 only (cf56de8)")
+    if args.write_predictions and (OUT / "predictions.md").exists():
+        raise SystemExit("results/05_lobe/predictions.md exists (pre-registered at cf56de8); never rewrite it")
     gh = git_hash(ROOT)
     ds = load_dataset(cfg, ROOT)
     f = ds.f_hz
