@@ -249,7 +249,7 @@ Over all 12 symmetry images (largest values, and how many of the 12 trigger a ca
 
 **Data.** lobe_A = `Healthy_sliced_new` (6 adaptive passes, same stop rule as the stages; the stages converged in 5 passes, results/STATUS.md §7) as the reference, with `Mild_lobe`, `Moderate_lobe`, `Severe_lobe` (the `_new` Moderate and Severe files are identical to the old ones: max |ΔS| 9e-09, 4e-09). Frozen κ, λ and thresholds from `lobe_frozen.json` (code `fb5b775`) are applied unchanged; only the reference (its noise weights and the log-ratio reference) is now Healthy_sliced_new. The pre-registered predictions are unchanged.
 
-**Mesh yardstick = one extra adaptive pass.** Two pass-to-pass differences, each passed through the pipeline as if it were a stage: Healthy 7 − 6 passes (`Healthy_sliced` − `Healthy_sliced_new`) and Mild 6 − 5 passes (`Mild_lobe_new` − `Mild_lobe`). The sign of a mesh error is not known, so each difference is passed with both signs (+ and −); for the linear Tikhonov fits the two give the same |dε''|, for the bounded fits only one sign survives the bound dε'' ≥ 0.
+**Mesh yardstick = one extra adaptive pass.** Pass-to-pass differences, each passed through the pipeline as if it were a stage: Healthy 7 − 6 passes (`Healthy_sliced` − `Healthy_sliced_new`), Mild 6 − 5 passes (`Mild_lobe_new` − `Mild_lobe`) and, from the c3 delivery (4 Oct), Moderate 6 − 5 (`Moderate_lobe_c3` − `Moderate_lobe`) and Severe 6 − 5 (`Severe_lobe_c3` − `Severe_lobe`). The sign of a mesh error is not known, so each difference is passed with both signs (+ and −); for the linear Tikhonov fits the two give the same |dε''|, for the bounded fits only one sign survives the bound dε'' ≥ 0.
 
 Amplitude change per path class (dB, largest path of the class, 3.2–4.2 GHz, 201 points, glitch-masked): band = band-mean power ratio; median = median over frequency; worst = worst single frequency (set by spectral notches, where |S| is small):
 
@@ -261,6 +261,12 @@ Amplitude change per path class (dB, largest path of the class, 3.2–4.2 GHz, 2
 | Mild 6 - 5 passes | band | 0.039 | 0.048 | 0.258 | 0.146 |
 | Mild 6 - 5 passes | median | 0.085 | 0.112 | 0.186 | 0.102 |
 | Mild 6 - 5 passes | worst | 0.978 | 0.445 | 5.676 | 9.458 |
+| Moderate 6 - 5 passes | band | 0.033 | 0.061 | 0.079 | 0.085 |
+| Moderate 6 - 5 passes | median | 0.087 | 0.139 | 0.138 | 0.089 |
+| Moderate 6 - 5 passes | worst | 1.228 | 0.514 | 3.253 | 2.440 |
+| Severe 6 - 5 passes | band | 0.037 | 0.094 | 0.176 | 0.110 |
+| Severe 6 - 5 passes | median | 0.065 | 0.104 | 0.138 | 0.124 |
+| Severe 6 - 5 passes | worst | 1.091 | 0.953 | 4.881 | 4.449 |
 
 Which class moves most depends on the statistic: band: second-neighbour; median: second-neighbour; worst: opposite. The opposite paths dominate only at single frequencies (notches). The 0.16–0.30 dB (opposite) / ≤ 0.05 dB (others) quoted for this check is the ring-mean change computed without glitch masking; `docs/01_claims_register.md` §L traces its 0.30 dB end (Mild 5→6) to one non-reciprocal sample on T2–T5 at 3.855 GHz in `Mild_lobe_new` (−34 dB against ≈ −70 dB at the neighbouring samples). Here that sample is glitch-masked (−30 dB rule; it becomes −58 dB) and 3.855 GHz is not one of the fit frequencies, so it does not enter any inversion below. The inversion uses complex S at 3.4, 3.6, 3.8 GHz, so the table above is what it sees. This yardstick replaces §5b (v2 Normal − Healthy_sliced), which compared different projects as well as meshes.
 
@@ -291,35 +297,51 @@ The yardstick itself (each pass difference, both signs, through the same pipelin
 | tikhonov dS | -(Healthy 7 - 6 passes) | 2.2 | 2.0 | 2.7 | 2.2 | 2.4 | 3.0 | none | -0.3 | -0.0 |
 | tikhonov dS | +(Mild 6 - 5 passes) | -3.1 | -4.2 | -2.4 | -2.4 | -2.5 | -5.2 | none | +0.5 | -0.7 |
 | tikhonov dS | -(Mild 6 - 5 passes) | 3.1 | 4.2 | 2.4 | 2.4 | 2.5 | 5.2 | none | -0.5 | +0.7 |
+| tikhonov dS | +(Moderate 6 - 5 passes) | -1.6 | -3.0 | -2.3 | -2.3 | -5.1 | -4.5 | none | +2.1 | +0.6 |
+| tikhonov dS | -(Moderate 6 - 5 passes) | 1.6 | 3.0 | 2.3 | 2.3 | 5.1 | 4.5 | none | -2.1 | -0.6 |
+| tikhonov dS | +(Severe 6 - 5 passes) | -2.1 | -1.9 | -1.5 | -1.9 | -2.9 | -2.9 | none | +1.2 | -0.2 |
+| tikhonov dS | -(Severe 6 - 5 passes) | 2.1 | 1.9 | 1.5 | 1.9 | 2.9 | 2.9 | none | -1.2 | +0.2 |
 | bounded dS | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded dS | -(Healthy 7 - 6 passes) | 2.2 | 2.0 | 2.7 | 2.2 | 2.4 | 3.0 | none | -0.3 | -0.0 |
 | bounded dS | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded dS | -(Mild 6 - 5 passes) | 3.1 | 4.2 | 2.4 | 2.4 | 2.5 | 5.2 | none | -0.5 | +0.7 |
+| bounded dS | +(Moderate 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Moderate 6 - 5 passes) | 1.6 | 3.0 | 2.3 | 2.3 | 5.1 | 4.5 | none | -2.1 | -0.6 |
+| bounded dS | +(Severe 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Severe 6 - 5 passes) | 2.1 | 1.9 | 1.5 | 1.9 | 2.9 | 2.9 | none | -1.2 | +0.2 |
 | tikhonov log (gain-inv.) | +(Healthy 7 - 6 passes) | -1.7 | -1.2 | -2.0 | -1.5 | -1.7 | -2.1 | none | +0.3 | -0.2 |
 | tikhonov log (gain-inv.) | -(Healthy 7 - 6 passes) | 1.7 | 1.2 | 1.9 | 1.4 | 1.6 | 2.0 | none | -0.3 | +0.2 |
 | tikhonov log (gain-inv.) | +(Mild 6 - 5 passes) | -2.5 | -2.8 | -1.0 | -1.9 | -1.5 | -3.6 | none | +0.7 | -0.6 |
 | tikhonov log (gain-inv.) | -(Mild 6 - 5 passes) | 2.4 | 2.9 | 1.1 | 1.6 | 1.6 | 3.4 | none | -0.5 | +0.8 |
+| tikhonov log (gain-inv.) | +(Moderate 6 - 5 passes) | -0.7 | -2.2 | -0.9 | -1.0 | -3.9 | -3.6 | none | +2.2 | +0.4 |
+| tikhonov log (gain-inv.) | -(Moderate 6 - 5 passes) | 0.6 | 2.2 | 1.0 | 0.8 | 4.0 | 3.6 | none | -2.2 | -0.2 |
+| tikhonov log (gain-inv.) | +(Severe 6 - 5 passes) | -1.3 | -0.2 | -0.6 | -0.5 | -1.9 | -1.0 | none | +1.1 | -0.9 |
+| tikhonov log (gain-inv.) | -(Severe 6 - 5 passes) | 1.4 | 0.1 | 0.7 | 0.5 | 2.0 | 1.0 | none | -1.1 | +0.9 |
 | bounded log (gain-inv.) | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded log (gain-inv.) | -(Healthy 7 - 6 passes) | 1.7 | 1.2 | 1.9 | 1.4 | 1.6 | 2.0 | none | -0.3 | +0.2 |
 | bounded log (gain-inv.) | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded log (gain-inv.) | -(Mild 6 - 5 passes) | 2.4 | 2.9 | 1.1 | 1.6 | 1.6 | 3.4 | none | -0.5 | +0.8 |
+| bounded log (gain-inv.) | +(Moderate 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Moderate 6 - 5 passes) | 0.6 | 2.2 | 1.0 | 0.8 | 4.0 | 3.6 | none | -2.2 | -0.2 |
+| bounded log (gain-inv.) | +(Severe 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Severe 6 - 5 passes) | 1.4 | 0.1 | 0.7 | 0.5 | 2.0 | 1.0 | none | -1.1 | +0.9 |
 
 Against the yardstick (sectors over the larger / over the sum of the two pass differences; contrasts vs the larger pass-difference |LR|, |FB|):
 
 | method | stage | n_sectors_over_yard | n_sectors_over_sum | n_healthy_over_yard | LR | yard_LR | LR_exceeds | FB | yard_FB | FB_exceeds |
 |---|---|---|---|---|---|---|---|---|---|---|
-| tikhonov dS | Mild_lobe | 6 | 4 | 2 | +0.3 | 0.5 | False | +3.9 | 0.7 | True |
-| tikhonov dS | Moderate_lobe | 6 | 5 | 1 | -3.5 | 0.5 | True | +10.2 | 0.7 | True |
-| tikhonov dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.5 | False | +3.8 | 0.7 | True |
-| bounded dS | Mild_lobe | 6 | 6 | 2 | +0.3 | 0.5 | False | +3.9 | 0.7 | True |
-| bounded dS | Moderate_lobe | 6 | 6 | 1 | -3.5 | 0.5 | True | +10.2 | 0.7 | True |
-| bounded dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.5 | False | +3.8 | 0.7 | True |
-| tikhonov log (gain-inv.) | Mild_lobe | 6 | 5 | 2 | -0.3 | 0.7 | False | +3.9 | 0.8 | True |
-| tikhonov log (gain-inv.) | Moderate_lobe | 6 | 5 | 1 | -3.6 | 0.7 | True | +10.4 | 0.8 | True |
-| tikhonov log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.5 | 0.7 | False | +4.1 | 0.8 | True |
-| bounded log (gain-inv.) | Mild_lobe | 6 | 6 | 2 | -0.3 | 0.5 | False | +3.9 | 0.8 | True |
-| bounded log (gain-inv.) | Moderate_lobe | 6 | 6 | 1 | -3.6 | 0.5 | True | +10.4 | 0.8 | True |
-| bounded log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.5 | 0.5 | True | +4.1 | 0.8 | True |
+| tikhonov dS | Mild_lobe | 6 | 0 | 2 | +0.3 | 2.1 | False | +3.9 | 0.7 | True |
+| tikhonov dS | Moderate_lobe | 6 | 0 | 1 | -3.5 | 2.1 | True | +10.2 | 0.7 | True |
+| tikhonov dS | Severe_lobe | 6 | 1 | 0 | -0.4 | 2.1 | False | +3.8 | 0.7 | True |
+| bounded dS | Mild_lobe | 6 | 5 | 2 | +0.3 | 2.1 | False | +3.9 | 0.7 | True |
+| bounded dS | Moderate_lobe | 6 | 5 | 1 | -3.5 | 2.1 | True | +10.2 | 0.7 | True |
+| bounded dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 2.1 | False | +3.8 | 0.7 | True |
+| tikhonov log (gain-inv.) | Mild_lobe | 6 | 2 | 2 | -0.3 | 2.2 | False | +3.9 | 0.9 | True |
+| tikhonov log (gain-inv.) | Moderate_lobe | 6 | 3 | 1 | -3.6 | 2.2 | True | +10.4 | 0.9 | True |
+| tikhonov log (gain-inv.) | Severe_lobe | 6 | 4 | 0 | -0.5 | 2.2 | False | +4.1 | 0.9 | True |
+| bounded log (gain-inv.) | Mild_lobe | 6 | 6 | 2 | -0.3 | 2.2 | False | +3.9 | 0.9 | True |
+| bounded log (gain-inv.) | Moderate_lobe | 6 | 6 | 1 | -3.6 | 2.2 | True | +10.4 | 0.9 | True |
+| bounded log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.5 | 2.2 | False | +4.1 | 0.9 | True |
 
 ### lobe_A, without opposite paths
 
@@ -348,35 +370,51 @@ The yardstick itself (each pass difference, both signs, through the same pipelin
 | tikhonov dS | -(Healthy 7 - 6 passes) | 2.5 | 2.1 | 3.1 | 2.4 | 2.7 | 3.2 | none | -0.4 | +0.1 |
 | tikhonov dS | +(Mild 6 - 5 passes) | -3.6 | -4.5 | -3.2 | -2.7 | -3.3 | -5.8 | none | +0.6 | -0.9 |
 | tikhonov dS | -(Mild 6 - 5 passes) | 3.6 | 4.5 | 3.2 | 2.7 | 3.3 | 5.8 | none | -0.6 | +0.9 |
+| tikhonov dS | +(Moderate 6 - 5 passes) | -2.2 | -3.3 | -3.1 | -2.7 | -5.7 | -5.1 | none | +2.2 | +0.5 |
+| tikhonov dS | -(Moderate 6 - 5 passes) | 2.2 | 3.3 | 3.1 | 2.7 | 5.7 | 5.1 | none | -2.2 | -0.5 |
+| tikhonov dS | +(Severe 6 - 5 passes) | -3.1 | -2.0 | -2.3 | -2.8 | -3.3 | -3.5 | none | +1.2 | -0.4 |
+| tikhonov dS | -(Severe 6 - 5 passes) | 3.1 | 2.0 | 2.3 | 2.8 | 3.3 | 3.5 | none | -1.2 | +0.4 |
 | bounded dS | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded dS | -(Healthy 7 - 6 passes) | 2.5 | 2.1 | 3.1 | 2.4 | 2.7 | 3.2 | none | -0.4 | +0.1 |
 | bounded dS | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded dS | -(Mild 6 - 5 passes) | 3.6 | 4.5 | 3.2 | 2.7 | 3.3 | 5.8 | none | -0.6 | +0.9 |
+| bounded dS | +(Moderate 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Moderate 6 - 5 passes) | 2.2 | 3.3 | 3.1 | 2.7 | 5.7 | 5.1 | none | -2.2 | -0.5 |
+| bounded dS | +(Severe 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded dS | -(Severe 6 - 5 passes) | 3.1 | 2.0 | 2.3 | 2.8 | 3.3 | 3.5 | none | -1.2 | +0.4 |
 | tikhonov log (gain-inv.) | +(Healthy 7 - 6 passes) | -2.1 | -1.6 | -2.6 | -2.0 | -2.1 | -2.7 | none | +0.3 | -0.1 |
 | tikhonov log (gain-inv.) | -(Healthy 7 - 6 passes) | 2.1 | 1.5 | 2.5 | 1.9 | 2.0 | 2.7 | none | -0.3 | +0.2 |
 | tikhonov log (gain-inv.) | +(Mild 6 - 5 passes) | -3.5 | -3.9 | -2.4 | -3.0 | -2.7 | -5.1 | none | +0.8 | -0.5 |
 | tikhonov log (gain-inv.) | -(Mild 6 - 5 passes) | 3.5 | 4.0 | 2.6 | 2.7 | 2.9 | 4.9 | none | -0.6 | +0.8 |
+| tikhonov log (gain-inv.) | +(Moderate 6 - 5 passes) | -1.3 | -3.4 | -2.4 | -1.8 | -5.2 | -5.1 | none | +2.3 | +0.4 |
+| tikhonov log (gain-inv.) | -(Moderate 6 - 5 passes) | 1.2 | 3.5 | 2.4 | 1.5 | 5.4 | 5.2 | none | -2.3 | -0.2 |
+| tikhonov log (gain-inv.) | +(Severe 6 - 5 passes) | -2.5 | -1.5 | -1.9 | -1.7 | -3.4 | -2.4 | none | +1.2 | -0.8 |
+| tikhonov log (gain-inv.) | -(Severe 6 - 5 passes) | 2.5 | 1.4 | 2.0 | 1.7 | 3.5 | 2.4 | none | -1.2 | +0.8 |
 | bounded log (gain-inv.) | +(Healthy 7 - 6 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded log (gain-inv.) | -(Healthy 7 - 6 passes) | 2.1 | 1.5 | 2.5 | 1.9 | 2.0 | 2.7 | none | -0.3 | +0.2 |
 | bounded log (gain-inv.) | +(Mild 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
 | bounded log (gain-inv.) | -(Mild 6 - 5 passes) | 3.5 | 4.0 | 2.6 | 2.7 | 2.9 | 4.9 | none | -0.6 | +0.8 |
+| bounded log (gain-inv.) | +(Moderate 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Moderate 6 - 5 passes) | 1.2 | 3.5 | 2.4 | 1.5 | 5.4 | 5.2 | none | -2.3 | -0.2 |
+| bounded log (gain-inv.) | +(Severe 6 - 5 passes) | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | none | +0.0 | +0.0 |
+| bounded log (gain-inv.) | -(Severe 6 - 5 passes) | 2.5 | 1.4 | 2.0 | 1.7 | 3.5 | 2.4 | none | -1.2 | +0.8 |
 
 Against the yardstick (sectors over the larger / over the sum of the two pass differences; contrasts vs the larger pass-difference |LR|, |FB|):
 
 | method | stage | n_sectors_over_yard | n_sectors_over_sum | n_healthy_over_yard | LR | yard_LR | LR_exceeds | FB | yard_FB | FB_exceeds |
 |---|---|---|---|---|---|---|---|---|---|---|
-| tikhonov dS | Mild_lobe | 6 | 4 | 2 | +0.3 | 0.6 | False | +3.7 | 0.9 | True |
-| tikhonov dS | Moderate_lobe | 6 | 5 | 1 | -3.5 | 0.6 | True | +9.9 | 0.9 | True |
-| tikhonov dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.6 | False | +3.5 | 0.9 | True |
-| bounded dS | Mild_lobe | 6 | 6 | 2 | +0.3 | 0.6 | False | +3.7 | 0.9 | True |
-| bounded dS | Moderate_lobe | 6 | 6 | 1 | -3.5 | 0.6 | True | +9.9 | 0.9 | True |
-| bounded dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 0.6 | False | +3.5 | 0.9 | True |
-| tikhonov log (gain-inv.) | Mild_lobe | 6 | 4 | 2 | -0.4 | 0.8 | False | +3.3 | 0.8 | True |
-| tikhonov log (gain-inv.) | Moderate_lobe | 6 | 5 | 1 | -3.6 | 0.8 | True | +9.8 | 0.8 | True |
-| tikhonov log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.8 | 0.8 | False | +3.2 | 0.8 | True |
-| bounded log (gain-inv.) | Mild_lobe | 6 | 6 | 2 | -0.4 | 0.6 | False | +3.3 | 0.8 | True |
-| bounded log (gain-inv.) | Moderate_lobe | 6 | 6 | 1 | -3.6 | 0.6 | True | +9.8 | 0.8 | True |
-| bounded log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.8 | 0.6 | True | +3.2 | 0.8 | True |
+| tikhonov dS | Mild_lobe | 6 | 0 | 2 | +0.3 | 2.2 | False | +3.7 | 0.9 | True |
+| tikhonov dS | Moderate_lobe | 6 | 0 | 1 | -3.5 | 2.2 | True | +9.9 | 0.9 | True |
+| tikhonov dS | Severe_lobe | 6 | 0 | 0 | -0.4 | 2.2 | False | +3.5 | 0.9 | True |
+| bounded dS | Mild_lobe | 6 | 4 | 2 | +0.3 | 2.2 | False | +3.7 | 0.9 | True |
+| bounded dS | Moderate_lobe | 6 | 5 | 1 | -3.5 | 2.2 | True | +9.9 | 0.9 | True |
+| bounded dS | Severe_lobe | 6 | 6 | 0 | -0.4 | 2.2 | False | +3.5 | 0.9 | True |
+| tikhonov log (gain-inv.) | Mild_lobe | 6 | 0 | 2 | -0.4 | 2.3 | False | +3.3 | 0.8 | True |
+| tikhonov log (gain-inv.) | Moderate_lobe | 6 | 0 | 1 | -3.6 | 2.3 | True | +9.8 | 0.8 | True |
+| tikhonov log (gain-inv.) | Severe_lobe | 6 | 4 | 0 | -0.8 | 2.3 | False | +3.2 | 0.8 | True |
+| bounded log (gain-inv.) | Mild_lobe | 6 | 5 | 2 | -0.4 | 2.3 | False | +3.3 | 0.8 | True |
+| bounded log (gain-inv.) | Moderate_lobe | 6 | 5 | 1 | -3.6 | 2.3 | True | +9.8 | 0.8 | True |
+| bounded log (gain-inv.) | Severe_lobe | 6 | 6 | 0 | -0.8 | 2.3 | False | +3.2 | 0.8 | True |
 
 Change of the recovered dε'' when the 7-pass reference (§3) is replaced by the 6-pass reference (lobe_A − §3, all paths). For the linear fits it equals minus the Healthy 7 − 6 yardstick row above:
 
@@ -404,10 +442,10 @@ Share of the information (whitened Fisher diagonal) on each sector's dε'' that 
 | dS | 9.1% | 9.9% | 10.0% | 10.4% | 10.2% | 9.7% |
 | log | 12.6% | 12.2% | 12.6% | 14.2% | 14.0% | 13.2% |
 
-| model | Mild_lobe | Moderate_lobe | Severe_lobe | Healthy 7 - 6 passes | Mild 6 - 5 passes |
-|---|---|---|---|---|---|
-| dS | 4.5% | 9.1% | 12.4% | 12.5% | 8.6% |
-| log | 11.9% | 20.8% | 25.2% | 11.8% | 5.1% |
+| model | Mild_lobe | Moderate_lobe | Severe_lobe | Healthy 7 - 6 passes | Mild 6 - 5 passes | Moderate 6 - 5 passes | Severe 6 - 5 passes |
+|---|---|---|---|---|---|---|---|
+| dS | 4.5% | 9.1% | 12.4% | 12.5% | 8.6% | 7.3% | 10.4% |
+| log | 11.9% | 20.8% | 25.2% | 11.8% | 5.1% | 5.3% | 18.6% |
 
 Information share per path class (mean over the six sectors' dε''):
 
@@ -423,14 +461,14 @@ Information share per path class (mean over the six sectors' dε''):
 - **Absolute sector levels.** A one-pass mesh change shifts every sector by up to 5.2 (dε''), almost uniformly (same sign in all six sectors; table 'yardstick itself'). Every recovered sector value, healthy ones included, exceeds its own sector's yardstick (3 healthy-sector estimates over the yardstick, primary method, all paths). So the upward offset of the healthy sectors (about 5–10 instead of 0.3) is not explained by a one-pass mesh change; Born model error and leakage from neighbouring affected sectors are the likely cause. Per-sector exceedance is therefore not a test of 'affected'; the contrasts below are.
 - **The frozen absolute threshold is sensitive to the reference mesh.** Replacing the 7-pass reference by the 6-pass one lowers every sector by about 2–3 (table above), comparable to the margin of some calls around T_abs = 13.8. Primary method, all paths: Mild S2 S3 S6 (5/6 correct); Moderate S1 S3 S5 S6 (5/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct). Without the opposite paths: Mild S2 S3 S5 S6 (6/6 correct); Moderate S1 S2 S3 S5 S6 (6/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct). Gain-invariant, all paths: Mild S2 S3 S5 S6 (6/6 correct); Moderate S1 S2 S3 S5 S6 (6/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct). Without: Mild S2 S3 S5 S6 (6/6 correct); Moderate S1 S2 S3 S5 S6 (6/6 correct); Severe S1 S2 S3 S4 S5 S6 (6/6 correct).
 - **Front/back.** Moderate's FB = S1 − S4 is +10.2 (all paths) and +9.9 (without opposite paths) for the primary method, +10.4 / +9.8 gain-invariant; the one-pass yardstick gives |FB| ≤ 0.9. Front is called for Moderate by every method in both path sets. Mild and Severe (S1 and S4 equal in truth) give FB of about +3 to +4, also well above the yardstick: a systematic front-positive bias of about 4 that is not mesh. The frozen T_FB (Mild's |FB|) absorbs it, except in the bounded-dS fit, whose T_FB = 3.8 lets Mild and Severe through in the all-path version.
-- **Left/right.** The one-pass yardstick gives |LR| ≤ 0.8. The mirror-symmetric designs give |LR| up to 3.6 (Moderate): more than the mesh yardstick, but below the frozen T_LR = 4.1. The pre-registered LeftOnly contrast (+14.7 ± 2.2, Born-simulated) is about 20× the one-pass yardstick.
-- **Opposite paths.** They carry 9%–14% of the information on each sector and 4%–25% of the stage data energy; in the whitened complex data they carry 5%–13% of the pass-difference energy, i.e. not more than their information share, so the pass difference is not concentrated on them as seen by the inversion. Removing them moves the sector estimates by +0.5 to +5.5, raises the yardstick slightly, and changes calls only where a sector sits near T_abs. Pattern, front/back and left/right conclusions are the same with and without them. Both versions are tabulated above and neither is preferred.
+- **Left/right.** The one-pass yardstick gives |LR| ≤ 2.3. The mirror-symmetric designs give |LR| up to 3.6 (Moderate): more than the mesh yardstick, but below the frozen T_LR = 4.1. The pre-registered LeftOnly contrast (+14.7 ± 2.2, Born-simulated) is about 20× the one-pass yardstick.
+- **Opposite paths.** They carry 9%–14% of the information on each sector and 4%–25% of the stage data energy; in the whitened complex data they carry 5%–19% of the pass-difference energy, i.e. not more than their information share, so the pass difference is not concentrated on them as seen by the inversion. Removing them moves the sector estimates by +0.5 to +5.5, raises the yardstick slightly, and changes calls only where a sector sits near T_abs. Pattern, front/back and left/right conclusions are the same with and without them. Both versions are tabulated above and neither is preferred.
 
 ## 5d. Front/back and left/right against all three error rulers (lobe_A, 4 Oct)
 
 The main session (`results/05_lobe/mesh/report.md`, commits aff9d56–bf5af59) found localisation not separable from error once the numerical symmetry floor and antenna gain/phase errors are included. The same rulers are applied here to the contrasts of the recovered conductivity map, each propagated through the frozen inversions (κ, λ unchanged):
 
-1. **Mesh yardstick**: one extra adaptive pass (Healthy 7 − 6, Mild 6 − 5), both signs, largest |contrast|.
+1. **Mesh yardstick**: one extra adaptive pass (Healthy 7 − 6, Mild 6 − 5, Moderate 6 − 5, Severe 6 − 5; the last two from the c3 delivery of 4 Oct), both signs, largest |contrast|.
 2. **Numerical symmetry floor**: as in Prompt 07, per-design numerical SD = √2 × the mirror-antisymmetric part of the design's S-matrix. That pattern is placed in the 6 rotations × 2 reflections of the ring (both signs) and passed through the pipeline; the rms contrast is the design's floor; a difference of two designs adds both floors in quadrature. All four lobe_A designs are mirror-symmetric, Healthy_sliced_new included.
 3. **Gain/phase errors**: 200 Monte Carlo draws per design with the Prompt 07 measurement model (`adstage.pipeline.augment.draws`: typical noise profile, setup perturbation amp_sd 0.015, phase_sd 10.0° per port, jitter 1.0 MHz, plus per-port gain uniform ±0.5 dB, or ±2 dB with ±10° phase), independent draws for the two designs of each comparison. Spread = SD of the contrast over the draws; the 95 % interval is also given. Note that this model contains more than gain errors.
 
@@ -462,18 +500,18 @@ Front/back (FB = S1 − S4):
 | all 21 paths | bounded dS | Moderate − Healthy | FB | +10.2 | +14.6 | 0.71 | 1.95 | 24.40 | [-39.1, +49.2] | 24.40 | measurement | 0.42 | not separable (< 2×) | 5.20 |
 | all 21 paths | bounded dS | Severe − Healthy | FB | +3.8 | +0.1 | 0.71 | 0.76 | 26.63 | [-46.8, +51.3] | 26.63 | measurement | 0.14 | not separable (< 2×) | 5.05 |
 | all 21 paths | bounded dS | Moderate − Mild | FB | +4.4 | +14.6 | 0.71 | 1.89 | 16.11 | [-30.9, +38.8] | 16.11 | measurement | 0.27 | not separable (< 2×) | 2.31 |
-| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.83 | 1.27 | 13.51 | [-21.9, +30.5] | 13.51 | measurement | 0.29 | not separable (< 2×) | 3.09 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.83 | 4.07 | 14.10 | [-13.7, +40.1] | 14.10 | measurement | 0.74 | not separable (< 2×) | 2.57 |
-| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.83 | 1.46 | 13.29 | [-22.9, +27.7] | 13.29 | measurement | 0.31 | not separable (< 2×) | 2.84 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.4 | +14.6 | 0.83 | 3.89 | 15.65 | [-23.0, +33.9] | 15.65 | measurement | 0.41 | not separable (< 2×) | 1.65 |
-| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.83 | 0.55 | 10.70 | [-17.3, +23.9] | 10.70 | measurement | 0.37 | not separable (< 2×) | 4.71 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.83 | 1.66 | 12.00 | [-12.9, +33.8] | 12.00 | measurement | 0.87 | not separable (< 2×) | 6.29 |
-| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.83 | 0.61 | 13.09 | [-21.9, +27.7] | 13.09 | measurement | 0.32 | not separable (< 2×) | 4.97 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | FB | +5.7 | +14.6 | 0.83 | 1.61 | 9.38 | [-13.2, +24.6] | 9.38 | measurement | 0.61 | not separable (< 2×) | 3.53 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +2.3 | -0.0 | 0.27 | 0.97 | 4.07 | [-5.2, +11.0] | 4.07 | measurement | 0.56 | not separable (< 2×) | 2.37 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +10.3 | +14.6 | 0.27 | 3.34 | 4.17 | [+3.0, +19.0] | 4.17 | measurement | 2.47 | sensitive (2–3×) | 3.09 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +4.9 | +0.1 | 0.27 | 1.12 | 4.50 | [-1.9, +15.1] | 4.50 | measurement | 1.08 | not separable (< 2×) | 4.34 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.5 | +14.6 | 0.27 | 3.22 | 4.72 | [-0.5, +18.2] | 4.72 | measurement | 1.80 | not separable (< 2×) | 2.65 |
+| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.91 | 1.27 | 13.51 | [-21.9, +30.5] | 13.51 | measurement | 0.29 | not separable (< 2×) | 3.09 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.91 | 4.07 | 14.10 | [-13.7, +40.1] | 14.10 | measurement | 0.74 | not separable (< 2×) | 2.57 |
+| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.91 | 1.46 | 13.29 | [-22.9, +27.7] | 13.29 | measurement | 0.31 | not separable (< 2×) | 2.84 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.4 | +14.6 | 0.91 | 3.89 | 15.65 | [-23.0, +33.9] | 15.65 | measurement | 0.41 | not separable (< 2×) | 1.65 |
+| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.91 | 0.55 | 10.70 | [-17.3, +23.9] | 10.70 | measurement | 0.37 | not separable (< 2×) | 4.31 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.91 | 1.66 | 12.00 | [-12.9, +33.8] | 12.00 | measurement | 0.87 | not separable (< 2×) | 6.29 |
+| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.91 | 0.61 | 13.09 | [-21.9, +27.7] | 13.09 | measurement | 0.32 | not separable (< 2×) | 4.55 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | FB | +5.7 | +14.6 | 0.91 | 1.61 | 9.38 | [-13.2, +24.6] | 9.38 | measurement | 0.61 | not separable (< 2×) | 3.53 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +2.3 | -0.0 | 1.16 | 0.97 | 4.07 | [-5.2, +11.0] | 4.07 | measurement | 0.56 | not separable (< 2×) | 1.98 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +10.3 | +14.6 | 1.16 | 3.34 | 4.17 | [+3.0, +19.0] | 4.17 | measurement | 2.47 | sensitive (2–3×) | 3.09 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +4.9 | +0.1 | 1.16 | 1.12 | 4.50 | [-1.9, +15.1] | 4.50 | measurement | 1.08 | not separable (< 2×) | 4.19 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.5 | +14.6 | 1.16 | 3.22 | 4.72 | [-0.5, +18.2] | 4.72 | measurement | 1.80 | not separable (< 2×) | 2.65 |
 | without opposite paths | tikhonov dS | Mild − Healthy | FB | +3.7 | -0.0 | 0.92 | 1.27 | 31.74 | [-59.9, +57.8] | 31.74 | measurement | 0.12 | not separable (< 2×) | 2.95 |
 | without opposite paths | tikhonov dS | Moderate − Healthy | FB | +9.9 | +14.6 | 0.92 | 4.58 | 34.66 | [-55.7, +71.5] | 34.66 | measurement | 0.29 | not separable (< 2×) | 2.16 |
 | without opposite paths | tikhonov dS | Severe − Healthy | FB | +3.5 | +0.1 | 0.92 | 1.66 | 31.75 | [-62.4, +62.8] | 31.75 | measurement | 0.11 | not separable (< 2×) | 2.12 |
@@ -482,63 +520,63 @@ Front/back (FB = S1 − S4):
 | without opposite paths | bounded dS | Moderate − Healthy | FB | +9.9 | +14.6 | 0.92 | 2.19 | 25.58 | [-41.9, +50.8] | 25.58 | measurement | 0.39 | not separable (< 2×) | 4.51 |
 | without opposite paths | bounded dS | Severe − Healthy | FB | +3.5 | +0.1 | 0.92 | 0.85 | 27.91 | [-50.0, +54.5] | 27.91 | measurement | 0.13 | not separable (< 2×) | 3.81 |
 | without opposite paths | bounded dS | Moderate − Mild | FB | +4.3 | +14.6 | 0.92 | 2.12 | 17.34 | [-30.4, +41.5] | 17.34 | measurement | 0.25 | not separable (< 2×) | 2.02 |
-| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.79 | 1.28 | 13.48 | [-22.9, +28.8] | 13.48 | measurement | 0.24 | not separable (< 2×) | 2.58 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.79 | 4.08 | 14.06 | [-14.8, +39.2] | 14.06 | measurement | 0.69 | not separable (< 2×) | 2.39 |
-| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.79 | 1.47 | 13.13 | [-23.6, +26.4] | 13.13 | measurement | 0.24 | not separable (< 2×) | 2.17 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.5 | +14.6 | 0.79 | 3.90 | 15.52 | [-23.0, +34.1] | 15.52 | measurement | 0.42 | not separable (< 2×) | 1.66 |
-| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.79 | 0.67 | 11.16 | [-21.0, +24.8] | 11.16 | measurement | 0.30 | not separable (< 2×) | 4.17 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.79 | 2.00 | 12.25 | [-12.6, +35.0] | 12.25 | measurement | 0.80 | not separable (< 2×) | 4.90 |
-| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.79 | 0.79 | 12.90 | [-23.5, +26.4] | 12.90 | measurement | 0.25 | not separable (< 2×) | 4.03 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | FB | +4.9 | +14.6 | 0.79 | 1.91 | 9.72 | [-15.1, +26.0] | 9.72 | measurement | 0.50 | not separable (< 2×) | 2.54 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +1.6 | -0.0 | 0.43 | 0.98 | 4.08 | [-6.1, +10.4] | 4.08 | measurement | 0.39 | not separable (< 2×) | 1.63 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +9.4 | +14.6 | 0.43 | 3.35 | 4.15 | [+2.5, +17.6] | 4.15 | measurement | 2.26 | sensitive (2–3×) | 2.80 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +3.3 | +0.1 | 0.43 | 1.13 | 4.48 | [-3.5, +13.7] | 4.48 | measurement | 0.74 | not separable (< 2×) | 2.96 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.4 | +14.6 | 0.43 | 3.23 | 4.70 | [-0.7, +18.1] | 4.70 | measurement | 1.78 | not separable (< 2×) | 2.60 |
+| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.81 | 1.28 | 13.48 | [-22.9, +28.8] | 13.48 | measurement | 0.24 | not separable (< 2×) | 2.58 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.81 | 4.08 | 14.06 | [-14.8, +39.2] | 14.06 | measurement | 0.69 | not separable (< 2×) | 2.39 |
+| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.81 | 1.47 | 13.13 | [-23.6, +26.4] | 13.13 | measurement | 0.24 | not separable (< 2×) | 2.17 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.5 | +14.6 | 0.81 | 3.90 | 15.52 | [-23.0, +34.1] | 15.52 | measurement | 0.42 | not separable (< 2×) | 1.66 |
+| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.81 | 0.67 | 11.16 | [-21.0, +24.8] | 11.16 | measurement | 0.30 | not separable (< 2×) | 4.08 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.81 | 2.00 | 12.25 | [-12.6, +35.0] | 12.25 | measurement | 0.80 | not separable (< 2×) | 4.90 |
+| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.81 | 0.79 | 12.90 | [-23.5, +26.4] | 12.90 | measurement | 0.25 | not separable (< 2×) | 3.94 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | FB | +4.9 | +14.6 | 0.81 | 1.91 | 9.72 | [-15.1, +26.0] | 9.72 | measurement | 0.50 | not separable (< 2×) | 2.54 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +1.6 | -0.0 | 1.20 | 0.98 | 4.08 | [-6.1, +10.4] | 4.08 | measurement | 0.39 | not separable (< 2×) | 1.33 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +9.4 | +14.6 | 1.20 | 3.35 | 4.15 | [+2.5, +17.6] | 4.15 | measurement | 2.26 | sensitive (2–3×) | 2.80 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +3.3 | +0.1 | 1.20 | 1.13 | 4.48 | [-3.5, +13.7] | 4.48 | measurement | 0.74 | not separable (< 2×) | 2.77 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.4 | +14.6 | 1.20 | 3.23 | 4.70 | [-0.7, +18.1] | 4.70 | measurement | 1.78 | not separable (< 2×) | 2.60 |
 
 Left/right (LR = mean(S2, S3) − mean(S5, S6); all designs are mirror-symmetric, true LR = 0):
 
 | variant | method | comparison | contrast | clean | truth | yardstick | floor | gain_sd | gain_95 | ruler | dominant | ratio | verdict | clean_ratio |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| all 21 paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.52 | 1.20 | 26.54 | [-47.9, +47.7] | 26.54 | measurement | 0.01 | not separable (< 2×) | 0.29 |
-| all 21 paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.52 | 4.21 | 25.93 | [-57.9, +42.4] | 25.93 | measurement | 0.14 | not separable (< 2×) | 0.84 |
-| all 21 paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.52 | 1.51 | 23.21 | [-48.4, +46.9] | 23.21 | measurement | 0.02 | not separable (< 2×) | 0.28 |
-| all 21 paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 0.52 | 4.05 | 23.67 | [-50.7, +36.3] | 23.67 | measurement | 0.17 | not separable (< 2×) | 0.96 |
-| all 21 paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.52 | 0.53 | 21.02 | [-39.0, +37.0] | 21.02 | measurement | 0.02 | not separable (< 2×) | 0.65 |
-| all 21 paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.52 | 1.79 | 20.83 | [-44.1, +33.0] | 20.83 | measurement | 0.17 | not separable (< 2×) | 1.97 |
-| all 21 paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.52 | 0.65 | 19.79 | [-43.2, +39.0] | 19.79 | measurement | 0.02 | not separable (< 2×) | 0.65 |
-| all 21 paths | bounded dS | Moderate − Mild | LR | -0.9 | +0.0 | 0.52 | 1.73 | 11.29 | [-22.8, +22.4] | 11.29 | measurement | 0.08 | not separable (< 2×) | 0.54 |
-| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 0.68 | 1.17 | 11.14 | [-21.8, +18.7] | 11.14 | measurement | 0.03 | not separable (< 2×) | 0.24 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.68 | 3.76 | 10.82 | [-25.0, +14.5] | 10.82 | measurement | 0.33 | not separable (< 2×) | 0.95 |
-| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 0.68 | 1.28 | 11.38 | [-24.1, +20.2] | 11.38 | measurement | 0.05 | not separable (< 2×) | 0.41 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.8 | +0.0 | 0.68 | 3.60 | 11.05 | [-24.8, +16.7] | 11.05 | measurement | 0.34 | not separable (< 2×) | 1.05 |
-| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 0.48 | 0.51 | 10.65 | [-20.5, +18.0] | 10.65 | measurement | 0.03 | not separable (< 2×) | 0.55 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.48 | 1.55 | 10.44 | [-23.7, +13.4] | 10.44 | measurement | 0.34 | not separable (< 2×) | 2.29 |
-| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 0.48 | 0.53 | 11.23 | [-24.1, +20.0] | 11.23 | measurement | 0.05 | not separable (< 2×) | 0.99 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | LR | -1.8 | +0.0 | 0.48 | 1.51 | 5.55 | [-13.3, +9.2] | 5.55 | measurement | 0.33 | not separable (< 2×) | 1.22 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 0.19 | 0.86 | 2.62 | [-4.9, +4.4] | 2.62 | measurement | 0.02 | not separable (< 2×) | 0.06 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -3.0 | -0.0 | 0.19 | 3.14 | 2.76 | [-8.1, +3.2] | 3.14 | symmetry | 0.95 | not separable (< 2×) | 0.95 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 0.19 | 0.96 | 2.58 | [-5.3, +4.2] | 2.58 | measurement | 0.19 | not separable (< 2×) | 0.50 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.6 | +0.0 | 0.19 | 3.03 | 2.93 | [-8.1, +2.1] | 3.03 | symmetry | 1.18 | not separable (< 2×) | 1.18 |
-| without opposite paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.65 | 1.20 | 26.61 | [-47.9, +47.8] | 26.61 | measurement | 0.01 | not separable (< 2×) | 0.25 |
-| without opposite paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.65 | 4.21 | 26.00 | [-58.3, +43.2] | 26.00 | measurement | 0.14 | not separable (< 2×) | 0.84 |
-| without opposite paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.65 | 1.51 | 23.29 | [-48.7, +45.3] | 23.29 | measurement | 0.02 | not separable (< 2×) | 0.27 |
-| without opposite paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 0.65 | 4.06 | 23.73 | [-50.9, +36.4] | 23.73 | measurement | 0.16 | not separable (< 2×) | 0.95 |
-| without opposite paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.65 | 0.59 | 21.85 | [-40.2, +37.9] | 21.85 | measurement | 0.01 | not separable (< 2×) | 0.46 |
-| without opposite paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.65 | 2.00 | 21.64 | [-45.5, +34.2] | 21.64 | measurement | 0.16 | not separable (< 2×) | 1.77 |
-| without opposite paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.65 | 0.73 | 20.48 | [-44.9, +39.5] | 20.48 | measurement | 0.02 | not separable (< 2×) | 0.56 |
-| without opposite paths | bounded dS | Moderate − Mild | LR | -1.1 | +0.0 | 0.65 | 1.94 | 12.21 | [-25.9, +24.7] | 12.21 | measurement | 0.09 | not separable (< 2×) | 0.58 |
-| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 0.80 | 1.17 | 11.15 | [-22.1, +18.4] | 11.15 | measurement | 0.04 | not separable (< 2×) | 0.33 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.80 | 3.77 | 10.85 | [-24.9, +14.5] | 10.85 | measurement | 0.33 | not separable (< 2×) | 0.96 |
-| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 0.80 | 1.28 | 11.46 | [-24.6, +20.3] | 11.46 | measurement | 0.07 | not separable (< 2×) | 0.62 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.7 | +0.0 | 0.80 | 3.61 | 11.06 | [-24.8, +16.5] | 11.06 | measurement | 0.34 | not separable (< 2×) | 1.04 |
-| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 0.61 | 0.60 | 10.62 | [-20.6, +18.4] | 10.62 | measurement | 0.04 | not separable (< 2×) | 0.64 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.61 | 1.85 | 10.40 | [-23.7, +13.4] | 10.40 | measurement | 0.35 | not separable (< 2×) | 1.95 |
-| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 0.61 | 0.66 | 11.32 | [-24.6, +18.7] | 11.32 | measurement | 0.07 | not separable (< 2×) | 1.20 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | LR | -2.3 | +0.0 | 0.61 | 1.78 | 6.59 | [-16.6, +12.2] | 6.59 | measurement | 0.35 | not separable (< 2×) | 1.30 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 0.30 | 0.86 | 2.60 | [-5.1, +4.3] | 2.60 | measurement | 0.01 | not separable (< 2×) | 0.02 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -2.9 | -0.0 | 0.30 | 3.15 | 2.75 | [-8.1, +3.2] | 3.15 | symmetry | 0.93 | not separable (< 2×) | 0.93 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 0.30 | 0.97 | 2.60 | [-5.4, +4.3] | 2.60 | measurement | 0.19 | not separable (< 2×) | 0.52 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.5 | +0.0 | 0.30 | 3.04 | 2.93 | [-8.0, +2.1] | 3.04 | symmetry | 1.16 | not separable (< 2×) | 1.16 |
+| all 21 paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.14 | 1.20 | 26.54 | [-47.9, +47.7] | 26.54 | measurement | 0.01 | not separable (< 2×) | 0.16 |
+| all 21 paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.14 | 4.21 | 25.93 | [-57.9, +42.4] | 25.93 | measurement | 0.14 | not separable (< 2×) | 0.84 |
+| all 21 paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.14 | 1.51 | 23.21 | [-48.4, +46.9] | 23.21 | measurement | 0.02 | not separable (< 2×) | 0.20 |
+| all 21 paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 2.14 | 4.05 | 23.67 | [-50.7, +36.3] | 23.67 | measurement | 0.17 | not separable (< 2×) | 0.96 |
+| all 21 paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.14 | 0.53 | 21.02 | [-39.0, +37.0] | 21.02 | measurement | 0.02 | not separable (< 2×) | 0.16 |
+| all 21 paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.14 | 1.79 | 20.83 | [-44.1, +33.0] | 20.83 | measurement | 0.17 | not separable (< 2×) | 1.65 |
+| all 21 paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.14 | 0.65 | 19.79 | [-43.2, +39.0] | 19.79 | measurement | 0.02 | not separable (< 2×) | 0.20 |
+| all 21 paths | bounded dS | Moderate − Mild | LR | -0.9 | +0.0 | 2.14 | 1.73 | 11.29 | [-22.8, +22.4] | 11.29 | measurement | 0.08 | not separable (< 2×) | 0.44 |
+| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 2.23 | 1.17 | 11.14 | [-21.8, +18.7] | 11.14 | measurement | 0.03 | not separable (< 2×) | 0.13 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.23 | 3.76 | 10.82 | [-25.0, +14.5] | 10.82 | measurement | 0.33 | not separable (< 2×) | 0.95 |
+| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 2.23 | 1.28 | 11.38 | [-24.1, +20.2] | 11.38 | measurement | 0.05 | not separable (< 2×) | 0.24 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.8 | +0.0 | 2.23 | 3.60 | 11.05 | [-24.8, +16.7] | 11.05 | measurement | 0.34 | not separable (< 2×) | 1.05 |
+| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 2.23 | 0.51 | 10.65 | [-20.5, +18.0] | 10.65 | measurement | 0.03 | not separable (< 2×) | 0.13 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.23 | 1.55 | 10.44 | [-23.7, +13.4] | 10.44 | measurement | 0.34 | not separable (< 2×) | 1.59 |
+| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 2.23 | 0.53 | 11.23 | [-24.1, +20.0] | 11.23 | measurement | 0.05 | not separable (< 2×) | 0.24 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | LR | -1.8 | +0.0 | 2.23 | 1.51 | 5.55 | [-13.3, +9.2] | 5.55 | measurement | 0.33 | not separable (< 2×) | 0.83 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 1.66 | 0.86 | 2.62 | [-4.9, +4.4] | 2.62 | measurement | 0.02 | not separable (< 2×) | 0.03 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -3.0 | -0.0 | 1.66 | 3.14 | 2.76 | [-8.1, +3.2] | 3.14 | symmetry | 0.95 | not separable (< 2×) | 0.95 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 1.66 | 0.96 | 2.58 | [-5.3, +4.2] | 2.58 | measurement | 0.19 | not separable (< 2×) | 0.29 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.6 | +0.0 | 1.66 | 3.03 | 2.93 | [-8.1, +2.1] | 3.03 | symmetry | 1.18 | not separable (< 2×) | 1.18 |
+| without opposite paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.24 | 1.20 | 26.61 | [-47.9, +47.8] | 26.61 | measurement | 0.01 | not separable (< 2×) | 0.13 |
+| without opposite paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.24 | 4.21 | 26.00 | [-58.3, +43.2] | 26.00 | measurement | 0.14 | not separable (< 2×) | 0.84 |
+| without opposite paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.24 | 1.51 | 23.29 | [-48.7, +45.3] | 23.29 | measurement | 0.02 | not separable (< 2×) | 0.18 |
+| without opposite paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 2.24 | 4.06 | 23.73 | [-50.9, +36.4] | 23.73 | measurement | 0.16 | not separable (< 2×) | 0.95 |
+| without opposite paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.24 | 0.59 | 21.85 | [-40.2, +37.9] | 21.85 | measurement | 0.01 | not separable (< 2×) | 0.13 |
+| without opposite paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.24 | 2.00 | 21.64 | [-45.5, +34.2] | 21.64 | measurement | 0.16 | not separable (< 2×) | 1.58 |
+| without opposite paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.24 | 0.73 | 20.48 | [-44.9, +39.5] | 20.48 | measurement | 0.02 | not separable (< 2×) | 0.18 |
+| without opposite paths | bounded dS | Moderate − Mild | LR | -1.1 | +0.0 | 2.24 | 1.94 | 12.21 | [-25.9, +24.7] | 12.21 | measurement | 0.09 | not separable (< 2×) | 0.50 |
+| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 2.35 | 1.17 | 11.15 | [-22.1, +18.4] | 11.15 | measurement | 0.04 | not separable (< 2×) | 0.17 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.35 | 3.77 | 10.85 | [-24.9, +14.5] | 10.85 | measurement | 0.33 | not separable (< 2×) | 0.96 |
+| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 2.35 | 1.28 | 11.46 | [-24.6, +20.3] | 11.46 | measurement | 0.07 | not separable (< 2×) | 0.34 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.7 | +0.0 | 2.35 | 3.61 | 11.06 | [-24.8, +16.5] | 11.06 | measurement | 0.34 | not separable (< 2×) | 1.04 |
+| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 2.35 | 0.60 | 10.62 | [-20.6, +18.4] | 10.62 | measurement | 0.04 | not separable (< 2×) | 0.17 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.35 | 1.85 | 10.40 | [-23.7, +13.4] | 10.40 | measurement | 0.35 | not separable (< 2×) | 1.54 |
+| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 2.35 | 0.66 | 11.32 | [-24.6, +18.7] | 11.32 | measurement | 0.07 | not separable (< 2×) | 0.34 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | LR | -2.3 | +0.0 | 2.35 | 1.78 | 6.59 | [-16.6, +12.2] | 6.59 | measurement | 0.35 | not separable (< 2×) | 0.99 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 1.74 | 0.86 | 2.60 | [-5.1, +4.3] | 2.60 | measurement | 0.01 | not separable (< 2×) | 0.01 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -2.9 | -0.0 | 1.74 | 3.15 | 2.75 | [-8.1, +3.2] | 3.15 | symmetry | 0.93 | not separable (< 2×) | 0.93 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 1.74 | 0.97 | 2.60 | [-5.4, +4.3] | 2.60 | measurement | 0.19 | not separable (< 2×) | 0.29 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.5 | +0.0 | 1.74 | 3.04 | 2.93 | [-8.0, +2.1] | 3.04 | symmetry | 1.16 | not separable (< 2×) | 1.16 |
 
 ### Gain/phase condition: ±2 dB gain, ±10° phase
 
@@ -554,18 +592,18 @@ Front/back (FB = S1 − S4):
 | all 21 paths | bounded dS | Moderate − Healthy | FB | +10.2 | +14.6 | 0.71 | 1.95 | 27.99 | [-55.5, +52.5] | 27.99 | measurement | 0.36 | not separable (< 2×) | 5.20 |
 | all 21 paths | bounded dS | Severe − Healthy | FB | +3.8 | +0.1 | 0.71 | 0.76 | 31.55 | [-53.3, +62.8] | 31.55 | measurement | 0.12 | not separable (< 2×) | 5.05 |
 | all 21 paths | bounded dS | Moderate − Mild | FB | +4.4 | +14.6 | 0.71 | 1.89 | 21.66 | [-41.2, +49.0] | 21.66 | measurement | 0.20 | not separable (< 2×) | 2.31 |
-| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.83 | 1.27 | 15.20 | [-24.9, +36.7] | 15.20 | measurement | 0.26 | not separable (< 2×) | 3.09 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.83 | 4.07 | 16.27 | [-22.4, +41.1] | 16.27 | measurement | 0.64 | not separable (< 2×) | 2.57 |
-| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.83 | 1.46 | 15.67 | [-32.1, +29.3] | 15.67 | measurement | 0.26 | not separable (< 2×) | 2.84 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.4 | +14.6 | 0.83 | 3.89 | 17.69 | [-27.9, +37.8] | 17.69 | measurement | 0.36 | not separable (< 2×) | 1.65 |
-| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.83 | 0.55 | 11.33 | [-19.1, +25.8] | 11.33 | measurement | 0.35 | not separable (< 2×) | 4.71 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.83 | 1.66 | 13.59 | [-17.4, +36.3] | 13.59 | measurement | 0.77 | not separable (< 2×) | 6.29 |
-| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.83 | 0.61 | 14.74 | [-29.1, +29.3] | 14.74 | measurement | 0.28 | not separable (< 2×) | 4.97 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | FB | +5.7 | +14.6 | 0.83 | 1.61 | 11.46 | [-17.6, +28.5] | 11.46 | measurement | 0.50 | not separable (< 2×) | 3.53 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +2.3 | -0.0 | 0.27 | 0.97 | 4.22 | [-5.6, +12.0] | 4.22 | measurement | 0.54 | not separable (< 2×) | 2.37 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +10.3 | +14.6 | 0.27 | 3.34 | 4.33 | [+3.2, +18.7] | 4.33 | measurement | 2.38 | sensitive (2–3×) | 3.09 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +4.9 | +0.1 | 0.27 | 1.12 | 4.74 | [-4.4, +14.8] | 4.74 | measurement | 1.03 | not separable (< 2×) | 4.34 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.5 | +14.6 | 0.27 | 3.22 | 4.73 | [-0.4, +18.8] | 4.73 | measurement | 1.80 | not separable (< 2×) | 2.65 |
+| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.91 | 1.27 | 15.20 | [-24.9, +36.7] | 15.20 | measurement | 0.26 | not separable (< 2×) | 3.09 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.91 | 4.07 | 16.27 | [-22.4, +41.1] | 16.27 | measurement | 0.64 | not separable (< 2×) | 2.57 |
+| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.91 | 1.46 | 15.67 | [-32.1, +29.3] | 15.67 | measurement | 0.26 | not separable (< 2×) | 2.84 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.4 | +14.6 | 0.91 | 3.89 | 17.69 | [-27.9, +37.8] | 17.69 | measurement | 0.36 | not separable (< 2×) | 1.65 |
+| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.9 | -0.0 | 0.91 | 0.55 | 11.33 | [-19.1, +25.8] | 11.33 | measurement | 0.35 | not separable (< 2×) | 4.31 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +10.4 | +14.6 | 0.91 | 1.66 | 13.59 | [-17.4, +36.3] | 13.59 | measurement | 0.77 | not separable (< 2×) | 6.29 |
+| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | FB | +4.1 | +0.1 | 0.91 | 0.61 | 14.74 | [-29.1, +29.3] | 14.74 | measurement | 0.28 | not separable (< 2×) | 4.55 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | FB | +5.7 | +14.6 | 0.91 | 1.61 | 11.46 | [-17.6, +28.5] | 11.46 | measurement | 0.50 | not separable (< 2×) | 3.53 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +2.3 | -0.0 | 1.16 | 0.97 | 4.22 | [-5.6, +12.0] | 4.22 | measurement | 0.54 | not separable (< 2×) | 1.98 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +10.3 | +14.6 | 1.16 | 3.34 | 4.33 | [+3.2, +18.7] | 4.33 | measurement | 2.38 | sensitive (2–3×) | 3.09 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +4.9 | +0.1 | 1.16 | 1.12 | 4.74 | [-4.4, +14.8] | 4.74 | measurement | 1.03 | not separable (< 2×) | 4.19 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.5 | +14.6 | 1.16 | 3.22 | 4.73 | [-0.4, +18.8] | 4.73 | measurement | 1.80 | not separable (< 2×) | 2.65 |
 | without opposite paths | tikhonov dS | Mild − Healthy | FB | +3.7 | -0.0 | 0.92 | 1.27 | 43.31 | [-73.3, +83.6] | 43.31 | measurement | 0.09 | not separable (< 2×) | 2.95 |
 | without opposite paths | tikhonov dS | Moderate − Healthy | FB | +9.9 | +14.6 | 0.92 | 4.58 | 41.40 | [-80.0, +84.2] | 41.40 | measurement | 0.24 | not separable (< 2×) | 2.16 |
 | without opposite paths | tikhonov dS | Severe − Healthy | FB | +3.5 | +0.1 | 0.92 | 1.66 | 44.43 | [-85.7, +87.4] | 44.43 | measurement | 0.08 | not separable (< 2×) | 2.12 |
@@ -574,63 +612,63 @@ Front/back (FB = S1 − S4):
 | without opposite paths | bounded dS | Moderate − Healthy | FB | +9.9 | +14.6 | 0.92 | 2.19 | 29.46 | [-59.2, +60.2] | 29.46 | measurement | 0.34 | not separable (< 2×) | 4.51 |
 | without opposite paths | bounded dS | Severe − Healthy | FB | +3.5 | +0.1 | 0.92 | 0.85 | 33.13 | [-59.8, +66.3] | 33.13 | measurement | 0.11 | not separable (< 2×) | 3.81 |
 | without opposite paths | bounded dS | Moderate − Mild | FB | +4.3 | +14.6 | 0.92 | 2.12 | 23.39 | [-43.6, +54.4] | 23.39 | measurement | 0.18 | not separable (< 2×) | 2.02 |
-| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.79 | 1.28 | 15.21 | [-24.8, +35.8] | 15.21 | measurement | 0.22 | not separable (< 2×) | 2.58 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.79 | 4.08 | 16.30 | [-21.7, +41.8] | 16.30 | measurement | 0.60 | not separable (< 2×) | 2.39 |
-| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.79 | 1.47 | 15.52 | [-33.3, +29.7] | 15.52 | measurement | 0.21 | not separable (< 2×) | 2.17 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.5 | +14.6 | 0.79 | 3.90 | 17.61 | [-28.6, +38.5] | 17.61 | measurement | 0.37 | not separable (< 2×) | 1.66 |
-| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.79 | 0.67 | 12.05 | [-20.8, +27.0] | 12.05 | measurement | 0.27 | not separable (< 2×) | 4.17 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.79 | 2.00 | 13.92 | [-19.3, +37.4] | 13.92 | measurement | 0.70 | not separable (< 2×) | 4.90 |
-| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.79 | 0.79 | 14.66 | [-29.6, +28.5] | 14.66 | measurement | 0.22 | not separable (< 2×) | 4.03 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | FB | +4.9 | +14.6 | 0.79 | 1.91 | 12.16 | [-19.8, +32.0] | 12.16 | measurement | 0.40 | not separable (< 2×) | 2.54 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +1.6 | -0.0 | 0.43 | 0.98 | 4.28 | [-6.1, +11.1] | 4.28 | measurement | 0.37 | not separable (< 2×) | 1.63 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +9.4 | +14.6 | 0.43 | 3.35 | 4.35 | [+2.2, +18.0] | 4.35 | measurement | 2.16 | sensitive (2–3×) | 2.80 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +3.3 | +0.1 | 0.43 | 1.13 | 4.77 | [-5.8, +13.2] | 4.77 | measurement | 0.70 | not separable (< 2×) | 2.96 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.4 | +14.6 | 0.43 | 3.23 | 4.76 | [-0.8, +18.7] | 4.76 | measurement | 1.76 | not separable (< 2×) | 2.60 |
+| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.81 | 1.28 | 15.21 | [-24.8, +35.8] | 15.21 | measurement | 0.22 | not separable (< 2×) | 2.58 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.81 | 4.08 | 16.30 | [-21.7, +41.8] | 16.30 | measurement | 0.60 | not separable (< 2×) | 2.39 |
+| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.81 | 1.47 | 15.52 | [-33.3, +29.7] | 15.52 | measurement | 0.21 | not separable (< 2×) | 2.17 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | FB | +6.5 | +14.6 | 0.81 | 3.90 | 17.61 | [-28.6, +38.5] | 17.61 | measurement | 0.37 | not separable (< 2×) | 1.66 |
+| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | FB | +3.3 | -0.0 | 0.81 | 0.67 | 12.05 | [-20.8, +27.0] | 12.05 | measurement | 0.27 | not separable (< 2×) | 4.08 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | FB | +9.8 | +14.6 | 0.81 | 2.00 | 13.92 | [-19.3, +37.4] | 13.92 | measurement | 0.70 | not separable (< 2×) | 4.90 |
+| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | FB | +3.2 | +0.1 | 0.81 | 0.79 | 14.66 | [-29.6, +28.5] | 14.66 | measurement | 0.22 | not separable (< 2×) | 3.94 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | FB | +4.9 | +14.6 | 0.81 | 1.91 | 12.16 | [-19.8, +32.0] | 12.16 | measurement | 0.40 | not separable (< 2×) | 2.54 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | FB | +1.6 | -0.0 | 1.20 | 0.98 | 4.28 | [-6.1, +11.1] | 4.28 | measurement | 0.37 | not separable (< 2×) | 1.33 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | FB | +9.4 | +14.6 | 1.20 | 3.35 | 4.35 | [+2.2, +18.0] | 4.35 | measurement | 2.16 | sensitive (2–3×) | 2.80 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | FB | +3.3 | +0.1 | 1.20 | 1.13 | 4.77 | [-5.8, +13.2] | 4.77 | measurement | 0.70 | not separable (< 2×) | 2.77 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | FB | +8.4 | +14.6 | 1.20 | 3.23 | 4.76 | [-0.8, +18.7] | 4.76 | measurement | 1.76 | not separable (< 2×) | 2.60 |
 
 Left/right (LR = mean(S2, S3) − mean(S5, S6); all designs are mirror-symmetric, true LR = 0):
 
 | variant | method | comparison | contrast | clean | truth | yardstick | floor | gain_sd | gain_95 | ruler | dominant | ratio | verdict | clean_ratio |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| all 21 paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.52 | 1.20 | 32.40 | [-56.1, +77.8] | 32.40 | measurement | 0.01 | not separable (< 2×) | 0.29 |
-| all 21 paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.52 | 4.21 | 31.98 | [-62.5, +66.2] | 31.98 | measurement | 0.11 | not separable (< 2×) | 0.84 |
-| all 21 paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.52 | 1.51 | 29.81 | [-44.3, +69.4] | 29.81 | measurement | 0.01 | not separable (< 2×) | 0.28 |
-| all 21 paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 0.52 | 4.05 | 27.75 | [-54.9, +47.8] | 27.75 | measurement | 0.14 | not separable (< 2×) | 0.96 |
-| all 21 paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.52 | 0.53 | 24.22 | [-43.9, +57.2] | 24.22 | measurement | 0.01 | not separable (< 2×) | 0.65 |
-| all 21 paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.52 | 1.79 | 24.34 | [-47.2, +45.3] | 24.34 | measurement | 0.15 | not separable (< 2×) | 1.97 |
-| all 21 paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.52 | 0.65 | 22.42 | [-34.6, +50.7] | 22.42 | measurement | 0.02 | not separable (< 2×) | 0.65 |
-| all 21 paths | bounded dS | Moderate − Mild | LR | -0.9 | +0.0 | 0.52 | 1.73 | 13.25 | [-29.0, +24.5] | 13.25 | measurement | 0.07 | not separable (< 2×) | 0.54 |
-| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 0.68 | 1.17 | 11.81 | [-21.5, +25.1] | 11.81 | measurement | 0.02 | not separable (< 2×) | 0.24 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.68 | 3.76 | 12.16 | [-26.2, +23.9] | 12.16 | measurement | 0.29 | not separable (< 2×) | 0.95 |
-| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 0.68 | 1.28 | 12.55 | [-21.7, +25.7] | 12.55 | measurement | 0.04 | not separable (< 2×) | 0.41 |
-| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.8 | +0.0 | 0.68 | 3.60 | 12.10 | [-28.7, +17.5] | 12.10 | measurement | 0.31 | not separable (< 2×) | 1.05 |
-| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 0.48 | 0.51 | 11.07 | [-21.2, +22.0] | 11.07 | measurement | 0.03 | not separable (< 2×) | 0.55 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.48 | 1.55 | 11.43 | [-22.2, +21.8] | 11.43 | measurement | 0.31 | not separable (< 2×) | 2.29 |
-| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 0.48 | 0.53 | 12.27 | [-21.5, +24.7] | 12.27 | measurement | 0.04 | not separable (< 2×) | 0.99 |
-| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | LR | -1.8 | +0.0 | 0.48 | 1.51 | 6.61 | [-16.3, +9.7] | 6.61 | measurement | 0.28 | not separable (< 2×) | 1.22 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 0.19 | 0.86 | 2.62 | [-4.4, +5.1] | 2.62 | measurement | 0.02 | not separable (< 2×) | 0.06 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -3.0 | -0.0 | 0.19 | 3.14 | 2.52 | [-7.7, +2.2] | 3.14 | symmetry | 0.95 | not separable (< 2×) | 0.95 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 0.19 | 0.96 | 2.70 | [-5.2, +4.8] | 2.70 | measurement | 0.18 | not separable (< 2×) | 0.50 |
-| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.6 | +0.0 | 0.19 | 3.03 | 2.54 | [-8.7, +0.7] | 3.03 | symmetry | 1.18 | not separable (< 2×) | 1.18 |
-| without opposite paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.65 | 1.20 | 32.45 | [-55.7, +77.2] | 32.45 | measurement | 0.01 | not separable (< 2×) | 0.25 |
-| without opposite paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.65 | 4.21 | 31.98 | [-61.6, +66.7] | 31.98 | measurement | 0.11 | not separable (< 2×) | 0.84 |
-| without opposite paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.65 | 1.51 | 29.80 | [-45.0, +70.3] | 29.80 | measurement | 0.01 | not separable (< 2×) | 0.27 |
-| without opposite paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 0.65 | 4.06 | 27.82 | [-54.5, +48.1] | 27.82 | measurement | 0.14 | not separable (< 2×) | 0.95 |
-| without opposite paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 0.65 | 0.59 | 25.35 | [-45.2, +60.4] | 25.35 | measurement | 0.01 | not separable (< 2×) | 0.46 |
-| without opposite paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 0.65 | 2.00 | 25.28 | [-50.1, +48.9] | 25.28 | measurement | 0.14 | not separable (< 2×) | 1.77 |
-| without opposite paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 0.65 | 0.73 | 23.36 | [-36.1, +50.9] | 23.36 | measurement | 0.02 | not separable (< 2×) | 0.56 |
-| without opposite paths | bounded dS | Moderate − Mild | LR | -1.1 | +0.0 | 0.65 | 1.94 | 14.52 | [-30.3, +26.6] | 14.52 | measurement | 0.08 | not separable (< 2×) | 0.58 |
-| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 0.80 | 1.17 | 11.83 | [-21.4, +24.5] | 11.83 | measurement | 0.03 | not separable (< 2×) | 0.33 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.80 | 3.77 | 12.15 | [-26.6, +23.7] | 12.15 | measurement | 0.30 | not separable (< 2×) | 0.96 |
-| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 0.80 | 1.28 | 12.57 | [-22.5, +25.1] | 12.57 | measurement | 0.06 | not separable (< 2×) | 0.62 |
-| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.7 | +0.0 | 0.80 | 3.61 | 12.09 | [-28.6, +18.0] | 12.09 | measurement | 0.31 | not separable (< 2×) | 1.04 |
-| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 0.61 | 0.60 | 11.04 | [-21.3, +23.3] | 11.04 | measurement | 0.04 | not separable (< 2×) | 0.64 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 0.61 | 1.85 | 11.39 | [-24.2, +21.8] | 11.39 | measurement | 0.32 | not separable (< 2×) | 1.95 |
-| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 0.61 | 0.66 | 12.37 | [-22.1, +24.8] | 12.37 | measurement | 0.06 | not separable (< 2×) | 1.20 |
-| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | LR | -2.3 | +0.0 | 0.61 | 1.78 | 7.89 | [-19.0, +12.3] | 7.89 | measurement | 0.29 | not separable (< 2×) | 1.30 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 0.30 | 0.86 | 2.61 | [-4.3, +5.0] | 2.61 | measurement | 0.01 | not separable (< 2×) | 0.02 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -2.9 | -0.0 | 0.30 | 3.15 | 2.53 | [-7.7, +2.1] | 3.15 | symmetry | 0.93 | not separable (< 2×) | 0.93 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 0.30 | 0.97 | 2.69 | [-5.3, +5.0] | 2.69 | measurement | 0.19 | not separable (< 2×) | 0.52 |
-| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.5 | +0.0 | 0.30 | 3.04 | 2.55 | [-8.7, +0.7] | 3.04 | symmetry | 1.16 | not separable (< 2×) | 1.16 |
+| all 21 paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.14 | 1.20 | 32.40 | [-56.1, +77.8] | 32.40 | measurement | 0.01 | not separable (< 2×) | 0.16 |
+| all 21 paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.14 | 4.21 | 31.98 | [-62.5, +66.2] | 31.98 | measurement | 0.11 | not separable (< 2×) | 0.84 |
+| all 21 paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.14 | 1.51 | 29.81 | [-44.3, +69.4] | 29.81 | measurement | 0.01 | not separable (< 2×) | 0.20 |
+| all 21 paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 2.14 | 4.05 | 27.75 | [-54.9, +47.8] | 27.75 | measurement | 0.14 | not separable (< 2×) | 0.96 |
+| all 21 paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.14 | 0.53 | 24.22 | [-43.9, +57.2] | 24.22 | measurement | 0.01 | not separable (< 2×) | 0.16 |
+| all 21 paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.14 | 1.79 | 24.34 | [-47.2, +45.3] | 24.34 | measurement | 0.15 | not separable (< 2×) | 1.65 |
+| all 21 paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.14 | 0.65 | 22.42 | [-34.6, +50.7] | 22.42 | measurement | 0.02 | not separable (< 2×) | 0.20 |
+| all 21 paths | bounded dS | Moderate − Mild | LR | -0.9 | +0.0 | 2.14 | 1.73 | 13.25 | [-29.0, +24.5] | 13.25 | measurement | 0.07 | not separable (< 2×) | 0.44 |
+| all 21 paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 2.23 | 1.17 | 11.81 | [-21.5, +25.1] | 11.81 | measurement | 0.02 | not separable (< 2×) | 0.13 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.23 | 3.76 | 12.16 | [-26.2, +23.9] | 12.16 | measurement | 0.29 | not separable (< 2×) | 0.95 |
+| all 21 paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 2.23 | 1.28 | 12.55 | [-21.7, +25.7] | 12.55 | measurement | 0.04 | not separable (< 2×) | 0.24 |
+| all 21 paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.8 | +0.0 | 2.23 | 3.60 | 12.10 | [-28.7, +17.5] | 12.10 | measurement | 0.31 | not separable (< 2×) | 1.05 |
+| all 21 paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.3 | -0.0 | 2.23 | 0.51 | 11.07 | [-21.2, +22.0] | 11.07 | measurement | 0.03 | not separable (< 2×) | 0.13 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.23 | 1.55 | 11.43 | [-22.2, +21.8] | 11.43 | measurement | 0.31 | not separable (< 2×) | 1.59 |
+| all 21 paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.5 | -0.0 | 2.23 | 0.53 | 12.27 | [-21.5, +24.7] | 12.27 | measurement | 0.04 | not separable (< 2×) | 0.24 |
+| all 21 paths | bounded log (gain-inv.) | Moderate − Mild | LR | -1.8 | +0.0 | 2.23 | 1.51 | 6.61 | [-16.3, +9.7] | 6.61 | measurement | 0.28 | not separable (< 2×) | 0.83 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 1.66 | 0.86 | 2.62 | [-4.4, +5.1] | 2.62 | measurement | 0.02 | not separable (< 2×) | 0.03 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -3.0 | -0.0 | 1.66 | 3.14 | 2.52 | [-7.7, +2.2] | 3.14 | symmetry | 0.95 | not separable (< 2×) | 0.95 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 1.66 | 0.96 | 2.70 | [-5.2, +4.8] | 2.70 | measurement | 0.18 | not separable (< 2×) | 0.29 |
+| all 21 paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.6 | +0.0 | 1.66 | 3.03 | 2.54 | [-8.7, +0.7] | 3.03 | symmetry | 1.18 | not separable (< 2×) | 1.18 |
+| without opposite paths | tikhonov dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.24 | 1.20 | 32.45 | [-55.7, +77.2] | 32.45 | measurement | 0.01 | not separable (< 2×) | 0.13 |
+| without opposite paths | tikhonov dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.24 | 4.21 | 31.98 | [-61.6, +66.7] | 31.98 | measurement | 0.11 | not separable (< 2×) | 0.84 |
+| without opposite paths | tikhonov dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.24 | 1.51 | 29.80 | [-45.0, +70.3] | 29.80 | measurement | 0.01 | not separable (< 2×) | 0.18 |
+| without opposite paths | tikhonov dS | Moderate − Mild | LR | -3.9 | +0.0 | 2.24 | 4.06 | 27.82 | [-54.5, +48.1] | 27.82 | measurement | 0.14 | not separable (< 2×) | 0.95 |
+| without opposite paths | bounded dS | Mild − Healthy | LR | +0.3 | -0.0 | 2.24 | 0.59 | 25.35 | [-45.2, +60.4] | 25.35 | measurement | 0.01 | not separable (< 2×) | 0.13 |
+| without opposite paths | bounded dS | Moderate − Healthy | LR | -3.5 | -0.0 | 2.24 | 2.00 | 25.28 | [-50.1, +48.9] | 25.28 | measurement | 0.14 | not separable (< 2×) | 1.58 |
+| without opposite paths | bounded dS | Severe − Healthy | LR | -0.4 | -0.0 | 2.24 | 0.73 | 23.36 | [-36.1, +50.9] | 23.36 | measurement | 0.02 | not separable (< 2×) | 0.18 |
+| without opposite paths | bounded dS | Moderate − Mild | LR | -1.1 | +0.0 | 2.24 | 1.94 | 14.52 | [-30.3, +26.6] | 14.52 | measurement | 0.08 | not separable (< 2×) | 0.50 |
+| without opposite paths | tikhonov log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 2.35 | 1.17 | 11.83 | [-21.4, +24.5] | 11.83 | measurement | 0.03 | not separable (< 2×) | 0.17 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.35 | 3.77 | 12.15 | [-26.6, +23.7] | 12.15 | measurement | 0.30 | not separable (< 2×) | 0.96 |
+| without opposite paths | tikhonov log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 2.35 | 1.28 | 12.57 | [-22.5, +25.1] | 12.57 | measurement | 0.06 | not separable (< 2×) | 0.34 |
+| without opposite paths | tikhonov log (gain-inv.) | Moderate − Mild | LR | -3.7 | +0.0 | 2.35 | 3.61 | 12.09 | [-28.6, +18.0] | 12.09 | measurement | 0.31 | not separable (< 2×) | 1.04 |
+| without opposite paths | bounded log (gain-inv.) | Mild − Healthy | LR | -0.4 | -0.0 | 2.35 | 0.60 | 11.04 | [-21.3, +23.3] | 11.04 | measurement | 0.04 | not separable (< 2×) | 0.17 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Healthy | LR | -3.6 | -0.0 | 2.35 | 1.85 | 11.39 | [-24.2, +21.8] | 11.39 | measurement | 0.32 | not separable (< 2×) | 1.54 |
+| without opposite paths | bounded log (gain-inv.) | Severe − Healthy | LR | -0.8 | -0.0 | 2.35 | 0.66 | 12.37 | [-22.1, +24.8] | 12.37 | measurement | 0.06 | not separable (< 2×) | 0.34 |
+| without opposite paths | bounded log (gain-inv.) | Moderate − Mild | LR | -2.3 | +0.0 | 2.35 | 1.78 | 7.89 | [-19.0, +12.3] | 7.89 | measurement | 0.29 | not separable (< 2×) | 0.99 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Mild − Healthy | LR | +0.0 | -0.0 | 1.74 | 0.86 | 2.61 | [-4.3, +5.0] | 2.61 | measurement | 0.01 | not separable (< 2×) | 0.01 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Healthy | LR | -2.9 | -0.0 | 1.74 | 3.15 | 2.53 | [-7.7, +2.1] | 3.15 | symmetry | 0.93 | not separable (< 2×) | 0.93 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Severe − Healthy | LR | -0.5 | -0.0 | 1.74 | 0.97 | 2.69 | [-5.3, +5.0] | 2.69 | measurement | 0.19 | not separable (< 2×) | 0.29 |
+| without opposite paths | tikhonov log, whitened projection (post-hoc) | Moderate − Mild | LR | -3.5 | +0.0 | 1.74 | 3.04 | 2.55 | [-8.7, +0.7] | 3.04 | symmetry | 1.16 | not separable (< 2×) | 1.16 |
 
 ### Reading
 
@@ -640,24 +678,340 @@ Left/right (LR = mean(S2, S3) − mean(S5, S6); all designs are mirror-symmetric
 - **Moderate − Mild, FB, frozen log:** clean +6.4 (truth +14.6). ±0.5 dB: ruler 15.6 (measurement), 0.4× → not separable (< 2×); ±2 dB/±10°: ruler 17.7 (measurement), 0.4× → not separable (< 2×). Without opposite paths: 0.4× / 0.4×. Clean ruler (mesh, symmetry only): 1.7× (not separable (< 2×)); without opposite paths 1.7×.
 - **Moderate − Healthy, FB, whitened log:** clean +10.3 (truth +14.6). ±0.5 dB: ruler 4.2 (measurement), 2.5× → sensitive (2–3×); ±2 dB/±10°: ruler 4.3 (measurement), 2.4× → sensitive (2–3×). Without opposite paths: 2.3× / 2.2×. Clean ruler (mesh, symmetry only): 3.1× (exceeds (≥ 3×)); without opposite paths 2.8×.
 - **Moderate − Mild, FB, whitened log:** clean +8.5 (truth +14.6). ±0.5 dB: ruler 4.7 (measurement), 1.8× → not separable (< 2×); ±2 dB/±10°: ruler 4.7 (measurement), 1.8× → not separable (< 2×). Without opposite paths: 1.8× / 1.8×. Clean ruler (mesh, symmetry only): 2.6× (sensitive (2–3×)); without opposite paths 2.6×.
-- **The front-positive bias** (Mild, Severe: true FB ≈ 0). Clean FB: Tikhonov dS Mild +3.9, Tikhonov dS Severe +3.8, frozen log Mild +3.9, frozen log Severe +4.1, whitened log Mild +2.3, whitened log Severe +4.9. Ratio to the full ruler (±0.5 dB / ±2 dB): Tikhonov dS Mild 0.1× / 0.1×; Tikhonov dS Severe 0.1× / 0.1×; frozen log Mild 0.3× / 0.3×; frozen log Severe 0.3× / 0.3×; whitened log Mild 0.6× / 0.5×; whitened log Severe 1.1× / 1.0×. Ratio to the clean ruler (mesh, symmetry): Tikhonov dS Mild 3.0×; Tikhonov dS Severe 2.3×; frozen log Mild 3.1×; frozen log Severe 2.8×; whitened log Mild 2.4×; whitened log Severe 4.3×. Against the clean ruler the bias is about as large, relative to error, as Moderate's FB itself; Moderate − Healthy FB contains it, and Moderate − Mild (which removes most of it) is the smaller contrast.
-- **Left/right on the mirror-symmetric designs** (true LR = 0): |LR| / full ruler ≤ 1.2×; |LR| / clean ruler ≤ 2.3× (worst: frozen bounded log, Moderate − Healthy, all 21 paths, LR -3.6). Exactly mirror-symmetrised data give |LR| ≤ 1.3 (kernel mirror asymmetry of the HFSS field exports); the rest of the symmetric designs' LR is their own numerical mirror residual, i.e. the symmetry floor in its actual orientation.
-- **LeftOnly prediction vs the LR rulers (Tikhonov dS):** predicted LR +14.7 (Born-simulated) against the Mild − Healthy LR ruler 26.5 (±0.5 dB) / 32.4 (±2 dB/±10°) → 0.6× / 0.5×; clean ruler 1.2 → 12.2×.
-- **LeftOnly prediction vs the LR rulers (frozen log):** predicted LR +14.9 (Born-simulated) against the Mild − Healthy LR ruler 11.1 (±0.5 dB) / 11.8 (±2 dB/±10°) → 1.3× / 1.3×; clean ruler 1.2 → 12.7×.
+- **The front-positive bias** (Mild, Severe: true FB ≈ 0). Clean FB: Tikhonov dS Mild +3.9, Tikhonov dS Severe +3.8, frozen log Mild +3.9, frozen log Severe +4.1, whitened log Mild +2.3, whitened log Severe +4.9. Ratio to the full ruler (±0.5 dB / ±2 dB): Tikhonov dS Mild 0.1× / 0.1×; Tikhonov dS Severe 0.1× / 0.1×; frozen log Mild 0.3× / 0.3×; frozen log Severe 0.3× / 0.3×; whitened log Mild 0.6× / 0.5×; whitened log Severe 1.1× / 1.0×. Ratio to the clean ruler (mesh, symmetry): Tikhonov dS Mild 3.0×; Tikhonov dS Severe 2.3×; frozen log Mild 3.1×; frozen log Severe 2.8×; whitened log Mild 2.0×; whitened log Severe 4.2×. Against the clean ruler the bias is about as large, relative to error, as Moderate's FB itself; Moderate − Healthy FB contains it, and Moderate − Mild (which removes most of it) is the smaller contrast.
+- **Left/right on the mirror-symmetric designs** (true LR = 0): |LR| / full ruler ≤ 1.2×; |LR| / clean ruler ≤ 1.7× (worst: bounded dS, Moderate − Healthy, all 21 paths, LR -3.5). Exactly mirror-symmetrised data give |LR| ≤ 1.3 (kernel mirror asymmetry of the HFSS field exports); the rest of the symmetric designs' LR is their own numerical mirror residual, i.e. the symmetry floor in its actual orientation.
+- **LeftOnly prediction vs the LR rulers (Tikhonov dS):** predicted LR +14.7 (Born-simulated) against the Mild − Healthy LR ruler 26.5 (±0.5 dB) / 32.4 (±2 dB/±10°) → 0.6× / 0.5×; clean ruler 2.1 → 6.9×.
+- **LeftOnly prediction vs the LR rulers (frozen log):** predicted LR +14.9 (Born-simulated) against the Mild − Healthy LR ruler 11.1 (±0.5 dB) / 11.8 (±2 dB/±10°) → 1.3× / 1.3×; clean ruler 2.2 → 6.7×.
 
-## 6. Blind test (pre-registered, §4 of the brief)
+## 6. Blind test outcome (pre-registered)
 
-Pipeline frozen in `results/imaging/lobe_frozen.json` and predictions written to `results/imaging/lobe_predictions.md` before LeftOnly_test or MCI_lobe were opened. Outcome: **pending** (the two designs are still solving). Run `python imaging/run_lobe.py --blind` when they arrive; this section will then be replaced by the scored outcome.
+Frozen at code `fb5b775`; predictions in `lobe_predictions.md`. Scored now at code `f3306b7` with the unchanged frozen κ, λ and thresholds.
+
+Two references (decision of 4 Oct): the frozen 7-pass Healthy_sliced is primary and decides the verdict; the stop-rule-matched Healthy_sliced_new is shown alongside. Each prediction against the error rulers: §6b.
+
+| reference | design | method | dε'' S1 Fr | dε'' S2 TL | dε'' S3 PL | dε'' S4 Oc | dε'' S5 PR | dε'' S6 TR | called | LR | side | FB | frontback | verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Healthy_sliced (7 passes, frozen, primary) | LeftOnly_test | tikhonov dS | 5.2 | 13.1 | 15.0 | 5.6 | 5.0 | 6.2 | S3 | +8.5 | left | -0.4 | none | PARTIAL |
+| Healthy_sliced (7 passes, frozen, primary) | LeftOnly_test | bounded dS | 5.2 | 13.1 | 15.0 | 5.6 | 5.0 | 6.2 | S3 | +8.5 | left | -0.4 | none | PARTIAL |
+| Healthy_sliced (7 passes, frozen, primary) | LeftOnly_test | tikhonov log (gain-inv.) | 5.3 | 12.6 | 15.5 | 4.8 | 4.5 | 5.1 | S3 | +9.2 | left | +0.5 | none | PARTIAL |
+| Healthy_sliced (7 passes, frozen, primary) | LeftOnly_test | bounded log (gain-inv.) | 5.3 | 12.6 | 15.5 | 4.8 | 4.5 | 5.1 | S3 | +9.2 | left | +0.5 | none | PARTIAL |
+| Healthy_sliced (7 passes, frozen, primary) | MCI_lobe | tikhonov dS | 2.5 | 3.4 | 2.9 | 3.4 | 2.1 | 2.1 | none | +1.0 | none | -0.9 | none | SUCCESS |
+| Healthy_sliced (7 passes, frozen, primary) | MCI_lobe | bounded dS | 2.5 | 3.4 | 2.9 | 3.4 | 2.1 | 2.1 | none | +1.0 | none | -0.9 | none | SUCCESS |
+| Healthy_sliced (7 passes, frozen, primary) | MCI_lobe | tikhonov log (gain-inv.) | 2.2 | 1.8 | 1.9 | 2.3 | 1.8 | 0.8 | none | +0.6 | none | -0.1 | none | SUCCESS |
+| Healthy_sliced (7 passes, frozen, primary) | MCI_lobe | bounded log (gain-inv.) | 2.2 | 1.8 | 1.9 | 2.3 | 1.8 | 0.8 | none | +0.6 | none | -0.1 | none | SUCCESS |
+| Healthy_sliced_new (6 passes, matched) | LeftOnly_test | tikhonov dS | 3.0 | 11.1 | 12.3 | 3.4 | 2.6 | 3.2 | none | +8.8 | left | -0.4 | none | FAIL |
+| Healthy_sliced_new (6 passes, matched) | LeftOnly_test | bounded dS | 3.0 | 11.1 | 12.3 | 3.4 | 2.6 | 3.2 | none | +8.8 | left | -0.4 | none | FAIL |
+| Healthy_sliced_new (6 passes, matched) | LeftOnly_test | tikhonov log (gain-inv.) | 3.6 | 11.5 | 13.6 | 3.3 | 2.8 | 3.0 | S3 | +9.7 | left | +0.3 | none | PARTIAL |
+| Healthy_sliced_new (6 passes, matched) | LeftOnly_test | bounded log (gain-inv.) | 3.6 | 11.5 | 13.6 | 3.3 | 2.8 | 3.0 | S3 | +9.7 | left | +0.3 | none | PARTIAL |
+| Healthy_sliced_new (6 passes, matched) | MCI_lobe | tikhonov dS | 0.4 | 1.4 | 0.2 | 1.2 | -0.3 | -0.8 | none | +1.4 | none | -0.8 | none | SUCCESS |
+| Healthy_sliced_new (6 passes, matched) | MCI_lobe | bounded dS | 0.1 | 1.4 | 0.2 | 1.0 | 0.0 | 0.0 | none | +0.8 | none | -0.9 | none | SUCCESS |
+| Healthy_sliced_new (6 passes, matched) | MCI_lobe | tikhonov log (gain-inv.) | 0.5 | 0.7 | -0.0 | 0.8 | 0.0 | -1.2 | none | +0.9 | none | -0.3 | none | SUCCESS |
+| Healthy_sliced_new (6 passes, matched) | MCI_lobe | bounded log (gain-inv.) | 0.1 | 0.7 | 0.0 | 0.8 | 0.0 | 0.0 | none | +0.4 | none | -0.7 | none | SUCCESS |
+
+## 6a. c3 files: registry, sets and QC
+
+Imaging-side registry (`results/imaging/lobe_sets.csv`; the shared manifest `data/sims_lobe.csv` belongs to the main session and is not edited here). The c3 suffix is only the user's label.
+
+| file | design | stop_rule | passes | final_dS | elements | sets | mesh_source |
+|---|---|---|---|---|---|---|---|
+| new_with_slices_Healthy_sliced.s6p | Healthy_sliced | 2 | 7 | 0.0092 | 1349491 | lobe_v1 lobe_B | data/sims_lobe.csv |
+| new_with_slices_Healthy_sliced_new.s6p | Healthy_sliced | 1 | 6 | 0.0155 | 1081728 | lobe_A | data/sims_lobe.csv |
+| new_with_slices_Mild_lobe.s6p | Mild_lobe | 1 | 5 | 0.0186 | 739774 | lobe_v1 lobe_A | data/sims_lobe.csv |
+| new_with_slices_Mild_lobe_new.s6p | Mild_lobe | 2 | 6 | 0.015 | 878656 | lobe_B | data/sims_lobe.csv |
+| new_with_slices_Moderate_lobe.s6p | Moderate_lobe | 1 | 5 | 0.0194 | 796281 | lobe_v1 lobe_A | data/sims_lobe.csv |
+| new_with_slices_Moderate_lobe_c3.s6p | Moderate_lobe | 2 | 6 | 0.014593 | 949865 | lobe_B | user 2026-10-04 (c3) |
+| new_with_slices_Severe_lobe.s6p | Severe_lobe | 1 | 5 | 0.019999 | 690077 | lobe_v1 lobe_A | data/sims_lobe.csv |
+| new_with_slices_Severe_lobe_c3.s6p | Severe_lobe | 2 | 6 | 0.011567 | 819294 | lobe_B | user 2026-10-04 (c3) |
+| new_with_slices_LeftOnly_test_c3.s6p | LeftOnly_test | 1 | 6 | 0.014686 | 941358 | lobe_A (blind) | user 2026-10-04 (c3) |
+| new_with_slices_MCI_lobe_c3.s6p | MCI_lobe | 1 | 6 | 0.013948 | 981160 | lobe_A (blind) | user 2026-10-04 (c3) |
+
+Sets: **lobe_A** (stop rule 1: first pass with ΔS < 0.02) = Healthy_sliced_new (p6), Mild_lobe (p5), Moderate_lobe (p5), Severe_lobe (p5), LeftOnly_test_c3 (p6), MCI_lobe_c3 (p6); LeftOnly and MCI are stop-rule and pass matched to Healthy_sliced_new. **lobe_B** (stop rule 2: two consecutive passes) = Healthy_sliced (p7), Mild_lobe_new (p6), Moderate_lobe_c3 (p6), Severe_lobe_c3 (p6).
+
+QC of every lobe file (glitch rule as in §3.1 of Prompt 07: |S_ij − S_ji| > -30 dB re the band-rms level of the pair, masked by complex linear interpolation; mask log in `results/imaging/lobe_mask_log.csv`):
+
+| file | points | f_GHz | max_singular_value | passive | max_recip_err_dB_re_band | worst_amp_nonrecip_dB | at_GHz | path | path_type | its_recip_err_dB | worst_point_masked | worst_point_at_fit_freq | n_masked |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| new_with_slices_Healthy_sliced.s6p | 201 | 3.2–4.2 | 0.9514 | True | -23.3 | 0.32 | 3.855 | T1–T4 | opposite | -35.3 | False | False | 1 |
+| new_with_slices_Healthy_sliced_new.s6p | 201 | 3.2–4.2 | 0.9519 | True | -41.1 | 0.12 | 3.855 | T1–T4 | opposite | -42.3 | False | False | 0 |
+| new_with_slices_Mild_lobe.s6p | 201 | 3.2–4.2 | 0.9518 | True | -30.7 | 0.38 | 3.855 | T1–T3 | second-neighbour | -32.6 | False | False | 0 |
+| new_with_slices_Mild_lobe_new.s6p | 201 | 3.2–4.2 | 0.9511 | True | 10.9 | 4.84 | 3.855 | T2–T5 | opposite | 10.9 | True | False | 1 |
+| new_with_slices_Moderate_lobe.s6p | 201 | 3.2–4.2 | 0.9505 | True | -30.1 | 0.36 | 3.850 | T3–T6 | opposite | -30.1 | False | False | 0 |
+| new_with_slices_Moderate_lobe_c3.s6p | 201 | 3.2–4.2 | 0.9501 | True | -29.2 | 0.32 | 3.855 | T1–T4 | opposite | -29.2 | True | False | 1 |
+| new_with_slices_Severe_lobe.s6p | 201 | 3.2–4.2 | 0.9505 | True | -25.7 | 0.39 | 3.840 | T3–T6 | opposite | -36.9 | False | False | 1 |
+| new_with_slices_Severe_lobe_c3.s6p | 201 | 3.2–4.2 | 0.9497 | True | -5.6 | 2.43 | 3.835 | T2–T5 | opposite | -5.6 | True | False | 16 |
+| new_with_slices_LeftOnly_test_c3.s6p | 201 | 3.2–4.2 | 0.9511 | True | -25.8 | 0.15 | 3.845 | T3–T6 | opposite | -44.1 | False | False | 1 |
+| new_with_slices_MCI_lobe_c3.s6p | 201 | 3.2–4.2 | 0.9520 | True | -42.5 | 0.05 | 3.855 | T1–T4 | opposite | -47.7 | False | False | 0 |
+
+Masked points:
+
+| file | f_GHz | ports | path | type | Sij_dB | Sji_dB | recip_err_dB | at_fit_freq |
+|---|---|---|---|---|---|---|---|---|
+| new_with_slices_Healthy_sliced.s6p | 3.525 | 1-4 | T1–T4 | opposite | -42.4 | -42.5 | -23.3 | False |
+| new_with_slices_Mild_lobe_new.s6p | 3.855 | 3-6 | T2–T5 | opposite | -34.0 | -38.9 | 10.9 | False |
+| new_with_slices_Moderate_lobe_c3.s6p | 3.855 | 1-4 | T1–T4 | opposite | -55.9 | -56.2 | -29.2 | False |
+| new_with_slices_Severe_lobe.s6p | 3.845 | 2-5 | T3–T6 | opposite | -53.4 | -53.2 | -25.7 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.225 | 2-6 | T3–T5 | second-neighbour | -57.9 | -57.6 | -29.6 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.230 | 2-6 | T3–T5 | second-neighbour | -57.5 | -57.2 | -28.4 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.235 | 2-6 | T3–T5 | second-neighbour | -57.1 | -56.8 | -27.4 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.240 | 2-6 | T3–T5 | second-neighbour | -56.8 | -56.4 | -26.8 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.245 | 2-6 | T3–T5 | second-neighbour | -56.5 | -56.1 | -26.4 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.250 | 2-6 | T3–T5 | second-neighbour | -56.2 | -55.8 | -26.2 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.255 | 2-6 | T3–T5 | second-neighbour | -55.9 | -55.5 | -26.2 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.260 | 2-6 | T3–T5 | second-neighbour | -55.7 | -55.3 | -26.3 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.265 | 2-6 | T3–T5 | second-neighbour | -55.4 | -55.0 | -26.7 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.270 | 2-6 | T3–T5 | second-neighbour | -55.2 | -54.8 | -27.2 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.275 | 2-6 | T3–T5 | second-neighbour | -55.0 | -54.7 | -27.9 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.280 | 2-6 | T3–T5 | second-neighbour | -54.8 | -54.5 | -28.7 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.285 | 2-6 | T3–T5 | second-neighbour | -54.6 | -54.4 | -29.8 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.830 | 3-6 | T2–T5 | opposite | -61.8 | -60.9 | -27.9 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.835 | 3-6 | T2–T5 | opposite | -52.2 | -54.7 | -5.6 | False |
+| new_with_slices_Severe_lobe_c3.s6p | 3.840 | 3-6 | T2–T5 | opposite | -56.9 | -56.6 | -25.5 | False |
+| new_with_slices_LeftOnly_test_c3.s6p | 3.850 | 2-5 | T3–T6 | opposite | -54.4 | -54.4 | -25.8 | False |
+
+**Severe_lobe_c3:** its most non-reciprocal point is 2.43 dB in amplitude at 3.835 GHz on T2–T5 (opposite); its reciprocity error is -5.6 dB re the band level, so the −30 dB rule **does** mask it, and it is not at a fit frequency (3.4/3.6/3.8 GHz), so it does not enter the inversions. The rule masks 16 points in Severe_lobe_c3 in all: T2–T5 3.830–3.840 GHz (3 pt, worst -5.6 dB); T3–T5 3.225–3.285 GHz (13 pt, worst -26.2 dB); none at a fit frequency. All four c3 files have 201 points and are passive (largest singular value ≤ 1). LeftOnly_test_c3 and MCI_lobe_c3 were not opened before the scoring run (their QC is part of it).
+
+## 6b. Blind predictions against the error rulers
+
+Every pre-registered prediction (`lobe_predictions.md`, frozen at `fb5b775`; the main session's predictions are `cf56de8`) is scored on the clean simulation by the frozen pipeline, against both references. Columns: effect = the clean recovered quantity (dε'' of the sector, LR or FB of the map); over_noise = effect / SD under the typical noise profile alone (both designs); over_yard = / one-pass mesh yardstick (largest of Healthy 7−6, Mild 6−5, Moderate 6−5, Severe 6−5, both signs, added to the reference); over_floor = / numerical symmetry floor (quadrature of the two designs' floors; LeftOnly is not mirror-symmetric, so its floor is the largest floor of the lobe_A symmetric designs); over_meas = / SD under the Prompt 07 measurement model (±0.5 dB gain, and ±2 dB/±10°). verdict_sim uses the clean ruler max(yardstick, floor); verdict_meas uses max(noise SD, yardstick, floor, ±0.5 dB spread). **hit** = the pre-registered call is made and (for a positive prediction) the effect is ≥ 2× the ruler; **not separable** = right call but < 2× the ruler, or a wrong call within 2× the ruler; **miss** = wrong call ≥ 2× the ruler, or a positive prediction not called. The whitened-projection log method has no frozen thresholds: its 'call' is the sign of the contrast when it is ≥ 2× the clean ruler, it makes no sector calls, and it is **post-hoc**.
+
+**Caveats recorded before scoring:** (1) the predictions, κ, λ and thresholds were all derived from lobe_v1 (Mild_lobe p5 against Healthy_sliced p7: stop rules not matched), so mesh is part of the frozen 'Mild change'; (2) LeftOnly carries CSF_Mild also as the 0.5 mm layer on the right (one CSF object). The imaging forward model includes it (true sensitivity-weighted dε'' of LeftOnly: S1 Fr +0.3, S2 TL +13.2, S3 PL +12.9, S4 Oc +0.3, S5 PR +0.3, S6 TR +0.3), so the Born-simulated predictions contain it; the main session's path-level predictions do not; (3) the frozen 'gain-invariant' log method is not gain-invariant (§5d erratum); (4) one simulation per design, one head. Predicted for LeftOnly (primary method, Born-simulated with noise): LR +14.7 ± 2.2, P(called) S1 Fr 0.00, S2 TL 0.62, S3 PL 1.00, S4 Oc 0.00, S5 PR 0.00, S6 TR 0.00.
+
+### LeftOnly_test_c3
+
+| reference | method | prediction | effect | call | over_noise | over_yard | over_floor | over_meas_05 | over_meas_2 | verdict_sim | verdict_meas |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | side = left | +8.5 | left | 3.7 | 3.9 | 2.0 | 0.3 | 0.2 | hit | not separable |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S2 affected | +13.1 | False | 5.2 | 3.1 | 5.4 | 0.6 | 0.5 | miss | miss |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S3 affected | +15.0 | True | 5.9 | 5.6 | 6.4 | 0.8 | 0.5 | hit | not separable |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S1 healthy | +5.2 | False | 2.0 | 1.6 | 2.2 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S4 healthy | +5.6 | False | 2.1 | 2.3 | 2.5 | 0.3 | 0.3 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S5 healthy | +5.0 | False | 2.1 | 1.0 | 2.1 | 0.3 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S6 healthy | +6.2 | False | 2.6 | 1.2 | 2.4 | 0.3 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | front/back none | -0.4 | none | 0.1 | 0.7 | 0.1 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | side = left | +9.2 | left | 3.6 | 4.1 | 2.5 | 0.9 | 0.7 | hit | not separable |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S2 affected | +12.6 | False | 4.0 | 4.5 | 5.9 | 1.5 | 1.3 | miss | miss |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S3 affected | +15.5 | True | 5.3 | 7.8 | 7.7 | 1.8 | 1.4 | hit | not separable |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S1 healthy | +5.3 | False | 1.7 | 2.2 | 2.6 | 0.5 | 0.5 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S4 healthy | +4.8 | False | 1.6 | 3.0 | 2.4 | 0.6 | 0.5 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S5 healthy | +4.5 | False | 1.6 | 1.1 | 2.1 | 0.6 | 0.4 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S6 healthy | +5.1 | False | 1.7 | 1.4 | 2.3 | 0.5 | 0.4 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | front/back none | +0.5 | none | 0.1 | 0.5 | 0.1 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | side = left | +9.3 | left | 3.6 | 5.5 | 3.0 | 3.4 | 3.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S2 affected | +12.2 | n/a | 3.7 | 4.7 | 6.6 | 4.2 | 3.8 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S3 affected | +15.0 | n/a | 5.1 | 8.1 | 8.8 | 4.8 | 4.6 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S1 healthy | +4.7 | n/a | 1.6 | 3.0 | 2.8 | 1.5 | 1.4 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S4 healthy | +4.4 | n/a | 1.4 | 3.3 | 2.6 | 1.3 | 1.4 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S5 healthy | +4.2 | n/a | 1.6 | 1.4 | 2.4 | 1.4 | 1.5 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S6 healthy | +4.4 | n/a | 1.4 | 1.5 | 2.3 | 1.4 | 1.3 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | front/back none | +0.3 | none | 0.1 | 0.2 | 0.1 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | side = left | +8.8 | left | 3.6 | 4.1 | 2.1 | 0.3 | 0.3 | hit | not separable |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S2 affected | +11.1 | False | 4.5 | 2.7 | 4.6 | 0.5 | 0.4 | miss | miss |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S3 affected | +12.3 | False | 4.9 | 4.5 | 5.2 | 0.6 | 0.5 | miss | miss |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S1 healthy | +3.0 | False | 1.3 | 1.0 | 1.3 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S4 healthy | +3.4 | False | 1.3 | 1.4 | 1.5 | 0.2 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S5 healthy | +2.6 | False | 1.0 | 0.5 | 1.1 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S6 healthy | +3.2 | False | 1.2 | 0.6 | 1.2 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | front/back none | -0.4 | none | 0.1 | 0.6 | 0.1 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | side = left | +9.7 | left | 3.4 | 4.3 | 2.6 | 0.9 | 0.8 | hit | not separable |
+| Healthy_sliced_new (p6, matched) | frozen log | S2 affected | +11.5 | False | 4.3 | 4.0 | 5.3 | 1.3 | 1.2 | miss | miss |
+| Healthy_sliced_new (p6, matched) | frozen log | S3 affected | +13.6 | True | 4.5 | 7.1 | 6.7 | 1.7 | 1.3 | hit | not separable |
+| Healthy_sliced_new (p6, matched) | frozen log | S1 healthy | +3.6 | False | 1.2 | 1.5 | 1.8 | 0.4 | 0.3 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S4 healthy | +3.3 | False | 1.1 | 2.1 | 1.6 | 0.4 | 0.3 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S5 healthy | +2.8 | False | 1.0 | 0.7 | 1.3 | 0.3 | 0.3 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S6 healthy | +3.0 | False | 0.9 | 0.8 | 1.3 | 0.3 | 0.2 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | front/back none | +0.3 | none | 0.1 | 0.4 | 0.1 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | side = left | +9.4 | left | 3.2 | 5.7 | 3.0 | 3.1 | 3.4 | hit | hit |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S2 affected | +11.2 | n/a | 4.2 | 4.2 | 6.0 | 3.3 | 3.8 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S3 affected | +13.3 | n/a | 4.6 | 7.2 | 7.8 | 3.9 | 4.3 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S1 healthy | +3.4 | n/a | 1.2 | 2.2 | 2.0 | 1.1 | 1.0 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S4 healthy | +3.2 | n/a | 1.0 | 2.5 | 1.9 | 0.9 | 1.0 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S5 healthy | +2.9 | n/a | 1.0 | 0.9 | 1.6 | 0.9 | 0.9 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S6 healthy | +2.8 | n/a | 0.8 | 1.0 | 1.5 | 0.8 | 0.8 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | front/back none | +0.2 | none | 0.0 | 0.2 | 0.1 | 0.0 | 0.0 | hit | hit |
+
+### MCI_lobe_c3
+
+| reference | method | prediction | effect | call | over_noise | over_yard | over_floor | over_meas_05 | over_meas_2 | verdict_sim | verdict_meas |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S1 not affected | +2.5 | False | 0.9 | 0.8 | 2.6 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S2 not affected | +3.4 | False | 1.3 | 0.8 | 3.8 | 0.2 | 0.1 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S3 not affected | +2.9 | False | 1.1 | 1.1 | 3.4 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S4 not affected | +3.4 | False | 1.3 | 1.4 | 3.8 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S5 not affected | +2.1 | False | 0.8 | 0.4 | 2.2 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | S6 not affected | +2.1 | False | 0.9 | 0.4 | 2.3 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | side none | +1.0 | none | 0.5 | 0.5 | 1.1 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | Tikhonov dS | front/back none | -0.9 | none | 0.2 | 1.3 | 0.8 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S1 not affected | +2.2 | False | 0.7 | 0.9 | 2.3 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S2 not affected | +1.8 | False | 0.6 | 0.6 | 2.1 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S3 not affected | +1.9 | False | 0.6 | 1.0 | 2.3 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S4 not affected | +2.3 | False | 0.8 | 1.5 | 2.7 | 0.3 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S5 not affected | +1.8 | False | 0.6 | 0.4 | 1.9 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | S6 not affected | +0.8 | False | 0.3 | 0.2 | 0.9 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | side none | +0.6 | none | 0.2 | 0.3 | 0.6 | 0.1 | 0.0 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | frozen log | front/back none | -0.1 | none | 0.0 | 0.1 | 0.1 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S1 not affected | +1.6 | n/a | 0.5 | 1.0 | 2.0 | 0.5 | 0.5 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S2 not affected | +1.9 | n/a | 0.6 | 0.7 | 2.5 | 0.6 | 0.6 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S3 not affected | +1.6 | n/a | 0.5 | 0.9 | 2.1 | 0.5 | 0.5 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S4 not affected | +2.3 | n/a | 0.8 | 1.7 | 3.1 | 0.7 | 0.7 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S5 not affected | +1.5 | n/a | 0.5 | 0.5 | 1.8 | 0.5 | 0.4 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | S6 not affected | +0.7 | n/a | 0.2 | 0.2 | 0.9 | 0.2 | 0.2 | n/a | n/a |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | side none | +0.6 | none | 0.2 | 0.4 | 0.7 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced (p7, frozen, primary) | whitened log (post-hoc) | front/back none | -0.7 | none | 0.1 | 0.5 | 0.6 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S1 not affected | +0.4 | False | 0.1 | 0.1 | 0.4 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S2 not affected | +1.4 | False | 0.5 | 0.3 | 1.5 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S3 not affected | +0.2 | False | 0.1 | 0.1 | 0.3 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S4 not affected | +1.2 | False | 0.5 | 0.5 | 1.3 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S5 not affected | -0.3 | False | 0.1 | 0.1 | 0.3 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | S6 not affected | -0.8 | False | 0.3 | 0.2 | 0.8 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | side none | +1.4 | none | 0.6 | 0.6 | 1.1 | 0.1 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | Tikhonov dS | front/back none | -0.8 | none | 0.3 | 1.2 | 0.6 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S1 not affected | +0.5 | False | 0.2 | 0.2 | 0.5 | 0.1 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S2 not affected | +0.7 | False | 0.2 | 0.2 | 0.8 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S3 not affected | -0.0 | False | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S4 not affected | +0.8 | False | 0.3 | 0.5 | 1.0 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S5 not affected | +0.0 | False | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | S6 not affected | -1.2 | False | 0.4 | 0.3 | 1.2 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | side none | +0.9 | none | 0.3 | 0.4 | 0.8 | 0.1 | 0.1 | hit | hit |
+| Healthy_sliced_new (p6, matched) | frozen log | front/back none | -0.3 | none | 0.1 | 0.3 | 0.2 | 0.0 | 0.0 | hit | hit |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S1 not affected | +0.3 | n/a | 0.1 | 0.2 | 0.4 | 0.1 | 0.1 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S2 not affected | +0.8 | n/a | 0.3 | 0.3 | 1.1 | 0.2 | 0.2 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S3 not affected | -0.2 | n/a | 0.1 | 0.1 | 0.3 | 0.1 | 0.1 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S4 not affected | +1.1 | n/a | 0.4 | 0.8 | 1.5 | 0.3 | 0.4 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S5 not affected | +0.1 | n/a | 0.0 | 0.0 | 0.2 | 0.0 | 0.0 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | S6 not affected | -0.8 | n/a | 0.3 | 0.3 | 1.0 | 0.3 | 0.2 | n/a | n/a |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | side none | +0.6 | none | 0.2 | 0.4 | 0.7 | 0.2 | 0.2 | hit | hit |
+| Healthy_sliced_new (p6, matched) | whitened log (post-hoc) | front/back none | -0.7 | none | 0.2 | 0.6 | 0.8 | 0.1 | 0.2 | hit | hit |
+
+## 6c. MCI_lobe: is MCI − Healthy_sliced_new larger than the rulers on any feature?
+
+Reconstruction features (six sector dε'', LR, FB; Tikhonov dS, frozen log, whitened log, matched reference): largest |effect| / clean ruler = 0.8× (whitened log (post-hoc), S4 Oc, effect +1.1); largest |effect| / measured ruler = 0.3× (whitened log (post-hoc), S4 Oc). Features ≥ 2× the clean ruler: none.
+
+Data level (norm of the whitened data vector, 21 paths × 3 frequencies × Re/Im):
+
+| model | MCI − H6 | noise (rms) | one pass Healthy 7 − 6 | one pass Mild 6 − 5 | one pass Moderate 6 − 5 | one pass Severe 6 − 5 | Mild − H6 | Moderate − H6 | Severe − H6 |
+|---|---|---|---|---|---|---|---|---|---|
+| dS | 3.9 | 11.2 | 5.32 | 9.22 | 8.52 | 8.53 | 23.6 | 25.1 | 37.5 |
+| wlog | 3.38 | 9.55 | 3.21 | 5.57 | 5.05 | 5.34 | 17.4 | 20.6 | 32.6 |
+
+- **Answer:** MCI − Healthy_sliced_new is 0.42× the largest one-pass mesh difference and 0.35× the rms noise at data level (dS model; whitened log: 0.61× / 0.35×), against 2.6× for Mild. Expectation (pre-registered): nothing beyond noise, because the hippocampus lies deeper than the sensing depth (core CRLB ≫ its change, §2).
+
+## 6d. lobe_B (stop rule 2): frozen pipeline, rulers and one-pass yardstick for all four stages
+
+Reference Healthy_sliced (p7); stages Mild_lobe_new, Moderate_lobe_c3, Severe_lobe_c3 (p6). Frozen κ, λ, thresholds. lobe_A rows (reference Healthy_sliced_new) alongside:
+
+| set | method | stage | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR | called | correct | corr_truth | LR | side | FB | frontback |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| lobe_B | Tikhonov dS | Mild | 8.2 | 16.0 | 15.2 | 5.1 | 13.7 | 16.5 | S2 S3 S6 | 5 | 0.96 | +0.5 | none | +3.1 | none |
+| lobe_A | Tikhonov dS | Mild | 9.2 | 18.2 | 14.9 | 5.4 | 13.8 | 18.6 | S2 S3 S6 | 5 | 0.91 | +0.3 | none | +3.9 | none |
+| lobe_B | Tikhonov dS | Moderate | 16.1 | 12.1 | 14.3 | 5.3 | 13.5 | 16.4 | S1 S3 S6 | 4 | 0.92 | -1.7 | none | +10.8 | front |
+| lobe_A | Tikhonov dS | Moderate | 15.5 | 13.1 | 13.9 | 5.3 | 16.2 | 17.9 | S1 S3 S5 S6 | 5 | 0.92 | -3.5 | none | +10.2 | front |
+| lobe_B | Tikhonov dS | Severe | 18.5 | 15.5 | 18.3 | 14.9 | 14.8 | 18.2 | S1 S2 S3 S4 S5 S6 | 6 | 0.46 | +0.4 | none | +3.6 | none |
+| lobe_A | Tikhonov dS | Severe | 18.4 | 15.5 | 17.1 | 14.6 | 15.3 | 18.1 | S1 S2 S3 S4 S5 S6 | 6 | 0.55 | -0.4 | none | +3.8 | none |
+| lobe_B | frozen log | Mild | 8.0 | 14.4 | 14.9 | 4.2 | 15.0 | 14.5 | S2 S3 S5 S6 | 6 | 0.96 | -0.1 | none | +3.8 | none |
+| lobe_A | frozen log | Mild | 8.6 | 16.1 | 14.3 | 4.7 | 15.1 | 15.8 | S2 S3 S5 S6 | 6 | 0.96 | -0.3 | none | +3.9 | none |
+| lobe_B | frozen log | Moderate | 16.6 | 13.4 | 14.7 | 5.7 | 12.9 | 18.2 | S1 S2 S3 S6 | 5 | 0.89 | -1.5 | none | +10.9 | front |
+| lobe_A | frozen log | Moderate | 15.4 | 14.7 | 13.8 | 5.0 | 15.7 | 19.9 | S1 S2 S3 S5 S6 | 6 | 0.91 | -3.6 | none | +10.4 | front |
+| lobe_B | frozen log | Severe | 20.7 | 17.1 | 20.3 | 17.1 | 16.9 | 20.5 | S1 S2 S3 S4 S5 S6 | 6 | 0.40 | +0.0 | none | +3.6 | none |
+| lobe_A | frozen log | Severe | 20.6 | 16.7 | 19.7 | 16.4 | 17.8 | 19.6 | S1 S2 S3 S4 S5 S6 | 6 | 0.56 | -0.5 | none | +4.1 | none |
+| lobe_B | whitened log | Mild | 6.4 | 14.0 | 14.1 | 3.8 | 14.1 | 13.7 | n/a | n/a | 0.98 | +0.1 | n/a | +2.7 | n/a |
+| lobe_A | whitened log | Mild | 6.6 | 15.6 | 13.0 | 4.3 | 13.8 | 14.7 | n/a | n/a | 0.97 | +0.0 | n/a | +2.3 | n/a |
+| lobe_B | whitened log | Moderate | 15.3 | 12.5 | 14.1 | 5.1 | 12.5 | 16.6 | n/a | n/a | 0.92 | -1.2 | n/a | +10.3 | n/a |
+| lobe_A | whitened log | Moderate | 14.3 | 13.4 | 13.3 | 4.0 | 14.7 | 17.9 | n/a | n/a | 0.93 | -3.0 | n/a | +10.3 | n/a |
+| lobe_B | whitened log | Severe | 19.4 | 14.9 | 19.1 | 15.5 | 15.8 | 18.3 | n/a | n/a | 0.39 | -0.1 | n/a | +3.9 | n/a |
+| lobe_A | whitened log | Severe | 19.2 | 14.5 | 18.3 | 14.4 | 16.7 | 17.0 | n/a | n/a | 0.56 | -0.5 | n/a | +4.9 | n/a |
+
+Front/back and left/right of lobe_B against the rulers (yardstick of all four one-pass differences, symmetry floor, noise, ±0.5 dB measurement spread):
+
+| method | comparison | quantity | effect | yardstick | floor | noise_sd | meas_sd_05 | ratio_sim | ratio_meas |
+|---|---|---|---|---|---|---|---|---|---|
+| Tikhonov dS | Mild (B) − Healthy (p7) | LR | +0.5 | 2.18 | 0.88 | 2.42 | 26.82 | 0.24 | 0.02 |
+| Tikhonov dS | Mild (B) − Healthy (p7) | FB | +3.1 | 0.67 | 1.00 | 4.11 | 32.36 | 3.12 | 0.10 |
+| Tikhonov dS | Moderate (B) − Healthy (p7) | LR | -1.7 | 2.18 | 2.11 | 2.45 | 25.09 | 0.80 | 0.07 |
+| Tikhonov dS | Moderate (B) − Healthy (p7) | FB | +10.8 | 0.67 | 2.30 | 3.75 | 34.38 | 4.70 | 0.31 |
+| Tikhonov dS | Severe (B) − Healthy (p7) | LR | +0.4 | 2.18 | 0.89 | 2.31 | 23.96 | 0.19 | 0.02 |
+| Tikhonov dS | Severe (B) − Healthy (p7) | FB | +3.6 | 0.67 | 1.03 | 3.97 | 30.30 | 3.54 | 0.12 |
+| Tikhonov dS | Moderate (B) − Mild (B) | LR | -2.2 | 2.22 | 1.93 | 2.32 | 24.04 | 1.00 | 0.09 |
+| Tikhonov dS | Moderate (B) − Mild (B) | FB | +7.6 | 0.71 | 2.10 | 3.62 | 31.06 | 3.61 | 0.24 |
+| frozen log | Mild (B) − Healthy (p7) | LR | -0.1 | 2.25 | 0.90 | 2.78 | 10.53 | 0.05 | 0.01 |
+| frozen log | Mild (B) − Healthy (p7) | FB | +3.8 | 1.00 | 1.04 | 5.24 | 12.96 | 3.68 | 0.29 |
+| frozen log | Moderate (B) − Healthy (p7) | LR | -1.5 | 2.25 | 1.67 | 2.81 | 10.56 | 0.67 | 0.14 |
+| frozen log | Moderate (B) − Healthy (p7) | FB | +10.9 | 1.00 | 1.80 | 4.78 | 13.58 | 6.04 | 0.80 |
+| frozen log | Severe (B) − Healthy (p7) | LR | +0.0 | 2.25 | 1.01 | 2.64 | 10.86 | 0.00 | 0.00 |
+| frozen log | Severe (B) − Healthy (p7) | FB | +3.6 | 1.00 | 1.19 | 4.80 | 12.71 | 3.03 | 0.28 |
+| frozen log | Moderate (B) − Mild (B) | LR | -1.9 | 2.50 | 1.52 | 2.71 | 10.86 | 0.76 | 0.18 |
+| frozen log | Moderate (B) − Mild (B) | FB | +7.5 | 1.16 | 1.59 | 4.71 | 13.87 | 4.71 | 0.54 |
+| whitened log | Mild (B) − Healthy (p7) | LR | +0.1 | 1.68 | 0.87 | 2.88 | 2.54 | 0.08 | 0.05 |
+| whitened log | Mild (B) − Healthy (p7) | FB | +2.7 | 1.23 | 1.03 | 5.07 | 4.37 | 2.20 | 0.53 |
+| whitened log | Moderate (B) − Healthy (p7) | LR | -1.2 | 1.68 | 1.51 | 2.85 | 2.96 | 0.73 | 0.42 |
+| whitened log | Moderate (B) − Healthy (p7) | FB | +10.3 | 1.23 | 1.63 | 4.34 | 4.57 | 6.28 | 2.24 |
+| whitened log | Severe (B) − Healthy (p7) | LR | -0.1 | 1.68 | 0.98 | 2.74 | 2.59 | 0.05 | 0.03 |
+| whitened log | Severe (B) − Healthy (p7) | FB | +3.9 | 1.23 | 1.17 | 4.48 | 4.45 | 3.21 | 0.88 |
+| whitened log | Moderate (B) − Mild (B) | LR | -1.9 | 1.87 | 1.36 | 2.82 | 2.72 | 0.99 | 0.66 |
+| whitened log | Moderate (B) − Mild (B) | FB | +8.7 | 1.22 | 1.43 | 4.45 | 4.29 | 6.07 | 1.96 |
+
+One-pass yardstick for all four stages (each difference added to Healthy_sliced_new and inverted; recovered dε'' per sector and the contrasts):
+
+| difference | method | S1 Fr | S2 TL | S3 PL | S4 Oc | S5 PR | S6 TR | LR | FB |
+|---|---|---|---|---|---|---|---|---|---|
+| Healthy 7 − 6 | Tikhonov dS | -2.2 | -2.0 | -2.7 | -2.2 | -2.4 | -3.0 | +0.3 | +0.0 |
+| Healthy 7 − 6 | frozen log | -1.7 | -1.2 | -2.0 | -1.5 | -1.7 | -2.1 | +0.3 | -0.2 |
+| Healthy 7 − 6 | whitened log | -1.3 | -1.1 | -1.9 | -1.3 | -1.3 | -1.6 | -0.1 | -0.0 |
+| Mild 6 − 5 | Tikhonov dS | -3.1 | -4.2 | -2.4 | -2.4 | -2.5 | -5.2 | +0.5 | -0.7 |
+| Mild 6 − 5 | frozen log | -2.5 | -2.8 | -1.0 | -1.9 | -1.5 | -3.6 | +0.7 | -0.6 |
+| Mild 6 − 5 | whitened log | -1.6 | -2.6 | -0.3 | -1.6 | -0.6 | -2.7 | +0.2 | -0.0 |
+| Moderate 6 − 5 | Tikhonov dS | -1.6 | -3.0 | -2.3 | -2.3 | -5.1 | -4.5 | +2.1 | +0.6 |
+| Moderate 6 − 5 | frozen log | -0.7 | -2.2 | -0.9 | -1.0 | -3.9 | -3.6 | +2.2 | +0.4 |
+| Moderate 6 − 5 | whitened log | -0.2 | -1.8 | -0.7 | -0.4 | -2.8 | -2.9 | +1.6 | +0.2 |
+| Severe 6 − 5 | Tikhonov dS | -2.1 | -1.9 | -1.5 | -1.9 | -2.9 | -2.9 | +1.2 | -0.2 |
+| Severe 6 − 5 | frozen log | -1.3 | -0.2 | -0.6 | -0.5 | -1.9 | -1.0 | +1.1 | -0.9 |
+| Severe 6 − 5 | whitened log | -0.7 | -0.1 | -0.1 | +0.1 | -1.5 | -0.2 | +0.8 | -0.8 |
+
+Per-path amplitude change of each one-pass difference (dB, largest path of each class; band = band-mean power, median over f, worst single frequency):
+
+| difference | statistic | reflection | neighbour | second-neighbour | opposite |
+|---|---|---|---|---|---|
+| Healthy 7 − 6 | band | 0.019 | 0.081 | 0.174 | 0.126 |
+| Healthy 7 − 6 | median | 0.044 | 0.095 | 0.156 | 0.046 |
+| Healthy 7 − 6 | worst | 0.961 | 0.422 | 2.484 | 4.548 |
+| Mild 6 − 5 | band | 0.039 | 0.048 | 0.258 | 0.146 |
+| Mild 6 − 5 | median | 0.085 | 0.112 | 0.186 | 0.102 |
+| Mild 6 − 5 | worst | 0.978 | 0.445 | 5.676 | 9.458 |
+| Moderate 6 − 5 | band | 0.033 | 0.061 | 0.079 | 0.085 |
+| Moderate 6 − 5 | median | 0.087 | 0.139 | 0.138 | 0.089 |
+| Moderate 6 − 5 | worst | 1.228 | 0.514 | 3.253 | 2.440 |
+| Severe 6 − 5 | band | 0.037 | 0.094 | 0.176 | 0.110 |
+| Severe 6 − 5 | median | 0.065 | 0.104 | 0.138 | 0.124 |
+| Severe 6 − 5 | worst | 1.091 | 0.953 | 4.881 | 4.449 |
+
+**Frozen R31 rule, read-only cross-check** (`adstage.frozen.apply_rule`, clean masked S; the main session's numbers are authoritative): τ = -15.273 dB, margin 0.078 dB (AD if R31 < τ − margin).
+
+| set | file | R31_dB | R21_dB | binary_R31 | three | three_merged |
+|---|---|---|---|---|---|---|
+| lobe_A | Healthy_sliced_new | -14.744 | -20.567 | Normal | Normal | Normal |
+| lobe_A | Mild_lobe | -15.822 | -19.974 | AD | UNCERTAIN | Mild+Moderate |
+| lobe_A | Moderate_lobe | -16.008 | -19.451 | AD | Mild | Mild+Moderate |
+| lobe_A | Severe_lobe | -15.533 | -18.002 | AD | Severe | Severe |
+| lobe_A | LeftOnly_test_c3 | -15.445 | -20.200 | AD | Normal | Normal |
+| lobe_A | MCI_lobe_c3 | -14.773 | -20.555 | Normal | Normal | Normal |
+| lobe_B | Healthy_sliced | -14.609 | -20.507 | Normal | Normal | Normal |
+| lobe_B | Mild_lobe_new | -15.856 | -19.940 | AD | Mild | Mild+Moderate |
+| lobe_B | Moderate_lobe_c3 | -16.012 | -19.451 | AD | Mild | Mild+Moderate |
+| lobe_B | Severe_lobe_c3 | -15.584 | -17.892 | AD | Severe | Severe |
+
+- Severe_lobe_c3 R31 = -15.584 dB → AD (AD side of τ − margin = -15.351); Severe_lobe (p5) -15.533; Moderate_lobe_c3 -16.012 vs Moderate_lobe (p5) -16.008. (The user's plain-mean values −15.57 / −15.52 and −16.01 / −16.00 use the unmasked ring-mean recipe; this is the frozen recipe.)
 
 ## 7. Verdict — can this 6-antenna ring localise lobe-level AD?
 
 Within these simulations (one head, one solve per design, typical noise, Born kernels on the v2 Normal fields):
 
 - **Which lobes (pattern):** yes, as a ranking. On the mesh-matched set lobe_A (§5c) the recovered sector conductivity correlates 0.89–0.96 with the truth for Mild and Moderate (all four methods, with and without the opposite paths) and the affected lobes are the most changed. Absolute 'affected' calls depend on a threshold calibrated on Mild and are fragile: a one-pass change of the reference mesh shifts every sector by about 2–3, enough to move sectors near T_abs = 13.8 across it (primary, all paths: 5/6, 5/6, 6/6 correct for Mild/Moderate/Severe; without opposite paths: 6/6, 6/6, 6/6). Healthy lobes are biased upward by about 5–10, more than a one-pass mesh change; Born model error and leakage are the likely cause.
-- **Front/back: not established.** Moderate − Healthy FB on lobe_A = +10.2 (primary; truth +14.6). Against the simulation-level ruler max(one-pass mesh, symmetry floor): Tikhonov dS 2.2×, frozen log 2.6×, whitened log 3.1× (≥ 3× exceeds, 2–3× sensitive). With the Prompt 07 measurement errors: Tikhonov dS 0.3×, frozen log 0.7×, whitened log 2.5× (±0.5 dB) and Tikhonov dS 0.2×, frozen log 0.6×, whitened log 2.4× (±2 dB/±10°). Mild and Severe carry a front-positive bias of about +4 that is itself 2.3–4.3× the clean ruler, and Moderate − Mild (not a pure frontal contrast) is Tikhonov dS 1.4×, frozen log 1.7×, whitened log 2.6× the clean ruler. This agrees with the main session: localisation is not separable from error once symmetry floor and gain/phase errors are included (§5d).
-- **Left/right:** not testable on the available designs (all mirror-symmetric). The frozen pipeline predicts LR = +14.7 ± 2.2 for LeftOnly_test (left in 100% of noisy draws); the blind test decides. Rulers (§5d): the predicted LeftOnly contrast is 12× the clean LR ruler, so the clean simulation can test left/right; with the Prompt 07 measurement errors it would be only 0.6× (Tikhonov dS) / 1.3× (frozen log) the ruler at ±0.5 dB: not separable in a measurement with the frozen pipeline. The mirror-symmetric designs themselves (true LR = 0) reach up to 2.3× the clean LR ruler, so that ruler underestimates left/right error by up to that factor; the LeftOnly margin would survive it.
+- **Front/back: not established.** Moderate − Healthy FB on lobe_A = +10.2 (primary; truth +14.6). Against the simulation-level ruler max(one-pass mesh, symmetry floor): Tikhonov dS 2.2×, frozen log 2.6×, whitened log 3.1× (≥ 3× exceeds, 2–3× sensitive). With the Prompt 07 measurement errors: Tikhonov dS 0.3×, frozen log 0.7×, whitened log 2.5× (±0.5 dB) and Tikhonov dS 0.2×, frozen log 0.6×, whitened log 2.4× (±2 dB/±10°). Mild and Severe carry a front-positive bias of about +4 that is itself 2.0–4.2× the clean ruler, and Moderate − Mild (not a pure frontal contrast) is Tikhonov dS 1.4×, frozen log 1.7×, whitened log 2.6× the clean ruler. This agrees with the main session: localisation is not separable from error once symmetry floor and gain/phase errors are included (§5d).
+- **Left/right:** **pre-registered blind test: PARTIAL** (primary method, frozen 7-pass reference): LeftOnly side = left, LR = +8.5 (predicted +14.7 ± 2.2, i.e. -2.8 SD: correct sign, smaller than predicted), called S3 (S2 13.1 just below T_abs 13.8; predicted P(S2 called) 0.62). Against the rulers: LR is 2.0× the clean ruler (hit) and 0.3× the measured ruler (not separable); matched reference 2.1× / 0.3×; post-hoc whitened log 3.0× / 3.0× (§6b).
 - **Depth:** no, beyond the outermost cortex. The under-skull gap (76–83.5 mm) is determined where it changes; the deeper cortex (60–76 mm) has a 2–3× larger CRLB and is not determined in any sector at any stage (§2); the core (hippocampus) is not determined at all.
 - **Radar imaging:** no — it still peaks at the centre and its energy direction does not track the lobes.
 - **Opposite paths:** they carry 9%–14% of the information per sector; removing them shifts sector values by +0.5 to +5.5 and flips only near-threshold calls. No conclusion depends on them (both versions in §5c).
+- **MCI_lobe (blind):** pre-registered verdict SUCCESS (called none, side none, front/back none). Largest reconstruction feature 0.8× the clean ruler; data level 0.42× the largest one-pass mesh difference (§6c).
+- **lobe_B:** frozen pipeline, primary method: Mild S2 S3 S6 (5/6), FB +3.1; Moderate S1 S3 S6 (4/6), FB +10.8; Severe S1 S2 S3 S4 S5 S6 (6/6), FB +3.6. Severe_lobe_c3 R31 -15.58 dB → AD (read-only cross-check, §6d).
+- **Front/back on lobe_B** (better converged, smaller symmetry floor): Tikhonov dS Mild (B) − Healthy (p7) FB +3.1 = 3.1× clean / 0.1× measured ruler; Tikhonov dS Moderate (B) − Healthy (p7) FB +10.8 = 4.7× clean / 0.3× measured ruler; Tikhonov dS Severe (B) − Healthy (p7) FB +3.6 = 3.5× clean / 0.1× measured ruler; Tikhonov dS Moderate (B) − Mild (B) FB +7.6 = 3.6× clean / 0.2× measured ruler; whitened log Mild (B) − Healthy (p7) FB +2.7 = 2.2× clean / 0.5× measured ruler; whitened log Moderate (B) − Healthy (p7) FB +10.3 = 6.3× clean / 2.2× measured ruler; whitened log Severe (B) − Healthy (p7) FB +3.9 = 3.2× clean / 0.9× measured ruler; whitened log Moderate (B) − Mild (B) FB +8.7 = 6.1× clean / 2.0× measured ruler. The front-positive bias of Mild and Severe (truth 0) also exceeds the clean ruler, so Moderate's FB above Healthy is not by itself a frontal signal; Moderate − Mild (not a pure frontal contrast) is the closer test.
 - **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at the ring height); everything is within one simulated head; lobe_A matches the stop rule, not the pass count (reference 6 passes, stages 5), and the yardstick is a single extra pass, so mesh error relative to a converged solution is not bounded by it (§5c). **Erratum (§5d):** the frozen 'gain-invariant' log method projects out the port gains before noise whitening, so it is not gain-invariant (the Prompt 07 per-port amplitude/phase perturbation alone moves its FB by SD 12); a post-hoc whitened projection is exactly gain-invariant (SD 0.00) and is limited by the measurement noise instead.
 

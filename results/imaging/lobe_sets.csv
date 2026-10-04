@@ -1,0 +1,11 @@
+stem,design,stop_rule,passes,final_dS,elements,sets,mesh_source,file
+Healthy_sliced,Healthy_sliced,2,7,0.0092,1349491,lobe_v1 lobe_B,data/sims_lobe.csv,new_with_slices_Healthy_sliced.s6p
+Healthy_sliced_new,Healthy_sliced,1,6,0.0155,1081728,lobe_A,data/sims_lobe.csv,new_with_slices_Healthy_sliced_new.s6p
+Mild_lobe,Mild_lobe,1,5,0.0186,739774,lobe_v1 lobe_A,data/sims_lobe.csv,new_with_slices_Mild_lobe.s6p
+Mild_lobe_new,Mild_lobe,2,6,0.015,878656,lobe_B,data/sims_lobe.csv,new_with_slices_Mild_lobe_new.s6p
+Moderate_lobe,Moderate_lobe,1,5,0.0194,796281,lobe_v1 lobe_A,data/sims_lobe.csv,new_with_slices_Moderate_lobe.s6p
+Moderate_lobe_c3,Moderate_lobe,2,6,0.014593,949865,lobe_B,user 2026-10-04 (c3),new_with_slices_Moderate_lobe_c3.s6p
+Severe_lobe,Severe_lobe,1,5,0.019999,690077,lobe_v1 lobe_A,data/sims_lobe.csv,new_with_slices_Severe_lobe.s6p
+Severe_lobe_c3,Severe_lobe,2,6,0.011567,819294,lobe_B,user 2026-10-04 (c3),new_with_slices_Severe_lobe_c3.s6p
+LeftOnly_test_c3,LeftOnly_test,1,6,0.014686,941358,lobe_A (blind),user 2026-10-04 (c3),new_with_slices_LeftOnly_test_c3.s6p
+MCI_lobe_c3,MCI_lobe,1,6,0.013948,981160,lobe_A (blind),user 2026-10-04 (c3),new_with_slices_MCI_lobe_c3.s6p

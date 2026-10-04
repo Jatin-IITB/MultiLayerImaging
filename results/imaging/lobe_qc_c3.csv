@@ -1,0 +1,11 @@
+file,points,f_GHz,max_singular_value,passive,max_recip_err_dB_re_band,worst_amp_nonrecip_dB,at_GHz,ports,path,path_type,its_recip_err_dB,worst_point_masked,worst_point_at_fit_freq,n_masked
+new_with_slices_Healthy_sliced.s6p,201,3.2–4.2,0.9514250863454533,True,-23.34567510759223,0.32189438331576936,3.855,1-4,T1–T4,opposite,-35.33706795758527,False,False,1
+new_with_slices_Healthy_sliced_new.s6p,201,3.2–4.2,0.9518974154713605,True,-41.06701957435706,0.11941815510670314,3.855,1-4,T1–T4,opposite,-42.28611164298083,False,False,0
+new_with_slices_Mild_lobe.s6p,201,3.2–4.2,0.9517804032383922,True,-30.720659446860374,0.3764171666974702,3.855,2-4,T1–T3,second-neighbour,-32.564064155723884,False,False,0
+new_with_slices_Mild_lobe_new.s6p,201,3.2–4.2,0.951149946299524,True,10.931268827182857,4.840969723765738,3.855,3-6,T2–T5,opposite,10.931268827182857,True,False,1
+new_with_slices_Moderate_lobe.s6p,201,3.2–4.2,0.950514928163621,True,-30.088326467719515,0.35680157866170104,3.85,2-5,T3–T6,opposite,-30.088326467719515,False,False,0
+new_with_slices_Moderate_lobe_c3.s6p,201,3.2–4.2,0.9500653111058693,True,-29.22841369094347,0.3246148185771538,3.855,1-4,T1–T4,opposite,-29.22841369094347,True,False,1
+new_with_slices_Severe_lobe.s6p,201,3.2–4.2,0.9504517678309438,True,-25.694001717585824,0.38728540342083,3.84,2-5,T3–T6,opposite,-36.863016129724016,False,False,1
+new_with_slices_Severe_lobe_c3.s6p,201,3.2–4.2,0.9496755612922534,True,-5.596290529892566,2.4301183807008204,3.835,3-6,T2–T5,opposite,-5.596290529892566,True,False,16
+new_with_slices_LeftOnly_test_c3.s6p,201,3.2–4.2,0.9510658664170706,True,-25.84986334337389,0.1492215631841527,3.845,2-5,T3–T6,opposite,-44.069983871222746,False,False,1
+new_with_slices_MCI_lobe_c3.s6p,201,3.2–4.2,0.951971184687426,True,-42.518116834992966,0.053158640800488405,3.855,1-4,T1–T4,opposite,-47.735823905149616,False,False,0
