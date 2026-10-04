@@ -1,0 +1,252 @@
+{
+ "code": "5b7909d+imaging2-uncommitted",
+ "sweeps": 600,
+ "targets": {
+  "LOSO_Mild_p5": {
+   "P_stage": {
+    "Healthy": 0.0,
+    "Mild": 0.9414727563414703,
+    "Moderate": 0.058527243658529626,
+    "Severe": 2.952156575358156e-44
+   },
+   "sectors": [
+    {
+     "P_affected": 0.9414727563414703,
+     "e_mean": 1.4122091345122054,
+     "e_median": 1.5,
+     "e_q05": 0.0,
+     "e_q95": 1.5
+    },
+    {
+     "P_affected": 0.9999999999999999,
+     "e_mean": 11.821997166604646,
+     "e_median": 12.0,
+     "e_q05": 4.5,
+     "e_q95": 20.5
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 13.90110927442041,
+     "e_median": 14.0,
+     "e_q05": 2.0,
+     "e_q95": 21.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.9999999999999999,
+     "e_mean": 13.439565891299539,
+     "e_median": 14.0,
+     "e_q05": 2.5,
+     "e_q95": 21.5
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 13.155910875287883,
+     "e_median": 13.5,
+     "e_q05": 2.5,
+     "e_q95": 21.0
+    }
+   ],
+   "file": "new_with_slices_Mild_lobe.s6p",
+   "excluded": [
+    "Mild_lobe",
+    "LeftOnly"
+   ],
+   "train": [
+    "new_with_slices_Healthy_sliced.s6p",
+    "new_with_slices_Moderate_lobe.s6p",
+    "new_with_slices_Moderate_lobe_c3.s6p",
+    "new_with_slices_Severe_lobe.s6p",
+    "new_with_slices_Severe_lobe_c3.s6p",
+    "new_with_slices_MCI_lobe_c3.s6p"
+   ],
+   "cfg": [
+    "tm0",
+    0.001
+   ],
+   "gof": {
+    "chi2_per_dof": 1.0160200028095447,
+    "tau": 1.0160200028095447
+   },
+   "truth_e": [
+    0.0,
+    7.5,
+    11.5,
+    0.0,
+    11.5,
+    7.5
+   ],
+   "transform": null
+  },
+  "LOSO_Mild_p6": {
+   "P_stage": {
+    "Healthy": 0.0,
+    "Mild": 0.9996583276699609,
+    "Moderate": 0.0003416723300390117,
+    "Severe": 5.766947575807358e-43
+   },
+   "sectors": [
+    {
+     "P_affected": 0.9707793093150509,
+     "e_mean": 1.4539475010221987,
+     "e_median": 1.5,
+     "e_q05": 1.5,
+     "e_q95": 1.5
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 13.770392590246104,
+     "e_median": 14.0,
+     "e_q05": 5.5,
+     "e_q95": 21.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 14.50573554968519,
+     "e_median": 14.5,
+     "e_q05": 6.5,
+     "e_q95": 21.5
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 13.948133922975343,
+     "e_median": 14.5,
+     "e_q05": 5.5,
+     "e_q95": 21.5
+    },
+    {
+     "P_affected": 0.9999999999999999,
+     "e_mean": 13.78929438675635,
+     "e_median": 13.5,
+     "e_q05": 5.5,
+     "e_q95": 21.5
+    }
+   ],
+   "file": "new_with_slices_Mild_lobe_new.s6p",
+   "excluded": [
+    "Mild_lobe",
+    "LeftOnly"
+   ],
+   "train": [
+    "new_with_slices_Healthy_sliced.s6p",
+    "new_with_slices_Moderate_lobe.s6p",
+    "new_with_slices_Moderate_lobe_c3.s6p",
+    "new_with_slices_Severe_lobe.s6p",
+    "new_with_slices_Severe_lobe_c3.s6p",
+    "new_with_slices_MCI_lobe_c3.s6p"
+   ],
+   "cfg": [
+    "tm0",
+    0.001
+   ],
+   "gof": {
+    "chi2_per_dof": 0.6270063589964173,
+    "tau": 1.0
+   },
+   "truth_e": [
+    0.0,
+    7.5,
+    11.5,
+    0.0,
+    11.5,
+    7.5
+   ],
+   "transform": null
+  },
+  "LOSO_LeftOnly_p6": {
+   "P_stage": {
+    "Healthy": 1.162815287453356e-162,
+    "Mild": 0.999999999982552,
+    "Moderate": 1.744807829509406e-11,
+    "Severe": 5.467999761238267e-120
+   },
+   "sectors": [
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 11.1755555553835,
+     "e_median": 11.5,
+     "e_q05": 5.5,
+     "e_q95": 20.5
+    },
+    {
+     "P_affected": 1.0,
+     "e_mean": 7.634444444336092,
+     "e_median": 6.0,
+     "e_q05": 5.5,
+     "e_q95": 18.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    },
+    {
+     "P_affected": 0.0,
+     "e_mean": 0.0,
+     "e_median": 0.0,
+     "e_q05": 0.0,
+     "e_q95": 0.0
+    }
+   ],
+   "file": "new_with_slices_LeftOnly_test_c3.s6p",
+   "excluded": [
+    "LeftOnly",
+    "Mild_lobe"
+   ],
+   "train": [
+    "new_with_slices_Healthy_sliced.s6p",
+    "new_with_slices_Moderate_lobe.s6p",
+    "new_with_slices_Moderate_lobe_c3.s6p",
+    "new_with_slices_Severe_lobe.s6p",
+    "new_with_slices_Severe_lobe_c3.s6p",
+    "new_with_slices_MCI_lobe_c3.s6p"
+   ],
+   "cfg": [
+    "tm0",
+    0.001
+   ],
+   "gof": {
+    "chi2_per_dof": 0.35068907472157207,
+    "tau": 1.0
+   },
+   "truth_e": [
+    0.0,
+    7.5,
+    11.5,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "transform": null
+  }
+ }
+}

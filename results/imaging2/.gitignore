@@ -1,0 +1,3 @@
+# large or regenerable (python -m imaging2.make_figures rebuilds the .npz from cache/marg_*.npy)
+cache/fields_head.npz
+figures/*.npz

@@ -1,0 +1,25 @@
+target,condition,K,stage_correct,exact_pattern,calls_correct_mean,left_ahead,any_right_call
+Healthy_p7,typical,12,1.0,1.0,6.0,,
+Healthy_p7,noisy,12,1.0,1.0,6.0,,
+Healthy_p7,noisy+drift,12,1.0,1.0,6.0,,
+Healthy_p7,noisy+drift gain-free,12,1.0,1.0,6.0,,
+Mild_p5,typical,12,1.0,0.0,5.0,,
+Mild_p5,noisy,12,1.0,0.0,5.0,,
+Mild_p5,noisy+drift,12,0.8333333333333334,0.0,4.416666666666667,,
+Mild_p5,noisy+drift gain-free,12,1.0,0.3333333333333333,5.333333333333333,,
+Moderate_p5,typical,12,1.0,1.0,6.0,,
+Moderate_p5,noisy,12,1.0,1.0,6.0,,
+Moderate_p5,noisy+drift,12,0.4166666666666667,0.3333333333333333,4.583333333333333,,
+Moderate_p5,noisy+drift gain-free,12,1.0,0.8333333333333334,5.833333333333333,,
+Severe_p5,typical,12,1.0,1.0,6.0,,
+Severe_p5,noisy,12,1.0,1.0,6.0,,
+Severe_p5,noisy+drift,12,1.0,0.5,5.5,,
+Severe_p5,noisy+drift gain-free,12,1.0,0.75,5.75,,
+LeftOnly_p6,typical,12,1.0,1.0,6.0,1.0,0.0
+LeftOnly_p6,noisy,12,1.0,0.75,5.75,1.0,0.0
+LeftOnly_p6,noisy+drift,12,0.5833333333333334,0.16666666666666666,4.583333333333333,0.5833333333333334,0.16666666666666666
+LeftOnly_p6,noisy+drift gain-free,12,1.0,0.9166666666666666,5.916666666666667,1.0,0.0
+MCI_p6,typical,12,1.0,1.0,6.0,,
+MCI_p6,noisy,12,1.0,1.0,6.0,,
+MCI_p6,noisy+drift,12,1.0,1.0,6.0,,
+MCI_p6,noisy+drift gain-free,12,1.0,1.0,6.0,,
