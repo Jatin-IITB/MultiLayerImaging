@@ -1,7 +1,8 @@
 # HANDOVER — main analysis session, Track A (written 2026-10-04)
 
 A fresh session should be able to continue from this file alone. It was written at code commit **e7794fd**, and the
-commit that adds it comes right after. Repository: this folder, branch `master`. **There is no git remote**: the
+commit that adds it is 4aabb1d (its parent, 6db98f6, is an `[imaging2]` commit). Uncommitted edits to
+`results/imaging*` in the working tree belong to the imaging sessions: never stage them. Repository: this folder, branch `master`. **There is no git remote**: the
 only copy is this OneDrive folder.
 
 Read in this order: this file → `MODEL_CARD.md` Part 6 (authoritative claims) → `results/05_lobe/review2/report_stats.md`
@@ -33,7 +34,9 @@ Its jobs:
 - The adversarial reviews, which the user poses as numbered items (A…, R…, G…, C…).
 
 **The imaging session** is a separate Claude session in the same repo; its commits are prefixed `[imaging]`.
-- It owns `imaging/`, `results/imaging/`, and the untracked `imaging2/` and `results/imaging2/`.
+- It owns `imaging/` and `results/imaging/`.
+- A third line of work commits `imaging2/` and `results/imaging2/` with the prefix `[imaging2]` (first commit
+  6db98f6, 2026-10-04 13:10: slice images of the lobe phantom). Treat it like the imaging session: read only.
 - It also owns the B-items of the reviews.
 - You may **read** its files and import its code read-only (scripts 10–12 do).
 - **Never modify them.** Never coordinate predictions with it: both sessions write their own, separately.
