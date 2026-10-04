@@ -1033,3 +1033,41 @@ Full text, commands and every number: `results/imaging/lobe_review.md` (`lobe_re
 
 **What survives.** The left/right sign of LeftOnly is in the data (mirror test) and is stable over the true-field frequency subsets that include 3.4 or 3.6 GHz and over both references. Its size: LR_anti (the asymmetry-free estimate) is 1.8–2.6× the clean ruler with the conservative floor and 2.6–3.3× with the pass-matched floor; LR itself 2.0–3.0× / 3.9–5.5×. LeftOnly's own floor cannot be measured, so the conservative floor decides: sensitive at best, not established. It is not separable once measurement errors are included, except marginally for the post-hoc whitened log (2.2×, not significant after 10 looks). It is carried by phase, which the amplitude-based analysis of the main session does not use. The sector calls (S2, S3) and the pre-registered PARTIAL depend on the reference (B4) and on the calibration (B8) by one mesh pass or 9%–22% in κ. The Born model error is as large as the signal (B6).
 
+## 9. Round-2 review (5 Oct): claims rebuilt from scratch
+
+**POST-HOC** applies to every phase-related claim below. The pre-registered blind answer (PARTIAL with the frozen reference, FAIL with the matched one) stays primary. This section supersedes the verdicts in §7 and §8 where they differ. Full text and every number: `results/imaging/lobe_round2.md` (`lobe_round2.json`); claims as CSV: `results/imaging/lobe_claims.csv`.
+
+| claim | verdict | items |
+|---|---|---|
+| Kernels come from 3-D volume field exports (±90 mm, 3 mm, 3.4/3.6/3.8 GHz, six excitations) of the v2 Normal head; no cut-plane was used | CONFIRMED | R7/G8 |
+| Each field export peaks at its antenna's azimuth; the Port 1..6 = T4,T3,T2,T1,T6,T5 order and +X = subject's left hold for all ports | CONFIRMED | G4 |
+| The array's sensitivity lies 54–70 % above z = 40 mm and ≤ 4 % below z = 0; 'lobes' are azimuthal wedges of the upper head | CHANGED | G5 |
+| The antenna near field in front of each antenna is meridionally polarised | CHANGED | G3 |
+| HFSS tissue values equal Gabriel 1996 at 3.25 GHz, held constant; true σ rises 29–38 % over 3.2–4.2 GHz | CHANGED | G7 |
+| Born linearisation error: 50–58 % on the symmetric and 92–96 % on the antisymmetric part of LeftOnly; kernels move 24 % with the export grid | CHANGED | B14 |
+| Sector values and per-sector calls are not results: they flip with λ, reference and calibration, depend on depth profile, and are ≈ 80 % their own antenna | CHANGED | R5, B16, B17, B21, B25 |
+| Pre-registered blind test: PARTIAL with the frozen 7-pass reference, FAIL with the matched reference; neither reference is more credible | CONFIRMED | B23 |
+| [POST-HOC] LeftOnly left/right sign is in the data (mirror test) and stable over λ, references and kernel symmetrisation; size 1.93× (Tikhonov dS) to 2.77× (whitened log) the clean ruler under the fixed max-floor rule: not established; rank p = 0.1 with nine nulls | CHANGED | R1, B22 |
+| [POST-HOC] 85–88 % of the LeftOnly LR comes from phase; it is not per-antenna detuning (per-port factors explain ≤ 20 %) | CHANGED | R3, C2 |
+| [POST-HOC] Cross-ratio phases: 12/18 distinct statistics ≥ 3× under the rms rule, 3/18 under the max rule; no symmetric file exceeds 1/18; with measurement errors (±0.5 dB) 0/18 (rms) and 0/18 (max) | CHANGED | R2, C3, C5 |
+| Moderate_lobe's large mirror residual is mesh asymmetry of that pass-5 file (halved one pass later) | CHANGED | R1 |
+| Left antennas' reflection depth changes by 0.9–1.0 dB (3–6× one-pass); resonance frequencies do not move | CHANGED | R3 |
+| Phase change of the left neighbour path is negative (delay), −7 to −9° at 3.30–3.60 GHz, as the CSF-gap physics predicts | CONFIRMED | C4 |
+| Bias-corrected Moderate front/back is 6.3–7.4 (truth 14.6): established in lobe_B (3.2–4.0×), not in lobe_A (1.4–1.9×); mesh-sensitive | CHANGED | B24 |
+| MCI_lobe shows nothing beyond the rulers in any variant (never flips with λ, reference or calibration) | CONFIRMED | B17, round 1 |
+| R31 detection is defensible on the uniform training data and fragile on lobe Severe/LeftOnly; no single feature determines every lobe design | CONFIRMED | R4 |
+| Thresholds were frozen before LeftOnly/MCI existed but tuned on Mild of the same head; Mild calls are in-sample | CHANGED | B19 |
+
+Open limitations:
+
+- Floor significance: nine symmetric solves cap the rank p at 0.1; ≥ 19 independent symmetric solves (rotated meshes) needed (R1, C3).
+- Fit frequencies other than 3.4/3.6/3.8 GHz: needs 24 named field exports (B18).
+- Antenna position error and frequency-dependent cable flex at measurement level: needs ±1 mm displaced-antenna re-solves (C5).
+- Realistic layers (2 mm CSF, 6 mm skull) and the Shehab Table 6 source: needs the paper and re-simulation (G1).
+- v1/v2 radius variables and v2 skull hole; MCI_lobe Ventricle_CSF: needs geometry audits of those designs (G2, G6).
+- AD material provenance and uncertainty (G7).
+- Sector model vs real depth profiles on HFSS data: needs an S3 materials-only design (B16).
+- Replication of the left/right sign on an independent mesh: RightOnly_test (C6) pending.
+- z_ebg geometry meaning (G3): unverified, no imaging result depends on it.
+- Items A14–A28 (data handling, statistics, staging of the frozen rule): main session.
+
