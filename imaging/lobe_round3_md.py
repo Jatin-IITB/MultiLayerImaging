@@ -67,9 +67,10 @@ def write_md(res):
              {**{s: "+.2f" for s in SHORT}, "LR": "+.2f", "FB": "+.2f", "LR_ratio": ".2f", "FB_ratio": ".2f", "residual": ".2f"}), "",
           f"**Result.** No sector reaches T_abs (largest {worst_sector:.2f}). LR and FB are at most {worst_lr:.2f}× and "
           f"{worst_fb:.2f}× their rulers. Frozen calls in any method: {len(any_call)}. Applied to the nulls, the "
-          "protocol's reading rule gives 'no lobe' for rot07. For rot19 it gives 'fit rejected': the sector model "
-          "explains nothing, as expected when nothing changed. That sentence names 'Test_B' because it reuses the "
-          "protocol's reading function. **Verdict: CONFIRMED.** Both nulls behave as nulls.", ""]
+          "protocol's reading rule gives 'no lobe' for rot07. For rot19 it gives 'fit rejected'. *Revised in round 4:* "
+          "that rejection is **not** a validation of the rule. The rule fires on the relative misfit of a mesh-only "
+          "difference, so it acts as a signal-size gate (`lobe_round4.md` §1). **Verdict: CONFIRMED** that both nulls "
+          "show no sector, LR or FB beyond the rulers.", ""]
     T.append(("Nulls as targets", "CONFIRMED", f"no sector ≥ T_abs (max {worst_sector:.2f}); LR ≤ {worst_lr:.2f}×, FB ≤ {worst_fb:.2f}× rulers",
               "lobe_round3.json: nulls_rows"))
 
@@ -240,6 +241,9 @@ def write_md(res):
     pg = res["pass_gap"]
     p0 = _g(pg, reference="H7", method="Tikhonov dS")
     worst = max(abs(r[f"Left−mirRight {k}"]) / r[f"twins max abs Δ {k}"] for r in pg for k in ("LR", "LR_anti", "LR_amp", "LR_phase"))
+    cm_ratio = abs(p0["Left−mirRight common-mode delay deg"]) / p0["twins max abs Δ common-mode delay deg"]
+    sec_ratio = [abs(r["relative Δ affected sectors (Left−mirRight)"])
+                 / max(abs(float(x)) for x in r["twins relative Δ affected sectors (p6 − p5)"].split(", ")) for r in pg]
     L += ["## 9. Pass gap (0.3a): LeftOnly (pass 6) vs mirrored RightOnly (pass 5), against the three pass-5/pass-6 twins", "",
           "Same statistics and frequencies (3.4/3.6/3.8 GHz) for Left − mirror(Right) and for each twin (p6 − p5): LR, "
           "LR_anti, its amplitude and phase parts, phase share, the mean of the two affected sectors, and the common-mode "
@@ -253,16 +257,19 @@ def write_md(res):
           f"(difference {p0['Left−mirRight common-mode delay deg']:+.2f}° vs twins ≤ {p0['twins max abs Δ common-mode delay deg']:.2f}°). "
           f"The affected-sector level differs by {p0['relative Δ affected sectors (Left−mirRight)']:+.0%} vs twins "
           f"{p0['twins relative Δ affected sectors (p6 − p5)']}.",
-          "**Verdict.** For LR and phase share, the Left/Right size mismatch is consistent with the pass gap (within or "
-          "at the edge of the twin differences). For the absolute level, a common delay about 4° larger in RightOnly "
-          f"and sectors {min(-r['relative Δ affected sectors (Left−mirRight)'] for r in pg):.0%}–"
-          f"{max(-r['relative Δ affected sectors (Left−mirRight)'] for r in pg):.0%} higher, it is larger than any twin difference: the pass gap does not explain it. "
-          "Nothing in these data says what does.", ""]
-    T.append(("Pass gap, LR and phase share", "consistent with the pass gap", f"abs Δ ≤ {worst:.2f}× the twins; phase share equal",
+          f"**Verdict (revised in round 4, ruler language).** Ratio to the largest of the n = 3 twin differences: "
+          f"common-mode delay {cm_ratio:.2f}×; affected-sector level {min(sec_ratio):.2f}–{max(sec_ratio):.2f}× over methods "
+          f"and references; LR, LR_anti and their parts ≤ {worst:.2f}×. Even a value beyond all three twins has a rank "
+          "p of 1/4. On the bar used everywhere else (≥ 3× established, 2–3× sensitive, < 2× not separable): LR and "
+          f"phase share are **not separable from the pass gap**. The common-mode delay ({cm_ratio:.2f}×) is **undetermined**. "
+          f"The sector level reaches the 2× bar in {sum(x >= 2 for x in sec_ratio)} of {len(sec_ratio)} method × reference "
+          "cases (" + (", ".join(f"{r['method']} {r['reference']} {x:.2f}×" for r, x in zip(pg, sec_ratio) if x >= 2) or "none")
+          + "), and only at the threshold of 'sensitive', so it is **undetermined**. Round 3's "
+          "'not explained by the pass gap' was stronger than three twins can support.", ""]
+    T.append(("Pass gap, LR and phase share", "not separable from the pass gap", f"abs Δ ≤ {worst:.2f}× the twins; phase share equal",
               "lobe_round3.json: pass_gap"))
-    T.append(("Pass gap, absolute level", "not explained by the pass gap", f"common-mode delay {p0['Left−mirRight common-mode delay deg']:+.2f}° "
-              f"vs twins ≤ {p0['twins max abs Δ common-mode delay deg']:.2f}°; sectors {p0['relative Δ affected sectors (Left−mirRight)']:+.0%}",
-              "lobe_round3.json: pass_gap"))
+    T.append(("Pass gap, absolute level", "undetermined (revised in round 4)", f"common-mode delay {cm_ratio:.2f}× the largest of 3 twins; "
+              f"sector level {min(sec_ratio):.2f}–{max(sec_ratio):.2f}×; round 3 said 'not explained'", "lobe_round3.json: pass_gap"))
 
     L += ["## Final table", "", _t([dict(item=a, verdict=b, change=c, evidence=d) for a, b, c, d in T],
                                    ["item", "verdict", "change", "evidence"]), ""]

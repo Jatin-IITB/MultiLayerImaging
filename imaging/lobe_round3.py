@@ -48,6 +48,7 @@ TRUTH = {"Mild_lobe": "Mild_lobe", "Mild_lobe_new": "Mild_lobe", "Moderate_lobe"
          "LeftOnly_test_c3": "LeftOnly_test", "RightOnly_test": "RightOnly_test", "Test_B": "Test_B",
          "MCI_lobe_c3": "MCI_lobe", "Null_rot07": "Healthy_sliced", "Null_rot19": "Healthy_sliced",
          "Healthy_sliced": "Healthy_sliced", "Healthy_sliced_new": "Healthy_sliced"}
+TRUTH.update({r: "Healthy_sliced" for r in ROT})          # every rotated null (add new ones to ROT and REGISTRY only)
 
 
 def mir(S):
@@ -72,7 +73,9 @@ def nulls_as_targets(ctx, n):
             rows.append(dict(null=st, **{k: r[k] for k in ("reference", "method")}, **{s: r[s] for s in SHORT},
                              LR=r["LR"], LR_ratio=r["LR_ratio"], FB=r["FB"], FB_ratio=r["FB_ratio"], called=r["called"],
                              side=r["side"], frontback=r["frontback"], residual=r["residual"]))
-        reads.append(dict(null=st, statement=rd.get("statement"), affected=rd["affected"], possible=rd["possible"],
+        stmt = rd.get("statement")
+        stmt = stmt.replace("does not explain Test_B", f"does not explain {st}") if stmt else stmt   # reused protocol text
+        reads.append(dict(null=st, statement=stmt, affected=rd["affected"], possible=rd["possible"],
                           side=rd["side"], frontback=rd["frontback"],
                           anti=[(a["reference"][:2], a["method"], a["LR_anti"], a["ratio"]) for a in out["anti"]],
                           data_size=rd.get("data_size")))
