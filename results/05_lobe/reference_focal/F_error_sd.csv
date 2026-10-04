@@ -1,0 +1,6 @@
+statistic,SD under +-0.5 dB per-port gain error,SD under +-10 deg per-port phase error
+per-antenna R31 left-right dB,0.43561905367839077,1.123747681990939e-16
+half-ring R21 left-right dB (design),0.09680423415075319,1.5892192125569139e-16
+neighbour-phase left-right deg 3.2-3.5 GHz,6.981155288487606e-16,8.631702493749486
+neighbour-phase left-right deg 3.30-3.65 GHz,1.5783805275899285e-15,8.631702493749486
+per-antenna R31 T2 change dB,0.3522295870069964,6.72857120873338e-16
