@@ -112,11 +112,18 @@ def registry(qc, mlog):
         h = hashlib.sha256(p.read_bytes()).hexdigest()[:16]
         reg = next(x for x in C3.REGISTRY if x[0] == r)
         q = next(x for x in qc if x["file"].endswith(f"_{r}.s6p"))
+        from adstage.io.touchstone import read_touchstone
+        t = read_touchstone(p)
+        i, j = (int(x) - 1 for x in q["ports"].split("-"))
+        k = int(np.argmin(np.abs(t.f_hz - q["at_GHz"] * 1e9)))
+        lvl = np.sqrt(np.mean(np.abs(t.s[:, i, j]) ** 2))
         rows.append(dict(stem=r, sha256_16=h, matches_user=(h == USER_SHA[r]) if r in USER_SHA else "n/a (round 3)",
                          passes=reg[3], final_dS=reg[4], elements=reg[5], sets=reg[6], points=q["points"],
                          max_sv_squared=q["max_singular_value"] ** 2, passive=q["passive"],
                          worst_amp_nonrecip_dB=q["worst_amp_nonrecip_dB"], at_GHz=q["at_GHz"], ports=q["ports"],
-                         path=q["path"], worst_point_masked=q["worst_point_masked"], n_masked=q["n_masked"]))
+                         path=q["path"], Sij_dB_there=float(20 * np.log10(abs(t.s[k, i, j]))),
+                         path_band_level_dB=float(20 * np.log10(lvl)), recip_err_re_band_dB=q["its_recip_err_dB"],
+                         worst_point_masked=q["worst_point_masked"], n_masked=q["n_masked"]))
     masks = [x for x in mlog if any(x["file"].endswith(f"_{r}.s6p") for r in ROT)]
     return rows, masks
 

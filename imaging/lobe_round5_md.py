@@ -66,8 +66,10 @@ def write_md(res):
     nf = [r for r in fl if r["stem"] in new]
     L += ["## 1. New files: registry and QC", "",
           _t(_na(fl), ["stem", "sha256_16", "matches_user", "passes", "final_dS", "elements", "sets", "points", "max_sv_squared",
-                       "passive", "worst_amp_nonrecip_dB", "at_GHz", "ports", "path", "worst_point_masked", "n_masked"],
-             {"final_dS": ".6f", "max_sv_squared": ".3f", "worst_amp_nonrecip_dB": ".2f", "at_GHz": ".3f"}), "",
+                       "passive", "worst_amp_nonrecip_dB", "at_GHz", "ports", "path", "Sij_dB_there", "path_band_level_dB",
+                       "recip_err_re_band_dB", "worst_point_masked", "n_masked"],
+             {"final_dS": ".6f", "max_sv_squared": ".3f", "worst_amp_nonrecip_dB": ".2f", "at_GHz": ".3f", "Sij_dB_there": ".1f",
+              "path_band_level_dB": ".1f", "recip_err_re_band_dB": ".1f"}), "",
           "Points masked by the −30 dB reciprocity rule in the rotated nulls:", "",
           _t(res["masks"], list(res["masks"][0]) if res["masks"] else ["file"],
              {"f_GHz": ".3f", "Sij_dB": ".1f", "Sji_dB": ".1f", "recip_err_dB": ".1f"}), ""]
@@ -76,7 +78,15 @@ def write_md(res):
           f"Passive: {', '.join(f'{r['stem']} (max σ² {r['max_sv_squared']:.3f})' for r in nf)}. Worst amplitude "
           "non-reciprocity: " + "; ".join(f"{r['stem']} {r['worst_amp_nonrecip_dB']:.2f} dB at {r['at_GHz']:.3f} GHz, ports "
                                             f"{r['ports']} ({r['path']}), masked: {r['worst_point_masked']}" for r in nf)
-          + ". Registered as kind = null, set lobe_nulls; in no training, frozen or stage set.", ""]
+          + ". Registered as kind = null, set lobe_nulls; in no training, frozen or stage set."]
+    for r in nf:
+        if not r["worst_point_masked"] and r["worst_amp_nonrecip_dB"] > 0.3:
+            L += [f"- {r['stem']}'s {r['worst_amp_nonrecip_dB']:.2f} dB point is **not** masked. The −30 dB rule tests the absolute "
+                  f"error |Sij − Sji| against the path's band level; here it is {r['recip_err_re_band_dB']:.1f} dB. The point sits in "
+                  f"a notch: |S| = {r['Sij_dB_there']:.1f} dB against a band level of {r['path_band_level_dB']:.1f} dB, so a "
+                  f"{r['worst_amp_nonrecip_dB']:.2f} dB ratio is a tiny absolute difference. It is not at a fit frequency, so the "
+                  "frozen inversion does not see it; band-mean statistics use the reciprocal average of the two values."]
+    L += [""]
     T.append(("New files (QC)", "CONFIRMED" if ok else "CHANGED", "sha256 = delivery; passive; worst non-reciprocal point "
               + ", ".join(f"{r['stem']} masked {r['worst_point_masked']}" for r in nf), "lobe_round5.json: files, masks"))
 
@@ -191,7 +201,7 @@ def write_md(res):
                            for t in ("established", "sensitive", "not determined")},
                         weakest_best=f"{dmin(v, 'best_affected')[0]:.2f} ({dmin(v, 'best_affected')[1]}, {dmin(v, 'best_affected')[2]})",
                         weakest_max_sector=f"{dmin(v, 'max_sector_ratio')[0]:.2f} ({dmin(v, 'max_sector_ratio')[1]}, {dmin(v, 'max_sector_ratio')[2]})"))
-    L += [_t(cnt, list(cnt[0])), "", "MCI against rulers built without MCI (< 1 = nothing beyond):", "",
+    L += [_t(cnt, list(cnt[0])), "", "MCI against rulers built without MCI (claim: < 2× = nothing separable; < 1 = nothing beyond):", "",
           _t(mci, list(mci[0]), {k: ".2f" for k in ("max_sector_ratio", "LR_ratio", "FB_ratio")}), ""]
     sep = []
     for ref in ("H7", "H6"):
@@ -206,12 +216,15 @@ def write_md(res):
     m_all, md_all, mr_all = dmin("all", "max_sector_ratio")
     s_all = min(r["ratio"] for r in sep if r["nulls"] == "all")
     s_wo = min(r["ratio"] for r in sep if r["nulls"] == "without rot19")
-    sentence = (f"Against both references, every lobe design's largest sector value is at least {m_all:.1f}× the largest "
-                f"no-change null's (weakest {md_all}, {mr_all}; {tier(m_all)}), and the sector-shaped part of every target is "
-                f"at least {s_all:.1f}× that of every null ({tier(s_all)}).")
+    n_est = sum(tier(r["best_affected"]) == "established" for r in det if r["variant"] == "all")
+    n_all = sum(r["variant"] == "all" for r in det)
+    sentence = (f"Against both references, every lobe design has an affected sector at least {b_all:.1f}× its all-null sector "
+                f"ruler ({n_est}/{n_all} design × reference established), but as one whole-map number the margin is only "
+                f"{m_all:.1f}× (largest sector over the largest no-change null; weakest {md_all}, {mr_all}; {tier(m_all)}) and "
+                f"the sector-shaped part of the data separates every target from every null by {s_all:.1f}× ({tier(s_all)}).")
     L += [f"**Surviving detection claim (one sentence).** {sentence}",
-          f"Per affected sector the picture is weaker: the weakest design's best affected sector is {b_all:.2f}× its "
-          f"sector ruler ({d_all}, {r_all}; {tier(b_all)}). Without rot19: explained-norm separation {s_wo:.2f}×.", ""]
+          f"Weakest per-sector case: {d_all} ({r_all}) at {b_all:.2f}×. Without rot19 the explained-norm separation is "
+          f"{s_wo:.2f}×, so rot19 does not set it.", ""]
     T.append(("Detection (0.3b)", "re-graded", sentence, "lobe_round5.json: detection, mci, fit"))
 
     # ------------------------------------------------------------------ 7 staging
