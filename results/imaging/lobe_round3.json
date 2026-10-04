@@ -1,5 +1,5 @@
 {
- "code": "be15287-dirty",
+ "code": "a6cf6cc-dirty",
  "n_draws": 100,
  "qc_new": [
   {
@@ -595,7 +595,7 @@
   },
   {
    "null": "Null_rot19",
-   "statement": "Fit rejected in both references (residual > 1.5\u00d7 the largest residual of the known cortical designs): the sector model does not explain Test_B, so no lobe reading is stated. Data-level size vs the largest one-pass mesh difference: H7 1.20\u00d7 (not separable), H6 0.89\u00d7 (not separable).",
+   "statement": "Fit rejected in both references (residual > 1.5\u00d7 the largest residual of the known cortical designs): the sector model does not explain Null_rot19, so no lobe reading is stated. Data-level size vs the largest one-pass mesh difference: H7 1.20\u00d7 (not separable), H6 0.89\u00d7 (not separable).",
    "affected": [],
    "possible": [],
    "side": "none",

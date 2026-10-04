@@ -1110,6 +1110,17 @@ Full text: `results/imaging/lobe_round3.md`. Test_B scored against protocol 24aa
 | Rulers rebuilt (11 nulls) | CHANGED (one claim falls) | bias-corrected FB in lobe_B 3.2–4.0× → 2.61×, 2.23×, 2.80×; others survive; phase counts at 3.30–3.65 weakened |
 | Rank reading vs threshold | reported, not adopted | frozen 51 hits / 0 FA / 15/26 exact; largest-gap 58 / 0 / 20/26 |
 | Born ranking vs raw delay | CHANGED | ranking credited to the Born map → raw delay ranks as well (oracle 0.96 vs 1.00; Spearman 0.79 vs 0.71); Born adds only the gated level |
-| Pass gap, LR and phase share | consistent with the pass gap | abs Δ ≤ 1.08× the twins; phase share equal |
-| Pass gap, absolute level | not explained by the pass gap | common-mode delay -4.33° vs twins ≤ 3.30°; sectors -38% |
+| Pass gap, LR and phase share | not separable from the pass gap | abs Δ ≤ 1.08× the twins; phase share equal |
+| Pass gap, absolute level | undetermined (revised in round 4) | common-mode delay 1.31× the largest of 3 twins; sector level 1.86–2.06×; round 3 said 'not explained' |
+
+## 13. Round 4 (POST-HOC): fit rejection, fair Born-vs-raw, out-of-sample rank rules
+
+Full text: `results/imaging/lobe_round4.md`.
+
+| item | verdict | change |
+|---|---|---|
+| 1 fit rejection | CHANGED | 'rot19 correctly rejected' → a gate on the sector-shaped part of the data vs mesh structure (explained norm: nulls 3.5–4.3, 1.3–3.5, targets 12.8–35.7, 9.8–33.4); fires on mesh noise alone; the limit sits above the null/target gap, so nulls are both accepted and rejected; it would reject a real change with a null-sized sector component |
+| 2 pass gap | CHANGED | 'not explained' → undetermined (1.31× and 1.9–2.1× the largest of n = 3) |
+| 3 Born vs raw (fair) | CHANGED | round-3 gap 20 vs 14 exact, 0 vs 6 FA → identical calibration: with threshold readings calibrated on the nulls only, the Born map adds nothing measurable (+1 exact set of 26); with the rank (largest-gap) reading it keeps +4…+6 exact sets and makes 0 false alarms against the raw delay's 5–6. With thresholds tuned out of sample on labelled designs (§4, leave-one-family-out), the Born threshold reaches 21/26 exact with 3 false alarms, the best raw rule 17/26 with 16. So the Born advantage depends on the calibration: absent under null-only thresholds, a few exact sets and many fewer false alarms otherwise |
+| 4 rank rules out of sample | CHANGED (scored out of sample) | in-sample 58/0/20 → leave-one-design-out 58/0/20, leave-one-family-out 58/0/20; Test_B (never selected on): H7: S2 S5; H6: S2 S5 |
 

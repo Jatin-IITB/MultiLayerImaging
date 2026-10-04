@@ -1,0 +1,1675 @@
+{
+ "code": "f4707ea-dirty",
+ "fit": [
+  {
+   "reference": "H6",
+   "design": "MCI_lobe_c3",
+   "kind": "null",
+   "rho": 0.9439898457672892,
+   "data_norm": 3.8997593536898165,
+   "abs_residual": 3.681333230819193,
+   "explained_norm": 1.2868211454423406,
+   "limit": 0.8240361933419347,
+   "rejected": true
+  },
+  {
+   "reference": "H6",
+   "design": "Null_rot19",
+   "kind": "null",
+   "rho": 0.9396195864452759,
+   "data_norm": 8.231702288229926,
+   "abs_residual": 7.734668699807234,
+   "explained_norm": 2.8170592230679286,
+   "limit": 0.8240361933419347,
+   "rejected": true
+  },
+  {
+   "reference": "H6",
+   "design": "Null_rot07",
+   "kind": "null",
+   "rho": 0.8890148590017767,
+   "data_norm": 4.2729080316392105,
+   "abs_residual": 3.7986787312752917,
+   "explained_norm": 1.956472065582234,
+   "limit": 0.8240361933419347,
+   "rejected": true
+  },
+  {
+   "reference": "H6",
+   "design": "Healthy_sliced",
+   "kind": "null",
+   "rho": 0.7576229360019138,
+   "data_norm": 5.317410846849841,
+   "abs_residual": 4.028592417718799,
+   "explained_norm": 3.4706341273742676,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "RightOnly_test",
+   "kind": "replication",
+   "rho": 0.5493574622279565,
+   "data_norm": 19.244396714898834,
+   "abs_residual": 10.572052941404845,
+   "explained_norm": 16.080376286783284,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Test_B",
+   "kind": "blind test",
+   "rho": 0.5461809980997969,
+   "data_norm": 11.746903591323784,
+   "abs_residual": 6.415935528091313,
+   "explained_norm": 9.8399956952852,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Mild_lobe",
+   "kind": "stage",
+   "rho": 0.5266213937190192,
+   "data_norm": 23.642692341437602,
+   "abs_residual": 12.450747592117851,
+   "explained_norm": 20.098651336575887,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "LeftOnly_test_c3",
+   "kind": "blind test",
+   "rho": 0.47728911513491956,
+   "data_norm": 11.546405969849884,
+   "abs_residual": 5.510973888338204,
+   "explained_norm": 10.146361792417986,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Moderate_lobe_c3",
+   "kind": "stage",
+   "rho": 0.475612363998297,
+   "data_norm": 20.704566129104595,
+   "abs_residual": 9.847347642222505,
+   "explained_norm": 18.212874649754774,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Moderate_lobe",
+   "kind": "stage",
+   "rho": 0.4687077332448851,
+   "data_norm": 25.104869589769788,
+   "abs_residual": 11.766846518829446,
+   "explained_norm": 22.17646951436723,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Mild_lobe_new",
+   "kind": "stage",
+   "rho": 0.46332752497253155,
+   "data_norm": 17.424108136812713,
+   "abs_residual": 8.073068897883182,
+   "explained_norm": 15.441020139012002,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Severe_lobe_c3",
+   "kind": "stage",
+   "rho": 0.45535037551892915,
+   "data_norm": 34.528012386910454,
+   "abs_residual": 15.722343406301913,
+   "explained_norm": 30.74071497550043,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H6",
+   "design": "Severe_lobe",
+   "kind": "stage",
+   "rho": 0.4544930891600189,
+   "data_norm": 37.53292978016947,
+   "abs_residual": 17.05845720101529,
+   "explained_norm": 33.43246709120135,
+   "limit": 0.8240361933419347,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Null_rot19",
+   "kind": "null",
+   "rho": 0.9202691349689861,
+   "data_norm": 11.102351810919796,
+   "abs_residual": 10.217151697156517,
+   "explained_norm": 4.344194623946512,
+   "limit": 0.8673600019694331,
+   "rejected": true
+  },
+  {
+   "reference": "H7",
+   "design": "MCI_lobe_c3",
+   "kind": "null",
+   "rho": 0.7941139829326535,
+   "data_norm": 6.584733496596138,
+   "abs_residual": 5.229028943532017,
+   "explained_norm": 4.001995943138828,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Null_rot07",
+   "kind": "null",
+   "rho": 0.7940033253121835,
+   "data_norm": 7.090083245764134,
+   "abs_residual": 5.629549673876922,
+   "explained_norm": 4.310156714229486,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Healthy_sliced_new",
+   "kind": "null",
+   "rho": 0.7558624209151444,
+   "data_norm": 5.334507741231615,
+   "abs_residual": 4.032153935677908,
+   "explained_norm": 3.492664810750838,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "RightOnly_test",
+   "kind": "replication",
+   "rho": 0.5782400013129554,
+   "data_norm": 23.633816147140642,
+   "abs_residual": 13.66601787995275,
+   "explained_norm": 19.28204400424544,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Mild_lobe",
+   "kind": "stage",
+   "rho": 0.5514422534681294,
+   "data_norm": 27.974355581489224,
+   "abs_residual": 15.42624168117516,
+   "explained_norm": 23.33657296591707,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Test_B",
+   "kind": "blind test",
+   "rho": 0.5126784727701091,
+   "data_norm": 14.865582322106729,
+   "abs_residual": 7.62126404173601,
+   "explained_norm": 12.76330177428528,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Moderate_lobe",
+   "kind": "stage",
+   "rho": 0.48742341915986076,
+   "data_norm": 28.768483037120724,
+   "abs_residual": 14.022432365995838,
+   "explained_norm": 25.119653795348675,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Mild_lobe_new",
+   "kind": "stage",
+   "rho": 0.46500480853643605,
+   "data_norm": 20.993092792779837,
+   "abs_residual": 9.761889094694224,
+   "explained_norm": 18.585356233044195,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Severe_lobe",
+   "kind": "stage",
+   "rho": 0.4627735900402329,
+   "data_norm": 40.28485845444353,
+   "abs_residual": 18.64276857122546,
+   "explained_norm": 35.711580764428206,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "LeftOnly_test_c3",
+   "kind": "blind test",
+   "rho": 0.461881960252923,
+   "data_norm": 14.664367466501409,
+   "abs_residual": 6.773206791296861,
+   "explained_norm": 13.006434674995106,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Moderate_lobe_c3",
+   "kind": "stage",
+   "rho": 0.442307654707972,
+   "data_norm": 23.348797945836957,
+   "abs_residual": 10.327352059673458,
+   "explained_norm": 20.94068205553674,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  },
+  {
+   "reference": "H7",
+   "design": "Severe_lobe_c3",
+   "kind": "stage",
+   "rho": 0.4367620977488589,
+   "data_norm": 36.52657847161556,
+   "abs_residual": 15.953425036851119,
+   "explained_norm": 32.858471730082954,
+   "limit": 0.8673600019694331,
+   "rejected": false
+  }
+ ],
+ "fit_summary": [
+  {
+   "reference": "H7",
+   "limit": 0.8673600019694331,
+   "rho_rot19": 0.9202691349689861,
+   "accepted_targets_above_rot19": 0,
+   "max_target_rho": 0.5782400013129554,
+   "min_null_rho": 0.7558624209151444,
+   "nulls_accepted": "MCI_lobe_c3, Null_rot07, Healthy_sliced_new",
+   "nulls_rejected": "Null_rot19",
+   "targets_rejected": "none",
+   "null_abs_residual": "4.0\u201310.2",
+   "target_abs_residual": "6.8\u201318.6",
+   "null_explained": "3.5\u20134.3",
+   "target_explained": "12.8\u201335.7",
+   "rot19_data_norm": 11.102351810919796,
+   "smallest_target_data_norm": 14.664367466501409,
+   "spearman_rho_vs_data_norm": -0.6538461538461539
+  },
+  {
+   "reference": "H6",
+   "limit": 0.8240361933419347,
+   "rho_rot19": 0.9396195864452759,
+   "accepted_targets_above_rot19": 0,
+   "max_target_rho": 0.5493574622279565,
+   "min_null_rho": 0.7576229360019138,
+   "nulls_accepted": "Healthy_sliced",
+   "nulls_rejected": "MCI_lobe_c3, Null_rot19, Null_rot07",
+   "targets_rejected": "none",
+   "null_abs_residual": "3.7\u20137.7",
+   "target_abs_residual": "5.5\u201317.1",
+   "null_explained": "1.3\u20133.5",
+   "target_explained": "9.8\u201333.4",
+   "rot19_data_norm": 8.231702288229926,
+   "smallest_target_data_norm": 11.546405969849884,
+   "spearman_rho_vs_data_norm": -0.8626373626373626
+  }
+ ],
+ "fair": {
+  "round3_raw_before": {
+   "hits": 0,
+   "misses": 72,
+   "false_alarms": 0,
+   "exact": 8,
+   "n": 26
+  },
+  "round3_raw_after": {
+   "hits": 43,
+   "misses": 29,
+   "false_alarms": 6,
+   "exact": 14,
+   "n": 26
+  },
+  "round3_born_gap": {
+   "hits": 58,
+   "misses": 14,
+   "false_alarms": 0,
+   "exact": 20,
+   "n": 26
+  },
+  "gates_round3": {
+   "before": {
+    "H7": 15.752378399900756,
+    "H6": 14.194639499559159
+   },
+   "after": {
+    "H7": 0.7398483916182381,
+    "H6": 0.8920213162565478
+   }
+  },
+  "thresholds": {
+   "Born": {
+    "T_null_set": 4.745753502674295,
+    "T_mild": 13.810921666076084,
+    "T_recipe": 13.810921666076084
+   },
+   "raw uncentred": {
+    "T_null_set": 2.9529861935855193,
+    "T_mild": NaN,
+    "T_recipe": 2.9529861935855193
+   },
+   "raw centred": {
+    "T_null_set": 0.8920213162565478,
+    "T_mild": NaN,
+    "T_recipe": 0.8920213162565478
+   }
+  },
+  "fair": [
+   {
+    "statistic": "Born",
+    "calibration": "T_null_set",
+    "rule": "threshold",
+    "threshold": 4.745753502674295,
+    "hits": 72,
+    "misses": 0,
+    "false_alarms": 25,
+    "exact": 15,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "Born",
+    "calibration": "T_null_set",
+    "rule": "gap",
+    "threshold": 4.745753502674295,
+    "hits": 58,
+    "misses": 14,
+    "false_alarms": 0,
+    "exact": 20,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "Born",
+    "calibration": "T_recipe",
+    "rule": "threshold",
+    "threshold": 13.810921666076084,
+    "hits": 51,
+    "misses": 21,
+    "false_alarms": 0,
+    "exact": 15,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "Born",
+    "calibration": "T_recipe",
+    "rule": "gap",
+    "threshold": 13.810921666076084,
+    "hits": 54,
+    "misses": 18,
+    "false_alarms": 0,
+    "exact": 18,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw uncentred",
+    "calibration": "T_null_set",
+    "rule": "threshold",
+    "threshold": 2.9529861935855193,
+    "hits": 72,
+    "misses": 0,
+    "false_alarms": 29,
+    "exact": 13,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw uncentred",
+    "calibration": "T_null_set",
+    "rule": "gap",
+    "threshold": 2.9529861935855193,
+    "hits": 50,
+    "misses": 22,
+    "false_alarms": 6,
+    "exact": 14,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw uncentred",
+    "calibration": "T_recipe",
+    "rule": "threshold",
+    "threshold": 2.9529861935855193,
+    "hits": 72,
+    "misses": 0,
+    "false_alarms": 29,
+    "exact": 13,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw uncentred",
+    "calibration": "T_recipe",
+    "rule": "gap",
+    "threshold": 2.9529861935855193,
+    "hits": 50,
+    "misses": 22,
+    "false_alarms": 6,
+    "exact": 14,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw centred",
+    "calibration": "T_null_set",
+    "rule": "threshold",
+    "threshold": 0.8920213162565478,
+    "hits": 22,
+    "misses": 50,
+    "false_alarms": 0,
+    "exact": 14,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw centred",
+    "calibration": "T_null_set",
+    "rule": "gap",
+    "threshold": 0.8920213162565478,
+    "hits": 39,
+    "misses": 33,
+    "false_alarms": 5,
+    "exact": 14,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw centred",
+    "calibration": "T_recipe",
+    "rule": "threshold",
+    "threshold": 0.8920213162565478,
+    "hits": 22,
+    "misses": 50,
+    "false_alarms": 0,
+    "exact": 14,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   },
+   {
+    "statistic": "raw centred",
+    "calibration": "T_recipe",
+    "rule": "gap",
+    "threshold": 0.8920213162565478,
+    "hits": 39,
+    "misses": 33,
+    "false_alarms": 5,
+    "exact": 14,
+    "n": 26,
+    "false_alarms_on_nulls": 0
+   }
+  ]
+ },
+ "loo": [
+  {
+   "held_out": "design",
+   "statistic": "Born",
+   "kinds": "gap/mid",
+   "hits": 58,
+   "misses": 14,
+   "false_alarms": 0,
+   "exact": 20,
+   "n": 26,
+   "exact_without_TestB": "18/24",
+   "false_without_TestB": 0,
+   "TestB_read": "H7: S2 S5; H6: S2 S5"
+  },
+  {
+   "held_out": "design",
+   "statistic": "Born",
+   "kinds": "threshold",
+   "hits": 68,
+   "misses": 4,
+   "false_alarms": 3,
+   "exact": 20,
+   "n": 26,
+   "exact_without_TestB": "19/24",
+   "false_without_TestB": 3,
+   "TestB_read": "H7: S2 S5; H6: S2"
+  },
+  {
+   "held_out": "design",
+   "statistic": "raw centred",
+   "kinds": "gap/mid",
+   "hits": 20,
+   "misses": 52,
+   "false_alarms": 2,
+   "exact": 12,
+   "n": 26,
+   "exact_without_TestB": "10/24",
+   "false_without_TestB": 2,
+   "TestB_read": "H7: S2 S5; H6: S2 S5"
+  },
+  {
+   "held_out": "design",
+   "statistic": "raw centred",
+   "kinds": "threshold",
+   "hits": 19,
+   "misses": 53,
+   "false_alarms": 0,
+   "exact": 13,
+   "n": 26,
+   "exact_without_TestB": "12/24",
+   "false_without_TestB": 0,
+   "TestB_read": "H7: S2; H6: S2 S5"
+  },
+  {
+   "held_out": "design",
+   "statistic": "raw uncentred",
+   "kinds": "gap/mid",
+   "hits": 42,
+   "misses": 30,
+   "false_alarms": 6,
+   "exact": 10,
+   "n": 26,
+   "exact_without_TestB": "8/24",
+   "false_without_TestB": 6,
+   "TestB_read": "H7: S2 S5; H6: S2 S5"
+  },
+  {
+   "held_out": "design",
+   "statistic": "raw uncentred",
+   "kinds": "threshold",
+   "hits": 60,
+   "misses": 12,
+   "false_alarms": 16,
+   "exact": 15,
+   "n": 26,
+   "exact_without_TestB": "14/24",
+   "false_without_TestB": 16,
+   "TestB_read": "H7: S2 S5; H6: none"
+  },
+  {
+   "held_out": "family",
+   "statistic": "Born",
+   "kinds": "gap/mid",
+   "hits": 58,
+   "misses": 14,
+   "false_alarms": 0,
+   "exact": 20,
+   "n": 26,
+   "exact_without_TestB": "18/24",
+   "false_without_TestB": 0,
+   "TestB_read": "H7: S2 S5; H6: S2 S5"
+  },
+  {
+   "held_out": "family",
+   "statistic": "Born",
+   "kinds": "threshold",
+   "hits": 69,
+   "misses": 3,
+   "false_alarms": 3,
+   "exact": 21,
+   "n": 26,
+   "exact_without_TestB": "20/24",
+   "false_without_TestB": 3,
+   "TestB_read": "H7: S2 S5; H6: S2"
+  },
+  {
+   "held_out": "family",
+   "statistic": "raw centred",
+   "kinds": "gap/mid",
+   "hits": 13,
+   "misses": 59,
+   "false_alarms": 2,
+   "exact": 12,
+   "n": 26,
+   "exact_without_TestB": "10/24",
+   "false_without_TestB": 2,
+   "TestB_read": "H7: S2 S5; H6: S2 S5"
+  },
+  {
+   "held_out": "family",
+   "statistic": "raw centred",
+   "kinds": "threshold",
+   "hits": 19,
+   "misses": 53,
+   "false_alarms": 0,
+   "exact": 13,
+   "n": 26,
+   "exact_without_TestB": "12/24",
+   "false_without_TestB": 0,
+   "TestB_read": "H7: S2; H6: S2 S5"
+  },
+  {
+   "held_out": "family",
+   "statistic": "raw uncentred",
+   "kinds": "gap/mid",
+   "hits": 45,
+   "misses": 27,
+   "false_alarms": 6,
+   "exact": 10,
+   "n": 26,
+   "exact_without_TestB": "8/24",
+   "false_without_TestB": 6,
+   "TestB_read": "H7: S2 S5; H6: S2 S5"
+  },
+  {
+   "held_out": "family",
+   "statistic": "raw uncentred",
+   "kinds": "threshold",
+   "hits": 68,
+   "misses": 4,
+   "false_alarms": 16,
+   "exact": 17,
+   "n": 26,
+   "exact_without_TestB": "16/24",
+   "false_without_TestB": 16,
+   "TestB_read": "H7: S2 S5; H6: none"
+  }
+ ],
+ "loo_chosen": {
+  "Born | gap/mid | design": [
+   {
+    "held_out": "Healthy_sliced",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 19,
+    "train_false": 0
+   },
+   {
+    "held_out": "Healthy_sliced_new",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 19,
+    "train_false": 0
+   },
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "mid",
+    "gate": 9.25,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild_lobe",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild_lobe_new",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate_lobe",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate_lobe_c3",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Null_rot07",
+    "rule": "mid",
+    "gate": 8.0,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Null_rot19",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "gap",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe_lobe",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe_lobe_c3",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 20,
+    "train_false": 0
+   }
+  ],
+  "Born | threshold | design": [
+   {
+    "held_out": "Healthy_sliced",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 21,
+    "train_false": 1
+   },
+   {
+    "held_out": "Healthy_sliced_new",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 21,
+    "train_false": 1
+   },
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "threshold",
+    "gate": 11.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "Mild_lobe",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 21,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild_lobe_new",
+    "rule": "threshold",
+    "gate": 11.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate_lobe",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "Moderate_lobe_c3",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 21,
+    "train_false": 1
+   },
+   {
+    "held_out": "Null_rot07",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "Null_rot19",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "threshold",
+    "gate": 9.75,
+    "train_exact": 21,
+    "train_false": 1
+   },
+   {
+    "held_out": "Severe_lobe",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "Severe_lobe_c3",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 22,
+    "train_false": 1
+   }
+  ],
+  "raw centred | gap/mid | design": [
+   {
+    "held_out": "Healthy_sliced",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 11,
+    "train_false": 2
+   },
+   {
+    "held_out": "Healthy_sliced_new",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 11,
+    "train_false": 2
+   },
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "Mild_lobe",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Mild_lobe_new",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Moderate_lobe",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Moderate_lobe_c3",
+    "rule": "mid",
+    "gate": 1.5,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "Null_rot07",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "Null_rot19",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe_lobe",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Severe_lobe_c3",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   }
+  ],
+  "raw centred | threshold | design": [
+   {
+    "held_out": "Healthy_sliced",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 11,
+    "train_false": 0
+   },
+   {
+    "held_out": "Healthy_sliced_new",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 11,
+    "train_false": 0
+   },
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild_lobe",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild_lobe_new",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate_lobe",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate_lobe_c3",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Null_rot07",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "Null_rot19",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe_lobe",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe_lobe_c3",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   }
+  ],
+  "raw uncentred | gap/mid | design": [
+   {
+    "held_out": "Healthy_sliced",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 11,
+    "train_false": 6
+   },
+   {
+    "held_out": "Healthy_sliced_new",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 11,
+    "train_false": 6
+   },
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "gap",
+    "gate": 7.0,
+    "train_exact": 10,
+    "train_false": 5
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 10,
+    "train_false": 6
+   },
+   {
+    "held_out": "Mild_lobe",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 4
+   },
+   {
+    "held_out": "Mild_lobe_new",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 4
+   },
+   {
+    "held_out": "Moderate_lobe",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 6
+   },
+   {
+    "held_out": "Moderate_lobe_c3",
+    "rule": "mid",
+    "gate": 4.0,
+    "train_exact": 11,
+    "train_false": 5
+   },
+   {
+    "held_out": "Null_rot07",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 10,
+    "train_false": 6
+   },
+   {
+    "held_out": "Null_rot19",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 10,
+    "train_false": 6
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 4
+   },
+   {
+    "held_out": "Severe_lobe",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 6
+   },
+   {
+    "held_out": "Severe_lobe_c3",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 6
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 6
+   }
+  ],
+  "raw uncentred | threshold | design": [
+   {
+    "held_out": "Healthy_sliced",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 15,
+    "train_false": 16
+   },
+   {
+    "held_out": "Healthy_sliced_new",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 15,
+    "train_false": 16
+   },
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 15,
+    "train_false": 16
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "Mild_lobe",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 16,
+    "train_false": 12
+   },
+   {
+    "held_out": "Mild_lobe_new",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 15,
+    "train_false": 14
+   },
+   {
+    "held_out": "Moderate_lobe",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 16,
+    "train_false": 14
+   },
+   {
+    "held_out": "Moderate_lobe_c3",
+    "rule": "threshold",
+    "gate": 8.5,
+    "train_exact": 14,
+    "train_false": 3
+   },
+   {
+    "held_out": "Null_rot07",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "Null_rot19",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 16,
+    "train_false": 8
+   },
+   {
+    "held_out": "Severe_lobe",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "Severe_lobe_c3",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 16,
+    "train_false": 16
+   }
+  ],
+  "Born | gap/mid | family": [
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "mid",
+    "gate": 9.25,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 16,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 16,
+    "train_false": 0
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "gap",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "healthy cross-reference",
+    "rule": "mid",
+    "gate": 8.5,
+    "train_exact": 18,
+    "train_false": 0
+   },
+   {
+    "held_out": "rotated nulls",
+    "rule": "mid",
+    "gate": 8.0,
+    "train_exact": 16,
+    "train_false": 0
+   }
+  ],
+  "Born | threshold | family": [
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "threshold",
+    "gate": 11.5,
+    "train_exact": 20,
+    "train_false": 0
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "Mild",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 19,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 19,
+    "train_false": 1
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "threshold",
+    "gate": 9.75,
+    "train_exact": 21,
+    "train_false": 1
+   },
+   {
+    "held_out": "Severe",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 18,
+    "train_false": 1
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 22,
+    "train_false": 1
+   },
+   {
+    "held_out": "healthy cross-reference",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 20,
+    "train_false": 1
+   },
+   {
+    "held_out": "rotated nulls",
+    "rule": "threshold",
+    "gate": 11.0,
+    "train_exact": 18,
+    "train_false": 1
+   }
+  ],
+  "raw centred | gap/mid | family": [
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "Mild",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Moderate",
+    "rule": "gap",
+    "gate": 1.75,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "healthy cross-reference",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 10,
+    "train_false": 2
+   },
+   {
+    "held_out": "rotated nulls",
+    "rule": "gap",
+    "gate": 1.25,
+    "train_exact": 8,
+    "train_false": 2
+   }
+  ],
+  "raw centred | threshold | family": [
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "Mild",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Moderate",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "Severe",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 12,
+    "train_false": 0
+   },
+   {
+    "held_out": "healthy cross-reference",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 10,
+    "train_false": 0
+   },
+   {
+    "held_out": "rotated nulls",
+    "rule": "threshold",
+    "gate": 1.0,
+    "train_exact": 8,
+    "train_false": 0
+   }
+  ],
+  "raw uncentred | gap/mid | family": [
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "gap",
+    "gate": 7.0,
+    "train_exact": 10,
+    "train_false": 5
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 10,
+    "train_false": 6
+   },
+   {
+    "held_out": "Mild",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 2
+   },
+   {
+    "held_out": "Moderate",
+    "rule": "mid",
+    "gate": 4.0,
+    "train_exact": 11,
+    "train_false": 5
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 4
+   },
+   {
+    "held_out": "Severe",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 6
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 12,
+    "train_false": 6
+   },
+   {
+    "held_out": "healthy cross-reference",
+    "rule": "gap",
+    "gate": 4.0,
+    "train_exact": 10,
+    "train_false": 6
+   },
+   {
+    "held_out": "rotated nulls",
+    "rule": "gap",
+    "gate": 3.5,
+    "train_exact": 8,
+    "train_false": 6
+   }
+  ],
+  "raw uncentred | threshold | family": [
+   {
+    "held_out": "LeftOnly_test_c3",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 15,
+    "train_false": 16
+   },
+   {
+    "held_out": "MCI_lobe_c3",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "Mild",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 15,
+    "train_false": 10
+   },
+   {
+    "held_out": "Moderate",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 14
+   },
+   {
+    "held_out": "RightOnly_test",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 16,
+    "train_false": 8
+   },
+   {
+    "held_out": "Severe",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 12,
+    "train_false": 16
+   },
+   {
+    "held_out": "Test_B",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 16,
+    "train_false": 16
+   },
+   {
+    "held_out": "healthy cross-reference",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 14,
+    "train_false": 16
+   },
+   {
+    "held_out": "rotated nulls",
+    "rule": "threshold",
+    "gate": 5.25,
+    "train_exact": 12,
+    "train_false": 16
+   }
+  ]
+ }
+}

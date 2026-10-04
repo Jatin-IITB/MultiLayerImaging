@@ -1,6 +1,6 @@
 # Round 3 (imaging session): rotated nulls, Test_B truth, rank readings, raw delay, pass gap
 
-**POST-HOC throughout.** Everything here was computed after the Test_B truth and the rotated nulls were released, by `python imaging/lobe_round3.py --n 100` at code `be15287-dirty` (numbers in `results/imaging/lobe_round3.json`). Frozen rules, thresholds, protocols, predictions and submitted estimates are unchanged. Committed verdicts stand as scored.
+**POST-HOC throughout.** Everything here was computed after the Test_B truth and the rotated nulls were released, by `python imaging/lobe_round3.py --n 100` at code `a6cf6cc-dirty` (numbers in `results/imaging/lobe_round3.json`). Frozen rules, thresholds, protocols, predictions and submitted estimates are unchanged. Committed verdicts stand as scored.
 
 ## 1. Test_B: the user's score against my committed protocol (24aa0c4)
 
@@ -64,7 +64,7 @@ The 0.49 dB point of Null_rot07 (3.86 GHz, T1–T4) is masked; so is a second po
 | Null_rot19 | H6 (Healthy_sliced_new, 6 passes, stop rule 1) | frozen bounded log | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | +0.00 | 0.00 | +0.00 | 0.00 | none | none | none | 0.88 |
 | Null_rot19 | H6 (Healthy_sliced_new, 6 passes, stop rule 1) | whitened log (POST-HOC) | -1.74 | -2.22 | -1.31 | -1.80 | -2.42 | -1.71 | +0.30 | 0.10 | +0.06 | 0.01 | n/a (no frozen thresholds) | n/a | n/a | 0.87 |
 
-**Result.** No sector reaches T_abs (largest 4.75). LR and FB are at most 0.73× and 0.73× their rulers. Frozen calls in any method: 0. Applied to the nulls, the protocol's reading rule gives 'no lobe' for rot07. For rot19 it gives 'fit rejected': the sector model explains nothing, as expected when nothing changed. That sentence names 'Test_B' because it reuses the protocol's reading function. **Verdict: CONFIRMED.** Both nulls behave as nulls.
+**Result.** No sector reaches T_abs (largest 4.75). LR and FB are at most 0.73× and 0.73× their rulers. Frozen calls in any method: 0. Applied to the nulls, the protocol's reading rule gives 'no lobe' for rot07. For rot19 it gives 'fit rejected'. *Revised in round 4:* that rejection is **not** a validation of the rule. The rule fires on the relative misfit of a mesh-only difference, so it acts as a signal-size gate (`lobe_round4.md` §1). **Verdict: CONFIRMED** that both nulls show no sector, LR or FB beyond the rulers.
 
 ## 4. 'Beyond all nulls' re-tested with the rotated nulls (the independence assumption)
 
@@ -292,7 +292,7 @@ Same statistics and frequencies (3.4/3.6/3.8 GHz) for Left − mirror(Right) and
 
 **Result.** LR, LR_anti, amplitude and phase parts: |Left − mirRight| is at most 1.08× the largest twin difference. Primary method, H7: LR -2.04 vs ≤ 2.18; LR_anti -2.31 vs ≤ 2.14. The phase share is the same (0.82 vs 0.82).
 Two size measures are outside the twins. The common-mode delay is 4.66 / 8.99° (difference -4.33° vs twins ≤ 3.30°). The affected-sector level differs by -38% vs twins -0.19, -0.19, -0.12.
-**Verdict.** For LR and phase share, the Left/Right size mismatch is consistent with the pass gap (within or at the edge of the twin differences). For the absolute level, a common delay about 4° larger in RightOnly and sectors 23%–45% higher, it is larger than any twin difference: the pass gap does not explain it. Nothing in these data says what does.
+**Verdict (revised in round 4, ruler language).** Ratio to the largest of the n = 3 twin differences: common-mode delay 1.31×; affected-sector level 1.86–2.06× over methods and references; LR, LR_anti and their parts ≤ 1.08×. Even a value beyond all three twins has a rank p of 1/4. On the bar used everywhere else (≥ 3× established, 2–3× sensitive, < 2× not separable): LR and phase share are **not separable from the pass gap**. The common-mode delay (1.31×) is **undetermined**. The sector level reaches the 2× bar in 3 of 6 method × reference cases (frozen log H7 2.01×, Tikhonov dS H6 2.06×, frozen log H6 2.02×), and only at the threshold of 'sensitive', so it is **undetermined**. Round 3's 'not explained by the pass gap' was stronger than three twins can support.
 
 ## Final table
 
@@ -305,6 +305,6 @@ Two size measures are outside the twins. The common-mode delay is 4.66 / 8.99° 
 | Rulers rebuilt (11 nulls) | CHANGED (one claim falls) | bias-corrected FB in lobe_B 3.2–4.0× → 2.61×, 2.23×, 2.80×; others survive; phase counts at 3.30–3.65 weakened | lobe_round3.json: rulers, cr, b24 |
 | Rank reading vs threshold | reported, not adopted | frozen 51 hits / 0 FA / 15/26 exact; largest-gap 58 / 0 / 20/26 | lobe_round3.json: readings |
 | Born ranking vs raw delay | CHANGED | ranking credited to the Born map → raw delay ranks as well (oracle 0.96 vs 1.00; Spearman 0.79 vs 0.71); Born adds only the gated level | lobe_round3.json: readings |
-| Pass gap, LR and phase share | consistent with the pass gap | abs Δ ≤ 1.08× the twins; phase share equal | lobe_round3.json: pass_gap |
-| Pass gap, absolute level | not explained by the pass gap | common-mode delay -4.33° vs twins ≤ 3.30°; sectors -38% | lobe_round3.json: pass_gap |
+| Pass gap, LR and phase share | not separable from the pass gap | abs Δ ≤ 1.08× the twins; phase share equal | lobe_round3.json: pass_gap |
+| Pass gap, absolute level | undetermined (revised in round 4) | common-mode delay 1.31× the largest of 3 twins; sector level 1.86–2.06×; round 3 said 'not explained' | lobe_round3.json: pass_gap |
 
