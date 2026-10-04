@@ -53,10 +53,15 @@ REGISTRY = [
     ("RightOnly_test", "RightOnly_test", 1, 5, 0.019742, 789241, "lobe_A (replication; NOT pass-matched: p5)",
      "user 2026-10-04 (round 3)"),
     ("Test_B", "Test_B", 1, 6, 0.012597, 903758, "lobe_A (blind, truth released)", "user 2026-10-04 (round 3)"),
-    ("Null_rot07", "Healthy_sliced", 1, 6, 0.014650, 1045101, "null: healthy, whole model rotated 7 deg (kind = null)",
+    ("Null_rot07", "Healthy_sliced", 1, 6, 0.014650, 1045101, "lobe_nulls: healthy, whole model rotated 7 deg (kind = null)",
      "user 2026-10-04 (round 3)"),
-    ("Null_rot19", "Healthy_sliced", 1, 6, 0.014495, 939082, "null: healthy, whole model rotated 19 deg (kind = null)",
+    ("Null_rot19", "Healthy_sliced", 1, 6, 0.014495, 939082, "lobe_nulls: healthy, whole model rotated 19 deg (kind = null)",
      "user 2026-10-04 (round 3)"),
+    # round 5 (user, 2026-10-04): appended, so existing indices and Monte Carlo seeds are unchanged
+    ("Null_rot31", "Healthy_sliced", 1, 6, 0.016155, 1078590, "lobe_nulls: healthy, whole model rotated 31 deg (kind = null)",
+     "user 2026-10-04 (round 5)"),
+    ("Null_rot43", "Healthy_sliced", 1, 6, 0.014859, 976618, "lobe_nulls: healthy, whole model rotated 43 deg (kind = null)",
+     "user 2026-10-04 (round 5)"),
 ]
 NEW = ("LeftOnly_test_c3", "MCI_lobe_c3", "Moderate_lobe_c3", "Severe_lobe_c3")
 LOBE_A = ("Healthy_sliced_new", "Mild_lobe", "Moderate_lobe", "Severe_lobe", "LeftOnly_test_c3", "MCI_lobe_c3")
