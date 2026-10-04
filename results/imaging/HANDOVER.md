@@ -60,8 +60,37 @@ A replication design (RightOnly_test) was proposed and its prediction committed.
 - [POST-HOC] Each mirror design alone is 2–3.4× the R1c ruler. Both lie beyond all nine nulls with the predicted
   opposite signs, so if the two meshes' asymmetries are independent the pair's rank p is about 0.01.
 - **Test_B (blind) estimates were submitted** under protocol `24aa0c4`: affected none; possible S2; side none;
-  front/back none; ranking S2 > S5 ≫ S3, S6, S1, S4 (`testb_report.md`; `lobe_report.md` §11). The user holds the
-  truth and will score it. **Next action: record the user's score of Test_B (§5.6).**
+  front/back none; ranking S2 > S5 ≫ S3, S6, S1, S4 (`testb_report.md`; `lobe_report.md` §11).
+
+**Test_B SCORE (user, 2026-10-04, against my committed protocol `24aa0c4`).**
+- Truth: e = 0 / 11.5 / 0 / 0 / 7.5 / 0 mm, r_hip 17.5, Mild materials in S2 and S5, CSF_Mild everywhere. That is
+  a diagonal pair: S2 (left temporal, deeper) and S5 (right parietal, shallower).
+- **Committed reading: MISS** ("affected none, possible S2"). **Side "none": MISS** (both sides affected).
+- **Ranking S2 > S5 ≫ rest: correct pair, correct order** (reported under the protocol, not used by its reading
+  rule). Front/back "none": consistent with the truth (S1, S4 unaffected); the user did not score it.
+- The verdict stands as scored.
+
+**Round 3 (POST-HOC; `lobe_round3.md`, `lobe_report.md` §12; code `be15287`, results `ad1bacb`):**
+- **Rotated nulls (Null_rot07, Null_rot19)** pass as nulls under the frozen pipeline: no sector ≥ T_abs, LR and FB
+  ≤ 0.73× their rulers. Their LR_anti (+1.41 / −0.96) lies inside the old nine-null envelope (4.07). So
+  "LeftOnly and RightOnly both beyond all nulls" survives with 11 nulls: pair rank p ≈ 0.007, if the meshes'
+  asymmetries are independent.
+- But on single-path phase (3.4 GHz) and second-neighbour power, the rotated nulls exceed the old floors. Those
+  floors were optimistic for those statistics.
+- **Rulers rebuilt with 11 nulls:**
+  - bias-corrected front/back in lobe_B drops from 3.2–4.0× to 2.2–2.8×, so it is **no longer established**;
+  - phase cross-ratio counts at 3.30–3.65 GHz drop (largest-null rule 7 → 3 of 18);
+  - every other claim is unchanged.
+- **Raw neighbour-path delay per antenna ranks the affected sectors as well as the Born map** (top-k with the
+  true k 0.96 vs 1.00; Spearman 0.79 vs 0.71). The ranking is not evidence for the Born pipeline. The Born map
+  adds only a gated level (fewer false alarms with stated rules).
+- **Rank reading (largest gap, gate T_null)**: 58 hits / 0 false / 20 of 26 exact, vs the frozen threshold's 51 /
+  0 / 15. Reported, **not adopted**.
+- **Pass gap** (RightOnly p5 vs LeftOnly p6, against the three p5/p6 twins): LR, LR_anti, amplitude and phase parts,
+  and phase share are within the twins (≤ 1.08×). RightOnly's absolute level is not: common-mode delay +4.3° vs
+  twins ≤ 3.3°, affected sectors 23–45 % higher.
+- **Next action:** when Null_rot31 and Null_rot43 arrive, add them to `REGISTRY` (`imaging/lobe_c3.py`) and to
+  `ROT` (`imaging/lobe_round3.py`), re-run `python imaging/lobe_round3.py --n 100`, and update the survival table.
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -117,10 +146,11 @@ Only CONFIRMED / CHANGED items. [POST-HOC] = built after unblinding.
 | Moderate_lobe's large mirror residual is mesh asymmetry of that pass-5 file (halved one pass later) | CHANGED | R1 |
 | Left antennas' reflection depth changes by 0.9–1.0 dB (3–6× one-pass); resonance frequencies do not move | CHANGED | R3 |
 | Phase change of the left neighbour path is negative (delay), −7 to −9° at 3.30–3.60 GHz, as the CSF-gap physics predicts | CONFIRMED | C4 |
-| Bias-corrected Moderate front/back is 6.3–7.4 (truth 14.6): established in lobe_B (3.2–4.0×), not in lobe_A (1.4–1.9×); mesh-sensitive | CHANGED | B24 |
+| Bias-corrected Moderate front/back is 6.3–7.4 (truth 14.6): ~~established in lobe_B (3.2–4.0×)~~ **round 3: 2.2–2.8× with the rotated nulls in the floor, so not established in either set** (lobe_A 1.4–1.9×) | CHANGED (round 3) | B24, round 3 §6 |
 | MCI_lobe shows nothing beyond the rulers in any variant (never flips with λ, reference or calibration) | CONFIRMED | B17, round 1 |
 | R31 detection is defensible on the uniform training data and fragile on lobe Severe/LeftOnly; no single feature determines every lobe design | CONFIRMED | R4 |
 | Thresholds were frozen before LeftOnly/MCI existed but tuned on Mild of the same head; Mild calls are in-sample | CHANGED | B19 |
+| **Round 3 [POST-HOC]:** the Test_B committed reading is a MISS (truth S2 + S5); its ranking S2 > S5 was the correct pair in the correct order. The raw neighbour-path delay per antenna ranks affected sectors as well as the Born map (top-k with the true k 0.96 vs 1.00), so the ranking is not evidence for the Born pipeline. The rotated nulls stay inside the LR_anti envelope (pair rank p ≈ 0.007 if independent), but exceed the old floors for single-path phase and second-neighbour power | CHANGED | round 3, `lobe_round3.md` |
 | **Added after round 2:** RightOnly_test (mirror of LeftOnly, independent mesh) is REPLICATED under the committed C6 rule: LR −9.44 (H6) / −9.83 (H7), phase sign at 3.4 and 3.6 GHz, 83 % phase. [POST-HOC] LR_anti −10.15 = 2.5× (Tikhonov dS) to 3.4× (whitened log) the R1c ruler; both mirror designs beyond all nine nulls with opposite signs | CONFIRMED (prediction held) | C6, `rightonly_score.md`, report §10 |
 
 **Agreement with the main session (round 2).** Both sessions independently fixed the same floor rule R1c:
@@ -240,6 +270,9 @@ python imaging/report_rightonly.py
 ```bash
 python imaging/score_testb.py --n 200
 ```
+```bash
+python imaging/lobe_round3.py --n 100
+```
 
 What each writes:
 1. `rebuild_stage1_cache.py` (17 s): cache only.
@@ -254,6 +287,7 @@ What each writes:
 7. `lobe_round2.py` (61 s): round 2 in `lobe_round2.md` / `lobe_round2.json`, `lobe_claims.csv`, §9.
 8. `score_rightonly.py` (≈ 30 s): `rightonly_score.md`, the committed C6 verdict.
 9. `report_rightonly.py` (≈ 40 s): §10 (QC, verdict, post-hoc mirror-pair table).
+11. `lobe_round3.py` (≈ 40 s): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
 10. `score_testb.py` (≈ 40 s): `testb_report.md`, `testb.json`, §11. It refuses to run if the protocol is not
     committed.
 
@@ -281,7 +315,7 @@ python imaging/run_imaging.py --reuse
 - I3 checkpoints in the cache resume after interruption. Laptop sleep stops runs; ask the user to keep it awake
   and plugged in.
 
-### 5.6 NEXT: Test_B score from the user
+### 5.6 DONE: Test_B scored by the user (MISS under the committed rule; ranking correct; see §2)
 
 The user holds Test_B's truth and scores it against `testb_protocol.md` (`24aa0c4`).
 - **Blind rules (still in force until the user releases the truth):**
@@ -345,7 +379,8 @@ python imaging/score_rightonly.py
 
 ## 6. Open items
 
-1. **Test_B**: the user's score is pending (§5.6). RightOnly_test is done: REPLICATED.
+1. **Rotated nulls**: Null_rot31 and Null_rot43 are still solving. Add them to `REGISTRY` and `ROT`, then re-run
+   `lobe_round3.py` (§2). Test_B has been scored (MISS) and RightOnly REPLICATED; both are recorded.
 2. **Floor significance**: nine symmetric solves cap the rank p at 0.1. Needs ≥ 19 independent mirror-symmetric
    solves, for example Healthy_sliced re-solved with head and array rotated k × 7°, k = 1…10 (R1, C3).
 3. **Fit frequencies**: field exports exist only at 3.4/3.6/3.8 GHz. Kernel interpolation is invalid (≈ 62°
@@ -383,6 +418,7 @@ python imaging/score_rightonly.py
 | `score_rightonly.py` | C6 replication scorer (§5.5) |
 | `report_rightonly.py` | §10: RightOnly QC, verdict, post-hoc mirror-pair table |
 | `score_testb.py` | Test_B blind scorer implementing `testb_protocol.md` (`--dry-run STEM` on known designs only) |
+| `lobe_round3.py` + `lobe_round3_md.py` | round 3 (POST-HOC): rotated nulls, rulers rebuilt, rank readings, raw delay vs Born, pass gap |
 | `run_imaging.py`, `study_i1/i2/i2_hfss/i3/ratios.py`, `beamform.py`, `forward.py`, `mie.py`, `linear.py`, `timedomain.py`, `paths.py`, `stage_snr.py`, `report*.py` | Track A |
 | `tests/` | `test_imaging.py` (Track A), `test_lobe.py` (geometry, rules, one bar, whitened projection) |
 | `hpc/` | SLURM / env scripts for the Praganak cluster |
@@ -394,7 +430,7 @@ Key commits:
 - `237ad47` / `b543b33` round 1; `0ceb626` round-2 predictions; `66c04db` / `e4c33d3` round 2.
 - `226f9b1` safe rebuild + RightOnly scorer; `2a75644` this handover.
 - `b2f1472` / `24aa0c4` Test_B scorer and protocol (before loading); RightOnly REPLICATED.
-- `6efd1db` / `5818235` §10 writer and Test_B estimates.
+- `6efd1db` / `5818235` §10 writer and Test_B estimates; `be15287` / `ad1bacb` round 3 (Test_B scored, rotated nulls).
 
 ## 8. Pitfalls seen in this project
 
