@@ -416,7 +416,7 @@ def write_stage1(res):
     write_predictions(res)
 
 
-def _verdict(res, blind=None):
+def _verdict(res, blind=None, extra=None):
     sc = res["scores"]
     fb = res["front_back"][0]
     bp = res["blind_pred"]["LeftOnly_test"][PRIMARY]
@@ -521,8 +521,11 @@ def _verdict(res, blind=None):
          "changes; the deeper cortex (60–76 mm) has a 2–3× larger CRLB and is not determined in any sector at any "
          "stage (§2); the core (hippocampus) is not determined at all.",
          "- **Radar imaging:** no — it still peaks at the centre and its energy direction does not track the lobes."]
+    if blind and A and Rl:                     # after the blind test the pre-blind LeftOnly sentence is obsolete
+        L[[i for i, x in enumerate(L) if x.startswith("- **Left/right:**")][0]] = "- **Left/right:** " + blind
     if opp_txt:
         L.append(opp_txt)
+    L += list(extra or [])
     L += ["- **Caveats:** the Born model explains only about a quarter to a third of the dS size (κ ≈ 3 absorbs it) and "
           "the background fields come from the unsliced design; the lobe placement is schematic (azimuthal wedges at "
           "the ring height); everything is within one simulated head" + cav_mesh, ""]
@@ -585,7 +588,9 @@ def run_blind():
     """Stage 2: unchanged frozen pipeline on the blind designs; appends the outcome to the report."""
     from imaging import run_lobe as RL
     fz = json.loads((OUT / "lobe_frozen.json").read_text(encoding="utf-8"))
-    present = [d for d in SL.BLIND if (ROOT / "data" / "raw" / f"new_with_slices_{d}.s6p").exists()]
+    stems = {d: next((s for s in (d, f"{d}_c3") if (ROOT / "data" / "raw" / f"new_with_slices_{s}.s6p").exists()), None)
+             for d in SL.BLIND}                     # the delivered blind files carry the user's label '_c3'
+    present = [d for d in SL.BLIND if stems[d]]
     if not present:
         print("blind designs not present yet:", SL.BLIND)
         return
@@ -600,13 +605,12 @@ def run_blind():
         refs["Healthy_sliced_new (6 passes, matched)"], _ = SL.load_design("Healthy_sliced_new", f)
     lam = {"dS": fz["lambda_dS"], "log": fz["lambda_log"]}
     pr = OUT / "lobe_rulers.json"
-    lo = (json.loads(pr.read_text(encoding="utf-8")).get("summary") or {}).get("leftonly", {}) if pr.exists() else {}
     out = []
     for rname, H in refs.items():
         S_r = {**S, "Healthy_sliced": H}
         M = RL.models(S_r, fh, fi, P, kappa, PROFILES["typical"])
         for d in present:
-            Sd, _ = SL.load_design(d, f)
+            Sd, _ = SL.load_design(stems[d], f)
             for m in RL.METHODS:
                 lm = lam["dS"] if m.endswith("dS") else lam["log"]
                 x = RL.invert(M, m, lm, S_stage_fi=Sd[fi], S_ref_fi=H[fi], dS_fi=SL.recip(Sd[fi] - H[fi]))
@@ -620,22 +624,17 @@ def run_blind():
                 else:
                     ok = not any(c["affected"]) and c["side"] == "none" and c["frontback"] == "none"
                     verdict = "SUCCESS" if ok else "FAIL"
-                q = lo.get(m, {})
                 out.append(dict(reference=rname, design=d, method=m, **{f"dε'' {SHORT[k]}": x[6 + k] for k in range(6)},
                                 called=calls, LR=c["LR"], side=c["side"], FB=c["FB"], frontback=c["frontback"],
-                                verdict=verdict,
-                                LR_over_clean_ruler=abs(c["LR"]) / q["clean"] if q else float("nan"),
-                                LR_over_ruler_05dB=abs(c["LR"]) / q["ruler05"] if q else float("nan")))
+                                verdict=verdict))
     L = ["## 6. Blind test outcome (pre-registered)", "",
          f"Frozen at code `{fz['code']}`; predictions in `lobe_predictions.md`. Scored now at code `{git_hash(ROOT)}` "
          "with the unchanged frozen κ, λ and thresholds.", "",
          "Two references (decision of 4 Oct): the frozen 7-pass Healthy_sliced is primary and decides the verdict; "
-         "the stop-rule-matched Healthy_sliced_new is shown alongside. LR / ruler columns use the Mild − Healthy LR "
-         "rulers of §5d (clean = max(one-pass mesh, symmetry floor); 0.5 dB = with the Prompt 07 measurement errors).", "",
+         "the stop-rule-matched Healthy_sliced_new is shown alongside. Each prediction against the error rulers: §6b.", "",
          _t(out, ["reference", "design", "method"] + [f"dε'' {s}" for s in SHORT]
-            + ["called", "LR", "side", "FB", "frontback", "verdict", "LR_over_clean_ruler", "LR_over_ruler_05dB"],
-            {**{f"dε'' {s}": ".1f" for s in SHORT}, "LR": "+.1f", "FB": "+.1f", "LR_over_clean_ruler": ".1f",
-             "LR_over_ruler_05dB": ".1f"}), ""]
+            + ["called", "LR", "side", "FB", "frontback", "verdict"],
+            {**{f"dε'' {s}": ".1f" for s in SHORT}, "LR": "+.1f", "FB": "+.1f"}), ""]
     prim = {o["design"]: o for o in out if o["method"] == PRIMARY and o["reference"].endswith("primary)")}
     blind_txt = None
     if "LeftOnly_test" in prim:
