@@ -1,0 +1,300 @@
+{
+ "all nulls": {
+  "affected": 36,
+  "covered": 24,
+  "misses": [
+   {
+    "target": "Mild_p5",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 13.0,
+    "interval": [
+     8.0,
+     21.5
+    ]
+   },
+   {
+    "target": "Mild_p6",
+    "sector": 2,
+    "e_true": 7.5,
+    "e_med": 9.0,
+    "interval": [
+     8.0,
+     20.5
+    ]
+   },
+   {
+    "target": "Mild_p6",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 14.5,
+    "interval": [
+     8.0,
+     21.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 1,
+    "e_true": 15.5,
+    "e_med": 1.0,
+    "interval": [
+     1.0,
+     1.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 2,
+    "e_true": 17.5,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     2.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 3,
+    "e_true": 18.0,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     17.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 4,
+    "e_true": 11.5,
+    "e_med": 1.0,
+    "interval": [
+     1.0,
+     7.0
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 6,
+    "e_true": 17.5,
+    "e_med": 1.5,
+    "interval": [
+     1.0,
+     16.5
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 1,
+    "e_true": 15.5,
+    "e_med": 1.5,
+    "interval": [
+     1.0,
+     2.0
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 2,
+    "e_true": 17.5,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     3.0
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 3,
+    "e_true": 18.0,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     17.5
+    ]
+   },
+   {
+    "target": "RightOnly",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 3.5,
+    "interval": [
+     3.0,
+     4.0
+    ]
+   }
+  ]
+ },
+ "all without rot19": {
+  "affected": 36,
+  "covered": 28,
+  "misses": [
+   {
+    "target": "Mild_p5",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 13.0,
+    "interval": [
+     8.0,
+     21.5
+    ]
+   },
+   {
+    "target": "Mild_p6",
+    "sector": 2,
+    "e_true": 7.5,
+    "e_med": 9.0,
+    "interval": [
+     8.0,
+     20.0
+    ]
+   },
+   {
+    "target": "Mild_p6",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 14.5,
+    "interval": [
+     8.0,
+     21.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 1,
+    "e_true": 15.5,
+    "e_med": 1.0,
+    "interval": [
+     1.0,
+     1.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 2,
+    "e_true": 17.5,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     2.5
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 1,
+    "e_true": 15.5,
+    "e_med": 1.0,
+    "interval": [
+     1.0,
+     2.5
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 2,
+    "e_true": 17.5,
+    "e_med": 2.0,
+    "interval": [
+     1.0,
+     11.0
+    ]
+   },
+   {
+    "target": "RightOnly",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 3.5,
+    "interval": [
+     3.0,
+     4.0
+    ]
+   }
+  ]
+ },
+ "rot19 alone": {
+  "affected": 36,
+  "covered": 28,
+  "misses": [
+   {
+    "target": "Mild_p5",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 12.5,
+    "interval": [
+     8.0,
+     21.5
+    ]
+   },
+   {
+    "target": "Mild_p6",
+    "sector": 2,
+    "e_true": 7.5,
+    "e_med": 9.0,
+    "interval": [
+     8.0,
+     20.0
+    ]
+   },
+   {
+    "target": "Mild_p6",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 14.0,
+    "interval": [
+     8.0,
+     21.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 1,
+    "e_true": 15.5,
+    "e_med": 1.0,
+    "interval": [
+     1.0,
+     1.5
+    ]
+   },
+   {
+    "target": "Severe_p5",
+    "sector": 2,
+    "e_true": 17.5,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     2.5
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 1,
+    "e_true": 15.5,
+    "e_med": 1.5,
+    "interval": [
+     1.0,
+     5.5
+    ]
+   },
+   {
+    "target": "Severe_p6",
+    "sector": 2,
+    "e_true": 17.5,
+    "e_med": 2.0,
+    "interval": [
+     1.5,
+     8.5
+    ]
+   },
+   {
+    "target": "RightOnly",
+    "sector": 6,
+    "e_true": 7.5,
+    "e_med": 3.5,
+    "interval": [
+     3.0,
+     4.0
+    ]
+   }
+  ]
+ }
+}

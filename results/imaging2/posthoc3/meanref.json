@@ -1,0 +1,708 @@
+{
+ "code": "ceb473b+imaging2-uncommitted",
+ "label": "POST HOC; not adopted",
+ "rows": [
+  {
+   "target": "Mild_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Moderate",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.851,
+   "e_med": [
+    0.0,
+    2.5,
+    2.5,
+    0.0,
+    2.5,
+    2.5
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": false
+  },
+  {
+   "target": "Mild_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 1.543,
+   "e_med": [
+    1.5,
+    3.5,
+    8.0,
+    1.0,
+    3.5,
+    3.5
+   ],
+   "wrong_lobes": 2,
+   "stage_ok": true
+  },
+  {
+   "target": "Mild_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.601,
+   "e_med": [
+    0.0,
+    9.0,
+    15.5,
+    0.0,
+    16.0,
+    15.5
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Mild_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.521,
+   "e_med": [
+    0.0,
+    13.5,
+    11.5,
+    0.0,
+    14.0,
+    14.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Mild_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.602,
+   "e_med": [
+    0.0,
+    16.0,
+    7.0,
+    0.0,
+    12.0,
+    6.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Mild_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.455,
+   "e_med": [
+    0.0,
+    13.5,
+    7.5,
+    0.0,
+    14.0,
+    13.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Moderate_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Moderate",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.435,
+   "e_med": [
+    8.5,
+    10.5,
+    12.5,
+    0.0,
+    11.5,
+    11.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Moderate_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "fit": 0.453,
+   "e_med": [
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    12.5
+   ],
+   "wrong_lobes": 3,
+   "stage_ok": false
+  },
+  {
+   "target": "Moderate_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Moderate",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.363,
+   "e_med": [
+    11.5,
+    12.0,
+    13.5,
+    0.0,
+    11.5,
+    12.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Moderate_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Moderate",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.612,
+   "e_med": [
+    0.5,
+    6.5,
+    0.5,
+    0.0,
+    7.5,
+    6.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Moderate_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Moderate",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.617,
+   "e_med": [
+    1.0,
+    0.5,
+    0.5,
+    0.0,
+    6.0,
+    0.5
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Moderate_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Severe",
+   "P_stage": 0.854,
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "fit": 0.4,
+   "e_med": [
+    0.0,
+    12.5,
+    0.0,
+    0.0,
+    0.0,
+    12.0
+   ],
+   "wrong_lobes": 3,
+   "stage_ok": false
+  },
+  {
+   "target": "Severe_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 2.242,
+   "e_med": [
+    1.0,
+    2.0,
+    2.0,
+    1.5,
+    2.0,
+    2.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Severe_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 2.164,
+   "e_med": [
+    1.0,
+    1.5,
+    2.5,
+    1.0,
+    3.0,
+    7.5
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Severe_p5",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 1.578,
+   "e_med": [
+    0.5,
+    11.5,
+    13.0,
+    8.5,
+    13.0,
+    12.5
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Severe_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 1.804,
+   "e_med": [
+    12.5,
+    2.5,
+    2.5,
+    13.5,
+    3.0,
+    12.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Severe_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 2.344,
+   "e_med": [
+    4.5,
+    4.0,
+    4.0,
+    4.5,
+    4.0,
+    4.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Severe_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Severe",
+   "P_stage": 1.0,
+   "calls": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "fit": 1.379,
+   "e_med": [
+    13.0,
+    10.5,
+    13.0,
+    13.0,
+    13.5,
+    12.5
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "LeftOnly_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "fit": 0.469,
+   "e_med": [
+    0.0,
+    5.0,
+    6.5,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "LeftOnly_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "fit": 0.798,
+   "e_med": [
+    0.0,
+    6.0,
+    6.5,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "LeftOnly_p6",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Mild",
+   "P_stage": 0.823,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "fit": 0.387,
+   "e_med": [
+    0.0,
+    12.0,
+    14.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "RightOnly",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Moderate",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.527,
+   "e_med": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3.0,
+    3.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": false
+  },
+  {
+   "target": "RightOnly",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    1,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.99,
+   "e_med": [
+    0.0,
+    7.0,
+    6.5,
+    0.0,
+    7.0,
+    3.0
+   ],
+   "wrong_lobes": 2,
+   "stage_ok": true
+  },
+  {
+   "target": "RightOnly",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Moderate",
+   "P_stage": 0.576,
+   "calls": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1
+   ],
+   "fit": 0.397,
+   "e_med": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    3.5,
+    4.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": false
+  },
+  {
+   "target": "Test_B",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "standard",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "fit": 0.549,
+   "e_med": [
+    0.0,
+    13.0,
+    0.0,
+    0.0,
+    12.0,
+    0.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Test_B",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "gainfree",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "fit": 0.654,
+   "e_med": [
+    0.0,
+    12.0,
+    0.0,
+    0.0,
+    11.5,
+    0.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  },
+  {
+   "target": "Test_B",
+   "reference": "mean of 6 healthy meshes",
+   "variant": "ringphase",
+   "stage": "Mild",
+   "P_stage": 1.0,
+   "calls": [
+    0,
+    1,
+    0,
+    0,
+    1,
+    0
+   ],
+   "fit": 0.444,
+   "e_med": [
+    0.0,
+    12.5,
+    0.0,
+    0.0,
+    7.5,
+    0.0
+   ],
+   "wrong_lobes": 0,
+   "stage_ok": true
+  }
+ ]
+}
