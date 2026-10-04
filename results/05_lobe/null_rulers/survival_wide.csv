@@ -1,34 +1,34 @@
 item,all nulls,all nulls w/o rot19,rot19 alone
-"frozen labels >= 3x (A1), 30 lobe labels",7/30,20/30,7/30
-staging labels (20): >= 3x / 2-3x / < 2x,"sensitive: Healthy_sliced_new three_merged 2.53x, Severe_lobe three 2.04x, Healthy_sliced three_merged 2.69x, Severe_lobe_c3 three 2.34x, MCI_lobe_c3 three_merged 2.44x","sensitive: Mild_lobe three_merged 2.99x, Severe_lobe_c3 three_merged 2.85x","sensitive: Healthy_sliced_new three_merged 2.53x, Severe_lobe three 2.04x, Healthy_sliced three_merged 2.69x, Severe_lobe_c3 three 2.34x, MCI_lobe_c3 three_merged 2.44x"
-label Healthy_sliced_new binary (Normal),robust (>= 3x),robust (>= 3x),robust (>= 3x)
+"frozen labels >= 3x (A1), 30 lobe labels",2/30,12/30,7/30
+staging labels (20): >= 3x / 2-3x / < 2x,"sensitive: Healthy_sliced_new three_merged 2.53x, Severe_lobe three 2.04x, Healthy_sliced three_merged 2.69x, Severe_lobe_c3 three 2.34x, MCI_lobe_c3 three_merged 2.44x",sensitive: ,"sensitive: Healthy_sliced_new three_merged 2.53x, Severe_lobe three 2.04x, Healthy_sliced three_merged 2.69x, Severe_lobe_c3 three 2.34x, MCI_lobe_c3 three_merged 2.44x"
+label Healthy_sliced_new binary (Normal),sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 label Healthy_sliced_new three (Normal),not determined (< 2x),robust (>= 3x),not determined (< 2x)
 label Healthy_sliced_new three_merged (Normal),sensitive (2-3x),robust (>= 3x),sensitive (2-3x)
-label Mild_lobe binary (AD),robust (>= 3x),robust (>= 3x),robust (>= 3x)
+label Mild_lobe binary (AD),sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 label Mild_lobe three (UNCERTAIN),not determined (< 2x),not determined (< 2x),not determined (< 2x)
-label Mild_lobe three_merged (Mild+Moderate),not determined (< 2x),sensitive (2-3x),not determined (< 2x)
+label Mild_lobe three_merged (Mild+Moderate),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Moderate_lobe binary (AD),robust (>= 3x),robust (>= 3x),robust (>= 3x)
 label Moderate_lobe three (Mild),not determined (< 2x),robust (>= 3x),not determined (< 2x)
-label Moderate_lobe three_merged (Mild+Moderate),not determined (< 2x),robust (>= 3x),not determined (< 2x)
+label Moderate_lobe three_merged (Mild+Moderate),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Severe_lobe binary (AD),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Severe_lobe three (Severe),sensitive (2-3x),robust (>= 3x),sensitive (2-3x)
 label Severe_lobe three_merged (Severe),not determined (< 2x),not determined (< 2x),not determined (< 2x)
-label Healthy_sliced binary (Normal),robust (>= 3x),robust (>= 3x),robust (>= 3x)
+label Healthy_sliced binary (Normal),sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 label Healthy_sliced three (Normal),not determined (< 2x),robust (>= 3x),not determined (< 2x)
 label Healthy_sliced three_merged (Normal),sensitive (2-3x),robust (>= 3x),sensitive (2-3x)
-label Mild_lobe_new binary (AD),robust (>= 3x),robust (>= 3x),robust (>= 3x)
+label Mild_lobe_new binary (AD),sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 label Mild_lobe_new three (Mild),not determined (< 2x),not determined (< 2x),not determined (< 2x)
-label Mild_lobe_new three_merged (Mild+Moderate),not determined (< 2x),robust (>= 3x),not determined (< 2x)
+label Mild_lobe_new three_merged (Mild+Moderate),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Moderate_lobe_c3 binary (AD),robust (>= 3x),robust (>= 3x),robust (>= 3x)
 label Moderate_lobe_c3 three (Mild),not determined (< 2x),robust (>= 3x),not determined (< 2x)
-label Moderate_lobe_c3 three_merged (Mild+Moderate),not determined (< 2x),robust (>= 3x),not determined (< 2x)
+label Moderate_lobe_c3 three_merged (Mild+Moderate),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Severe_lobe_c3 binary (AD),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Severe_lobe_c3 three (Severe),sensitive (2-3x),robust (>= 3x),sensitive (2-3x)
-label Severe_lobe_c3 three_merged (Severe),not determined (< 2x),sensitive (2-3x),not determined (< 2x)
+label Severe_lobe_c3 three_merged (Severe),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label LeftOnly_test_c3 binary (AD),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label LeftOnly_test_c3 three (Normal),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label LeftOnly_test_c3 three_merged (Normal),not determined (< 2x),not determined (< 2x),not determined (< 2x)
-label MCI_lobe_c3 binary (Normal),robust (>= 3x),robust (>= 3x),robust (>= 3x)
+label MCI_lobe_c3 binary (Normal),sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 label MCI_lobe_c3 three (Normal),not determined (< 2x),robust (>= 3x),not determined (< 2x)
 label MCI_lobe_c3 three_merged (Normal),sensitive (2-3x),robust (>= 3x),sensitive (2-3x)
 label RightOnly_test binary (AD),not determined (< 2x),not determined (< 2x),not determined (< 2x)
@@ -37,12 +37,12 @@ label RightOnly_test three_merged (Mild+Moderate),not determined (< 2x),not dete
 label Test_B binary (AD),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Test_B three (Normal),not determined (< 2x),not determined (< 2x),not determined (< 2x)
 label Test_B three_merged (Normal),not determined (< 2x),not determined (< 2x),not determined (< 2x)
-claim 6: mask shift 0.319 dB / R31 yardstick,sensitive (2-3x),sensitive (2-3x),sensitive (2-3x)
+claim 6: mask shift 0.319 dB / R31 yardstick,not determined (< 2x),not determined (< 2x),sensitive (2-3x)
 claim 10: smallest lobe R21 stage gap / (2 x R21 yardstick),does not separate,separates,does not separate
-claim 32: R21 rise of LeftOnly / R21 yardstick,not determined (< 2x),robust (>= 3x),not determined (< 2x)
-claim 32: R21 rise of Test_B / R21 yardstick,not determined (< 2x),robust (>= 3x),not determined (< 2x)
-claim 32: R21 rise of RightOnly / R21 yardstick,not determined (< 2x),robust (>= 3x),not determined (< 2x)
-claim 29: R21 mirror-twin difference 0.133 dB / R21 yardstick,within,exceeds,within
+claim 32: R21 rise of LeftOnly / R21 yardstick,not determined (< 2x),sensitive (2-3x),not determined (< 2x)
+claim 32: R21 rise of Test_B / R21 yardstick,not determined (< 2x),sensitive (2-3x),not determined (< 2x)
+claim 32: R21 rise of RightOnly / R21 yardstick,not determined (< 2x),sensitive (2-3x),not determined (< 2x)
+claim 29: R21 mirror-twin difference 0.133 dB / R21 yardstick,within,within,within
 "claim 15 imaging LR LeftOnly_test_c3 [Tikhonov dS (primary), Healthy_sliced]",not determined (< 2x),not determined (< 2x),robust (>= 3x)
 "claim 15 imaging LR RightOnly_test [Tikhonov dS (primary), Healthy_sliced]",sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 "claim 15 imaging LR Test_B [Tikhonov dS (primary), Healthy_sliced]",not determined (< 2x),not determined (< 2x),not determined (< 2x)
@@ -61,10 +61,10 @@ claim 29: R21 mirror-twin difference 0.133 dB / R21 yardstick,within,exceeds,wit
 "claim 15 imaging LR LeftOnly_test_c3 [whitened log (post-hoc), Healthy_sliced_new]",sensitive (2-3x),sensitive (2-3x),robust (>= 3x)
 "claim 15 imaging LR RightOnly_test [whitened log (post-hoc), Healthy_sliced_new]",robust (>= 3x),robust (>= 3x),robust (>= 3x)
 "claim 15 imaging LR Test_B [whitened log (post-hoc), Healthy_sliced_new]",not determined (< 2x),not determined (< 2x),not determined (< 2x)
-claim 16 LeftOnly phase cross-ratios >= 3x [band mean 3.2-4.2],4,4,16
+claim 16 LeftOnly phase cross-ratios >= 3x [band mean 3.2-4.2],2,2,16
 C6 P2 RightOnly phase cross-ratios >= 3x [band mean 3.2-4.2],2,2,11
 Test_B phase cross-ratios >= 3x [band mean 3.2-4.2],0,0,0
-claim 16 LeftOnly phase cross-ratios >= 3x [3.30-3.65 GHz],4,4,6
+claim 16 LeftOnly phase cross-ratios >= 3x [3.30-3.65 GHz],2,2,6
 C6 P2 RightOnly phase cross-ratios >= 3x [3.30-3.65 GHz],4,4,7
 Test_B phase cross-ratios >= 3x [3.30-3.65 GHz],2,2,5
 claim 17: LeftOnly LR resonance shift vs null max (MHz),+1.91 vs 2.86: not beyond,+1.91 vs 2.86: not beyond,+1.91 vs 0.80: beyond
@@ -79,11 +79,13 @@ claim 19 LeftOnly phase pair T2-T3 vs T5-T6 (3.30-3.65) / null max,sensitive (2-
 claim 19 LeftOnly phase pair T3-T4 vs T4-T5 (3.30-3.65) / null max,sensitive (2-3x),sensitive (2-3x),sensitive (2-3x)
 claim 19 LeftOnly phase pair T1-T2 vs T1-T6 (3.30-3.65) / null max,not determined (< 2x),not determined (< 2x),robust (>= 3x)
 claim 28 / C6 P1 within tolerance (post hoc only),21/26,21/26,12/26
-C6 P4 within yardstick (post hoc only),"R31 True, R21 True, R32 True","R31 True, R21 False, R32 True","R31 True, R21 True, R32 True"
-"claim 35: mirror rulers raised above the 9-null rulers, by family","{'phase cross-ratio': 23, 'power LR index': 2, 'power pair': 2, 'power cross-ratio': 14, 'phase pair': 1}","{'phase cross-ratio': 23, 'power LR index': 2, 'power pair': 1}","{'phase cross-ratio': 14, 'power pair': 2, 'power cross-ratio': 14, 'phase pair': 1}"
+C6 P4 within yardstick (post hoc only),"R31 True, R21 True, R32 True","R31 True, R21 True, R32 True","R31 True, R21 True, R32 True"
+"claim 35: mirror rulers raised above the 9-null rulers, by family","{'phase cross-ratio': 24, 'power LR index': 2, 'power pair': 2, 'power cross-ratio': 14, 'phase pair': 1}","{'phase cross-ratio': 24, 'power LR index': 2, 'power pair': 1, 'power cross-ratio': 3, 'phase pair': 1}","{'phase cross-ratio': 14, 'power pair': 2, 'power cross-ratio': 14, 'phase pair': 1}"
 "Test_B front-back, all paths",not determined (< 2x),not determined (< 2x),not determined (< 2x)
 "Test_B front-back, neighbour paths",not determined (< 2x),not determined (< 2x),not determined (< 2x)
 Test_B mirror side (protocol rule),"mixed (3 left, 1 right)","mixed (3 left, 1 right)","mixed (3 left, 1 right)"
 claim 34: Test_B pattern fit (contrast / call),"rejected; call 123456 (diffuse); sectors S1 a3.5, S2 a3.5, S3 a3.5, S4 a3.5, S5 a3.5, S6 a3.5","rejected; call 123456 (diffuse); sectors S1 a3.5, S2 a3.5, S3 a3.5, S4 a3.5, S5 a3.5, S6 a3.5","accepted; call 25; sectors S1 u1.2, S2 u1.5, S3 u0.8, S4 u1.4, S5 u0.9, S6 u1.3"
-claim 34: Null_rot07 as target (leave-one-out rulers) must give 'none',none (contrast 1.54x),none (contrast 1.97x),none (contrast 1.54x)
-claim 34: Null_rot19 as target (leave-one-out rulers) must give 'none',none (contrast 0.65x),none (contrast 0.65x),
+claim 34: Null_rot07 as target (leave-one-out rulers) must give 'none',none (contrast 0.97x),none (contrast 0.97x),none (contrast 1.54x)
+claim 34: Null_rot19 as target (leave-one-out rulers) must give 'none',none (contrast 0.63x),none (contrast 0.63x),
+claim 34: Null_rot31 as target (leave-one-out rulers) must give 'none',none (contrast 0.98x),none (contrast 0.98x),none (contrast 1.55x)
+claim 34: Null_rot43 as target (leave-one-out rulers) must give 'none',none (contrast 1.02x),none (contrast 1.02x),none (contrast 1.58x)
