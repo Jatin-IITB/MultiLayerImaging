@@ -287,9 +287,9 @@ What each writes:
 7. `lobe_round2.py` (61 s): round 2 in `lobe_round2.md` / `lobe_round2.json`, `lobe_claims.csv`, §9.
 8. `score_rightonly.py` (≈ 30 s): `rightonly_score.md`, the committed C6 verdict.
 9. `report_rightonly.py` (≈ 40 s): §10 (QC, verdict, post-hoc mirror-pair table).
-11. `lobe_round3.py` (≈ 40 s): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
 10. `score_testb.py` (≈ 40 s): `testb_report.md`, `testb.json`, §11. It refuses to run if the protocol is not
     committed.
+11. `lobe_round3.py` (≈ 40 s): POST-HOC round 3, `lobe_round3.md` / `.json`, set files, §12.
 
 The §8 and §9 writers keep later sections. `lobe_c3` (step 5) still truncates everything after §6, which is why
 steps 6–10 must follow it.
