@@ -322,7 +322,7 @@ python imaging/score_rightonly.py
   3. Update `lobe_claims.csv`.
   4. Commit code, then results.
 
-### 5.6 Quick reference: conventions
+### 5.7 Quick reference: conventions
 
 - **Antennas** T1..T6 at azimuth −90 + 60(t−1)° (the array is rotated −0.4°), ring at z ≈ 48 mm (port sheets),
   feeds at r = 97.15 mm. **Touchstone Port 1..6 = T4, T3, T2, T1, T6, T5** (`config.yaml` `ring.port_to_ant`;
