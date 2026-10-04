@@ -149,28 +149,39 @@ threshold, main set / second set:
 - Healthy: 0.53 / 0.66 dB;
 - Mild: 0.55 / 0.58 dB;
 - Moderate: 0.74 / 0.74 dB, i.e. 4–5.5× the yardstick for these three stages;
-- **Severe: 0.26 / 0.31 dB**, only 1.9× / 2.3× the yardstick. Severe stays on the AD side with
-  the extra pass, but it remains the case closest to the threshold.
+- **Severe: 0.26 / 0.31 dB.** Measured to where the label actually changes (the UNCERTAIN zone
+  starts 0.08 dB before the threshold), that is 0.18 / 0.23 dB, only
+  1.4× / 1.7× the yardstick.
+  - Severe is AD on both meshes, but by the same 3× bar used everywhere else, that label is not
+    robust to the mesh.
+  - The threshold itself is known to ±0.10 dB (95%, re-derived from the training solves).
 
 **Staging.**
 - **Merged staging** (Normal / Mild+Moderate / Severe) labels every lobe design correctly in
-  both sets.
-- **The finer three-stage rule fails on lobe-Mild:** 41% correct at 5 passes, 69% at 6. Lobe-Mild
-  sits right on the Normal|Mild boundary, so the mesh decides the outcome.
+  both sets. For Severe, though, the margin is only 1.9× / 2.9× the yardstick from a boundary.
+- **The finer three-stage rule fails on lobe-Mild in both sets** (41% / 69%). Lobe-Mild sits on the
+  Normal|Mild boundary, closer to it than either the mesh error or the boundary's own
+  uncertainty.
 - Lobe-Mild lies between healthy and uniform Mild on both staging ratios.
 
-**Where the disease is cannot be told.**
+**Where the disease is: not in signal power; partly in phase.**
 - **Frontal lobe added (Mild → Moderate).** The front-to-back difference is −0.26 dB: 3.8× the
   one-pass change, but only 2.3× the simulations' own numerical asymmetry. It is invisible with
   ±0.5 dB antenna gain errors.
 - **Left lobes only (pre-registered test, scored blind).** The predictions written before the file
-  existed expected a left-right difference of +0.23 dB. The observed difference is 0.02–0.03 dB,
-  essentially zero. Gain-proof combinations of the antenna paths show nothing beyond the
-  rulers either, and the "locality" prediction did worse than assuming no locality at all.
-  - The left-only change looks like a weaker copy of the symmetric Mild change. The long antenna
-    paths wrap around the head and average both sides; the short paths barely change.
-  - Detection calls this design AD, but only 0.17 dB past the threshold (1.3× the yardstick).
-    Both staging rules call it Normal.
+  existed were all about signal power, and they failed. The observed left-right power difference
+  is 0.02–0.03 dB, essentially zero, and the predictions could not have passed easily: the test
+  was under-powered by design.
+- **The left-right signal is in the phase of the antenna-to-antenna signals.** An adversarial
+  review compared the design with its own mirror image, against nine mirror-symmetric designs:
+  - in clean simulation, 16 of 22 gain-proof phase combinations exceed 3× the numerical noise;
+  - with realistic measurement noise, 2 of 22 survive;
+  - the imaging session's reconstruction reaches the same conclusion.
+  So the earlier "no left-right difference" was wrong. It held only for signal power.
+- **Detection** calls this design AD, but only 0.09 dB inside the AD zone
+  (0.7× the yardstick): not determined. Both staging rules call it Normal.
+- **Frontal lobe:** the earlier "cannot be told" was based on power only and has not yet been
+  checked in phase.
 
 **MCI (hippocampus only).** It differs from the healthy head beyond the mesh and numerical
 rulers on none of 228 features. Every frozen rule labels it Normal. That was expected: the

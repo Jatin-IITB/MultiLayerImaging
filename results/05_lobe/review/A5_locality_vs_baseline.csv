@@ -1,0 +1,3 @@
+reference,rms(locality) - rms(baseline) dB,ruler perturbation 2.5%,ruler perturbation 97.5%,P(locality wins) under rulers,path bootstrap 2.5%,path bootstrap 97.5%,verdict
+"Healthy_sliced (7 passes, primary)",0.030656454893569246,-0.02869181259570584,0.08746074277219802,0.18905,0.00010323894688444671,0.0697396248945236,no preference (interval contains 0)
+"Healthy_sliced_new (6 passes, matched)",0.04494496376556337,-0.017218577928644466,0.09544482494795256,0.09275,0.0009470164937810091,0.08872102549109838,no preference (interval contains 0)

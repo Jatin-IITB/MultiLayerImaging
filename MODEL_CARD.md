@@ -559,19 +559,22 @@ Findings:
 |---|---|
 | The user's convergence table reproduces (frozen recipe) | holds |
 | One extra pass (four stages) moves R31 / R21 / R32 by ≤ 0.135 / 0.110 / 0.161 dB, against Normal − Mild R31 1.08–1.25 dB | holds |
-| Frozen detection (R31), stop-rule matched: healthy, Mild and Moderate correct in lobe_A and lobe_B, margins 3.9–5.5x yardstick | holds |
-| Frozen detection on Severe, both matched sets | holds: 100% AD; Severe stays on the AD side of τ in lobe_B. Margins −0.26 / −0.31 dB = 1.9x / 2.3x the yardstick, the closest to τ (mesh-sensitive) |
-| Frozen merged staging (three_merged, R32) labels all designs of lobe_A and lobe_B correctly | holds |
+| Frozen detection (R31), stop-rule matched: healthy, Mild and Moderate correct in lobe_A and lobe_B | holds: margins to the label edge 3.3–4.9x max(R31 yardstick, τ bootstrap SD) (review A1) |
+| Frozen detection on Severe, both matched sets | **not determined** under the one 3x bar: AD on both meshes (100%), but the distance to the label edge (τ − m) is +0.18 / +0.23 dB = 1.4x / 1.7x the R31 yardstick; τ's own uncertainty (SD 0.055 dB) alone does not flip it (review A1, A9). Earlier 'holds' withdrawn |
+| Frozen merged staging (three_merged, R32) labels all designs of lobe_A and lobe_B correctly | holds for healthy, Moderate and Mild_lobe_new (3.4–7.8x); Mild_lobe 2.99x (sensitive); **Severe 1.9x (A, not determined) / 2.9x (B, sensitive)** (review A1) |
 | R31 orders the AD stages | retracted: R31 is a detection feature only (Severe above Moderate in the lobe and uniform sets); staging uses R21 (and R32 for the merged rule) |
-| Frozen three-class (R21) labels lobe-Mild as Mild | retracted (lobe_A 0.41; lobe_B 0.69, weakened); which value you get is decided by the mesh |
-| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x A, 2.4x B); measured with ±0.5 dB gain: not detectable (0.3x) |
-| Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh (best 2.4x / 2.5x the clean ruler) |
+| Frozen three-class (R21) labels lobe-Mild as Mild | **retracted in both sets**: label not determined (0.06x / 0.26x the larger of R21 yardstick and boundary SD; lobe_A's clean label is UNCERTAIN). The earlier 'weakened' for lobe_B is reverted (review A8) |
+| Frontal lobe visible front-to-back (neighbour index), Moderate − Mild | clean: mesh-sensitive (2.3x A, 2.4x B); measured with ±0.5 dB gain: not detectable (0.3x). **Power statistics only: unverified in phase** (the LeftOnly review found the side information in phase) |
+| Frontal lobe visible in gain-invariant asymmetry cross-ratios | not separable from mesh in power (best 2.4x / 2.5x the clean ruler); **phase not checked** |
 | Raw cross-ratios separate Moderate from Mild | holds as severity; not a location claim |
 | Healthy_sliced(_new) reproduces the v2 healthy head | holds (both files within 1.7 v2 solve SD on R31/R21/R32) |
 | Left-right checks on the mirror-symmetric designs (A, B) | pass (≤ 1.3x floor) |
 | Lobe set had identical mesh settings, so detection is independent of mesh | **retracted** |
-| Left-right asymmetry detectable (LeftOnly_test; scored blind against cf56de8) | **retracted**: no left-right difference beyond the rulers in the index or the gain-invariant cross-ratios; the locality predictions fail (5.7) |
-| MCI_lobe ≈ healthy (Prompt 07 §3.5) | holds: 0 of 228 features beyond 3x the clean ruler; all frozen rules 100% Normal |
+| Left-right asymmetry present in the LeftOnly data | **corrected (review A3/A4)**: none in band power; **present in phase**. In a reference-free mirror test against the nine mirror-symmetric designs, 16 of 22 gain-invariant phase cross-ratios exceed 3x the clean ruler (2 of 22 with measurement errors), and the imaging LR (85% phase) is 3.7x its clean ruler (post-hoc whitened log 4.4x with errors). Post hoc: it does not rescue the power-based predictions |
+| The pre-registered left-right predictions (cf56de8) hold | fail; the registration was under-powered by design: P(prediction 1 passes if the model is right) = 0.58, predicted power cross-ratios ≤ 2.7x a floor computable before cf56de8 (review A2) |
+| Locality model beats the no-locality baseline (LeftOnly paths) | **no preference**: rms difference +0.031 [−0.029, +0.087] / +0.045 [−0.017, +0.095] dB under the rulers; the earlier 'miss' is withdrawn (review A5) |
+| Frozen τ is fixed to within the lobe margins | τ re-derived exactly (−15.2728 dB); solve-bootstrap SD 0.055 dB, 95% −15.37 to −15.17 dB. LeftOnly's label would change in 6% of bootstraps, Severe's in 0% (review A9) |
+| MCI_lobe ≈ healthy (Prompt 07 §3.5) | holds: 0 of 228 features beyond 3x the clean ruler; all frozen rules 100% Normal. The cross-ratios at 3–4x the noise SD are 95% non-circulant, i.e. numerical (review A7) |
 
 ### 5.6 Data status
 - Every lobe design listed in Prompt 07 is now solved, as are both stop-rule matched sets (lobe_A, lobe_B).
@@ -594,20 +597,29 @@ Findings:
 | 2. Front-back index ≈ 0 (floor 0.084) | +0.068 / +0.137 dB | holds / fails | hit / not separable |
 | 3. Right-side paths ≈ 0 | 7/7 / 4/7 within tolerance | — | 7 hit / 4 hit, 3 not separable |
 | 4. Left-side paths ≈ full Mild change | 4/7 / 4/7 within tolerance | — | 1 hit, 6 not separable (both) |
-| Locality model beats the no-locality baseline | rms 0.166 vs 0.135 / 0.189 vs 0.144 dB | fails | miss (both) |
+| Locality model beats the no-locality baseline | rms 0.166 vs 0.135 / 0.189 vs 0.144 dB | fails as written | no preference (review A5: the difference is inside the rulers) |
 | 5. R31 / R21 / R32 levels −15.22 / −20.24 / 5.03 dB | −15.445 / −20.200 / 4.755 dB | holds (all within 0.3 dB) | hit |
 | 6. Frozen detection mostly UNCERTAIN | 0% UNCERTAIN, 100% AD | fails | miss |
 | Gain-invariant left-right cross-ratios (primary test as agreed; predictions derived from cf56de8; decision rule fixed before the first run) | 0 of 22 beyond 3x the measured ruler (best 1.5x / 2.0x); locality rms 0.68 vs 0.47 / 0.93 vs 0.62 dB | fails | — |
 
-- **What LeftOnly shows.** No left-right difference survives the rulers.
-  - The numerical left-right asymmetry of the mirror-symmetric designs (clean ruler ≈ 0.43 dB for these
-    cross-ratios) exceeds every predicted value.
-  - The observed path changes look like a weaker, mirror-symmetric Mild change: the no-locality baseline wins.
-  - The likely reason: the long paths (second-neighbour, opposite) wrap around the head and average both sides, while
-    the short neighbour paths barely change even in Mild (≤ 0.1 dB).
-  - A global contribution from CSF_Mild, present everywhere, cannot be separated with this design.
+- **What LeftOnly shows (corrected by the review, `results/05_lobe/review/report.md`).**
+  - In band power there is no left-right difference beyond the rulers. The only exception is the reflections (T2/T3
+    against T6/T5: −0.06 / −0.07 dB = 6–7x on clean data), which per-port gain errors swamp.
+  - In phase there is one. In a reference-free mirror test against the nine mirror-symmetric designs:
+    - 16 of 22 gain-invariant phase cross-ratios exceed 3x the clean ruler, and all 16 lie beyond every symmetric
+      design;
+    - 2 of 22 survive realistic measurement errors.
+  - Neighbour paths shift −3.7 to −6.0° on the left against −1.6 to −1.8° on the right (Mild: −6 to −9.5° on both
+    sides), with ≤ 0.1 dB band-power change.
+  - The power-based predictions and indices could not see this.
+  - Withdrawn as a mechanism claim: "the long paths wrap around the head and average both sides". It describes band
+    power only, and wrap-round cannot be told apart from a global CSF_Mild component.
+  - The locality vs no-locality comparison is "no preference" (A5), not "the baseline wins".
+  - Not re-checked: the frontal-lobe (Moderate − Mild) verdicts are power-only and may share this blind spot.
 - **Frozen rules (unchanged) on LeftOnly.**
-  - Detection: 100% AD. The R31 margin is −0.17 dB = 1.3x the R31 yardstick, so it is not mesh-robust.
+  - Detection: 100% AD on this mesh. The distance to the label edge is +0.09 dB =
+    0.7x the R31 yardstick, so the label is not determined. τ's uncertainty alone
+    changes it in 6% of solve bootstraps.
   - Both staging rules say Normal: three 100%, three_merged 99%. That is inconsistent with detection.
 - **Post hoc, not pre-registered.** The halfway model re-derived from the matched pair gives R31 −15.28, R21 −20.27,
   R32 4.99 dB.
@@ -621,3 +633,16 @@ Findings:
 - A methods note: several MCI cross-ratios reach 4x the noise SD. MCI is rotationally symmetric, so that is mesh
   asymmetry. Judged by noise alone, it would have looked like a finding; the mesh yardstick and symmetry floor are
   required rulers.
+
+### 5.8 Adversarial review (2026-10-04; `results/05_lobe/review/`, code 2f143e4)
+- **Re-derived from the raw files:** the user's questions A1–A9, all evaluated against one 3x bar.
+- **Corrections, as recorded in 5.5:**
+  - detection and merged-staging labels of Severe and LeftOnly are not determined at 3x;
+  - lobe-Mild three-stage is retracted in both sets;
+  - the registered left-right tests were under-powered;
+  - LeftOnly is left-right asymmetric in phase (not in power);
+  - locality vs no-locality is "no preference";
+  - the wrap-round mechanism claim is withdrawn;
+  - τ uncertainty is quantified;
+  - the MCI 4x cross-ratios are shown to be numerical.
+- **Summary table:** `results/05_lobe/review/summary.csv`.

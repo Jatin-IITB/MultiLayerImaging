@@ -1,0 +1,9 @@
+item,value
+cf56de8 committed (predictions),cf56de8 2026-10-03 21:25:18 +0530
+08a9a53 committed (left-right cross-ratio test and its floor),08a9a53 2026-10-04 09:40:17 +0530
+"LR-index floor of a difference known at cf56de8 (staged 0.071 (+) healthy, dB)",0.094
+prediction 1: P(rule passes | locality model exactly right),0.58
+left-right cross-ratio floor of a difference from the lobe_v1 stages only (dB),0.434
+"same floor as used at scoring (six stages incl. c3, dB)",0.425
+"largest predicted left-right cross-ratio (from cf56de8 paths, dB)",1.181
+largest predicted / lobe_v1-era floor,2.72

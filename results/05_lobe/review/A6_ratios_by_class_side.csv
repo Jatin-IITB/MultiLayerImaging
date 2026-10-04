@@ -1,0 +1,21 @@
+comparison,type,side,paths,usable (Mild >= 2x ruler),weighted ratio LeftOnly/Mild,SE,locality predicts,no-locality predicts
+as predicted (vs Healthy_sliced),neighbour,left,3,0,,,1.0,0.5
+as predicted (vs Healthy_sliced),neighbour,right,3,0,,,0.0,0.5
+as predicted (vs Healthy_sliced),opposite,cross (left-right),2,2,0.7325864779868285,0.08904177165895637,0.5,0.5
+as predicted (vs Healthy_sliced),opposite,self-mirror,1,1,0.6937158756467043,0.16822141442279545,0.5,0.5
+as predicted (vs Healthy_sliced),reflection,left,2,0,,,1.0,0.5
+as predicted (vs Healthy_sliced),reflection,right,2,0,,,0.0,0.5
+as predicted (vs Healthy_sliced),reflection,self-mirror,2,0,,,0.5,0.5
+as predicted (vs Healthy_sliced),second-neighbour,cross (left-right),2,2,0.4458447484403864,0.17550969107661674,0.5,0.5
+as predicted (vs Healthy_sliced),second-neighbour,left,2,2,0.43448569048886365,0.32174633889544874,1.0,0.5
+as predicted (vs Healthy_sliced),second-neighbour,right,2,1,0.4260156775906186,0.5335032827755218,0.0,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",neighbour,left,3,0,,,1.0,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",neighbour,right,3,0,,,0.0,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",opposite,cross (left-right),2,2,0.7048066190656278,0.0970121357615898,0.5,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",opposite,self-mirror,1,1,0.6445916208176956,0.19082100283667092,0.5,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",reflection,left,2,0,,,1.0,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",reflection,right,2,0,,,0.0,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",reflection,self-mirror,2,0,,,0.5,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",second-neighbour,cross (left-right),2,2,0.4559401815955063,0.17502746842172265,0.5,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",second-neighbour,left,2,1,0.6490398590028588,0.4227116912056577,1.0,0.5
+"rule 1 (LeftOnly, Mild_lobe vs Healthy_sliced_new)",second-neighbour,right,2,1,0.5884213243189258,0.4083534354298945,0.0,0.5
