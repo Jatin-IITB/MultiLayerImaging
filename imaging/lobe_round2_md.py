@@ -586,8 +586,12 @@ def write_md(res):
 
     # ---------------------------------------------------------------- lobe_report.md section 9
     rep = (OUT / "lobe_report.md").read_text(encoding="utf-8")
+    rest = ""                            # keep any later sections (10 RightOnly, 11 Test_B)
     if "## 9. Round-2 review" in rep:
-        rep = rep[:rep.index("## 9. Round-2 review")]
+        i0 = rep.index("## 9. Round-2 review")
+        j = rep.find("\n## ", i0 + 5)
+        rest = rep[j + 1:] if j >= 0 else ""
+        rep = rep[:i0]
     S9 = ["## 9. Round-2 review (5 Oct): claims rebuilt from scratch", "",
           "**POST-HOC** applies to every phase-related claim below. The pre-registered blind answer (PARTIAL with the "
           "frozen reference, FAIL with the matched one) stays primary. This section supersedes the verdicts in §7 and "
@@ -595,7 +599,7 @@ def write_md(res):
           "claims as CSV: `results/imaging/lobe_claims.csv`.", "",
           _t([dict(claim=a, verdict=b, items=c) for a, b, c in claims], ["claim", "verdict", "items"]), "",
           "Open limitations:", ""] + [f"- {x}" for x in limits] + [""]
-    (OUT / "lobe_report.md").write_text(rep.rstrip("\n") + "\n\n" + "\n".join(S9) + "\n", encoding="utf-8")
+    (OUT / "lobe_report.md").write_text(rep.rstrip("\n") + "\n\n" + "\n".join(S9) + "\n" + ("\n" + rest if rest else ""), encoding="utf-8")
 
 
 NULL_ORDER = ("Healthy_sliced", "Healthy_sliced_new", "Mild_lobe", "Mild_lobe_new", "Moderate_lobe", "Moderate_lobe_c3",

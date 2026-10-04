@@ -350,8 +350,12 @@ def write_md(res):
 
     # section 8 of the lobe report
     rep = (OUT / "lobe_report.md").read_text(encoding="utf-8")
+    rest = ""                            # keep any later sections (10 RightOnly, 11 Test_B)
     if "## 8. Adversarial review" in rep:
-        rep = rep[:rep.index("## 8. Adversarial review")]
+        i0 = rep.index("## 8. Adversarial review")
+        j = rep.find("\n## ", i0 + 5)
+        rest = rep[j + 1:] if j >= 0 else ""
+        rep = rep[:i0]
     S8 = ["## 8. Adversarial review (5 Oct)", "",
           "Full text, commands and every number: `results/imaging/lobe_review.md` (`lobe_review.json`).", "",
           _t([dict(question=a, verdict=b, change=c, evidence=d) for a, b, c, d in summary],
@@ -363,4 +367,4 @@ def write_md(res):
             lines[i] = ln + (" **Revised in §8:** sign confirmed by the mirror test; " + size_txt + " (conservative "
                              "floor decides: sensitive at best); carried by phase; frequency-, reference- and "
                              "calibration-dependent; not established.")
-    (OUT / "lobe_report.md").write_text("\n".join(lines) + "\n\n" + "\n".join(S8) + "\n", encoding="utf-8")
+    (OUT / "lobe_report.md").write_text("\n".join(lines) + "\n\n" + "\n".join(S8) + "\n" + ("\n" + rest if rest else ""), encoding="utf-8")
