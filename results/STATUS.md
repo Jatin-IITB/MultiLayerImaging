@@ -25,6 +25,11 @@
   - Detection (R31) is unaffected.
   - Every staging label is now below the 3× bar.
   - The Test_B lobe pattern no longer clears the healthy-head contrast.
+  - **The staging collapse rests on one rotated head (19°).** The 7° head barely moves the staging ratios;
+    without the 19° head every staging result is back where it was.
+  - Two more rotated heads (31°, 43°) decide. How they will be evaluated is fixed in advance (pre-registered,
+    5966ee4).
+  - The uniform (unsectored) head was never re-meshed, so uniform staging is not tested against re-meshing.
   - Details: MODEL_CARD 6.7.
 - **Sensitivity** is ≈ 99% in the air around the head. Of the in-brain part, 56–69% lies above z = 40 mm and
   ≤ 4% below z = 0. "Lobes" means wedges of the upper head.
