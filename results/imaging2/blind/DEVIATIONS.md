@@ -11,3 +11,11 @@
      pre-commit dry run: standard_H6 calls 0 1 1 0 0 0, ê 0/11.5/7.5/0/0/0 mm, χ²/dof 0.29; gainfree_H6 0.58;
      standard_H7 0.23.
    - **Effect on estimates, criteria or scoring:** none. The fix is committed before Test_B is loaded.
+
+2. **New files added to `imaging2/` after the Test_B reconstruction was committed (`c0fafd6`).**
+   - **What:** `imaging2/extras.py`, containing the RightOnly mirror check, the Test_B z = 50 overview in the standard
+     style (drawn from the committed marginals) and the `*_pres.png` presentation copies.
+   - **What it touches:** no module used by `python -m imaging2.blind run|score` was modified.
+     `git diff c0fafd6 -- imaging2` shows only the added file.
+   - **Effect on the Test_B estimates, criteria or scoring:** none.
+   - **Scoring:** if the score is run, it will be run from these unchanged modules (or from a checkout of `d83d1d5`).

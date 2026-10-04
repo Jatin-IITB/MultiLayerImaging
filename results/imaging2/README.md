@@ -16,6 +16,16 @@ Mild-material design at all* is in training.
 a true 11.5–18 mm. The fit test flags it (χ²/dof 2.1–2.6). It extrapolates beyond every training material, and the
 very lossy Severe CSF screens tissue more than about 5 mm below the skull.
 
+**Replication (RightOnly_test, a separate solve of LeftOnly's mirror image; §9):**
+- The lobe calls replicate exactly as the mirror (S5 + S6 only).
+- Depth does **not** replicate: ê 3.0 / 3.5 mm against 11.5 / 7.5 true, with 90% intervals that exclude the truth.
+- The secondary variants are not one-sided. Against the other healthy mesh S1/S2 are added; the gain-removing
+  inversion calls both sides.
+- So the side call is solid only in the primary configuration, and the depth uncertainty is under-stated.
+
+**Blind Test_B (§8, estimates only; truth withheld):** Mild, temporal L (S2) and parietal R (S5) affected, all other
+lobes not; fit 0.46 (accepted).
+
 Everything below z ≈ 30 mm and deeper than ≈ 1.5–2 cm is not measured by this array. The images fade/hatch it.
 
 **Scope.** One idealised head, simulations only, 5–6 solved designs per fold. This is noise robustness inside one
@@ -234,7 +244,69 @@ projected out) restores the lobe pattern.
 - `scores_designs.csv`, `scores_sectors.csv`: the scores.
 - `noise_study.json`, `noise_summary.csv`: the noise study.
 
-## 8. What I would do next
+## 8. Blind design Test_B (estimates only; the truth is held by the user)
+- **Commits:**
+  - protocol `595e9cb` (`BLIND_PROTOCOL.md`, before the file existed);
+  - fix of a syntax error in a figure title, found before Test_B was read: `d83d1d5` (`blind/DEVIATIONS.md` item 1);
+  - reconstruction `c0fafd6`.
+- **Inputs:** training = all nine lobe observations; the Test_B header was not read.
+- Full report: `blind/Test_B/report.md`.
+
+| variant | stage (P) | lobes called (P > 0.5) | ê S2 TL [90%] | ê S5 PR [90%] | other lobes | fit χ²/dof → rule |
+|---|---|---|---|---|---|---|
+| standard vs H6 (**PRIMARY**) | Mild (1.00) | S2, S5 | 13.0 [7.0–21.5] | 7.0 [6.5–12.5] | P(aff) 0.00 | 0.46 → OK, not rejected |
+| gain-removing vs H6 | Mild (1.00) | S2, S5 | 6.5 [6.0–11.5] | 6.0 [6.0–6.5] | P(aff) 0.00 | 0.77 → OK |
+| standard vs H7 | Mild (1.00) | S2, S5 | 3.5 [3.0–9.0] | 7.5 [7.0–17.5] | P(aff) 0.00 | 0.42 → OK |
+
+- **Model-free ring** (neighbour-path phase delay, 3.30–3.65 GHz, T1…T6):
+  - vs H6: 3.5 / 5.6 / 4.3 / 3.5 / 5.2 / 3.9°, largest at T2 and T5;
+  - vs H7: 4.9 / 6.9 / 5.7 / 4.9 / 6.7 / 5.6°.
+- **How much to trust it** (from §3, §5 and §9):
+  - the lobe calls are the robust part;
+  - the stage was right on every Mild-material design;
+  - the ê values differ across variants by up to 9.5 mm (S2), and RightOnly showed that the 90% intervals can
+    exclude the truth.
+- **Figures** (`blind/Test_B/`): `overview_sig_z50_Test_B.png` (standard style, no truth row), `blind_stack_Test_B.png`,
+  `blind_overview_Test_B.png` (z 60/50/40), `blind_slices_{sig,eps}_Test_B.png` (baseline | change | head | posterior
+  SD), `blind_views_Test_B.png`, `blind_detuning_Test_B.png`.
+
+## 9. RightOnly_test: replication of the left/right result (geometry known; `rightonly/rightonly.md`)
+- **Setup:**
+  - RightOnly = LeftOnly mirrored (e = 0/0/0/0/11.5/7.5 mm; header checked), a separate solve with 1 converged pass.
+  - Reconstructed with **exactly the LeftOnly fold** (training = every lobe design except LeftOnly). With LeftOnly in
+    training, its mirrored copy would be RightOnly's truth.
+  - LeftOnly's rerun with that fold reproduces the committed marginals bit for bit.
+- **Lobe calls (primary, vs H6):** S5 + S6 only, P(affected) 1.00 / 1.00, all others ≤ 0.01, stage Mild, fit 0.57.
+  This is the exact mirror of LeftOnly (S2 + S3) and the exact truth.
+- **Depth does not replicate.**
+  - RightOnly: ê 3.0 [2.5–3.5] / 3.5 [3.5–3.5] mm. Mirrored LeftOnly: 11.5 [5.5–21.5] / 11.5 [5.0–21.0]. Truth 11.5 / 7.5.
+  - RightOnly's intervals exclude the truth: the posterior is over-confident for this solve.
+- **Secondary variants are not one-sided:**
+  - vs H7 it calls S1, S2, S5, S6 (ê 1.5 mm in S1/S2);
+  - gain-removing it calls S2, S3, S5, S6 (ê 1–1.5 mm on the left).
+  - LeftOnly's secondaries were one-sided.
+- **Data level.** RightOnly − mirror(LeftOnly) is 1.7–2.2× the mesh-pair ruler on reflection and neighbour paths.
+  - Mostly a near-uniform extra phase delay: band-mean −3.1° neighbour, −3.9° second-neighbour, −3.3° opposite.
+    That is about twice the healthy mesh-to-mesh offset.
+  - RightOnly's change is 1.5–1.7× LeftOnly's on these paths; correlation with mirrored LeftOnly 0.85–0.88.
+  - The **right − left contrast replicates within 0.2°** in the model-free ring: +4.60° vs +4.44° (mirrored LeftOnly),
+    +4.85° vs H7.
+- **R1c (null = the nine mirror-symmetric designs):**
+  - On LR_e (ê left − right) the floor is 9.25 mm, set by Severe_p6, whose depth is undetermined. LeftOnly 1.24×
+    and RightOnly 0.35× → **not separable**.
+  - On the calls the floor is exactly zero (all nine nulls give mirror-symmetric calls), so the ratio is **not
+    applicable**. One-sided call patterns: 0/9 nulls, LeftOnly yes, RightOnly primary yes, its two secondaries no.
+- **Reading:**
+  - The side information in the data replicates.
+  - The inversion's lobe calls replicate in the primary configuration only.
+  - Its depth and its uncertainty do not replicate. The noise model (mesh pairs + model error) under-states
+    solve-to-solve variation of the kind RightOnly shows (a uniform ~3° offset).
+
+## 10. Presentation copies
+`figures/{overview_sig_z50,overview_eps_z50,controls_sig_z50,detuning_ring_raw_data}_pres.png`: same content, "other
+mesh" wording replaced by "repeat simulation".
+
+## 11. What I would do next
 1. **Solve 2–3 designs that turn Severe into interpolation:** e.g. Severe materials in the left lobes only, and Mild
    materials at e = 3 mm and e = 20 mm. Today every Severe-material state is outside the training set.
 2. **Export fields of one diseased design** (Moderate_lobe, same 3-D grid). That enables a distorted-Born / DBIM
@@ -246,12 +318,16 @@ projected out) restores the lobe pattern.
 5. **Anatomy variation** (head size, skull/scalp thickness, stand-off) is still untested and decisive. Every result
    here is one idealised head.
 
-## 9. Reproduce
+## 12. Reproduce
 ```
 python -m imaging2.run_lobe2 --sweeps 600     # all leave-one-design-out inversions + controls (≈ 3 min)
 python -m imaging2.run_loso                   # leave-one-stage-out variant (≈ 1 min)
 python -m imaging2.noise_study --k 12         # measurement-noise study (≈ 20 min, 6 processes)
 python -m imaging2.make_figures               # figures + scores (≈ 15 min)
+python -m imaging2.blind run --file new_with_slices_Test_B.s6p --tag Test_B   # blind protocol (595e9cb / d83d1d5)
+python -m imaging2.extras rightonly           # RightOnly replication check (≈ 3 min)
+python -m imaging2.extras testb               # Test_B z = 50 overview (standard style)
+python -m imaging2.extras pres                # *_pres.png copies
 ```
 Code hash in `posteriors.json` (`code`). The field cache `cache/fields_head.npz` is rebuilt from `data/fields` on
 first use (≈ 30 s). Nothing outside `imaging2/` and `results/imaging2/` is written.
