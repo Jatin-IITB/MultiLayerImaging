@@ -61,10 +61,14 @@ Anything F1 assumes about frequency dependence must match the simulation (consta
 
 ### Antennas and ring
 
-- **Antennas:** six identical DGS patch antennas with an AMC reflector. In-situ resonance is
-  about 3.62 GHz.
-- **Design variables** (card): L = 42 mm, W = 35 mm, $L = 85 mm, $W = 35 mm, H = 1.575 mm,
-  slot_distance = 15 mm, ant_dist = 115 mm, z_ebg = −94.575 mm.
+- **Antennas:** six identical copies of an imported printed antenna (not designed in this project): a V-shaped
+  copper radiator (18 × 16 mm outline) on a 1 mm feed line with a small circular element, a 20 × 4.9 mm partial
+  ground strip, on a 20 × 20 mm Rogers RT/duroid 6010 board; behind it an AMC of 3 × 3 FR4 cells (about 20 × 20 mm
+  each) with a 60.4 × 60.5 mm copper ground about 10 mm behind. Measured from the model geometry (read-only script,
+  2026-10-04). In-situ resonance is about 3.62 GHz.
+- **Design variables:** the project and Touchstone-header variables L = 42 mm, W = 35 mm, H = 1.575 mm (and $L, $W,
+  slot_distance) belong to an earlier antenna that was deleted from the project; they do not describe the antennas
+  above and must not be quoted. ant_dist = 115 mm and z_ebg = −94.575 mm (which still uses H) set placement only.
 - **Ring:** uniform, 60° azimuthal spacing. The feed points sit 97.55 mm from the origin at
   a polar angle of 60.5°.
 - **Settled by the HFSS field exports** (Part 4; imaging report §4):
@@ -115,8 +119,8 @@ from `Brain_sevem_layer`, and Severe covered only 3.2–4.2 GHz.
 4. **Notch depth and resonance frequency are solve-sensitive** and are never used as features.
    The resonance moved 16 MHz between the v1 and v2 solves of Normal.
 5. **The k = 3 (opposite-antenna) signal travels around the head surface, not through its
-   centre.** Imaging study §1: measured group delay 3.61 ns, surface path 3.69 ns, straight
-   path 6.03 ns. Its disease sensitivity comes from the CSF/cortex just under the skull.
+   centre.** Imaging study §1 (v2 healthy head): measured group delay 3.11 ns, surface path 2.97 ns,
+   straight path 5.31 ns (the earlier 3.61 / 3.69 / 6.03 ns were v1 numbers). Its disease sensitivity comes from the CSF/cortex just under the skull.
 
 ---
 

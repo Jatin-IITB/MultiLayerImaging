@@ -26,10 +26,10 @@ Claims are graded against a noise floor (§ How results are judged).
 |---|---|
 | **Detection** (healthy vs AD) | A calibration-free ratio of ring-averaged path powers (R31, threshold fitted on the uniform heads) separates healthy from AD. It holds for the healthy, Mild and Moderate lobe designs. Severe and one-sided disease sit near the threshold. Antenna gain cancels exactly. |
 | **Staging** | The stage order is visible, but the labels have small margins. The staging ratio (R21) rests on the weakest paths (≈ −55 dB). Disease confined to a few lobes reads as Normal. Mild vs Moderate is not separable. |
-| **Which lobes changed** | `imaging2` estimates the stage and one cortex-retreat value per lobe from the S-parameters, then draws the change on the known healthy anatomy. Lobe calls are correct for Mild, Moderate and one-sided designs in leave-one-design-out tests. Healthy, MCI and rotated healthy heads come out empty. **Blind test (Test_B):** the two affected lobes and the stage were named correctly under a protocol committed before the file existed. |
-| **Depth / height** | Depth is rough: 90% intervals cover the truth for 78% of affected lobes. Height is **not observable** with one antenna ring: the vertical shape of every image comes from the lobe model. |
+| **Which lobes changed** | `imaging2` estimates the stage and one cortex-retreat value per lobe from the S-parameters, then draws the change on the known healthy anatomy. In leave-one-design-out tests the lobe calls are correct for Mild (5–6 of 6), Moderate and the one-sided design (6 of 6). Healthy, MCI and rotated healthy heads come out empty. **Blind test (Test_B):** the two affected lobes and the stage were named correctly under a protocol committed before the file existed. |
+| **Depth / height** | Depth is rough: 90% intervals cover the truth for 69% of affected lobes, or 78% after widening the noise model (post hoc). Height is **not observable** with one antenna ring: the vertical shape of every image comes from the lobe model. |
 | **MCI** (hippocampus only) | Not detectable. The hippocampus is far below the sensing depth (≤ 4% of in-brain sensitivity lies below z = 0). |
-| **What failed** | Radar beamforming (DAS / DMAS / MVDR) and a linear Born sector inversion could not image this head. Details in `results/imaging/`. |
+| **Other approaches tried** | With this six-antenna ring and a 1 GHz band (21 paths, about 22 mm range resolution in tissue), radar focusing (DAS / DMAS / MVDR) did not resolve the lobes in our runs, and a linear Born sector inversion was outside its small-change validity (model error 56–67% of the change). Details in `results/imaging/`. |
 
 ---
 
@@ -44,6 +44,10 @@ Claims are graded against a noise floor (§ How results are judged).
 | [`results/imaging2/README.md`](results/imaging2/README.md) | Slice-image track: method, scores, controls, noise, blind test, post-hoc checks, reproduce (§13). One-page method note: [`METHOD_surrogate_inversion.md`](results/imaging2/METHOD_surrogate_inversion.md) |
 | [`docs/notation.md`](docs/notation.md) | Symbols and definitions used everywhere |
 | [`share_lobe_phantom_data/README.md`](share_lobe_phantom_data/README.md) | Self-contained description of the lobe-phantom data, for someone who only wants the files |
+| [`docs/presentation_qa.md`](docs/presentation_qa.md) | Step-by-step explanations used for the 5 Oct review: forward model, inversion, why the ratios cannot locate lobes, how Fisher/KL get a spread, Severe depth, raw-phase ring, E-field numbers |
+| [`results/presentation/`](results/presentation/README.md) | Review figures: the estimate drawn on the healthy head (true / estimated / error, slices), per-lobe charts |
+| [`results/checks/`](results/checks/) | Independent recomputations (raw-phase ring numbers) |
+| [`results/efield/`](results/efield/README.md) | E-field plots and worked numbers of the field exports (viewing only) |
 | `*.pptx` (repo root) | Presentation decks |
 
 ---
@@ -54,7 +58,7 @@ Claims are graded against a noise floor (§ How results are judged).
 - The origin is the head centre, in mm. +z is up, the nose points toward −y, and **+x is the subject's left**.
 - Antennas T1…T6 sit at azimuth −90° (T1, front), −30°, +30°, +90° (T4, back), +150° and −150°. T2 and T3 are on the left; T5 and T6 on the right.
 - The feeds lie on one ring at z ≈ 48 mm (polar angle 60.5°, 97.7 mm from the origin), about 9 mm from the skin.
-- Each antenna is a DGS patch (42 × 35 mm, Rogers RT/duroid 6010) with a 3 × 3 FR4 AMC reflector behind it.
+- Each antenna is an imported printed antenna (V-shaped copper radiator with a partial ground on a 20 × 20 mm Rogers RT/duroid 6010 board) with a 3 × 3 FR4 AMC reflector behind it. The antenna variables in the file headers (L, W, H and similar) belong to an earlier, deleted antenna: ignore them.
 
 **Port order in every Touchstone file: Port 1..6 = T4, T3, T2, T1, T6, T5** (not T1..T6). This is verified
 from the HFSS port positions and stated in each file header (`Port[1] = FEED_3_T4`, …).
@@ -166,7 +170,7 @@ Ask for them if you need to rerun those parts.
 - One antenna ring:
   - no height information;
   - about 99% of path sensitivity lies in the air around the head;
-  - of the in-brain part, 54–70% lies above z = 40 mm.
+  - of the in-brain part, 56–69% lies above z = 40 mm.
 - The weakest paths (second-neighbour, ≈ −55 dB) shift between equivalent simulations, which limits staging.
   Two more rotated healthy heads (31°, 43°) are pending. How they will be evaluated is pre-registered.
 
